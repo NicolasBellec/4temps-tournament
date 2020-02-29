@@ -10,10 +10,14 @@ import {
   FormGroup,
   FormInput,
   FormRadio,
-  FormField
+  FormField,
+  TableBody,
+  TableRow,
+  TableCell,
+  Table,
+  Checkbox,
+  SyntheticEvent
 } from 'semantic-ui-react';
-
-type MultipleDanceScoringRule = 'none' | 'average' | 'best';
 
 type Props = {
   onSubmit: (round: RoundViewModel) => void,
@@ -37,7 +41,9 @@ export type RoundViewModel = {
   maxPairCountPerGroup: ?number,
   passingCouplesCount: ?number,
   multipleDanceScoringRule: MultipleDanceScoringRule,
-  criteria: Array<CriterionViewModel>
+  notationSystem: NotationSystem,
+  criteria: Array<CriterionViewModel>,
+  errorOnSameScore: boolean
 };
 type State = RoundViewModel;
 
@@ -58,8 +64,15 @@ class EditTournamentRounds extends Component<Props, State> {
         type: 'none',
         forJudgeType: 'normal'
       }
-    ]
+    ],
+    errorOnSameScore: false,
+    notationSystem: 'none'
   };
+
+  _handleErrorOnSameScoreChange = (e : SyntheticEvent, data : { checked: boolean }) => {
+    const { checked } = data;
+    this.setState({ errorOnSameScore: checked });
+  }
 
   _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value });
@@ -94,6 +107,11 @@ class EditTournamentRounds extends Component<Props, State> {
     event: SyntheticInputEvent<HTMLInputElement>,
     { value }: { value: MultipleDanceScoringRule }
   ) => this.setState({ multipleDanceScoringRule: value });
+
+  _onChangeNotationSystem = (
+    event: SyntheticInputEvent<HTMLInputElement>,
+    { value }: { value: NotationSystem }
+  ) => this.setState({ notationSystem: value });
 
   _countOrEmptyString = (count: ?number): string | number => {
     return count != null ? count : '';
@@ -295,6 +313,38 @@ class EditTournamentRounds extends Component<Props, State> {
               !validation.isValidMaxPairCount ||
               !validation.isMaxPairGreaterOrEqualToMinPair
             }
+          />
+        </FormGroup>
+        <span>
+          <span className="field">
+            <label htmlFor="notation-system">
+              What is the notation system ?
+            </label>
+          </span>
+          <FormGroup id="notation-system" widths="equal">
+            <FormRadio
+              label="Score sum"
+              value="sum"
+              onChange={this._onChangeNotationSystem}
+              checked={this.state.notationSystem === 'sum'}
+            />
+            <FormRadio
+              label="RPSS"
+              value="rpss"
+              onChange={this._onChangeNotationSystem}
+              checked={this.state.notationSystem === 'rpss'}
+            />
+          </FormGroup>
+          {!validation.isValidNotationSystem && (
+            <Message error content="Must pick at least one system" />
+          )}
+        </span>
+        <FormGroup>
+          <Checkbox
+            toggle
+            label={{ children: "Treat equal score as error" }}
+            checked={this.state.errorOnSameScore}
+            onChange={this._handleErrorOnSameScoreChange}
           />
         </FormGroup>
         {this._renderDanceRule()}

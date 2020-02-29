@@ -19,12 +19,14 @@ export type RoundDbModel = {
   minPairCountPerGroup: number,
   maxPairCountPerGroup: number,
   passingCouplesCount: number,
-  multipleDanceScoringRule: 'none' | 'average' | 'best',
+  multipleDanceScoringRule: MultipleDanceScoringRule,
+  notationSystem: NotationSystem,
   criteria: Array<CriterionDbModel>,
   active: boolean,
   finished: boolean,
   draw: boolean,
   groups: Array<DanceGroupDbModel>,
+  errorOnSameScore: boolean,
   roundScores: Array<{ participantId: ObjectId, score: number }>
 };
 
@@ -80,6 +82,14 @@ export const schema = new mongoose.Schema({
     required: true
   },
   multipleDanceScoringRule: {
+    type: String,
+    required: true
+  },
+  errorOnSameScore: {
+    type: Boolean,
+    required: true
+  },
+  notationSystem: {
     type: String,
     required: true
   },

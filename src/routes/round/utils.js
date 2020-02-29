@@ -11,12 +11,14 @@ function parseRound(bodyRound: mixed): Round {
     tieRule: 'none',
     roundScoringRule: 'none',
     multipleDanceScoringRule: 'none',
+    notationSystem: 'none',
     criteria: [],
     groups: [],
     active: false,
     finished: false,
     draw: false,
     roundScores: [],
+    errorOnSameScore: false,
     winners: { leaders: [], followers: [] }
   };
 

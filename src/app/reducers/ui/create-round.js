@@ -43,6 +43,8 @@ export function getInitialState(): UiCreateRoundReduxState {
       isValidMultipleDanceScoringRule: true,
       isValidAmountOfCriteria: true,
       isValidCriteria: true,
+      isValidErrorOnSameScore: true,
+      isValidNotationSystem: true,
       criteriaValidation: [
         {
           isValidCriterion: true,

@@ -164,6 +164,14 @@ describe('Round validator', () => {
     });
   });
 
+  test('Notation system must be set', () => {
+    expect(
+      validateRound(
+        createRound({ notationSystem: 'none' })
+      )
+    ).toMatchObject({ isValidRound: false });
+  });
+
   test('Multiple dances scoring rule may not be set if the dance count is 1', () => {
     ['none', 'average', 'best'].map(multipleDanceScoringRule => {
       expect(

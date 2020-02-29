@@ -7,7 +7,9 @@ function validateRound(round: Round): RoundValidationSummary {
     minPairCountPerGroup,
     maxPairCountPerGroup,
     passingCouplesCount,
-    criteria
+    criteria,
+    errorOnSameScore,
+    notationSystem
   } = round;
 
   const isValidName = name.length > 0;
@@ -30,6 +32,10 @@ function validateRound(round: Round): RoundValidationSummary {
 
   const isValidAmountOfCriteria = criteria.length > 0;
 
+  const isValidErrorOnSameScore = typeof(errorOnSameScore) === Boolean ;
+
+  const isValidNotationSystem = notationSystem === 'sum' || notationSystem === 'rpss';
+
   const { isValidCriteria, criteriaValidation } = validateCriteria(criteria);
 
   return {
@@ -41,6 +47,7 @@ function validateRound(round: Round): RoundValidationSummary {
       isValidPassingCouplesCount &&
       isMaxPairGreaterOrEqualToMinPair &&
       isValidMultipleDanceScoringRule &&
+      isValidNotationSystem &&
       isValidAmountOfCriteria &&
       isValidCriteria,
     isValidName,
@@ -52,7 +59,9 @@ function validateRound(round: Round): RoundValidationSummary {
     isValidMultipleDanceScoringRule,
     isValidAmountOfCriteria,
     isValidCriteria,
-    criteriaValidation
+    criteriaValidation,
+    isValidErrorOnSameScore,
+    isValidNotationSystem
   };
 }
 

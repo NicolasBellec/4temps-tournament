@@ -45,6 +45,9 @@ declare type RoundCriterion = {
   forJudgeType: JudgeType
 };
 
+declare type MultipleDanceScoringRule = 'none' | 'average' | 'best';
+declare type NotationSystem = 'none' | 'sum' | 'rpss';
+
 declare type Round = {
   id: string,
   name: string,
@@ -52,7 +55,9 @@ declare type Round = {
   minPairCountPerGroup: number,
   maxPairCountPerGroup: number,
   passingCouplesCount: number,
-  multipleDanceScoringRule: 'none' | 'average' | 'best',
+  errorOnSameScore: boolean,
+  multipleDanceScoringRule: MultipleDanceScoringRule,
+  notationSystem: NotationSystem,
   criteria: Array<RoundCriterion>,
   active: boolean,
   finished: boolean,
@@ -185,6 +190,8 @@ declare type RoundValidationSummary = {
   isValidMultipleDanceScoringRule: boolean,
   isValidAmountOfCriteria: boolean,
   isValidCriteria: boolean,
+  isValidErrorOnSameScore: boolean,
+  isValidNotationSystem: boolean,
   criteriaValidation: Array<{
     isValidCriterion: boolean,
     isValidName: boolean,
