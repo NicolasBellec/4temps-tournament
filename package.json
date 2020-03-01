@@ -24,6 +24,7 @@
     "flow": "flow"
   },
   "dependencies": {
+    "babel-core": "^6.26.3",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
