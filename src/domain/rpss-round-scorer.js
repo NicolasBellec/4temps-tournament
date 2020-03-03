@@ -19,6 +19,11 @@ type MapJudgePlacement = {
   [judgeId: string]: JudgePlacement
 }
 
+type SeparatedPlacement = {
+  leader : MapJudgePlacement,
+  follower : MapJudgePlacement
+}
+
 type MapJudgeScoreUnflatten = {
   [ judgeId: string ] : {
     [ participantId: string ] : {
@@ -38,10 +43,12 @@ type ParticipantRank = {
 }
 
 type SanctionMap = {
-  [ participantId:string ] : {
+  [ participantId: string ] : {
     [ danceId : string ] : number
   }
 }
+
+type Ranking = Array<string>
 
 export default class RPSSRoundScorer {
   _judges: Array<Judge>;
@@ -72,21 +79,66 @@ export default class RPSSRoundScorer {
   scoreRound = (
     notes: Array<JudgeNote>
   ): Array<Score> => {
-    const placements : MapJudgePlacement = this._transformToPlacement( notes );
-    this._genRanking( placements );
+    const placements : SeparatedPlacement =
+      this._transformToPlacement( notes );
+    const leader_ranking: Ranking = this._genRanking( placements.leader, 'leader' );
+    const follower_ranking: Ranking = this._genRanking( placements.follower, 'follower' );
 
     return [];
   }
 
   _genRanking = (
-    placements : MapJudgePlacement
-  ) => {
+    placements : MapJudgePlacement,
+    role : ParticipantRole
+  ) : Ranking => {
+    var ranking : Ranking = [];
 
+    const participants = _getRoleParticipant( role );
+    const mapParticipant : {
+      [participantId: string] : Array<number>
+    } = participants.reduce( (acc, participantId) => {
+      ...acc,
+      participantId = Object.keys(placement).map(
+        judgeId => {
+          const place : ?Placement = placement[judgeId].find(
+            el => el.participantId === participantId
+          )
+          return place != null ? place.placement : -1;
+        }
+      )
+    }, {});
+
+    judgeMajority = Math.ceil(this._judges.length / 2);
+
+    for ( var i = 1; i < participant.length + 1; ) {
+      majorityParticipant = participants.filter( participantId => {
+        const judgeVotes = mapParticipant[participantId].filter(
+          rank => rank <= i
+        ).length;
+        return !ranking.includes(participantId) && majority >= judgeMajority
+      });
+
+      if ( majorityParticipant.length > 1 ) {
+        // Multiple majority vote
+        TODO
+      }
+      elseif ( majorityParticipant.length === 0 ) {
+        // No majority vote
+        TODO
+      }
+      else {
+        // Only one majority vote
+      }
+
+      i++;
+    }
+
+    return ranking
   };
 
   _transformToPlacement = (
     notes: Array<JudgeNote>
-  ): MapJudgePlacement => {
+  ): SeparatedPlacement => {
     /*
       1) Recover the note for each judge for each dance
       2) Apply the sanction on each judge note
@@ -98,19 +150,26 @@ export default class RPSSRoundScorer {
                                                   unflattenScore, sanctionScores );
     const finalScores: MapJudgeParticipantScore = this._scoreFromDanceRule( summedScores );
 
-    let ranking : MapJudgePlacement = this._generatePlacement( finalScores, sanctionScores );
+    //NOTE: Does not handle leaderAndFollower, should not happen.
+    const leader_ranking : MapJudgePlacement = this._generateRolePlacement( finalScores, sanctionScores, 'leader' );
+    const follower_ranking : MapJudgePlacement = this._generateRolePlacement( finalScores, sanctionScores, 'follower' );
 
-    return ranking;
+    return { leader: leader_ranking, follower: follower_ranking};
   }
 
-  _generatePlacement = (
+  _generateRolePlacement = (
     scores : MapJudgeParticipantScore,
-    sanctionScores : SanctionMap
+    sanctionScores : SanctionMap,
+    role : ParticipantRole
   ) : MapJudgePlacement => {
     let placement: MapJudgePlacement = {};
+    const roleParticipant : Array<string> = this._getRoleParticipant( role );
 
     for ( const judgeId of Object.keys(scores) ) {
       placement[judgeId] = Object.keys(scores[judgeId])
+        .filter( participantId => {
+          roleParticipant.includes(participantId)
+        })
         .map( participantId => ({
           participantId: participantId,
           score: scores[judgeId][participantId]
@@ -330,6 +389,27 @@ export default class RPSSRoundScorer {
     });
 
     return dances;
+  };
+
+  _getRoleParticipant = (
+    role : ParticipantRole
+  ) : Array<string> => {
+    return this._round.groups.reduce(
+      (pairs, group) => [
+        ...pairs,
+        ...group.pairs.reduce((acc, pair) => {
+          const arr = [];
+          if ( pair.follower != null && role == 'follower') {
+            arr.push( pair.follower );
+          }
+          if ( pair.leader != null && role == 'leader') {
+            arr.push( pair.follower );
+          }
+          return [...acc, ...arr];
+      }, [])
+      ],
+      []
+    );
   };
 
   _getParticipants = (): Array<string> => {
