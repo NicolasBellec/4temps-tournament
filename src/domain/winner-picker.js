@@ -1,11 +1,6 @@
 // @flow
 import RoundScorer from './round-scorer';
 
-type Score = {
-  participantId: string,
-  score: number
-};
-
 type Role = 'leader' | 'follower';
 
 class WinnerPicker {

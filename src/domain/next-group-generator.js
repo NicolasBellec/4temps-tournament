@@ -346,19 +346,19 @@ export default class NextGroupGenerator {
     return this._round.groups.reduce(
       (acc, group) => {
         for (const pair of group.pairs) {
-          // $FlowFixMe
-          if (acc.leaders[pair.leader]) {
-            acc.leaders[pair.leader] += 1;
-          } else {
-            // $FlowFixMe
-            acc.leaders[pair.leader] = 1;
+          if ( pair.leader != null ) {
+            if ( acc.leaders[pair.leader]) {
+              acc.leaders[pair.leader] += 1;
+            } else {
+              acc.leaders[pair.leader] = 1;
+            }
           }
-          // $FlowFixMe
-          if (acc.followers[pair.follower]) {
-            acc.followers[pair.follower] += 1;
-          } else {
-            // $FlowFixMe
-            acc.followers[pair.follower] = 1;
+          if ( pair.follower != null ) {
+            if (acc.followers[pair.follower]) {
+              acc.followers[pair.follower] += 1;
+            } else {
+              acc.followers[pair.follower] = 1;
+            }
           }
         }
 
