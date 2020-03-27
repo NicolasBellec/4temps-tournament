@@ -1,10 +1,5 @@
 // @flow
 
-type Score = {
-  participantId: string,
-  score: number
-};
-
 type Placement = {
   participantId: string,
   score: number,
@@ -41,8 +36,6 @@ type SanctionMap = {
     [danceId: string]: number
   }
 };
-
-type Ranking = Array<Score>;
 
 type RankMatrix = Array<{
   [participantId: string]: number
@@ -92,11 +85,11 @@ export default class RPSSRoundScorer {
 
   scoreRound(notes: Array<JudgeNote>): Array<Score> {
     const placements: SeparatedPlacement = this._transformToPlacement(notes);
-    const leader_ranking: Ranking = this._genRanking(
+    const leader_ranking: Array<Score> = this._genRanking(
       placements.leader,
       'leader'
     );
-    const follower_ranking: Ranking = this._genRanking(
+    const follower_ranking: Array<Score> = this._genRanking(
       placements.follower,
       'follower'
     );
@@ -104,7 +97,7 @@ export default class RPSSRoundScorer {
     return [...leader_ranking, ...follower_ranking];
   }
 
-  _genRanking(placements: MapJudgePlacement, role: ParticipantRole): Ranking {
+  _genRanking(placements: MapJudgePlacement, role: ParticipantRole): Array<Score> {
     const judgeMajority = Math.ceil(this._judges.length / 2);
 
     const participants: Array<string> = this._getRoleParticipant(role);
@@ -182,7 +175,7 @@ export default class RPSSRoundScorer {
         participantStats, this._sortPlacements
       );
 
-    var ranking: Ranking = this._transformSortedToRanking(
+    var ranking: Array<Score> = this._transformSortedToRanking(
       sortedParticipant,
       max_rank
     );
@@ -192,8 +185,8 @@ export default class RPSSRoundScorer {
   _transformSortedToRanking(
     sortedParticipant: Array<Array<ParticipantStats>>,
     max_rank: number
-  ): Ranking {
-    var ranking: Ranking = [];
+  ): Array<Score> {
+    var ranking: Array<Score> = [];
     var cur_rank: number = max_rank;
 
     for (let equality of sortedParticipant) {
