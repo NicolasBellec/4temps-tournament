@@ -11,10 +11,6 @@ import {
   FormInput,
   FormRadio,
   FormField,
-  TableBody,
-  TableRow,
-  TableCell,
-  Table,
   Checkbox,
   SyntheticEvent
 } from 'semantic-ui-react';
@@ -69,10 +65,13 @@ class EditTournamentRounds extends Component<Props, State> {
     notationSystem: 'none'
   };
 
-  _handleErrorOnSameScoreChange = (e : SyntheticEvent, data : { checked: boolean }) => {
+  _handleErrorOnSameScoreChange = (
+    e: SyntheticEvent,
+    data: { checked: boolean }
+  ) => {
     const { checked } = data;
     this.setState({ errorOnSameScore: checked });
-  }
+  };
 
   _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value });
@@ -342,7 +341,7 @@ class EditTournamentRounds extends Component<Props, State> {
         <FormGroup>
           <Checkbox
             toggle
-            label={{ children: "Treat equal score as error" }}
+            label={{ children: 'Treat equal score as error' }}
             checked={this.state.errorOnSameScore}
             onChange={this._handleErrorOnSameScoreChange}
           />

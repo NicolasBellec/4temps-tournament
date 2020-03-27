@@ -166,9 +166,7 @@ describe('Round validator', () => {
 
   test('Notation system must be set', () => {
     expect(
-      validateRound(
-        createRound({ notationSystem: 'none' })
-      )
+      validateRound(createRound({ notationSystem: 'none' }))
     ).toMatchObject({ isValidRound: false });
   });
 

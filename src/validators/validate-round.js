@@ -32,9 +32,10 @@ function validateRound(round: Round): RoundValidationSummary {
 
   const isValidAmountOfCriteria = criteria.length > 0;
 
-  const isValidErrorOnSameScore = typeof(errorOnSameScore) === Boolean ;
+  const isValidErrorOnSameScore = typeof errorOnSameScore === 'boolean';
 
-  const isValidNotationSystem = notationSystem === 'sum' || notationSystem === 'rpss';
+  const isValidNotationSystem =
+    notationSystem === 'sum' || notationSystem === 'rpss';
 
   const { isValidCriteria, criteriaValidation } = validateCriteria(criteria);
 
