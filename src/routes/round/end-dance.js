@@ -3,8 +3,12 @@
 import NoteChecker from '../../domain/note-checker';
 import RoundScorer from '../../domain/round-scorer';
 import NextGroupGenerator from '../../domain/next-group-generator';
-import type { TournamentRepository } from '../../data/tournament';
-import type { NoteRepository } from '../../data/note';
+import type {
+  TournamentRepository
+} from '../../data/tournament';
+import type {
+  NoteRepository
+} from '../../data/note';
 import createLeaderboard from '../leaderboard/create-leaderboard';
 import isDrawInRound from '../../domain/is-draw-in-round';
 
@@ -48,13 +52,19 @@ export default class StartDanceRoute {
     }
     if (e instanceof NoStartedDanceError) {
       res.status(404);
-      res.json({ hasActiveDance: false });
+      res.json({
+        hasActiveDance: false
+      });
     } else if (e instanceof NotAllNotesError) {
       res.status(400);
-      res.json({ isAllSubmitted: false });
+      res.json({
+        isAllSubmitted: false
+      });
     } else if (e instanceof RoundHasDrawError) {
       res.status(409);
-      res.json({ isDraw: true });
+      res.json({
+        isDraw: true
+      });
     } else {
       res.sendStatus(500);
     }
@@ -153,7 +163,7 @@ class EndDanceRouteHandler {
   _hasAllNotesForDance = async (
     tournament: Tournament,
     dance: Dance
-  ): Promise<boolean> => {
+  ): Promise < boolean > => {
     const checker = new NoteChecker(tournament);
     const notes = await this._noteRepository.getForDance(dance.id);
     return checker.allSetForDance(dance.id, notes);
@@ -185,7 +195,7 @@ class EndDanceRouteHandler {
   _generateNextGroups = async (
     tournament: Tournament,
     round: Round
-  ): Promise<void> => {
+  ): Promise < void > => {
     const generator = new NextGroupGenerator(
       tournament,
       await this._getNotes(round)
@@ -221,7 +231,7 @@ class EndDanceRouteHandler {
   _hasDraw = (round: Round): boolean => isDrawInRound(round);
 
   _getNotes = async (round: Round) => {
-    let notes: Array<JudgeNote> = [];
+    let notes: Array < JudgeNote > = [];
     for (const group of round.groups) {
       for (const dance of group.dances) {
         notes = notes.concat(await this._noteRepository.getForDance(dance.id));
@@ -232,6 +242,9 @@ class EndDanceRouteHandler {
 }
 
 function TournamentNotFoundError() {}
+
 function NoStartedDanceError() {}
+
 function NotAllNotesError() {}
+
 function RoundHasDrawError() {}
