@@ -53,10 +53,18 @@ class WinnerPicker {
   };
   _getRole = (role: Role): Array<string> => {
     return this._round.groups.reduce(
-      (leaders, group) => [
-        ...leaders,
-        // $FlowFixMe
-        ...group.pairs.reduce((leaders, pair) => [...leaders, pair[role]], [])
+      (participant, group) => [
+        ...participant,
+        ...group.pairs.reduce((acc, pair) => {
+          const arr = [];
+          if (pair.follower != null && role == 'follower') {
+            arr.push(pair.follower);
+          }
+          if (pair.leader != null && role == 'leader') {
+            arr.push(pair.leader);
+          }
+          return [...acc, ...arr];
+        }, [])
       ],
       []
     );
