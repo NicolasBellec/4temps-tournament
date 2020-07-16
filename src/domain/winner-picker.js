@@ -23,12 +23,18 @@ class WinnerPicker {
     };
   };
 
-  _getScores = (notes: Array<JudgeNote>) => {
-    const scorer = new RoundScorer(this._judges, this._round);
-    return scorer.scoreRound(notes);
+  _getScores = (notes: Array < JudgeNote > ) => {
+    if (this._round.notationSystem == 'rpss') {
+      const scorer = new RPSSRoundScorer(this._judges, this._round);
+      return scorer.scoreRound(notes);
+    } else if (this._round.notationSystem == 'sum') {
+      const scorer = new RoundScorer(this._judges, this._round);
+      return scorer.scoreRound(notes);
+    }
+
+    return [];
   };
 
-  _pickTopLeaders = (roundScores: Array<Score>): Array<string> => {
     return this._pickTopRole(roundScores, 'leader');
   };
 
