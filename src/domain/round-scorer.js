@@ -84,7 +84,7 @@ export default class RoundScorer {
   };
 
   _scoreFromDanceRule = (danceScores: Array<number>) => {
-    if (this._round.danceScoringRule === 'average') {
+    if (this._round.multipleDanceScoringRule === 'average') {
       return (
         (danceScores.reduce((acc, score) => acc + score, 0) * 1.0) /
         danceScores.length

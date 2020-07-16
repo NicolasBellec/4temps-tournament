@@ -1,549 +1,614 @@
 // @flow
 
-type Placement = {
+export type JudgeWeightedNote = {
+  judgeId: string,
   participantId: string,
-  score: number,
-  placement: number
+  score: number
 };
 
-type JudgePlacement = Array<Placement>;
-
-type MapJudgePlacement = {
-  [judgeId: string]: JudgePlacement
-};
-
-type SeparatedPlacement = {
-  leader: MapJudgePlacement,
-  follower: MapJudgePlacement
-};
-
-type MapJudgeScoreUnflatten = {
-  [judgeId: string]: {
-    [participantId: string]: {
-      [danceId: string]: number
-    }
-  }
-};
-
-type MapJudgeParticipantScore = {
-  [judgeId: string]: {
-    [participantId: string]: number
-  }
-};
-
-type SanctionMap = {
-  [participantId: string]: {
-    [danceId: string]: number
-  }
-};
-
-type RankMatrix = Array<{
-  [participantId: string]: number
-}>;
-
-type MapParticipant = {
-  [participantId: string]: Array<number>
-};
-
-type ParticipantStats = {
+export type JudgeScore = {
+  judgeId: string,
   participantId: string,
-  min_rank: number,
-  sums_rank: Array<number>,
-  judgeScores: {
-    [judgeId: string]: number
-  },
-  majority_amount: number
+  danceId: string,
+  score: number
 };
+
+export type JudgeRank = {
+  ...JudgeWeightedNote,
+  rank: number
+};
+
+export type RankMatrixRow = {
+  participantId: string,
+  row: Array < number > ,
+  rankReachMajority: number, // this is the index the rank being + 1
+  sumsRanks: Array < number > ,
+  ranks: Array < JudgeRank >
+};
+
+export type RankMatrix = Array < RankMatrixRow > ;
 
 export default class RPSSRoundScorer {
-  _judges: Array<Judge>;
+  _judges: Array < Judge > ;
   _round: Round;
-  _criteria: { [id: string]: RoundCriterion };
+  _criteria: {
+    [id: string]: RoundCriterion
+  };
   _countPresident: boolean;
   _allowNegative: boolean;
 
   constructor(
-    judges: Array<Judge>,
-    round: Round,
-    {
+    judges: Array < Judge > ,
+    round: Round, {
       countPresident,
       allowNegative
     }: {
       countPresident: boolean,
       allowNegative: boolean
-    } = { countPresident: false, allowNegative: false }
+    } = {
+      countPresident: false,
+      allowNegative: false
+    }
   ) {
     this._judges = judges;
     this._criteria = round.criteria.reduce(
-      (acc, crit) => ({ ...acc, [crit.id]: crit }),
-      {}
+      (acc, crit) => ({
+        ...acc,
+        [crit.id]: crit
+      }), {}
     );
     this._round = round;
     this._countPresident = countPresident;
     this._allowNegative = allowNegative;
-  }
+  } // constructor
 
-  scoreRound(notes: Array<JudgeNote>): Array<Score> {
-    const placements: SeparatedPlacement = this._transformToPlacement(notes);
-    const leader_ranking: Array<Score> = this._genRanking(
-      placements.leader,
+  scoreRound(notes: Array < JudgeNote > ): Array < Score > {
+    /*
+      Transform the individual notes into a global ranking of the participant
+    */
+    const ranks: Array < JudgeRank > = this._genJudgeRanks(notes);
+
+    const ranking_leader: Array < Score > = this._genRPSSRanking(
+      ranks,
       'leader'
     );
-    const follower_ranking: Array<Score> = this._genRanking(
-      placements.follower,
+
+    const ranking_follower: Array < Score > = this._genRPSSRanking(
+      ranks,
       'follower'
     );
 
-    return [...leader_ranking, ...follower_ranking];
-  }
+    return [...ranking_leader, ...ranking_follower];
+  } // scoreRound
 
-  _genRanking(placements: MapJudgePlacement, role: ParticipantRole): Array<Score> {
-    const judgeMajority = Math.ceil(this._judges.length / 2);
+  _genRPSSRanking(
+    ranks: Array < JudgeRank > ,
+    role: ParticipantRole
+  ): Array < Score > {
+    /*
+      Transform the ranking of each judge in a ranking for the given role
+    */
 
-    const participants: Array<string> = this._getRoleParticipant(role);
-    const max_rank = participants.length;
+    // First compute some useful constant (majority threshold, ...)
+    const positivJudges: Array < Judge > = this._judges
+      .filter(judge => this._isPositiveJudgeType(judge.judgeType));
 
-    // Generate for each participant the array of its placements
-    const mapParticipant: MapParticipant = participants.reduce(
-      (acc, participantId) => ({
-        ...acc,
-        [participantId]: Object.keys(placements).map(judgeId => {
-          const place: ?Placement = placements[judgeId].find(
-            el => el.participantId === participantId
-          );
-          return place != null ? place.placement : max_rank;
-        })
-      }),
-      {}
-    );
-    const mapParticipantJudge = participants.reduce(
-      (acc, participantId) => ({
-        ...acc,
-        [participantId]: Object.keys(placements)
-          .map(judgeId => {
-            const place: ?Placement = placements[judgeId].find(
-              el => el.participantId === participantId
-            );
-            return {
-              judgeId: judgeId,
-              rank: place != null ? place.placement : max_rank
-            };
-          })
-          .reduce(
-            (acc, el) => ({
-              ...acc,
-              [el.judgeId]: el.rank
-            }),
-            {}
-          )
-      }),
-      {}
+    const judgeMajority = Math.ceil(positivJudges.length / 2);
+    const participants: Array < string > = this._getRoleParticipant(role);
+
+    const max_rank: number = participants.length;
+
+    const roleRanks: Array < JudgeRank > = ranks.filter(ranks =>
+      participants.includes(ranks.participantId)
     );
 
+    // Generate the rank matrix
+    // PS: Also contains some data in each row that help sorting the participants
     const rankMatrix: RankMatrix = this._genRankMatrix(
-      mapParticipant,
-      participants
+      participants,
+      roleRanks,
+      judgeMajority
     );
 
-    const participantStats: Array<ParticipantStats> = participants
-      .map(participantId => ({
-        participantId: participantId,
-        min_rank: this._range(0, max_rank).reduce((acc, rank) => {
-          if (acc !== -1) {
-            return acc;
-          } else if (rankMatrix[rank][participantId] >= judgeMajority) {
-            return rank;
-          }
-          return -1;
-        }, -1)
-      }))
-      .map(obj => ({
-        ...obj,
-        sums_rank: this._range(obj.min_rank, max_rank).map(min_rank =>
-          mapParticipant[obj.participantId]
-            .filter(rank => rank <= min_rank)
-            .reduce((acc, rank) => acc + rank, 0)
-        ),
-        judgeScores: mapParticipantJudge[obj.participantId],
-        majority_amount: mapParticipant[obj.participantId].filter(
-          rank => rank <= obj.min_rank
-        ).length
-      }));
+    const sortedRankMatrix: RankMatrix = rankMatrix.sort(
+      this._RPSScompare
+    );
 
-    const sortedParticipant: Array<Array<ParticipantStats>> =
-      this._sortWithEquality(
-        participantStats, this._sortPlacements
-      );
-
-    var ranking: Array<Score> = this._transformSortedToRanking(
-      sortedParticipant,
+    const finalRank: Array < Score > = this._genScoresFromSortedRankMatrix(
+      sortedRankMatrix,
       max_rank
     );
-    return ranking;
-  }
 
-  _transformSortedToRanking(
-    sortedParticipant: Array<Array<ParticipantStats>>,
+    return finalRank;
+  } // _genRPSSRanking
+
+  _genScoresFromSortedRankMatrix(
+    rm: RankMatrix,
     max_rank: number
-  ): Array<Score> {
-    var ranking: Array<Score> = [];
-    var cur_rank: number = max_rank;
+  ): Array < Score > {
+    let cur_rank: number = max_rank;
 
-    for (let equality of sortedParticipant) {
-      for (let participant of equality) {
-        ranking.push({
-          participantId: participant.participantId,
-          score: cur_rank
-        });
-      }
-
-      cur_rank -= equality.length;
+    if (rm.length === 0) {
+      return [];
     }
 
-    return ranking;
-  }
+    let scores: Array < Score > = [{
+      participantId: rm[0].participantId,
+      score: cur_rank
+    }];
 
-  _sortWithEquality<T>(
-    toSort: Array<T>,
-    sort_func: (T, T) => number
-  ): Array<Array<T>> {
-    // Sort the array and handle equalities by returning an array of arrays
-    var sortedWithEquality: Array<Array<T>> = [];
-
-    // First, sort the array
-    toSort.sort(sort_func);
-
-    // Then iterate on the sorted array and detect
-    // following elements with the same rank
-    for (let i = 0; i < toSort.length; ++i) {
-      const first_el = toSort[i];
-      sortedWithEquality.push([first_el]);
-
-      for (let j = i + 1; sort_func(first_el, toSort[j]) === 0; ++j) {
-        sortedWithEquality[sortedWithEquality.length - 1].push(toSort[j]);
+    for (var index = 1; index < rm.length; index++) {
+      // If the rank must be incremented
+      if (this._RPSScompare(rm[index - 1], rm[index]) != 0) {
+        cur_rank = max_rank - index;
       }
 
-      // Forward the loop by the number of elements found that are equals to
-      // first_el
-      i += sortedWithEquality[sortedWithEquality.length - 1].length - 1;
+      scores.push({
+        participantId: rm[index].participantId,
+        score: cur_rank
+      });
     }
 
-    return sortedWithEquality;
-  }
+    return scores;
+  } // _genScoresFromSortedRankMatrix
+
+  _RPSScompare(
+    rowA: RankMatrixRow,
+    rowB: RankMatrixRow
+  ): number {
+    /*
+      Compare 2 participants according to RPSS rules in order to sort them
+      If rowA is better than rowB, then _RPSScompare(rowA,rowB) < 0
+      If rowB is better than rowA, then _RPSScompare(rowA,rowB) > 0
+    */
+
+    // Have the two participant reached the majority at the same rank ?
+    if (rowA.rankReachMajority != rowB.rankReachMajority) {
+      return rowA.rankReachMajority - rowB.rankReachMajority;
+    }
+
+    // Have the two participant the same number of vote once majority reached ?
+    if (rowA.row[rowA.rankReachMajority] != rowB.row[rowB.rankReachMajority]) {
+      return rowB.row[rowB.rankReachMajority] - rowA.row[rowA.rankReachMajority];
+    }
+
+    // Have the participant the same quality of vote for each rank ?
+    for (var index = rowA.rankReachMajority; index < rowA.row.length; index++) {
+      if (rowA.sumsRanks[index] != rowB.sumsRanks[index]) {
+        return rowA.sumsRanks[index] - rowB.sumsRanks[index];
+      }
+    }
+
+    // We could not segregate by looking at global data, we analyse the rank
+    // judge by judge to find a difference
+
+    let judgeForA: number = 0;
+    let judgeForB: number = 0;
+    const max_rank: number = rowA.sumsRanks.length;
+    const positivJudges: Array < Judge > = this._judges
+      .filter(
+        judge => this._isPositiveJudgeType(judge.judgeType)
+      );
+
+    positivJudges.forEach(judge => {
+      const rankA: ? JudgeRank = rowA.ranks.find(
+        rank => rank.judgeId === judge.id
+      );
+      const rankB: ? JudgeRank = rowB.ranks.find(
+        rank => rank.judgeId === judge.id
+      );
+
+      if (rankA != null && rankB != null) {
+        if (rankA.rank < rankB.rank) {
+          judgeForA++;
+        } else if (rankA.rank > rankB.rank) {
+          judgeForB++;
+        }
+      }
+    });
+
+    return judgeForB - judgeForA;
+  } // _RPSScompare
+
+  _genRankMatrixRow(
+    participantId: string,
+    maxRank: number,
+    judgeMajority: number,
+    ranks: Array < JudgeRank >
+  ): RankMatrixRow {
+    /*
+      Generate the row and a few stats for the ranking matrix in order to ease
+      the sorting algorithm
+    */
+
+    const participantRanks: Array < JudgeRank > = ranks
+      .filter(rank =>
+        rank.participantId === participantId
+      );
+
+    // The ranks are [1...maxRank] and not [0...maxRank[ so we need to map
+    // add 1 to the rank
+    const votePerRank: Array < number > = [...Array(maxRank).keys()]
+      .map(cur_rank => cur_rank + 1)
+      .map(cur_rank => {
+        const votes: Array < JudgeRank > = participantRanks
+          .filter(rank =>
+            rank.rank === cur_rank
+          );
+        return votes.length;
+      });
+
+    // Same
+    const row: Array < number > = [...Array(maxRank).keys()]
+      .map(cur_rank => cur_rank + 1)
+      .map(cur_rank => {
+        const votes: Array < JudgeRank > = participantRanks
+          .filter(rank =>
+            rank.rank <= cur_rank
+          );
+        return votes.length;
+      });
+
+    const rankReachMajority: number =
+      row.reduce((acc, nbVote, index) => {
+        if (acc != -1) {
+          return acc;
+        } else if (nbVote >= judgeMajority) {
+          // We keep the index instead of the rank that is index + 1 as
+          // this is used to access the row table
+          return index;
+        }
+        return -1;
+      }, -1);
+
+    const sumsRanks: Array < number > = [...votePerRank.keys()]
+      .map(max_rank => {
+        return votePerRank.slice(0, max_rank + 1)
+          .reduce((acc, nbVote, cur_rank) =>
+            (acc + nbVote * (cur_rank + 1)), 0);
+      }); // end max_rank
+
+    return {
+      participantId: participantId,
+      row: row,
+      rankReachMajority: rankReachMajority,
+      sumsRanks: sumsRanks,
+      ranks: participantRanks
+    };
+  } // _genRankMatrixRow
 
   _genRankMatrix(
-    mapParticipant: MapParticipant,
-    participants: Array<string>
+    participants: Array < string > ,
+    ranks: Array < JudgeRank > ,
+    judgeMajority: number
   ): RankMatrix {
-    var rankMatrix: Array<{
-      [participantId: string]: number
-    }> = [];
-    for (let i = 0; i < participants.length; ++i) {
-      rankMatrix[i] = {};
-
-      for (let participantId of Object.keys(mapParticipant)) {
-        let ranks: Array<number> = mapParticipant[participantId];
-        rankMatrix[i][participantId] = ranks.filter(
-          rank => rank <= i + 1
-        ).length;
-      }
-    }
-
-    return rankMatrix;
-  }
-
-  _transformToPlacement(notes: Array<JudgeNote>): SeparatedPlacement {
     /*
-      1) Recover the note for each judge for each dance
-      2) Apply the sanction on each judge note
-      3) Sort for each judge on the final score
+      Generate the ranking matrix for each participant
     */
-    const unflattenScore: MapJudgeScoreUnflatten = this._unflattenJudgeScore(
-      notes
+    const max_rank: number = participants.length;
+    return participants.map(participantId =>
+      this._genRankMatrixRow(
+        participantId,
+        max_rank,
+        judgeMajority,
+        ranks
+      )
     );
-    const sanctionScores: SanctionMap = this._computeSanctions(unflattenScore);
-    const summedScores: MapJudgeScoreUnflatten = this._applyNegativScores(
-      unflattenScore,
-      sanctionScores
-    );
-    const finalScores: MapJudgeParticipantScore = this._scoreFromDanceRule(
-      summedScores
-    );
+  } // _genRankMatrix
 
-    //NOTE: Does not handle leaderAndFollower, should not happen.
-    const leader_ranking: MapJudgePlacement = this._generateRolePlacement(
-      finalScores,
-      sanctionScores,
-      'leader'
-    );
-    const follower_ranking: MapJudgePlacement = this._generateRolePlacement(
-      finalScores,
-      sanctionScores,
-      'follower'
-    );
+  _genJudgeRanks(notes: Array < JudgeNote > ): Array < JudgeRank > {
+    /*
+      Generate the ranking of each candidate for each judge
+    */
 
-    return { leader: leader_ranking, follower: follower_ranking };
-  }
+    // Compute the finale score of the candidates for each judge
+    const weightedNotes: Array < JudgeWeightedNote > =
+      this._computeJudgeWeightedNotes(notes);
 
-  _generateRolePlacement(
-    scores: MapJudgeParticipantScore,
-    sanctionScores: SanctionMap,
-    role: ParticipantRole
-  ): MapJudgePlacement {
-    let placement: MapJudgePlacement = {};
-    const roleParticipant: Array<string> = this._getRoleParticipant(role);
+    const followerIds: Array < string > = this._getRoleParticipant('follower');
+    const leaderIds: Array < string > = this._getRoleParticipant('leader');
 
-    for (const judgeId of Object.keys(scores)) {
-      placement[judgeId] = Object.keys(scores[judgeId])
-        .filter(participantId => {
-          roleParticipant.includes(participantId);
-        })
-        .map(participantId => ({
-          participantId: participantId,
-          score: scores[judgeId][participantId]
-        }))
-        .sort(this._sortScore)
-        .map(score => ({
-          ...score,
-          placement: 0
-        }));
-
-      var current_place = 1;
-      var current_score = placement[judgeId][0].score;
-      for (var i = 0; i < placement[judgeId].length; i++) {
-        if (placement[judgeId][i].score !== current_score) {
-          current_place = i + 1;
-          current_score = placement[judgeId][i].score;
-        }
-        placement[judgeId][i].placement = current_place;
-      }
-    }
-
-    return placement;
-  }
-
-  _scoreFromDanceRule(
-    scores: MapJudgeScoreUnflatten
-  ): MapJudgeParticipantScore {
-    let finalScores: MapJudgeParticipantScore = {};
-
-    for (const judgeId of Object.keys(scores)) {
-      finalScores[judgeId] = {};
-
-      for (const participantId of Object.keys(scores[judgeId])) {
-        if (this._round.danceScoringRule === 'average') {
-          finalScores[judgeId][participantId] =
-            (Object.keys(scores[judgeId][participantId]).reduce(
-              (acc, danceId) => acc + scores[judgeId][participantId][danceId],
-              0
-            ) *
-              1.0) /
-            Object.keys(scores[judgeId][participantId]).length;
-        } else {
-          finalScores[judgeId][participantId] = Object.keys(
-            scores[judgeId][participantId]
-          ).reduce(
-            (acc, danceId) =>
-              Math.max(acc, scores[judgeId][participantId][danceId]),
-            0
+    // Sort the score for each judge in order to obtain a ranking
+    const judgeRanks: Array < JudgeRank > = this._judges
+      .filter(judge => this._isPositiveJudgeType(judge.judgeType))
+      .reduce((acc, judge) => {
+        const weighted: Array < JudgeWeightedNote > =
+          weightedNotes.filter(
+            notes => judge.id === notes.judgeId
           );
-        }
-      }
-    }
 
-    return finalScores;
-  }
+        // Segregate leaders from followers to have 2 distinct rankings
+        const leaderWeighted: Array < JudgeWeightedNote > =
+          weighted.filter(note => {
+            const participant: ? string =
+              leaderIds.find(
+                leaderId => leaderId === note.participantId
+              )
+            return participant != null;
+          });
 
-  _unflattenJudgeScore(notes: Array<JudgeNote>): MapJudgeScoreUnflatten {
-    /*
-    Unflatten the judge notes array into
-    a easier structure to use for extracting placement
-    */
-    let totals: MapJudgeScoreUnflatten = {};
-    const dances: Array<Dance> = this._getDances();
+        const followerWeighted: Array < JudgeWeightedNote > =
+          weighted.filter(note => {
+            const participant: ? string =
+              followerIds.find(
+                followerId => followerId === note.participantId
+              )
+            return participant != null;
+          });
 
-    notes
-      .filter(note => {
-        const judge: ?Judge = this._judges.find(
-          judge => judge.id == note.judgeId
+
+        const leaderRanks: Array < JudgeRank > = this._genRanksFromWeightedScores(
+          leaderWeighted
         );
-        return judge != null;
-      })
-      .filter(note => {
-        return note.danceId in dances;
-      })
-      .forEach(note => {
-        if (totals[note.judgeId] === undefined) {
-          totals[note.judgeId] = {};
-        }
-        if (totals[note.judgeId][note.participantId] == undefined) {
-          totals[note.judgeId][note.participantId] = {};
-        }
-        if (
-          totals[note.judgeId][note.participantId][note.danceId] == undefined
-        ) {
-          totals[note.judgeId][note.participantId][note.danceId] = 0;
-        }
+        const followerRanks: Array < JudgeRank > = this._genRanksFromWeightedScores(
+          followerWeighted
+        );
 
-        totals[note.judgeId][note.participantId][note.danceId] += note.value;
+        return [...acc, ...leaderRanks, ...followerRanks];
+      }, []);
+
+    return judgeRanks;
+  } // _genJudgeRanks
+
+  _genRanksFromWeightedScores(
+    weightedScores: Array < JudgeWeightedNote >
+  ): Array < JudgeRank > {
+    /*
+      Transforms the weightedNotes of one judge into a ranking of this judge
+    */
+    // Check coherance
+    if (weightedScores.length != 0) {
+      const judgeId = weightedScores[0].judgeId;
+      weightedScores.forEach(score => {
+        if (score.judgeId != judgeId) {
+          throw "_genRanksFromWeightedScores : judge ids are not all the same";
+        }
       });
-
-    return totals;
-  }
-
-  _computeSanctions(unflattenScores: MapJudgeScoreUnflatten): SanctionMap {
-    let sanctions: SanctionMap = {};
-    const maxScoreForParticipants = this._maxScoreForParticipants();
-
-    /*
-      Retrieve the sanctionner judges
-    */
-    const sanctionnerIds = Object.keys(unflattenScores).filter(judgeId => {
-      const judge: ?Judge = this._judges.find(judge => judge.id === judgeId);
-      return judge != null && judge.judgeType === 'sanctioner';
-    });
-
-    /*
-      Combine the sanction of all the sanctionner judges
-    */
-    for (const sanctionnerId of sanctionnerIds) {
-      const sanctionnerScores = Object.keys(unflattenScores[sanctionnerId]);
-      for (const participantId of sanctionnerScores) {
-        const sanctionParticipant = Object.keys(
-          unflattenScores[sanctionnerId][participantId]
-        );
-        if (sanctions[participantId] === undefined) {
-          sanctions[participantId] = {};
-        }
-
-        for (const danceId of sanctionParticipant) {
-          const sanction_value =
-            unflattenScores[sanctionnerId][participantId][danceId];
-          if (sanctions[participantId][danceId] === undefined) {
-            sanctions[participantId][danceId] = this._malusFromValueAndMaxScore(
-              sanction_value,
-              maxScoreForParticipants
-            );
-          } else {
-            sanctions[participantId][
-              danceId
-            ] += this._malusFromValueAndMaxScore(
-              sanction_value,
-              maxScoreForParticipants
-            );
-          }
-        }
-      }
     }
 
-    return sanctions;
-  }
+    const sorted: Array < JudgeWeightedNote > = weightedScores.sort(
+      (a, b) => b.score - a.score
+    );
 
-  _applyNegativScores(
-    unflattenScores: MapJudgeScoreUnflatten,
-    sanctions: SanctionMap
-  ): MapJudgeScoreUnflatten {
-    let finalScores: MapJudgeScoreUnflatten = {};
+    let ranks: Array < JudgeRank > = [];
 
-    Object.keys(unflattenScores)
-      .filter(judgeId => {
-        const judge: ?Judge = this._judges.find(judge => judge.id === judgeId);
+    let current_rank: number = 0;
+    let shadow_rank: number = 0;
+    let current_score: ? number = null;
+
+    for (const note of sorted) {
+      shadow_rank++;
+
+      if (current_score === null) {
+        current_rank++;
+        current_score = note.score;
+      } else if (current_score != null && note.score < current_score) {
+        current_rank = shadow_rank;
+        current_score = note.score;
+      }
+
+      ranks.push({
+        judgeId: note.judgeId,
+        participantId: note.participantId,
+        score: current_score,
+        rank: current_rank
+      });
+    } // score
+
+    return ranks;
+  } // _genRanksFromWeightedScores
+
+  _computeJudgeWeightedNotes(notes: Array < JudgeNote > ): Array < JudgeWeightedNote > {
+    /*
+      Aggregate the scores of each judge by summing criterias and applying penalties
+      for each dance, then weight the final score according to the MultipleDanceScoringRule.
+    */
+    const danceIds: Array < string > = this._getDances().map(dance => dance.id);
+    const participantIds: Array < string > = this._getParticipants();
+
+    return participantIds.reduce(
+      (scoreAcc, participantId) => {
+        // Aggregate all the judge scores for this participant, one score per
+        // dance and per judge
+        const scoresForParticipant: Array < JudgeScore > = danceIds.reduce(
+          (acc, danceId) => {
+            const aggregatedDanceNotes: Array < JudgeScore > =
+              this._aggregateDanceNotes(notes, participantId, danceId);
+
+            return [...acc, ...aggregatedDanceNotes];
+          }, []); // danceIds
+
+
+
+        // Aggregate all the score of the same judge as according to the
+        // weighting rule
+        const weightedScores: Array < JudgeWeightedNote > =
+          this._aggregateJudgeNote(scoresForParticipant, participantId);
+
+        return [...scoreAcc, ...weightedScores];
+      }, []); // participantIds
+  } // _computeJudgeWeightedNotes
+
+  _aggregateDanceNotes(
+    notes: Array < JudgeNote > ,
+    participantId: string,
+    danceId: string
+  ): Array < JudgeScore > {
+    /*
+      Aggregate all the notes given by the judges for a given dance
+      into one note per judge, with added penalty
+      This is done by:
+      1) regrouping all the notes given by one judge for the participant;
+      2) computing the penalty associated to this participant for this dance;
+      3) apply the penalty according to the penalty rule.
+    */
+
+    const maxScore: number = this._getMaxScore();
+
+    //For each judge, aggregate its notes for the dance and the candidate
+    const aggregatedDanceNotes: Array < JudgeScore > =
+      this._judges.reduce((acc, judge) => {
+        const selectedNotes: Array < JudgeNote > =
+          notes.filter(note =>
+            note.judgeId === judge.id &&
+            note.participantId === participantId &&
+            note.danceId === danceId
+          );
+
+        // Case where the participant is not in the dance for example
+        if (selectedNotes.length === 0) {
+          return acc;
+        }
+
+        const aggregatedJudgeNote: number =
+          selectedNotes.reduce((acc, note) =>
+            acc + note.value, 0
+          );
+
+        return [
+          ...acc,
+          {
+            judgeId: judge.id,
+            participantId: participantId,
+            danceId: danceId,
+            score: aggregatedJudgeNote
+          }
+        ];
+      }, []);
+
+    // Compute the penalty for this dance and this candidate
+    const aggregatedPenaltyValue: number = aggregatedDanceNotes
+      .filter(
+        note => {
+          const judge: ? Judge = this._judges.find(
+            judge => judge.id === note.judgeId
+          );
+          return judge != null && judge.judgeType === 'sanctioner';
+        }
+      )
+      .reduce((penalty, penaltyNote) =>
+        penalty + penaltyNote.score, 0
+      );
+
+    const penaltyScore: number = this._computePenalty(aggregatedPenaltyValue, maxScore);
+
+    // Apply the penalty to each judge note and return the result
+    return aggregatedDanceNotes
+      .filter(note => {
+        const judge: ? Judge = this._judges.find(
+          judge => judge.id === note.judgeId
+        );
         return judge != null && this._isPositiveJudgeType(judge.judgeType);
       })
-      .forEach(judgeId => {
-        finalScores[judgeId] = {};
+      .map(
+        judgeScore => ({
+          ...judgeScore,
+          score: this._sumPenalty(judgeScore.score, penaltyScore)
+        })
+      );
+  } // _aggregateDanceScore
 
-        for (const participantId of Object.keys(unflattenScores[judgeId])) {
-          finalScores[judgeId][participantId] = {};
-          const participantDances = unflattenScores[judgeId][participantId];
-          for (const danceId of Object.keys(participantDances)) {
-            if (
-              sanctions[participantId] === undefined ||
-              sanctions[participantId][danceId] === undefined
-            ) {
-              finalScores[judgeId][participantId][danceId] = this._sum(
-                participantDances[danceId],
-                0
-              );
-            } else {
-              finalScores[judgeId][participantId][danceId] = this._sum(
-                participantDances[danceId],
-                sanctions[participantId][danceId]
-              );
-            }
+  _aggregateJudgeNote(
+    scoreForParticipant: Array < JudgeScore > ,
+    participantId: string
+  ): Array < JudgeWeightedNote > {
+    /*
+      Transform the multiple JudgeScore for one participant into the
+      final score of each judge
+    */
+
+    return this._judges.filter(
+        judge => this._isPositiveJudgeType(judge.judgeType)
+      )
+      .reduce((accWeightedNotes, judge) => {
+        const scoresJudge: Array < JudgeScore > =
+          scoreForParticipant.filter(
+            score => score.judgeId === judge.id
+          )
+
+        return [
+          ...accWeightedNotes,
+          {
+            score: this._computeMultipleDanceScore(scoresJudge),
+            participantId: participantId,
+            judgeId: judge.id
+          }
+        ];
+
+      }, []);
+  } // _aggregateJudgeNote
+
+  _computeMultipleDanceScore(
+    scoreJudge: Array < JudgeScore >
+  ): number {
+    /*
+      Aggregate the scores of one judge in function of the multipleDanceScoringRule
+    */
+
+    // Small check before use
+    if (scoreJudge.length > 0) {
+      const judgeId: string = scoreJudge[0].judgeId;
+      const participantId: string = scoreJudge[0].participantId;
+      scoreJudge.forEach(
+        score => {
+          if (score.judgeId != judgeId) {
+            throw "Not all scores have the same judgeId";
+          }
+          if (score.participantId != participantId) {
+            throw "Not all scores have the same participantId";
           }
         }
-      });
+      );
+    } // Checks
 
-    return finalScores;
-  }
-
-  _maxScoreForParticipants() {
-    const criteriaForPositiveJudges = Object.keys(this._criteria)
-      .map(key => this._criteria[key])
-      .filter(({ forJudgeType }) => this._isPositiveJudgeType(forJudgeType));
-
-    const positiveJudges = this._judges.filter(({ judgeType }) =>
-      this._isPositiveJudgeType(judgeType)
-    );
-
-    return (
-      criteriaForPositiveJudges.reduce(
-        (acc, { maxValue }) => acc + maxValue,
+    if (this._round.multipleDanceScoringRule === 'average') {
+      const score: number = (scoreJudge.reduce(
+        (acc, score) => acc + score.score, 0
+      ) * 1.0) / scoreJudge.length;
+      return parseFloat(score.toFixed(2));
+    } // 'average'
+    else if (this._round.multipleDanceScoringRule === 'best') {
+      return scoreJudge.reduce(
+        (acc, score) =>
+        Math.max(acc, score.score),
         0
-      ) * positiveJudges.length
-    );
-  }
+      );
+    } // 'best'
+    else {
+      throw "Using undefined multipleDanceScoringRule";
+    }
+  } // _computeMultipleDanceScore
 
-  _malusFromValueAndMaxScore(value: number, maxScore: number): number {
-    const score = maxScore * (1 - (100 - value) / 100);
+  _getMaxScore(): number {
+    /*
+      Compute the maximal score a judge can give to a participant
+    */
+
+    // NB: Used Object.keys for flow comprehension
+    return Object.keys(this._criteria)
+      .map(key => this._criteria[key])
+      .filter(({
+        forJudgeType
+      }) => this._isPositiveJudgeType(forJudgeType))
+      .reduce((acc, criteria) =>
+        acc + criteria.maxValue, 0
+      );
+  } // _getMaxScore
+
+  _computePenalty(value: number, maxScore: number): number {
+    const score = maxScore * (value / 100);
     const rounded = parseFloat(score.toFixed(2));
     return rounded;
-  }
+  } //_computePenalty
 
-  _isPositiveJudgeType(judgeType: JudgeType): boolean {
-    return (
-      judgeType === 'normal' ||
-      (this._countPresident === true && judgeType === 'president')
-    );
-  }
+  _getDances(): Array < Dance > {
+    return this._round.groups.reduce((dances, g) => [...dances, ...g.dances], []);
+  } // _getDances
 
-  _sum(positive: number, negative: number): number {
-    return this._allowNegative === true
-      ? (positive || 0) - (negative || 0)
-      : Math.max((positive || 0) - (negative || 0), 0);
-  }
-
-  _getDances(): Array<Dance> {
-    let dances: Array<Dance> = [];
-
-    this._round.groups.forEach(g => {
-      dances = [...dances, ...g.dances];
-    });
-
-    return dances;
-  }
-
-  _getRoleParticipant(role: ParticipantRole): Array<string> {
-    return this._round.groups.reduce(
-      (pairs, group) => [
-        ...pairs,
-        ...group.pairs.reduce((acc, pair) => {
-          const arr = [];
-          if (pair.follower != null && role == 'follower') {
-            arr.push(pair.follower);
-          }
-          if (pair.leader != null && role == 'leader') {
-            arr.push(pair.follower);
-          }
-          return [...acc, ...arr];
-        }, [])
-      ],
-      []
-    );
-  }
-
-  _getParticipants(): Array<string> {
+  _getParticipants(): Array < string > {
+    /*
+      Return an array of all the participantIds that danced in the round
+    */
     return this._round.groups.reduce(
       (pairs, group) => [
         ...pairs,
@@ -560,68 +625,41 @@ export default class RPSSRoundScorer {
       ],
       []
     );
-  }
+  } // _getParticipants
 
-  _sortScore(a: Score, b: Score): number {
-    if (a.score == b.score) {
-      return 1;
-    }
-    return b.score - a.score;
-  }
+  _getRoleParticipant(role: ParticipantRole): Array < string > {
+    /*
+      Returns an array of participantId of the given role that danced
+      in the round
+    */
+    return this._round.groups.reduce(
+      (pairs, group) => [
+        ...pairs,
+        ...group.pairs.reduce((acc, pair) => {
+          const arr = [];
+          if (pair.follower != null && role == 'follower') {
+            arr.push(pair.follower);
+          }
+          if (pair.leader != null && role == 'leader') {
+            arr.push(pair.leader);
+          }
+          return [...acc, ...arr];
+        }, [])
+      ],
+      []
+    );
+  } // _getRoleParticipant
 
-  _sortPlacements(a: ParticipantStats, b: ParticipantStats): number {
-    // /!\ There is a bias in the sum if there is a missing judge
-    // for one of the participant
-    if (a.min_rank !== b.min_rank) {
-      // a.min_rank < b.min_rank => _sortPlacement < 0
-      return a.min_rank - b.min_rank;
-    }
-    // Same rank for majority
-    if (a.majority_amount !== b.majority_amount) {
-      // a.majority_amount > b.majority_amount => _sortPlacement < 0
-      return b.majority_amount - a.majority_amount;
-    }
+  _isPositiveJudgeType(judgeType: JudgeType): boolean {
+    return (
+      judgeType === 'normal' ||
+      (this._countPresident === true && judgeType === 'president')
+    );
+  } // _isPositiveJudgeType
 
-    // Same amount of judge for majority, starting tie-breaking decisions
-    // NB : Same amount of sums_rank so we can iterate only on the indexes
-    // of one and compare index by index
-    for (let index of a.sums_rank.keys()) {
-      if (a.sums_rank[index] !== b.sums_rank[index]) {
-        // a.sums_rank[index] < b.sums_rank[index] => _sortPlacement < 0
-        return a.sums_rank[index] - b.sums_rank[index];
-      }
-    }
-
-    // Same sum of ranks for every range of position past the majority
-    // Performing all judge relative placement tie-break
-
-    // The judge where A is 'over'/'below' B in terms of ranking
-    let judge_over: number = 0;
-    let judge_below: number = 0;
-    const max_rank = a.sums_rank.length + a.min_rank;
-
-    for (let judgeId of Object.keys(a.judgeScores)) {
-      // We remove the judge that were not ranking both
-      // Should not happen
-      if (
-        a.judgeScores[judgeId] !== max_rank &&
-        b.judgeScores[judgeId] !== max_rank
-      ) {
-        if (a.judgeScores[judgeId] > b.judgeScores[judgeId]) {
-          judge_over += 1;
-        } else if (a.judgeScores[judgeId] < b.judgeScores[judgeId]) {
-          judge_below += 1;
-        }
-      }
-    }
-
-    // judge_over < judge_below => _sortPlacement < 0
-    return judge_over - judge_below;
-  }
-
-  // Generate an array to iterate containing
-  // all the numbers from 'from' to 'to' exlusive
-  _range(from: number, to: number): Array<number> {
-    return [...Array(to - from).keys()].map(n => n + from);
-  }
-}
+  _sumPenalty(positive: number, negative: number): number {
+    return this._allowNegative === true ?
+      (positive || 0) - (negative || 0) :
+      Math.max((positive || 0) - (negative || 0), 0);
+  } // _sumPenalty
+} // RPSSRoundScorer

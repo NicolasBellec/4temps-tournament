@@ -15,7 +15,7 @@ describe('Round scorer', () => {
 
     const round = {
       ...createRoundWithGroups(dances),
-      danceScoringRule: 'best'
+      multipleDanceScoringRule: 'best'
     };
     const criterionId = round.criteria[0].id;
 
@@ -49,7 +49,7 @@ describe('Round scorer', () => {
 
     const round = {
       ...createRoundWithGroups(dances),
-      danceScoringRule: 'average'
+      multipleDanceScoringRule: 'average'
     };
     const criterionId = round.criteria[0].id;
 
