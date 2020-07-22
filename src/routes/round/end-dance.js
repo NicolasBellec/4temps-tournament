@@ -2,6 +2,7 @@
 
 import NoteChecker from '../../domain/note-checker';
 import RoundScorer from '../../domain/round-scorer';
+import RPSSRoundScorer from '../../domain/rpss-round-scorer';
 import NextGroupGenerator from '../../domain/next-group-generator';
 import type {
   TournamentRepository
@@ -213,13 +214,13 @@ class EndDanceRouteHandler {
   _endRoundOfTournament = async (tournament: Tournament, round: Round) => {
     const notes = await this._getNotes(round);
 
-    round.roundScores = new RoundScorer(tournament.judges, round).scoreRound(
+    round.roundScores = new RPSSRoundScorer(tournament.judges, round).scoreRound(
       notes
     );
 
     if (this._hasDraw(round)) {
       round.draw = true;
-      round.roundScores = new RoundScorer(tournament.judges, round, {
+      round.roundScores = new RPSSRoundScorer(tournament.judges, round, {
         countPresident: true
       }).scoreRound(notes);
     } else {
