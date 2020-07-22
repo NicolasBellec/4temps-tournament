@@ -23,6 +23,9 @@
     "validate": "npm-run-all -p lint test",
     "flow": "flow"
   },
+  "engines": {
+    "node": "0.10"
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^3.0.0",
