@@ -334,7 +334,7 @@ export function createRound(): Round {
     passingCouplesCount: 5,
     tieRule: 'random',
     multipleDanceScoringRule: 'best',
-    notationSystem: 'rpss',
+    notationSystem: 'sum',
     criteria: [{
       id: generateId(),
       name: 'style',
