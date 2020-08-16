@@ -155,7 +155,10 @@ describe('RPSS Round scorer', () => {
     genJudgeNote(judgeSanction, followers[3], dances[3], penaltyCriterion, 9),
   ];
 
-  const template_round = createRound();
+  const template_round = {
+    ...createRound(),
+    notationSystem: 'rpss'
+  };
 
   const round2_2_2: Round = {
     ...template_round,
@@ -1180,6 +1183,79 @@ describe('RPSS Round scorer', () => {
 
   }); // scoreRound
 
+  test('scoreRound MM test 003', () => {
+    const round: Round = {
+      ...createRound(),
+      notationSystem: 'rpss',
+      criteria: [genCriteria(0, 10, 'normal')],
+      multipleDanceScoringRule: 'best',
+      groups: [{
+        id: generateId(),
+        pairs: [
+          genPair(leaders, followers, 0, 0),
+          genPair(leaders, followers, 1, 1),
+          genPair(leaders, followers, 2, 2),
+          genPair(leaders, followers, 3, 3)
+        ],
+        dances: [
+          genDance(dances[0].id)
+        ]
+      }]
+    };
+    const judges: Judge[] = generateJudges(3);
+    const scorer = new RPSSRoundScorer(judges, round, {
+        countPresident: false,
+        allowNegative: false
+      },
+      false);
+    const scores = [
+      // J1
+      genJudgeNote(judges[0], leaders[0], dances[0], criteria[0], 3),
+      genJudgeNote(judges[0], leaders[1], dances[0], criteria[0], 1),
+      genJudgeNote(judges[0], leaders[2], dances[0], criteria[0], 0),
+      genJudgeNote(judges[0], leaders[3], dances[0], criteria[0], 3),
+      genJudgeNote(judges[0], followers[0], dances[0], criteria[0], 3),
+      genJudgeNote(judges[0], followers[1], dances[0], criteria[0], 1),
+      genJudgeNote(judges[0], followers[2], dances[0], criteria[0], 0),
+      genJudgeNote(judges[0], followers[3], dances[0], criteria[0], 3),
+      // J2
+      genJudgeNote(judges[1], leaders[0], dances[0], criteria[0], 4),
+      genJudgeNote(judges[1], leaders[1], dances[0], criteria[0], 1),
+      genJudgeNote(judges[1], leaders[2], dances[0], criteria[0], 3),
+      genJudgeNote(judges[1], leaders[3], dances[0], criteria[0], 1),
+      genJudgeNote(judges[1], followers[0], dances[0], criteria[0], 5),
+      genJudgeNote(judges[1], followers[1], dances[0], criteria[0], 1),
+      genJudgeNote(judges[1], followers[2], dances[0], criteria[0], 4),
+      genJudgeNote(judges[1], followers[3], dances[0], criteria[0], 3),
+      // J3
+      genJudgeNote(judges[2], leaders[0], dances[0], criteria[0], 2),
+      genJudgeNote(judges[2], leaders[1], dances[0], criteria[0], 1),
+      genJudgeNote(judges[2], leaders[2], dances[0], criteria[0], 0),
+      genJudgeNote(judges[2], leaders[3], dances[0], criteria[0], 5),
+      genJudgeNote(judges[2], followers[0], dances[0], criteria[0], 4),
+      genJudgeNote(judges[2], followers[1], dances[0], criteria[0], 2),
+      genJudgeNote(judges[2], followers[2], dances[0], criteria[0], 1),
+      genJudgeNote(judges[2], followers[3], dances[0], criteria[0], 10)
+    ];
+
+    const result: Array < Score > = scorer.scoreRound(scores);
+    const expected: Array < mixed > = [
+      createScore(leaders[0], 4),
+      createScore(leaders[3], 3),
+      createScore(leaders[1], 2),
+      createScore(leaders[2], 1),
+      createScore(followers[0], 4),
+      createScore(followers[3], 3),
+      createScore(followers[1], 2),
+      createScore(followers[2], 1),
+    ];
+
+    expect(result).toEqual(expect.arrayContaining(expected));
+    expect(result.length).toEqual(expected.length);
+
+
+  }) // scoreRound MM test 003
+
 });
 
 function generateLeaders(n: number): Array < Participant > {
@@ -1189,7 +1265,7 @@ function generateLeaders(n: number): Array < Participant > {
   }
 
   return leaders;
-}
+} // generateLeaders
 
 function generateFollowers(n: number): Array < Participant > {
   var followers: Array < Participant > = [];
@@ -1198,7 +1274,7 @@ function generateFollowers(n: number): Array < Participant > {
   }
 
   return followers;
-}
+} // generateFollowers
 
 function generateJudges(n: number): Array < Judge > {
   var judges: Array < Judge > = [];
@@ -1207,7 +1283,7 @@ function generateJudges(n: number): Array < Judge > {
   }
 
   return judges;
-}
+} // generateJudges
 
 function genPair(leaders: Array < Participant > , followers: Array < Participant > ,
   idLeader: number, idFollow: number): Pair {
@@ -1215,7 +1291,7 @@ function genPair(leaders: Array < Participant > , followers: Array < Participant
     "leader": leaders[idLeader].id,
     "follower": followers[idFollow].id
   };
-}
+} // genPair
 
 function genJudgeScore(judge: Judge, participant: Participant, dance: Dance, score: number) {
   return {
@@ -1281,7 +1357,7 @@ function genJudgeWeightedNote(judge: Judge, participant: Participant, score: num
     participantId: participant.id,
     score: score
   };
-}
+} // genJudgeWeightedNote
 
 function genCriteria(min: number, max: number, forJudgeType: JudgeType): RoundCriterion {
   return {
@@ -1292,7 +1368,7 @@ function genCriteria(min: number, max: number, forJudgeType: JudgeType): RoundCr
     description: 'style...',
     forJudgeType: forJudgeType
   };
-}
+} // genCriteria
 
 function genDance(id: string): Dance {
   return {
@@ -1300,7 +1376,7 @@ function genDance(id: string): Dance {
     active: false,
     finished: true
   };
-}
+} // genDance
 
 function genRow(
   participant: Participant,
@@ -1316,7 +1392,7 @@ function genRow(
     sumsRanks: sumRanks,
     ranks: judgeRanks.filter(rank => rank.participantId === participant.id)
   };
-}
+} // genRow
 
 function createScore(
   participant: Participant,
@@ -1326,4 +1402,4 @@ function createScore(
     participantId: participant.id,
     score: score
   }
-}
+} // createScore

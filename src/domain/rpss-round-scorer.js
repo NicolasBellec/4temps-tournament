@@ -36,6 +36,7 @@ export default class RPSSRoundScorer {
   };
   _countPresident: boolean;
   _allowNegative: boolean;
+  _debug: boolean;
 
   constructor(
     judges: Array < Judge > ,
@@ -48,7 +49,8 @@ export default class RPSSRoundScorer {
     } = {
       countPresident: false,
       allowNegative: false
-    }
+    },
+    debug: boolean = false
   ) {
     this._judges = judges;
     this._criteria = round.criteria.reduce(
@@ -60,6 +62,7 @@ export default class RPSSRoundScorer {
     this._round = round;
     this._countPresident = countPresident;
     this._allowNegative = allowNegative;
+    this._debug = debug;
   } // constructor
 
   scoreRound(notes: Array < JudgeNote > ): Array < Score > {
@@ -172,10 +175,18 @@ export default class RPSSRoundScorer {
       return rowB.row[rowB.rankReachMajority] - rowA.row[rowA.rankReachMajority];
     }
 
+    // Have the participant the same quality of vote for the majority rank ?
+    if (rowA.sumsRanks[rowA.rankReachMajority] != rowB.sumsRanks[rowB.rankReachMajority]) {
+      return rowA.sumsRanks[rowA.rankReachMajority] - rowB.sumsRanks[rowB.rankReachMajority];
+    }
+
     // Have the participant the same quality of vote for each rank ?
-    for (var index = rowA.rankReachMajority; index < rowA.row.length; index++) {
+    // NB : As they already have the same sum, the first one that has its sum
+    // change mean that it has 1 vote more than the other and thus, we search the
+    // highest and not the lowest
+    for (var index = rowA.rankReachMajority + 1; index < rowA.row.length; index++) {
       if (rowA.sumsRanks[index] != rowB.sumsRanks[index]) {
-        return rowA.sumsRanks[index] - rowB.sumsRanks[index];
+        return rowB.sumsRanks[index] - rowA.sumsRanks[index];
       }
     }
 
@@ -335,7 +346,6 @@ export default class RPSSRoundScorer {
               )
             return participant != null;
           });
-
 
         const leaderRanks: Array < JudgeRank > = this._genRanksFromWeightedScores(
           leaderWeighted
