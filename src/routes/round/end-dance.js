@@ -214,15 +214,30 @@ class EndDanceRouteHandler {
   _endRoundOfTournament = async (tournament: Tournament, round: Round) => {
     const notes = await this._getNotes(round);
 
-    round.roundScores = new RPSSRoundScorer(tournament.judges, round).scoreRound(
-      notes
-    );
+    if (round.notationSystem == 'rpss') {
+      round.roundScores = new RPSSRoundScorer(tournament.judges, round).scoreRound(
+        notes
+      );
+    } else if (round.notationSystem == 'sum') {
+      round.roundScores = new RoundScorer(tournament.judges, round).scoreRound(
+        notes
+      );
+    }
 
     if (this._hasDraw(round)) {
       round.draw = true;
-      round.roundScores = new RPSSRoundScorer(tournament.judges, round, {
-        countPresident: true
-      }).scoreRound(notes);
+
+      if (round.notationSystem == 'rpss') {
+        round.roundScores = new RPSSRoundScorer(tournament.judges, round, {
+          countPresident: true,
+          allowNegative: false
+        }).scoreRound(notes);
+      } else if (round.notationSystem == 'sum') {
+        round.roundScores = new RoundScorer(tournament.judges, round, {
+          countPresident: true,
+          allowNegative: false
+        }).scoreRound(notes);
+      }
     } else {
       round.active = false;
       round.finished = true;
