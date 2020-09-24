@@ -5,19 +5,19 @@ import RPSSRoundScorer from './rpss-round-scorer';
 type Role = 'leader' | 'follower';
 
 class WinnerPicker {
-  _judges: Array < Judge > ;
+  _judges: Array<Judge>;
   _round: Round;
 
-  constructor(judges: Array < Judge > , round: Round) {
+  constructor(judges: Array<Judge>, round: Round) {
     this._judges = judges;
     this._round = round;
   }
 
   pickWinners = (
-    notes: Array < JudgeNote >
+    notes: Array<JudgeNote>
   ): {
-    leaders: Array < string > ,
-    followers: Array < string >
+    leaders: Array<string>,
+    followers: Array<string>
   } => {
     const roundScores = this._getScores(notes);
 
@@ -27,7 +27,7 @@ class WinnerPicker {
     };
   };
 
-  _getScores = (notes: Array < JudgeNote > ) => {
+  _getScores = (notes: Array<JudgeNote>) => {
     if (this._round.notationSystem == 'rpss') {
       const scorer = new RPSSRoundScorer(this._judges, this._round);
       return scorer.scoreRound(notes);
@@ -39,17 +39,17 @@ class WinnerPicker {
     return [];
   };
 
-  _pickTopLeaders = (roundScores: Array < Score > ): Array < string > => {
+  _pickTopLeaders = (roundScores: Array<Score>): Array<string> => {
     return this._pickTopRole(roundScores, 'leader');
   };
 
-  _pickTopFollowers = (roundScores: Array < Score > ): Array < string > => {
+  _pickTopFollowers = (roundScores: Array<Score>): Array<string> => {
     return this._pickTopRole(roundScores, 'follower');
   };
 
-  _pickTopRole = (roundScores: Array < Score > , role: Role) => {
+  _pickTopRole = (roundScores: Array<Score>, role: Role) => {
     const participants = this._getRole(role);
-    const top: Array < string > = [];
+    const top: Array<string> = [];
     for (const score of roundScores) {
       if (participants.includes(score.participantId)) {
         top.push(score.participantId);
@@ -62,7 +62,7 @@ class WinnerPicker {
 
     return top;
   };
-  _getRole = (role: Role): Array < string > => {
+  _getRole = (role: Role): Array<string> => {
     return this._round.groups.reduce(
       (participant, group) => [
         ...participant,

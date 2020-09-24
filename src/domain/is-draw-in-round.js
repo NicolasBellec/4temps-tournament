@@ -43,10 +43,10 @@ function scoresForParticipants(
       return {
         score: score.score,
         participantId: participantId
-      }
+      };
     })
     .filter(obj => obj.participantId != null)
-    .map(obj => obj.score );
+    .map(obj => obj.score);
 }
 
 function isScoreDraw(

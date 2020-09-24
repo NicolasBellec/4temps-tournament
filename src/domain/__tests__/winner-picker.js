@@ -1,8 +1,4 @@
-import {
-  createRound,
-  createJudge,
-  createCriterion
-} from '../../test-utils';
+import { createRound, createJudge, createCriterion } from '../../test-utils';
 import WinnerPicker from '../winner-picker';
 
 // @flow
@@ -15,7 +11,8 @@ describe('Winner picker', () => {
   const criterionId = 'crit';
   const danceId = 'dance';
 
-  const notes: Array < JudgeNote > = [{
+  const notes: Array<JudgeNote> = [
+    {
       judgeId: judge.id,
       participantId: leaders[0],
       criterionId,
@@ -48,28 +45,35 @@ describe('Winner picker', () => {
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 1,
-    criteria: [{
-      ...createCriterion(),
-      id: criterionId
-    }],
-    groups: [{
-      id: 'group1',
-      pairs: [{
-          leader: leaders[0],
-          follower: followers[0]
-        },
-        {
-          leader: leaders[1],
-          follower: followers[1]
-        }
-      ],
-      dances: [{
-        id: danceId,
-        finished: false,
-        active: true
-      }]
-    }],
-    multipleDanceScoringRule: 'best',
+    criteria: [
+      {
+        ...createCriterion(),
+        id: criterionId
+      }
+    ],
+    groups: [
+      {
+        id: 'group1',
+        pairs: [
+          {
+            leader: leaders[0],
+            follower: followers[0]
+          },
+          {
+            leader: leaders[1],
+            follower: followers[1]
+          }
+        ],
+        dances: [
+          {
+            id: danceId,
+            finished: false,
+            active: true
+          }
+        ]
+      }
+    ],
+    multipleDanceScoringRule: 'best'
   };
 
   test('Picks the top dancers', () => {

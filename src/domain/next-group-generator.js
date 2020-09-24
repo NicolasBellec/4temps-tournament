@@ -8,19 +8,19 @@ type Role = 'leader' | 'follower';
 
 export default class NextGroupGenerator {
   _tournament: Tournament;
-  _notes: Array < JudgeNote > ;
+  _notes: Array<JudgeNote>;
 
   _round: Round;
-  _roundParticipants: Array < Participant > ;
+  _roundParticipants: Array<Participant>;
   _removeUneven: boolean = false;
   _allowReuseOfParticipants: boolean = true;
 
-  constructor(tournament: Tournament, notes: Array < JudgeNote > ) {
+  constructor(tournament: Tournament, notes: Array<JudgeNote>) {
     this._tournament = tournament;
     this._notes = notes;
   }
 
-  generateForRound = (roundId: string): ? DanceGroup => {
+  generateForRound = (roundId: string): ?DanceGroup => {
     this._round = this._getRound(roundId);
     this._roundParticipants = this._getParticipants();
 
@@ -38,9 +38,7 @@ export default class NextGroupGenerator {
 
   _getRound = (roundId: string): Round => {
     const roundsWithId = this._tournament.rounds.filter(
-      ({
-        id
-      }) => id === roundId
+      ({ id }) => id === roundId
     );
     if (roundsWithId.length === 0) {
       throw new RoundNotFoundError();
@@ -48,8 +46,8 @@ export default class NextGroupGenerator {
     return roundsWithId[0];
   };
 
-  _getParticipants = (): Array < Participant > => {
-    let participants: Array < Participant > ;
+  _getParticipants = (): Array<Participant> => {
+    let participants: Array<Participant>;
     if (this._hasPreviousRound()) {
       participants = this._getWinnersOfPreviousRound();
     } else {
@@ -62,15 +60,15 @@ export default class NextGroupGenerator {
     return this._tournament.rounds[0].id !== this._round.id;
   };
 
-  _getWinnersOfPreviousRound = (): Array < Participant > => {
-    let prevRound: ? Round = null;
+  _getWinnersOfPreviousRound = (): Array<Participant> => {
+    let prevRound: ?Round = null;
     for (const round of this._tournament.rounds) {
       if (round.id === this._round.id && prevRound != null) {
         const winners = this._getWinnersOfRound(prevRound);
         return (
           winners
-          // $FlowFixMe
-          .map(id => this._tournament.participants.find(p => p.id === id))
+            // $FlowFixMe
+            .map(id => this._tournament.participants.find(p => p.id === id))
         );
       }
       prevRound = round;
@@ -78,7 +76,7 @@ export default class NextGroupGenerator {
     throw new RoundNotFoundError();
   };
 
-  _getWinnersOfRound = (round: Round): Array < string > => {
+  _getWinnersOfRound = (round: Round): Array<string> => {
     const leaders = [];
     const followers = [];
     for (const group of round.groups) {
@@ -98,15 +96,11 @@ export default class NextGroupGenerator {
 
     const count = round.passingCouplesCount;
     const passingLeaders = round.roundScores
-      .map(({
-        participantId
-      }) => participantId)
+      .map(({ participantId }) => participantId)
       .filter(id => isAttending[id] && leaderSet.has(id))
       .slice(0, count);
     const passingFollowers = round.roundScores
-      .map(({
-        participantId
-      }) => participantId)
+      .map(({ participantId }) => participantId)
       .filter(id => isAttending[id] && followerSet.has(id))
       .slice(0, count);
 
@@ -114,7 +108,7 @@ export default class NextGroupGenerator {
     return passingLeaders.concat(passingFollowers);
   };
 
-  _generateGroup = (): ? DanceGroup => {
+  _generateGroup = (): ?DanceGroup => {
     const remainingParticipants = this._getRemainingParticipants();
     if (remainingParticipants.length === 0) {
       return null;
@@ -136,10 +130,7 @@ export default class NextGroupGenerator {
 
     if (this._removeUneven && pairs != null) {
       pairs = pairs.filter(
-        ({
-          leader,
-          follower
-        }) => leader != null && follower != null
+        ({ leader, follower }) => leader != null && follower != null
       );
     }
 
@@ -154,7 +145,7 @@ export default class NextGroupGenerator {
     };
   };
 
-  _getRemainingParticipants = (): Array < Participant > => {
+  _getRemainingParticipants = (): Array<Participant> => {
     const alreadyDancedParticipants = new Set(
       this._getAlreadyCompetedParticipants()
     );
@@ -164,8 +155,8 @@ export default class NextGroupGenerator {
     );
   };
 
-  _getAlreadyCompetedParticipants = (): Array < string > => {
-    const participants: Array < string > = [];
+  _getAlreadyCompetedParticipants = (): Array<string> => {
+    const participants: Array<string> = [];
     for (const group of this._round.groups) {
       for (const pair of group.pairs) {
         if (pair.leader != null) {
@@ -180,16 +171,18 @@ export default class NextGroupGenerator {
     return participants;
   };
 
-  _generatePairsFromParticipants = (participants: Array < Participant > ) => {
+  _generatePairsFromParticipants = (participants: Array<Participant>) => {
     const generator = new PairingGeneratorImpl(this._round, participants);
 
     return generator.generateGroups()[0];
   };
 
-  _isUnevenPairing = (pairs: Array < {
-    follower: ? string,
-    leader: ? string
-  } > ) => {
+  _isUnevenPairing = (
+    pairs: Array<{
+      follower: ?string,
+      leader: ?string
+    }>
+  ) => {
     const counts = this._roleCounts(pairs);
 
     return counts.leader !== counts.follower;
@@ -222,15 +215,18 @@ export default class NextGroupGenerator {
     return pairs;
   };
 
-  _roleCounts = (pairs: Array < {
-    follower: ? string,
-    leader: ? string
-  } > ) => {
+  _roleCounts = (
+    pairs: Array<{
+      follower: ?string,
+      leader: ?string
+    }>
+  ) => {
     return pairs.reduce(
       (acc, pair) => ({
         follower: acc.follower + (pair.follower != null ? 1 : 0),
         leader: acc.leader + (pair.leader != null ? 1 : 0)
-      }), {
+      }),
+      {
         leader: 0,
         follower: 0
       }
@@ -238,30 +234,26 @@ export default class NextGroupGenerator {
   };
 
   _getFollowerWithWorstLeader = (
-    excluding: Array < Participant >
+    excluding: Array<Participant>
   ): Participant => {
     return this._getParticipantWithWorstCounterpart('follower', excluding);
   };
 
   _getLeaderWithWorstFollower = (
-    excluding: Array < Participant >
+    excluding: Array<Participant>
   ): Participant => {
     return this._getParticipantWithWorstCounterpart('leader', excluding);
   };
 
   _getParticipantWithWorstCounterpart = (
     role: Role,
-    excluding: Array < Participant >
+    excluding: Array<Participant>
   ): Participant => {
-    const excludeIds = new Set(excluding.map(({
-      id
-    }) => id));
+    const excludeIds = new Set(excluding.map(({ id }) => id));
     const worstParticipants = this._getScoresOfParticipantsWithRole(
-        role === 'leader' ? 'follower' : 'leader'
-      )
-      .map(({
-        participantId
-      }) => participantId)
+      role === 'leader' ? 'follower' : 'leader'
+    )
+      .map(({ participantId }) => participantId)
       .reverse();
 
     let counterPart: string = '';
@@ -297,7 +289,7 @@ export default class NextGroupGenerator {
     throw new ParticipantNotFoundError();
   };
 
-  _getScoresOfParticipantsWithRole = (role: Role): Array < Score > => {
+  _getScoresOfParticipantsWithRole = (role: Role): Array<Score> => {
     const participants = this._getParticipantsWithRole(role);
 
     const scorer = new RoundScorer(this._tournament.judges, this._round);
@@ -306,15 +298,15 @@ export default class NextGroupGenerator {
     return roundScores.filter(score => participants.has(score.participantId));
   };
 
-  _getParticipantsWithRole = (role: Role): Set < string > => {
+  _getParticipantsWithRole = (role: Role): Set<string> => {
     return new Set(
       this._round.groups.reduce(
         (participants, group) => [
           ...participants,
           ...group.pairs
-          .map(pair => (pair[role] != null ? [pair[role]] : []))
-          .reduce((acc, ids) => [...acc, ...ids], [])
-          .filter(id => id != null)
+            .map(pair => (pair[role] != null ? [pair[role]] : []))
+            .reduce((acc, ids) => [...acc, ...ids], [])
+            .filter(id => id != null)
         ],
         []
       )
@@ -328,9 +320,7 @@ export default class NextGroupGenerator {
 
   _getParticipantWithId = (participantId: string): Participant => {
     const participantsWithId = this._roundParticipants.filter(
-      ({
-        id
-      }) => id === participantId
+      ({ id }) => id === participantId
     );
     if (participantsWithId.length !== 1) {
       throw new ParticipantNotFoundError();
@@ -340,7 +330,7 @@ export default class NextGroupGenerator {
   };
 
   _createDances = (danceCount: number) => {
-    let dances: Array < Dance > = [];
+    let dances: Array<Dance> = [];
     for (let i = 0; i < danceCount; ++i) {
       dances.push({
         id: ObjectId.generate(),
@@ -352,10 +342,7 @@ export default class NextGroupGenerator {
   };
 
   _didDanceMoreThanOthers = (participantId: string) => {
-    const {
-      leaders,
-      followers
-    } = this._getDanceCountPerParticipant();
+    const { leaders, followers } = this._getDanceCountPerParticipant();
     if (participantId in leaders) {
       return (
         leaders[participantId] >
@@ -397,7 +384,8 @@ export default class NextGroupGenerator {
         }
 
         return acc;
-      }, {
+      },
+      {
         leaders: {},
         followers: {}
       }

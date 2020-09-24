@@ -2,18 +2,10 @@
 
 import ObjectId from 'bson-objectid';
 import moment from 'moment';
-import type {
-  AdminModel
-} from './data/admin';
-import type {
-  TournamentRepository
-} from './data/tournament';
-import type {
-  AccessKeyRepository
-} from './data/access-key';
-import type {
-  NoteRepository
-} from './data/note';
+import type { AdminModel } from './data/admin';
+import type { TournamentRepository } from './data/tournament';
+import type { AccessKeyRepository } from './data/access-key';
+import type { NoteRepository } from './data/note';
 
 export const USER_ID = generateId();
 export const TOURNAMENT_ID = generateId();
@@ -27,7 +19,7 @@ type Params = Query;
 export class Request implements ServerApiRequest {
   body: Body = {};
   session: {
-    user: ? {
+    user: ?{
       id: string,
       role: PermissionRole
     }
@@ -35,12 +27,15 @@ export class Request implements ServerApiRequest {
   query: Query = {};
   params: Params = {};
 
-  constructor(admin: ? AdminModel) {
+  constructor(admin: ?AdminModel) {
     this.session = {
-      user: admin == null ? null : {
-        id: admin._id.toString(),
-        role: 'admin'
-      }
+      user:
+        admin == null
+          ? null
+          : {
+            id: admin._id.toString(),
+            role: 'admin'
+          }
     };
   }
 
@@ -94,7 +89,7 @@ export class Request implements ServerApiRequest {
 
 export class Response implements ServerApiResponse {
   _status: number;
-  _body: ? mixed;
+  _body: ?mixed;
 
   getStatus() {
     return this._status;
@@ -114,7 +109,7 @@ export class Response implements ServerApiResponse {
     return this;
   }
 
-  json(body ? : mixed): ServerApiResponse {
+  json(body?: mixed): ServerApiResponse {
     if (this._status == null) {
       this._status = 200;
     }
@@ -138,9 +133,7 @@ export class TournamentRepositoryImpl implements TournamentRepository {
 
   getForUser = async (userId: string) => {
     return (await this.getAll()).filter(
-      ({
-        creatorId
-      }) => creatorId === userId
+      ({ creatorId }) => creatorId === userId
     );
   };
 
@@ -157,7 +150,7 @@ export class TournamentRepositoryImpl implements TournamentRepository {
     for (const tournament of tournaments) {
       if (
         tournament.assistants.filter(assistant => assistant.id === userId)
-        .length > 0
+          .length > 0
       ) {
         return tournament;
       }
@@ -201,9 +194,7 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   deleteRound = async (tournamentId: string, roundId: string) => {
     this._tournaments[tournamentId].rounds = this._tournaments[
       tournamentId
-    ].rounds.filter(({
-      id
-    }) => id !== roundId);
+    ].rounds.filter(({ id }) => id !== roundId);
   };
 
   updateRound = async (tournamentId: string, round: Round) => {
@@ -235,7 +226,7 @@ export class TournamentRepositoryImpl implements TournamentRepository {
 }
 
 export class AccessKeyRepositoryImpl implements AccessKeyRepository {
-  _keys: Array < AccessKey > = [];
+  _keys: Array<AccessKey> = [];
 
   getAll() {
     return this._keys;
@@ -250,9 +241,7 @@ export class AccessKeyRepositoryImpl implements AccessKeyRepository {
       userId,
       tournamentId,
       key: String(
-        Math.max(0, ...this._keys.map(({
-          key
-        }) => parseInt(key))) + 1
+        Math.max(0, ...this._keys.map(({ key }) => parseInt(key))) + 1
       ),
       role
     });
@@ -273,17 +262,17 @@ export class AccessKeyRepositoryImpl implements AccessKeyRepository {
 }
 
 export class NoteRepositoryImpl implements NoteRepository {
-  _notes: Array < JudgeNote > = [];
+  _notes: Array<JudgeNote> = [];
 
   getAll = () => this._notes;
 
   createOrUpdate = async (note: JudgeNote) => {
     const index = this._notes.findIndex(
       arrNote =>
-      arrNote.judgeId === note.judgeId &&
-      arrNote.participantId === note.judgeId &&
-      arrNote.criterionId === note.criterionId &&
-      arrNote.danceId === note.danceId
+        arrNote.judgeId === note.judgeId &&
+        arrNote.participantId === note.judgeId &&
+        arrNote.criterionId === note.criterionId &&
+        arrNote.danceId === note.danceId
     );
 
     if (index != -1) {
@@ -300,12 +289,12 @@ export class NoteRepositoryImpl implements NoteRepository {
   delete = async (note: JudgeNote) => {
     this._notes = this._notes.filter(
       arrNote =>
-      !(
-        arrNote.judgeId === note.judgeId &&
-        arrNote.participantId === note.judgeId &&
-        arrNote.criterionId === note.criterionId &&
-        arrNote.danceId === note.danceId
-      )
+        !(
+          arrNote.judgeId === note.judgeId &&
+          arrNote.participantId === note.judgeId &&
+          arrNote.criterionId === note.criterionId &&
+          arrNote.danceId === note.danceId
+        )
     );
   };
 }
@@ -335,15 +324,17 @@ export function createRound(): Round {
     tieRule: 'random',
     multipleDanceScoringRule: 'best',
     notationSystem: 'sum',
-    criteria: [{
-      id: generateId(),
-      name: 'style',
-      minValue: 1,
-      maxValue: 10,
-      description: 'style...',
-      type: 'one',
-      forJudgeType: 'normal'
-    }],
+    criteria: [
+      {
+        id: generateId(),
+        name: 'style',
+        minValue: 1,
+        maxValue: 10,
+        description: 'style...',
+        type: 'one',
+        forJudgeType: 'normal'
+      }
+    ],
     groups: [],
     active: false,
     finished: false,
@@ -386,7 +377,7 @@ export function createLeader(): Participant {
   return {
     ...createParticipant(),
     name: 'John Smith L',
-    role: 'leader',
+    role: 'leader'
   };
 }
 
@@ -394,7 +385,7 @@ export function createFollower(): Participant {
   return {
     ...createParticipant(),
     name: 'John Smith F',
-    role: 'follower',
+    role: 'follower'
   };
 }
 

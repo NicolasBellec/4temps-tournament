@@ -19,7 +19,8 @@ describe('Round scorer', () => {
     };
     const criterionId = round.criteria[0].id;
 
-    const notes: Array < JudgeNote > = [{
+    const notes: Array<JudgeNote> = [
+      {
         judgeId: judges[0].id,
         participantId: participants[0].id,
         criterionId,
@@ -36,10 +37,12 @@ describe('Round scorer', () => {
     ];
 
     const scorer = new RoundScorer(judges, round);
-    expect(scorer.scoreRound(notes)).toEqual([{
-      participantId: participants[0].id,
-      score: 10
-    }]);
+    expect(scorer.scoreRound(notes)).toEqual([
+      {
+        participantId: participants[0].id,
+        score: 10
+      }
+    ]);
   });
 
   test('Generates correct score, average', () => {
@@ -53,7 +56,8 @@ describe('Round scorer', () => {
     };
     const criterionId = round.criteria[0].id;
 
-    const notes: Array < JudgeNote > = [{
+    const notes: Array<JudgeNote> = [
+      {
         judgeId: judges[0].id,
         participantId: participants[0].id,
         criterionId,
@@ -70,10 +74,12 @@ describe('Round scorer', () => {
     ];
 
     const scorer = new RoundScorer(judges, round);
-    expect(scorer.scoreRound(notes)).toEqual([{
-      participantId: participants[0].id,
-      score: 5.5
-    }]);
+    expect(scorer.scoreRound(notes)).toEqual([
+      {
+        participantId: participants[0].id,
+        score: 5.5
+      }
+    ]);
   });
 
   test('Generates 0-score if no notes', () => {
@@ -88,18 +94,24 @@ describe('Round scorer', () => {
 
     const round: Round = {
       ...createRound(),
-      groups: [{
-        id: 'group1',
-        pairs: [{
-          leader: leader.id,
-          follower: follower.id
-        }],
-        dances: [{
-          id: 'dance1',
-          active: false,
-          finished: true
-        }]
-      }]
+      groups: [
+        {
+          id: 'group1',
+          pairs: [
+            {
+              leader: leader.id,
+              follower: follower.id
+            }
+          ],
+          dances: [
+            {
+              id: 'dance1',
+              active: false,
+              finished: true
+            }
+          ]
+        }
+      ]
     };
 
     const scorer = new RoundScorer([], round);
@@ -120,28 +132,34 @@ describe('Round scorer', () => {
 
     const round: Round = {
       ...createRound(),
-      groups: [{
-        id: 'group1',
-        pairs: [{
-            leader: 'l1',
-            follower: 'f1'
-          },
-          {
-            leader: 'l2',
-            follower: 'f2'
-          }
-        ],
-        dances: [{
-          id: danceId,
-          active: false,
-          finished: true
-        }]
-      }]
+      groups: [
+        {
+          id: 'group1',
+          pairs: [
+            {
+              leader: 'l1',
+              follower: 'f1'
+            },
+            {
+              leader: 'l2',
+              follower: 'f2'
+            }
+          ],
+          dances: [
+            {
+              id: danceId,
+              active: false,
+              finished: true
+            }
+          ]
+        }
+      ]
     };
     const criterionId = round.criteria[0].id;
 
     // leaders have same score, followers have same score
-    const notes: Array < JudgeNote > = [{
+    const notes: Array<JudgeNote> = [
+      {
         judgeId: judge.id,
         criterionId,
         danceId,
@@ -196,22 +214,29 @@ describe('Round scorer', () => {
 
     const round: Round = {
       ...createRound(),
-      groups: [{
-        id: 'group1',
-        pairs: [{
-          leader: 'l1',
-          follower: 'f1'
-        }],
-        dances: [{
-          id: danceId,
-          active: false,
-          finished: true
-        }]
-      }]
+      groups: [
+        {
+          id: 'group1',
+          pairs: [
+            {
+              leader: 'l1',
+              follower: 'f1'
+            }
+          ],
+          dances: [
+            {
+              id: danceId,
+              active: false,
+              finished: true
+            }
+          ]
+        }
+      ]
     };
     const criterionId = round.criteria[0].id;
 
-    const notes: Array < JudgeNote > = [{
+    const notes: Array<JudgeNote> = [
+      {
         judgeId: president.id,
         criterionId,
         danceId,
@@ -254,13 +279,15 @@ describe('Round scorer', () => {
   });
 });
 
-function createRoundWithGroups(danceIds: Array < string > ): Round {
+function createRoundWithGroups(danceIds: Array<string>): Round {
   return {
     ...createRound(),
-    groups: [{
+    groups: [
+      {
         id: generateId(),
         pairs: [],
-        dances: [{
+        dances: [
+          {
             id: danceIds[0],
             active: false,
             finished: false
@@ -275,7 +302,8 @@ function createRoundWithGroups(danceIds: Array < string > ): Round {
       {
         id: generateId(),
         pairs: [],
-        dances: [{
+        dances: [
+          {
             id: danceIds[2],
             active: false,
             finished: false
