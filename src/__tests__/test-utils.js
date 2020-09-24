@@ -29,14 +29,12 @@ describe('Round route test helpers', () => {
   });
 
   test('createRound creates a valid round', () => {
-    // $FlowFixMe
     expect(validateRound(createRound()).isValidRound).toBe(true);
   });
 
   test('createTournament creates a valid tournament', () => {
     let tournament = createTournament();
     tournament = { ...tournament, date: moment(tournament.date) };
-    // $FlowFixMe
     expect(validateTournament(tournament).isValidTournament).toBe(true);
   });
 

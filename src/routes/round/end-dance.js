@@ -69,7 +69,9 @@ export default class StartDanceRoute {
       });
     } else {
       res.status(500);
+
       res.json({
+        // $FlowFixMe
         error: e.toString()
       });
     }
