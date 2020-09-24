@@ -19,6 +19,7 @@ function mapStateToProps({
 }: ReduxState): ComponentProps {
   const tournament = tournaments.byId[tournaments.forJudge];
 
+  // Normal, its a ?Round, we have to get ride of the option possibility
   // $FlowFixMe
   const activeRound: Round = tournament.rounds
     .map(roundId => rounds.byId[roundId])
