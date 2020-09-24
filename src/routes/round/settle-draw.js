@@ -17,7 +17,9 @@ export default class SettleDrawRoute {
 
     if (!tournament) {
       res.status(404);
-      res.json({ error: 'no such tournament' });
+      res.json({
+        error: 'no such tournament'
+      });
     } else {
       if (
         !isPresidentJudge(
@@ -82,7 +84,10 @@ function parseRoundScores(body: mixed): Array<Score> {
           typeof obj.participantId === 'string' &&
           typeof obj.score === 'number'
         ) {
-          return { participantId: obj.participantId, score: obj.score };
+          return {
+            participantId: obj.participantId,
+            score: obj.score
+          };
         }
         return null;
       })

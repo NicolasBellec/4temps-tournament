@@ -234,59 +234,54 @@ export default class RPSSRoundScorer {
     participantId: string,
     maxRank: number,
     judgeMajority: number,
-    ranks: Array < JudgeRank >
+    ranks: Array<JudgeRank>
   ): RankMatrixRow {
     /*
       Generate the row and a few stats for the ranking matrix in order to ease
       the sorting algorithm
     */
 
-    const participantRanks: Array < JudgeRank > = ranks
-      .filter(rank =>
-        rank.participantId === participantId
-      );
+    const participantRanks: Array<JudgeRank> = ranks.filter(
+      rank => rank.participantId === participantId
+    );
 
     // The ranks are [1...maxRank] and not [0...maxRank[ so we need to map
     // add 1 to the rank
-    const votePerRank: Array < number > = [...Array(maxRank).keys()]
+    const votePerRank: Array<number> = [...Array(maxRank).keys()]
       .map(cur_rank => cur_rank + 1)
       .map(cur_rank => {
-        const votes: Array < JudgeRank > = participantRanks
-          .filter(rank =>
-            rank.rank === cur_rank
-          );
+        const votes: Array<JudgeRank> = participantRanks.filter(
+          rank => rank.rank === cur_rank
+        );
         return votes.length;
       });
 
     // Same
-    const row: Array < number > = [...Array(maxRank).keys()]
+    const row: Array<number> = [...Array(maxRank).keys()]
       .map(cur_rank => cur_rank + 1)
       .map(cur_rank => {
-        const votes: Array < JudgeRank > = participantRanks
-          .filter(rank =>
-            rank.rank <= cur_rank
-          );
+        const votes: Array<JudgeRank> = participantRanks.filter(
+          rank => rank.rank <= cur_rank
+        );
         return votes.length;
       });
 
-    const rankReachMajority: number =
-      row.reduce((acc, nbVote, index) => {
-        if (acc != -1) {
-          return acc;
-        } else if (nbVote >= judgeMajority) {
-          // We keep the index instead of the rank that is index + 1 as
-          // this is used to access the row table
-          return index;
-        }
-        return -1;
-      }, -1);
+    const rankReachMajority: number = row.reduce((acc, nbVote, index) => {
+      if (acc != -1) {
+        return acc;
+      } else if (nbVote >= judgeMajority) {
+        // We keep the index instead of the rank that is index + 1 as
+        // this is used to access the row table
+        return index;
+      }
+      return -1;
+    }, -1);
 
-    const sumsRanks: Array < number > = [...votePerRank.keys()]
-      .map(max_rank => {
-        return votePerRank.slice(0, max_rank + 1)
-          .reduce((acc, nbVote, cur_rank) =>
-            (acc + nbVote * (cur_rank + 1)), 0);
-      }); // end max_rank
+    const sumsRanks: Array<number> = [...votePerRank.keys()].map(max_rank => {
+      return votePerRank
+        .slice(0, max_rank + 1)
+        .reduce((acc, nbVote, cur_rank) => acc + nbVote * (cur_rank + 1), 0);
+    }); // end max_rank
 
     return {
       participantId: participantId,
@@ -307,54 +302,49 @@ export default class RPSSRoundScorer {
     */
     const max_rank: number = participants.length;
     return participants.map(participantId =>
-      this._genRankMatrixRow(
-        participantId,
-        max_rank,
-        judgeMajority,
-        ranks
-      )
+      this._genRankMatrixRow(participantId, max_rank, judgeMajority, ranks)
     );
   } // _genRankMatrix
 
-  _genJudgeRanks(notes: Array < JudgeNote > ): Array < JudgeRank > {
+  _genJudgeRanks(notes: Array<JudgeNote>): Array<JudgeRank> {
     /*
       Generate the ranking of each candidate for each judge
     */
 
     // Compute the finale score of the candidates for each judge
-    const weightedNotes: Array < JudgeWeightedNote > =
-      this._computeJudgeWeightedNotes(notes);
+    const weightedNotes: JudgeWeightedNote[] = this._computeJudgeWeightedNotes(
+      notes
+    );
 
-    const followerIds: Array < string > = this._getRoleParticipant('follower');
-    const leaderIds: Array < string > = this._getRoleParticipant('leader');
+    const followerIds: Array<string> = this._getRoleParticipant('follower');
+    const leaderIds: Array<string> = this._getRoleParticipant('leader');
 
     // Sort the score for each judge in order to obtain a ranking
-    const judgeRanks: Array < JudgeRank > = this._judges
+    const judgeRanks: Array<JudgeRank> = this._judges
       .filter(judge => this._isPositiveJudgeType(judge.judgeType))
       .reduce((acc, judge) => {
-        const weighted: Array < JudgeWeightedNote > =
-          weightedNotes.filter(
-            notes => judge.id === notes.judgeId
-          );
+        const weighted: Array<JudgeWeightedNote> = weightedNotes.filter(
+          notes => judge.id === notes.judgeId
+        );
 
         // Segregate leaders from followers to have 2 distinct rankings
-        const leaderWeighted: Array < JudgeWeightedNote > =
-          weighted.filter(note => {
-            const participant: ? string =
-              leaderIds.find(
-                leaderId => leaderId === note.participantId
-              )
+        const leaderWeighted: Array<JudgeWeightedNote> = weighted.filter(
+          note => {
+            const participant: ?string = leaderIds.find(
+              leaderId => leaderId === note.participantId
+            );
             return participant != null;
-          });
+          }
+        );
 
-        const followerWeighted: Array < JudgeWeightedNote > =
-          weighted.filter(note => {
-            const participant: ? string =
-              followerIds.find(
-                followerId => followerId === note.participantId
-              )
+        const followerWeighted: Array<JudgeWeightedNote> = weighted.filter(
+          note => {
+            const participant: ?string = followerIds.find(
+              followerId => followerId === note.participantId
+            );
             return participant != null;
-          });
+          }
+        );
 
         const leaderRanks: JudgeRank[] = this._genRanksFromWeightedScores(
           leaderWeighted

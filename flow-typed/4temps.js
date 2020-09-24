@@ -1,9 +1,17 @@
 // @flow
 import type Moment from 'moment';
-import type { AdminLoginValidationSummary } from '../src/validators/validate-admin-login';
-import type { TournamentValidationSummary } from '../src/validators/validate-tournament';
-import type { ParticipantValidationSummary } from '../src/validators/validate-participant';
-import type { AdminCreateValidationSummary } from '../src/validators/validate-admin';
+import type {
+  AdminLoginValidationSummary
+} from '../src/validators/validate-admin-login';
+import type {
+  TournamentValidationSummary
+} from '../src/validators/validate-tournament';
+import type {
+  ParticipantValidationSummary
+} from '../src/validators/validate-participant';
+import type {
+  AdminCreateValidationSummary
+} from '../src/validators/validate-admin';
 
 // Base types
 
@@ -15,11 +23,13 @@ declare type Tournament = {
   name: string,
   date: Moment,
   type: TournamentType,
-  dancesNoted: { [judgeId: string]: Array<string> },
-  judges: Array<Judge>,
-  assistants: Array<Assistant>,
-  participants: Array<Participant>,
-  rounds: Array<Round>
+  dancesNoted: {
+    [judgeId: string]: Array < string >
+  },
+  judges: Array < Judge > ,
+  assistants: Array < Assistant > ,
+  participants: Array < Participant > ,
+  rounds: Array < Round >
 };
 
 declare type ParticipantRole =
@@ -58,12 +68,12 @@ declare type Round = {
   errorOnSameScore: boolean,
   multipleDanceScoringRule: MultipleDanceScoringRule,
   notationSystem: NotationSystem,
-  criteria: Array<RoundCriterion>,
+  criteria: Array < RoundCriterion > ,
   active: boolean,
   finished: boolean,
   draw: boolean,
-  groups: Array<DanceGroup>,
-  roundScores: Array<Score>
+  groups: Array < DanceGroup > ,
+  roundScores: Array < Score > ,
 };
 
 declare type Score = {
@@ -73,8 +83,8 @@ declare type Score = {
 
 declare type DanceGroup = {
   id: string,
-  pairs: Array<Pair>,
-  dances: Array<Dance>
+  pairs: Array < Pair > ,
+  dances: Array < Dance >
 };
 
 declare type Dance = {
@@ -84,8 +94,8 @@ declare type Dance = {
 };
 
 declare type Pair = {
-  follower: ?string,
-  leader: ?string
+  follower: ? string,
+  leader: ? string
 };
 
 declare type AccessKey = {
@@ -129,7 +139,10 @@ declare type AdminCredentials = {
   password: string
 };
 
-declare type User = { id: string, role: PermissionRole };
+declare type User = {
+  id: string,
+  role: PermissionRole
+};
 
 declare type PermissionRole =
   | 'public'
@@ -138,12 +151,15 @@ declare type PermissionRole =
   | 'judge'
   | 'assistant';
 
-declare type Assistant = { id: string, name: string };
+declare type Assistant = {
+  id: string,
+  name: string
+};
 
 declare type Leaderboard = {
   tournamentId: string,
-  rounds: Array<LeaderboardRound>,
-  remainingParticipants: Array<Participant>,
+  rounds: Array < LeaderboardRound > ,
+  remainingParticipants: Array < Participant > ,
   tournamentName: string
 };
 
@@ -151,10 +167,10 @@ declare type LeaderboardRound = {
   roundId: string,
   name: string,
   isFinished: boolean,
-  winningLeaderScores: Array<LeaderboardScore>,
-  winningFollowerScores: Array<LeaderboardScore>,
-  losingLeaderScores: Array<LeaderboardScore>,
-  losingFollowerScores: Array<LeaderboardScore>
+  winningLeaderScores: Array < LeaderboardScore > ,
+  winningFollowerScores: Array < LeaderboardScore > ,
+  losingLeaderScores: Array < LeaderboardScore > ,
+  losingFollowerScores: Array < LeaderboardScore >
 };
 
 declare type LeaderboardScore = {
@@ -166,16 +182,22 @@ declare type LeaderboardScore = {
 
 // Express interface
 declare interface ServerApiRequest {
-  session: { user: ?User };
+  session: {
+    user: ? User
+  };
   body: mixed;
-  query: { [name: string]: string };
-  params: { [param: string]: string };
+  query: {
+    [name: string]: string
+  };
+  params: {
+    [param: string]: string
+  };
 }
 
 declare interface ServerApiResponse {
   status(statusCode: number): ServerApiResponse;
   sendStatus(statusCode: number): ServerApiResponse;
-  json(body?: mixed): ServerApiResponse;
+  json(body ? : mixed): ServerApiResponse;
 }
 
 // Validation types
@@ -192,14 +214,14 @@ declare type RoundValidationSummary = {
   isValidCriteria: boolean,
   isValidErrorOnSameScore: boolean,
   isValidNotationSystem: boolean,
-  criteriaValidation: Array<{
+  criteriaValidation: Array < {
     isValidCriterion: boolean,
     isValidName: boolean,
     isValidMinValue: boolean,
     isValidMaxValue: boolean,
     isValidValueCombination: boolean,
     isValidDescription: boolean
-  }>
+  } >
 };
 
 // Redux
@@ -246,8 +268,8 @@ declare type TournamentsReduxState = {
   isInvalidated: boolean,
   didLoadAdminTournaments: boolean,
 
-  forAdmin: Array<string>,
-  allIds: Array<string>,
+  forAdmin: Array < string > ,
+  allIds: Array < string > ,
   forJudge: string,
   byId: {
     [id: string]: {
@@ -256,10 +278,12 @@ declare type TournamentsReduxState = {
       name: string,
       date: Moment,
       type: TournamentType,
-      judges: Array<string>,
-      participants: Array<string>,
-      rounds: Array<string>,
-      dancesNoted: { [judgeId: string]: Array<string> }
+      judges: Array < string > ,
+      participants: Array < string > ,
+      rounds: Array < string > ,
+      dancesNoted: {
+        [judgeId: string]: Array < string >
+      }
     }
   }
 };
@@ -268,7 +292,7 @@ declare type ParticipantsReduxState = {
   isLoading: boolean,
 
   forTournament: {
-    [id: string]: Array<string>
+    [id: string]: Array < string >
   },
   byId: {
     [id: string]: Participant
@@ -278,7 +302,7 @@ declare type ParticipantsReduxState = {
 declare type RoundsReduxState = {
   isLoading: boolean,
   forTournament: {
-    [id: string]: Array<string>
+    [id: string]: Array < string >
   },
   byId: {
     [id: string]: Round
@@ -287,7 +311,7 @@ declare type RoundsReduxState = {
 
 declare type JudgesReduxState = {
   forTournament: {
-    [id: string]: Array<string>
+    [id: string]: Array < string >
   },
   byId: {
     [id: string]: Judge
@@ -296,7 +320,7 @@ declare type JudgesReduxState = {
 
 declare type AssistantsReduxState = {
   forTournament: {
-    [id: string]: Array<string>
+    [id: string]: Array < string >
   },
   byId: {
     [id: string]: Assistant
@@ -311,12 +335,16 @@ declare type NotesReduxState = {
   isLoading: boolean,
   didLoad: boolean,
   byParticipant: {
-    [participantId: string]: { [criterionId: string]: JudgeNote }
+    [participantId: string]: {
+      [criterionId: string]: JudgeNote
+    }
   }
 };
 
 declare type LeaderboardsReduxState = {
-  byId: { [tournamentId: string]: Leaderboard }
+  byId: {
+    [tournamentId: string]: Leaderboard
+  }
 };
 
 declare type UiLoginReduxState = {
@@ -373,7 +401,7 @@ declare type UiCreateAssistantReduxState = {
 };
 
 declare type UiNotesReduxState = {
-  selectedPair: ?string,
+  selectedPair: ? string,
   isLoading: boolean,
   didSubmit: boolean,
   successfulSubmit: boolean
@@ -423,7 +451,7 @@ declare type ReduxAction =
 // Redux Actions
 declare type LogoutAction = {
   type: 'LOGOUT_USER',
-  promise: Promise<boolean>,
+  promise: Promise < boolean > ,
   meta: {
     onSuccess: () => mixed
   }
@@ -431,7 +459,7 @@ declare type LogoutAction = {
 
 declare type LoginAction = {
   type: 'LOGIN_USER',
-  promise: Promise<AdminLoginValidationSummary>,
+  promise: Promise < AdminLoginValidationSummary > ,
   meta: {
     onSuccess: () => mixed
   }
@@ -439,12 +467,12 @@ declare type LoginAction = {
 
 declare type GetAllTournamentsAction = {
   type: 'GET_ALL_TOURNAMENTS',
-  promise: Promise<mixed>
+  promise: Promise < mixed >
 };
 
 declare type GetAdminTournamentsAction = {
   type: 'GET_ADMIN_TOURNAMENTS',
-  promise: Promise<mixed>
+  promise: Promise < mixed >
 };
 
 declare type TournamentUpdatedAction = {
@@ -454,24 +482,27 @@ declare type TournamentUpdatedAction = {
 
 declare type CreateTournamentAction = {
   type: 'CREATE_TOURNAMENT',
-  promise: Promise<Tournament>,
+  promise: Promise < Tournament > ,
   meta: {
     onSuccess: (tournament: Tournament) => mixed
   }
 };
 declare type EditTournamentAction = {
   type: 'EDIT_TOURNAMENT',
-  promise: Promise<Tournament>
+  promise: Promise < Tournament >
 };
 
 declare type CreateParticipantAction = {
   type: 'CREATE_PARTICIPANT',
-  promise: Promise<{ tournamentId: string, participant: Participant }>
+  promise: Promise < {
+    tournamentId: string,
+    participant: Participant
+  } >
 };
 
 declare type SignUpAction = {
   type: 'SIGNUP',
-  promise: Promise<AdminCreateValidationSummary>,
+  promise: Promise < AdminCreateValidationSummary > ,
   meta: {
     onSuccess: () => mixed
   }
@@ -479,27 +510,30 @@ declare type SignUpAction = {
 
 declare type CreateRoundAction = {
   type: 'CREATE_ROUND',
-  promise: Promise<Round>
+  promise: Promise < Round >
 };
 
 declare type DeleteRoundAction = {
   type: 'DELETE_ROUND',
-  promise: Promise<{ tournamentId: string, roundId: string }>
+  promise: Promise < {
+    tournamentId: string,
+    roundId: string
+  } >
 };
 
 declare type CreateJudgeAction = {
   type: 'CREATE_JUDGE',
-  promise: Promise<mixed>
+  promise: Promise < mixed >
 };
 
 declare type CreateAssistantAction = {
   type: 'CREATE_ASSISTANT',
-  promise: Promise<mixed>
+  promise: Promise < mixed >
 };
 
 declare type StartRoundAction = {
   type: 'START_ROUND',
-  promise: Promise<mixed>
+  promise: Promise < mixed >
 };
 declare type LoginJudgeAction = {
   type: 'LOGIN_WITH_ACCESS_KEY',
