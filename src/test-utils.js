@@ -344,7 +344,8 @@ export function createRound(): Round {
     winners: {
       leaders: [],
       followers: []
-    }
+    },
+    tieBreakerJudge: null
   };
 }
 

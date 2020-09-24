@@ -13,7 +13,7 @@ import DrawSettler from './DrawSettler';
 
 export type Props = {
   tournamentId: string,
-  judgeType: JudgeType,
+  judgeId: string,
   activeRound: ?Round,
   activeDanceId: ?string,
   notesSubmitted: boolean
@@ -24,14 +24,14 @@ export default function Judge({
   activeRound,
   activeDanceId,
   notesSubmitted,
-  judgeType
+  judgeId
 }: Props) {
   if (activeRound != null && activeRound.draw) {
     return (
       <Draw
         tournamentId={tournamentId}
         activeRound={activeRound}
-        judgeType={judgeType}
+        judgeId={judgeId}
       />
     );
   } else if (activeRound != null && activeDanceId != null) {
@@ -49,20 +49,20 @@ export default function Judge({
 
 function Draw({
   tournamentId,
-  judgeType,
+  judgeId,
   activeRound
 }: {
   tournamentId: string,
-  judgeType: JudgeType,
+  judgeId: string,
   activeRound: Round
 }) {
-  if (judgeType === 'president') {
+  if (judgeId === activeRound.tieBreakerJudge) {
     return (
       <DrawSettler tournamentId={tournamentId} activeRound={activeRound} />
     );
   }
 
-  return <strong>Waiting for president to settle draw...</strong>;
+  return <strong>Waiting to settle draw...</strong>;
 }
 
 function NoActiveDance() {

@@ -6,7 +6,7 @@ import PreloadContainer from '../PreloadContainer';
 import { getJudgeTournament } from '../../action-creators';
 
 function mapStateToProps(state: ReduxState): JudgeComponentProps {
-  const { tournaments, rounds, user, judges } = state;
+  const { tournaments, rounds, user } = state;
   const activeRound =
     tournaments.forJudge !== ''
       ? getActiveRound(
@@ -26,8 +26,7 @@ function mapStateToProps(state: ReduxState): JudgeComponentProps {
       tournaments.forJudge === ''
         ? false
         : isNotesSubmittedForDance(state, activeDanceId),
-    judgeType:
-      (judges.byId[user.id] && judges.byId[user.id].judgeType) || 'normal'
+    judgeId: user.id
   };
 }
 

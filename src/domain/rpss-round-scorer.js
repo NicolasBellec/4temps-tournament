@@ -114,7 +114,7 @@ export default class RPSSRoundScorer {
     );
 
     const sortedRankMatrix: RankMatrix = rankMatrix.sort(
-      this._RPSScompare
+      this._RPSScompare.bind(this)
     );
 
     const finalRank: Array<Score> = this._genScoresFromSortedRankMatrix(

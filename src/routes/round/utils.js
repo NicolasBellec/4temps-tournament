@@ -19,7 +19,11 @@ function parseRound(bodyRound: mixed): Round {
     draw: false,
     roundScores: [],
     errorOnSameScore: false,
-    winners: { leaders: [], followers: [] }
+    winners: {
+      leaders: [],
+      followers: []
+    },
+    tieBreakerJudge: null
   };
 
   if (typeof bodyRound === 'object' && bodyRound != null) {

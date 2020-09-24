@@ -27,7 +27,8 @@ export type RoundDbModel = {
   draw: boolean,
   groups: Array<DanceGroupDbModel>,
   errorOnSameScore: boolean,
-  roundScores: Array<{ participantId: ObjectId, score: number }>
+  roundScores: Array<{ participantId: ObjectId, score: number }>,
+  tieBreakerJudge: ?string
 };
 
 type DanceGroupDbModel = {
@@ -117,6 +118,10 @@ export const schema = new mongoose.Schema({
   groups: [groupSchema],
   roundScores: {
     type: [{ participantId: mongoose.Schema.Types.ObjectId, score: Number }]
+  },
+  tieBreakerJudge: {
+    type: String,
+    required: false
   }
 });
 

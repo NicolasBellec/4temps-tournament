@@ -62,8 +62,16 @@ export default class StartDanceRoute {
       res.json({
         isDraw: true
       });
+    } else if (e instanceof DebuggingError) {
+      res.status(500);
+      res.json({
+        mess: 'Debugging trap'
+      });
     } else {
-      res.sendStatus(500);
+      res.status(500);
+      res.json({
+        error: e.toString()
+      });
     }
   };
 }
@@ -207,13 +215,20 @@ class EndDanceRouteHandler {
     } while (group != null);
   };
 
+  _selectRandomJudge = (tournament: Tournament): string => {
+    const judges = tournament.judges;
+
+    // Get a random number in [ 0, judges.length [
+    const randomJudge = Math.floor(Math.random() * judges.length);
+    return judges[randomJudge].id;
+  };
+
   _endRoundOfTournament = async (tournament: Tournament, round: Round) => {
     const notes = await this._getNotes(round);
 
     if (round.notationSystem == 'rpss') {
-      round.roundScores = new RPSSRoundScorer(tournament.judges, round).scoreRound(
-        notes
-      );
+      const scorer = new RPSSRoundScorer(tournament.judges, round);
+      round.roundScores = scorer.scoreRound(notes);
     } else if (round.notationSystem == 'sum') {
       round.roundScores = new RoundScorer(tournament.judges, round).scoreRound(
         notes
@@ -223,17 +238,23 @@ class EndDanceRouteHandler {
     if (this._hasDraw(round)) {
       round.draw = true;
 
-      if (round.notationSystem == 'rpss') {
-        round.roundScores = new RPSSRoundScorer(tournament.judges, round, {
-          countPresident: true,
-          allowNegative: false
-        }).scoreRound(notes);
-      } else if (round.notationSystem == 'sum') {
-        round.roundScores = new RoundScorer(tournament.judges, round, {
-          countPresident: true,
-          allowNegative: false
-        }).scoreRound(notes);
-      }
+      // Select a judge at random to handle the draw
+      const randomJudgeId = this._selectRandomJudge(tournament);
+
+      // We do not use the president anymore, we use a random judge instead
+      round.tieBreakerJudge = randomJudgeId;
+
+      // if (round.notationSystem == 'rpss') {
+      //   round.roundScores = new RPSSRoundScorer(tournament.judges, round, {
+      //     countPresident: true,
+      //     allowNegative: false
+      //   }).scoreRound(notes);
+      // } else if (round.notationSystem == 'sum') {
+      //   round.roundScores = new RoundScorer(tournament.judges, round, {
+      //     countPresident: true,
+      //     allowNegative: false
+      //   }).scoreRound(notes);
+      // }
     } else {
       round.active = false;
       round.finished = true;
@@ -261,3 +282,4 @@ function NotAllNotesError() {}
 
 function RoundHasDrawError() {}
 
+export function DebuggingError() {}

@@ -21,53 +21,59 @@ export default class SettleDrawRoute {
         error: 'no such tournament'
       });
     } else {
-      if (
-        !isPresidentJudge(
+      const activeRound: ?Round = findActiveRound(tournament.rounds);
+      const roundScores: Array<Score> = parseRoundScores(req.body);
+      if (!activeRound) {
+        res.status(404);
+        res.json({
+          error: 'no round is active'
+        });
+      } else if (!activeRound.draw) {
+        res.status(404);
+        res.json({
+          error: 'no round is draw'
+        });
+      } else if (
+        !isTieBreakingJudge(
           (req.session.user && req.session.user.id) || '',
-          tournament.judges
+          activeRound
         )
       ) {
         res.status(403);
-        res.json({ error: 'must be president judge' });
+        res.json({
+          error: 'must be tie breaking judge'
+        });
+      } else if (!scoreIncludesAllParticipants(activeRound, roundScores)) {
+        res.status(400);
+        res.json({
+          error: 'score does not include all participants'
+        });
+      } else if (
+        !scoreIncludesOnlyParticipantsOfRound(activeRound, roundScores)
+      ) {
+        res.status(400);
+        res.json({
+          error: 'score includes participant(s) not in this round'
+        });
       } else {
-        const activeRound: ?Round = findActiveRound(tournament.rounds);
-        const roundScores: Array<Score> = parseRoundScores(req.body);
-        if (!activeRound) {
-          res.status(404);
-          res.json({ error: 'no round is active' });
-        } else if (!activeRound.draw) {
-          res.status(404);
-          res.json({ error: 'no round is draw' });
-        } else if (!scoreIncludesAllParticipants(activeRound, roundScores)) {
-          res.status(400);
-          res.json({ error: 'score does not include all participants' });
-        } else if (
-          !scoreIncludesOnlyParticipantsOfRound(activeRound, roundScores)
-        ) {
-          res.status(400);
-          res.json({
-            error: 'score includes participant(s) not in this round'
-          });
-        } else {
-          res.status(200);
-          const updatedRound: Round = {
-            ...activeRound,
-            active: false,
-            finished: true,
-            draw: false,
-            roundScores
-          };
-          try {
-            await this._tournamentRepository.updateRound(
-              tournamentId,
-              updatedRound
-            );
-            res.json(updatedRound);
-          } catch (e) {
-            res.sendStatus(500);
-            // eslint-disable-next-line
-            console.error(e);
-          }
+        res.status(200);
+        const updatedRound: Round = {
+          ...activeRound,
+          active: false,
+          finished: true,
+          draw: false,
+          roundScores
+        };
+        try {
+          await this._tournamentRepository.updateRound(
+            tournamentId,
+            updatedRound
+          );
+          res.json(updatedRound);
+        } catch (e) {
+          res.sendStatus(500);
+          // eslint-disable-next-line
+          console.error(e);
         }
       }
     }
@@ -101,11 +107,10 @@ function findActiveRound(rounds: Array<Round>): ?Round {
   return rounds.find(round => round.active);
 }
 
-function isPresidentJudge(judgeId: string, judges: Array<Judge>): boolean {
+function isTieBreakingJudge(judgeId: string, activeRound: Round): boolean {
   return (
-    judges.find(
-      judge => judge.judgeType === 'president' && judge.id === judgeId
-    ) != null
+    activeRound.tieBreakerJudge != null &&
+    activeRound.tieBreakerJudge === judgeId
   );
 }
 

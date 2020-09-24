@@ -65,7 +65,7 @@ function DanceActions({
   endDance: () => void
 }) {
   if (draw) {
-    return <strong>Waiting for president to settle draw...</strong>;
+    return <strong>Waiting to settle draw...</strong>;
   }
 
   if (activeDance != null) {

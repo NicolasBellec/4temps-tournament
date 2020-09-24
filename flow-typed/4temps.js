@@ -74,6 +74,7 @@ declare type Round = {
   draw: boolean,
   groups: Array < DanceGroup > ,
   roundScores: Array < Score > ,
+  tieBreakerJudge: ? string
 };
 
 declare type Score = {
