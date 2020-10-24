@@ -22,25 +22,6 @@ it('Returns 404 if tournament is not found', async () => {
   expect(res.getBody()).toEqual({ error: 'no such tournament' });
 });
 
-it('Returns 403 if user is not a president judge', async () => {
-  const judge: Judge = { ...createJudge(), judgeType: 'normal' };
-  const tournament: Tournament = { ...createTournament(), judges: [judge] };
-
-  const tournamentRepository = new TournamentRepositoryImpl();
-  await tournamentRepository.create(tournament);
-
-  const route = new SettleDrawRoute(tournamentRepository);
-
-  const req = Request.withJudgeAndParams(judge, {
-    tournamentId: tournament.id
-  });
-  const res = new Response();
-  await route.route(req, res);
-
-  expect(res.getStatus()).toBe(403);
-  expect(res.getBody()).toEqual({ error: 'must be president judge' });
-});
-
 it('Returns 404 if there is no round that is active', async () => {
   const president: Judge = { ...createJudge(), judgeType: 'president' };
   const round: Round = {
@@ -114,7 +95,8 @@ it('Returns 400 if not all participants are included in the score', async () => 
     groups: [danceGroup],
     draw: true,
     active: true,
-    finished: false
+    finished: false,
+    tieBreakerJudge: president.id
   };
   const tournament: Tournament = {
     ...createTournament(),
@@ -163,7 +145,8 @@ it('Returns 400 if a participant not in the tournament is included in the score'
     groups: [danceGroup],
     draw: true,
     active: true,
-    finished: false
+    finished: false,
+    tieBreakerJudge: president.id
   };
   const tournament: Tournament = {
     ...createTournament(),
@@ -216,7 +199,8 @@ it('Returns 200 and ends round with updated score', async () => {
     groups: [danceGroup],
     draw: true,
     active: true,
-    finished: false
+    finished: false,
+    tieBreakerJudge: president.id
   };
   const tournament: Tournament = {
     ...createTournament(),
