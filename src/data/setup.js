@@ -1,7 +1,7 @@
 // @flow
 import mongoose from 'mongoose';
 
-const OPTIONS = { useMongoClient: true, poolSize: 5 };
+const OPTIONS = { useNewUrlParser:true, useUnifiedTopology: true, poolSize: 5 };
 mongoose.Promise = global.Promise;
 mongoose.connect(
   String(process.env.DB_URI),
