@@ -1,8 +1,8 @@
-// flow-typed signature: 6a4651587c6acd69738be321bb34d341
-// flow-typed version: f75fc39aee/socket.io-client_v2.x.x/flow_>=v0.34.x
+// flow-typed signature: a759d3a0bd7174dd17d96b53712e32e7
+// flow-typed version: c6154227d1/socket.io-client_v2.x.x/flow_>=v0.104.x
 
 declare module "socket.io-client" {
-  declare type Callback = (...args: mixed[]) => void;
+  declare type Callback = (...args: any[]) => void;
 
   declare type ManagerOptions = $Shape<{
     path: string,
@@ -13,14 +13,14 @@ declare module "socket.io-client" {
     randomizationFactor: number,
     timeout: number,
     transports: ("polling" | "websocket")[],
+    transportOptions: { polling: { extraHeaders: { [string]:string, ... }, ... }, ... },
     autoConnect: boolean,
-    query: { [string]: string },
-    parser: any
+    query: { [string]: string, ... },
+    parser: any,
+    ...
   }>;
 
-  declare type SocketOptions = $Shape<{
-    query: string
-  }>;
+  declare type SocketOptions = $Shape<{ query: string, ... }>;
 
   declare class Emitter<T> {
     on(event: string, cb: Callback): T;
@@ -28,7 +28,7 @@ declare module "socket.io-client" {
     once(event: string, cb: Callback): T;
     off(event: string, cb: Callback): T;
     removeListener(event: string, cb: Callback): T;
-    removeAllListeners(event: string, cb: Callback): T;
+    removeAllListeners(event?: string): T;
     removeEventListener(event: string, cb: Callback): T;
     emit(event: string, payload: mixed): T;
     listeners(event: string): Callback[];
@@ -51,10 +51,11 @@ declare module "socket.io-client" {
 
   declare export class Socket extends Emitter<Socket> {
     constructor(io: Manager, nsp: string, opts?: SocketOptions): Socket;
+    id: string;
     open(): Socket;
     connect(): Socket;
-    send(...args: mixed[]): Socket;
-    emit(event: string, ...args: mixed[]): Socket; // overrides Emitter#emit
+    send(...args: any[]): Socket;
+    emit(event: string, ...args: any[]): Socket; // overrides Emitter#emit
     close(): Socket;
     disconnect(): Socket;
     compress(boolean): Socket;
@@ -66,7 +67,8 @@ declare module "socket.io-client" {
     {
       forceNew: boolean,
       "force new connection": true,
-      multiplex: boolean
+      multiplex: boolean,
+      ...
     } & ManagerOptions
   >;
 

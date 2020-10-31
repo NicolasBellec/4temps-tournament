@@ -1,7 +1,7 @@
 {
   "presets": [
-    "flow",
-    "react"
+    "@babel/flow",
+    "@babel/react"
   ],
   "plugins": [
     // enable class properties
@@ -14,14 +14,14 @@
     ],
     // spread operator
     [
-      "transform-object-rest-spread"
+      "@babel/plugin-proposal-object-rest-spread"
     ]
   ],
   "env": {
     "server": {
       "presets": [
         [
-          "env",
+          "@babel/env",
           {
             "targets": {
               "node": "current"
@@ -41,7 +41,7 @@
     },
     "client": {
       "presets": [
-        "env"
+        "@babel/env"
       ],
       "plugins": [
         // async
@@ -57,7 +57,7 @@
     },
     "test": {
       "presets": [
-        "env"
+        "@babel/env"
       ],
       "plugins": [
         [

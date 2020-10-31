@@ -16,7 +16,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import bodyParser from 'body-parser';
-import uuid from 'uuid/v4';
+import { v4 as uuid} from 'uuid';
 
 import ApiRoute from './routes';
 import getDbConnection from './data/setup';

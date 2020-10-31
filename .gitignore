@@ -10,3 +10,7 @@ public-build
 coverage
 tags
 .tern-port
+
+# stryker temp files
+.stryker-tmp
+reports

@@ -12,5 +12,6 @@
 module.exports = {
     // verbose: true,
     coverageReporters: ["text", "html", "lcov"],
-    testEnvironment: "node"
+    testEnvironment: "node",
+    setupFilesAfterEnv: ["./jest.setup.js"]
 }
