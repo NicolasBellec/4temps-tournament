@@ -1,4 +1,5 @@
 // @flow
+// @jest-environment node
 import { createAdminRoute } from '../create-admin';
 
 test('Validates tournament', async () => {

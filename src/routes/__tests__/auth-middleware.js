@@ -1,4 +1,5 @@
 // @flow
+// @jest-environment node
 
 import {
   Request,
