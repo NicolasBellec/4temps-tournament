@@ -1,5 +1,6 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: ['babel-polyfill', './src/app/index.js'],
@@ -10,11 +11,8 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]'
-                }),
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
                 test: /\.js$/,
@@ -26,9 +24,6 @@ module.exports = {
         ],
     },
     plugins: [
-        new ExtractTextPlugin({
-            filename: 'app.css',
-            allChunks: true
-        }),
+        new MiniCssExtractPlugin(),
     ]
 };
