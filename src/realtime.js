@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import IO from 'socket.io';
 import type { SocketIO } from 'socket.io';
 

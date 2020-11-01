@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import Express from 'express';
 import HTTP from 'http';

@@ -1,7 +1,7 @@
 import { createRound, createJudge, createCriterion } from '../../test-utils';
 import WinnerPicker from '../winner-picker';
 
-// @flow
+// no-flow
 
 describe('Winner picker', () => {
   const leaders = ['l1', 'l2'];

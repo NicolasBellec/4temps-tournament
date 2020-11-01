@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';

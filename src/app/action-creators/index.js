@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import {
   getTournamentsForUser,
   getTournamentForJudge,

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import DanceScorer from '../dance-scorer';
 import {
   createParticipant,

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import NoteChecker from '../../domain/note-checker';
 import RoundScorer from '../../domain/round-scorer';

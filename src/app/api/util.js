@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 async function parseResponse<T>(response: Response): Promise<T> {
   const { status } = response;

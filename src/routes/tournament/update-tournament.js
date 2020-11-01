@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import validateTournament from '../../validators/validate-tournament';
 import type { TournamentRepository } from '../../data/tournament';
 import type { RouteResult } from '../util';

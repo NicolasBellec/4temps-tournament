@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import mongoose from 'mongoose';
 
 const OPTIONS = { useNewUrlParser:true, useUnifiedTopology: true, poolSize: 5 };

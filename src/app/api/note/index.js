@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { apiPostRequest, apiGetRequest } from '../util';
 
 export async function setTemporaryNote(

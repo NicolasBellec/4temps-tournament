@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { apiGetRequest, apiPostRequest } from '../util';
 import isValidAccessKey from '../../../validators/validate-access-key';
 

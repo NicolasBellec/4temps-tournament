@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import type { NextFunction } from 'express';
 import type { TournamentRepository } from '../data/tournament';
 import { TournamentRepositoryImpl } from '../data/tournament';

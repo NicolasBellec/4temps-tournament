@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export function parseNote(body: mixed): JudgeNote {
   if (

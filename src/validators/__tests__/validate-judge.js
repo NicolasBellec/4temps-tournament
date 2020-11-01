@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import validateJudge from '../validate-judge';
 import { createJudge } from '../../test-utils';

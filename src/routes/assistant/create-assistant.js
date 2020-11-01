@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import ObjectId from 'bson-objectid';
 import type { TournamentRepository } from '../../data/tournament';

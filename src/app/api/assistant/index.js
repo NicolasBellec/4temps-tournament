@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import { apiPostRequest } from '../util';
 import validateAssistant from '../../../validators/validate-assistant';

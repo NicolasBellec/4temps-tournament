@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import validateRound from '../validate-round';
 import { createRound as createRoundTestUtils } from '../../test-utils';

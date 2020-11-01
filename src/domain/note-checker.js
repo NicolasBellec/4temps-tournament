@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 type Role = 'leader' | 'follower';
 

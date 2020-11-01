@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import { Router } from 'express';
 

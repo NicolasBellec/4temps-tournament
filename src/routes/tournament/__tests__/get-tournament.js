@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { getTournamentRoute } from '../get-tournament';
 import {
   generateId,

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import ObjectId from 'bson-objectid';
 import PairingGeneratorImpl from './group-pairing-generator';

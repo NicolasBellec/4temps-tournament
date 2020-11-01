@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 function parseRound(bodyRound: mixed): Round {
   let round: Round = {

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import { CreateParticipantRouteHandler } from '../create-participant';
 import {

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import './config';
 import Server from './server';

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import React, { PureComponent } from 'react';
 import { Header, HeaderSubheader, Container } from 'semantic-ui-react';
 

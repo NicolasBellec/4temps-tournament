@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export interface GroupGenerator {
   generateGroups(): Array<Array<Pair>>;

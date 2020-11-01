@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export default function createLeaderboard(tournament: Tournament): Leaderboard {
   const participantMap = tournament.participants.reduce((acc, participant) => {

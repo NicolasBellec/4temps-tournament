@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import submitNotesRoute from '../submit-notes';
 import {
   TournamentRepositoryImpl,

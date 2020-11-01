@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import type { AccessKeyRepository } from '../../data/access-key';
 import isValidKey from '../../validators/validate-access-key';

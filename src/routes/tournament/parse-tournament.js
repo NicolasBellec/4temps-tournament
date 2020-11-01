@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import moment from 'moment';
 
 export default function parseTournament(

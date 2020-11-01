@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import React from 'react';
 // There's currently no type declaration for hydrate, but it exists

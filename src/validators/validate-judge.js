@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export default (judge: Judge): boolean => {
   return (

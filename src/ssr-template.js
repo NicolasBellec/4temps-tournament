@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 /* eslint-disable max-len */
 

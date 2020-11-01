@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import ObjectId from 'bson-objectid';
 import validateRound from '../../validators/validate-round';

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { normalize, schema } from 'normalizr';
 
 const roundSchema = new schema.Entity('rounds');

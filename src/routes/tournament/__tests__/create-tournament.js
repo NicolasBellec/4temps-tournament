@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { createTournamentRoute } from '../create-tournament';
 import {
   createTournament,

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import RoundScorer from './round-scorer';
 import RPSSRoundScorer from './rpss-round-scorer';
 

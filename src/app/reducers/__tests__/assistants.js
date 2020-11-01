@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { LIFECYCLE } from 'redux-pack';
 
 import reducer, { getInitialState } from '../assistants';

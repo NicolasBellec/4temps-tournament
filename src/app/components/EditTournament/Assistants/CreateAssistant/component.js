@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import React, { Component } from 'react';
 import { Form, FormInput, Message, Button } from 'semantic-ui-react';

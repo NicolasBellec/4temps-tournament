@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import React from 'react';
 import { Grid, GridRow, Header } from 'semantic-ui-react';
 import NoteCriterion from '../NoteCriterion';

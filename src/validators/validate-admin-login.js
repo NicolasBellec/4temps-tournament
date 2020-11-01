@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import validateEmail from './validate-email';
 import type { AdminModel } from '../data/admin';
 

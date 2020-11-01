@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import route from '../create-judge';
 import {

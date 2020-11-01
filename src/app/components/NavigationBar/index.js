@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import type { Location, RouterHistory } from 'react-router-dom';

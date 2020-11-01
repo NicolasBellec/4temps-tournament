@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import { LIFECYCLE, KEY } from 'redux-pack';
 

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import io from 'socket.io-client';
 import { normalizeTournament } from '../reducers/normalize';

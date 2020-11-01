@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import type { TournamentRepository } from '../../data/tournament';
 import type { AccessKeyRepository } from '../../data/access-key';

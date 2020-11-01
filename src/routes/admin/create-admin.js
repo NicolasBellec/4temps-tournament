@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import type { $Request, $Response } from 'express';
 
 import validateAdmin from '../../validators/validate-admin';

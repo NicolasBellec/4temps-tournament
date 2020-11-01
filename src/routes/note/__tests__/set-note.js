@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import setNoteRoute from '../set-note';
 import {
   TournamentRepositoryImpl,

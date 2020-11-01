@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 // @jest-environment node
 import { Types } from 'mongoose';
 import { loginAdminRoute } from '../login-admin';

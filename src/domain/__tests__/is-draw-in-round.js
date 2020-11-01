@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import isDrawInRound from '../is-draw-in-round';
 import { createRound } from '../../test-utils';
 

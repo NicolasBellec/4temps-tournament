@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import { combineReducers } from 'redux';
 import login from './login';

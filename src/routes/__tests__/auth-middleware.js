@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 // @jest-environment node
 
 import {

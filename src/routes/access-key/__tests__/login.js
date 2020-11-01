@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import route from '../login';
 import {

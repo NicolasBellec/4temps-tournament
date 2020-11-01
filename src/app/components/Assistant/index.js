@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import {

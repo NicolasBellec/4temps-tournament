@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export default function validateNoteForTournamentAndUser(
   note: JudgeNote,

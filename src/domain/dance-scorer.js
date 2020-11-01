@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 class DanceScorer {
   _judges: Array<Judge>;

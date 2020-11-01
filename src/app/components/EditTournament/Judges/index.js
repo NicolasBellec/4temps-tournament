@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import React from 'react';
 import { Container, Divider, Header } from 'semantic-ui-react';

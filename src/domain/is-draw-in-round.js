@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export default function isDrawInRound(round: Round) {
   const { passingCouplesCount, roundScores } = round;

@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import React from 'react';
 import { Grid, GridRow, GridColumn, Header, Button } from 'semantic-ui-react';

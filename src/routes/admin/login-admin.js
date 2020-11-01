@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import type { AdminModel } from '../../data/admin';
 import validateAdminLogin from '../../validators/validate-admin-login';
 import type { AdminLoginValidationSummary } from '../../validators/validate-admin-login';

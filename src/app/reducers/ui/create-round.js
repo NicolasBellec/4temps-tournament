@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { handle } from 'redux-pack';
 
 function createRound(

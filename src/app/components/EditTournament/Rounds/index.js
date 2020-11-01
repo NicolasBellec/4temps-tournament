@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 import React from 'react';
 import type { RouterHistory } from 'react-router-dom';

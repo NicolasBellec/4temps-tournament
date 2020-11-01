@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 import { apiPostRequest } from '../util';
 
 import validateAdmin from '../../../validators/validate-admin';

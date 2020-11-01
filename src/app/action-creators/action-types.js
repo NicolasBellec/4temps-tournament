@@ -1,4 +1,4 @@
-// @flow
+// no-flow
 
 export const GET_ADMIN_TOURNAMENTS = 'GET_ADMIN_TOURNAMENTS'
 export const GET_JUDGE_TOURNAMENT = 'GET_JUDGE_TOURNAMENT'
