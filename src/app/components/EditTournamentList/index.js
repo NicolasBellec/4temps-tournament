@@ -31,7 +31,7 @@ function mapDispatchToProps(
   { history }: { history: RouterHistory }
 ) {
   return {
-    load: () => getAdminTournaments(dispatch),
+    load: () => dispatch(getAdminTournaments),
     onClick: (id: string) => history.push(`/tournament/edit/${id}`)
   };
 }

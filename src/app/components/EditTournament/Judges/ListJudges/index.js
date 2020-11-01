@@ -35,7 +35,7 @@ function mapStateToProps(
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
     load: () => {
-      getAdminTournaments(dispatch);
+      dispatch(getAdminTournaments);
       dispatch({
         type: 'GET_ACCESS_KEYS',
         promise: getAccessKeysForTournament(tournamentId)

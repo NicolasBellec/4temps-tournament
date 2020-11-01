@@ -49,7 +49,7 @@ function mapDispatchToProps(
         promise: updateTournament(tournamentId, tournament)
       }),
     onClickLeaderboard: () => history.push(`/leaderboard/${tournamentId}`),
-    load: () => getAdminTournaments(dispatch)
+    load: () => dispatch(getAdminTournaments)
   };
 }
 

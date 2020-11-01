@@ -35,7 +35,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
       if (tournamentId) {
         getSingleTournament(dispatch, tournamentId);
       } else {
-        getAdminTournaments(dispatch);
+        dispatch(getAdminTournaments);
       }
     },
     onChangeAttending: (id, isAttending) =>
