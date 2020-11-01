@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 export type ParticipantValidationSummary = {
   isValidParticipant: boolean,

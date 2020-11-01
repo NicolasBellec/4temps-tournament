@@ -1,4 +1,4 @@
-//@flow
+// no-flow
 import { connect } from 'react-redux';
 import type { RouterHistory } from 'react-router-dom';
 import { loginWithAccessKey } from '../../../api/access-key';

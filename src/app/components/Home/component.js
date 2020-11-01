@@ -1,4 +1,4 @@
-//@flow
+// no-flow
 import React, { PureComponent } from 'react';
 import type { Location, RouterHistory } from 'react-router-dom';
 

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 function validateRound(round: Round): RoundValidationSummary {
   const {

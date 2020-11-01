@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 export type TournamentValidationSummary = {
   isValidTournament: boolean,
@@ -7,7 +7,7 @@ export type TournamentValidationSummary = {
   isValidType: boolean
 };
 
-const validateTournament = (tournament: Tournament) => {
+const validateTournament = (tournament: Tournament): TournamentValidationSummary => {
   const isValidName = tournament.name !== '';
   const isValidType = tournament.type === 'jj' || tournament.type === 'classic';
   const isValidDate = !tournament.date.isSame(0);

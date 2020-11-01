@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 const validateEmail = (email: string): boolean => {
   // http://emailregex.com/

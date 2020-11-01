@@ -1,4 +1,4 @@
-//@flow
+// no-flow
 import React, { Component } from 'react';
 import {
   Container,
