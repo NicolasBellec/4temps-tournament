@@ -2,11 +2,13 @@
 
 import {
   SET_NOTE,
-  GET_NOTES
+  GET_NOTES,
+  SUBMIT_NOTES
 } from '../action-types';
 import {
   setTemporaryNote,
-  getTemporaryNotesForDance
+  getTemporaryNotesForDance,
+  submitNotes
 } from '../../api/note';
 
 export function getSetNoteAction(
@@ -34,5 +36,15 @@ export function getGetNotesAction(
   return {
     type: GET_NOTES,
     promise: getTemporaryNotesForDance(tournamentId, danceId),
+  };
+}
+
+export function getSubmitNotesAction(
+  tournamentId: string,
+  notes: Array<JudgeNote>
+): SubmitNotesAction {
+  return {
+    type: SUBMIT_NOTES,
+    promise: submitNotes(tournamentId, notes),
   };
 }

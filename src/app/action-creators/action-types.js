@@ -40,3 +40,4 @@ export const SETTLE_DRAW = 'SETTLE_DRAW';
 // Note related action type
 export const SET_NOTE = 'SET_NOTE';
 export const GET_NOTES = 'GET_NOTES';
+export const SUBMIT_NOTES = 'SUBMIT_NOTES';

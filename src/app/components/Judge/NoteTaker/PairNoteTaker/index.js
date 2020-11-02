@@ -7,7 +7,7 @@ import type {
   StateProps,
   DispatchProps,
 } from './component';
-import { getSetNoteAction } from '../../../action-creators/note';
+import { getSetNoteAction } from '../../../../action-creators/note';
 
 function mapStateToProps(state: ReduxState): StateProps {
   const round = getRound(state);

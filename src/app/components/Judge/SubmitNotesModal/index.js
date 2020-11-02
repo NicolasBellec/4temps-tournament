@@ -3,9 +3,9 @@
 
 import { connect } from 'react-redux';
 import type { StateProps, DispatchProps } from './component';
-import { submitNotes } from '../../../api/note';
 import Component from './component';
 import NoteChecker from '../../../../domain/note-checker';
+import { getSubmitNotesAction } from '../../../../action-creators/note';
 
 function mapStateToProps(state: ReduxState): StateProps {
   const tournament = getTournament(state);
@@ -83,10 +83,7 @@ function getTournament(state: ReduxState): Tournament {
 function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   return {
     onSubmit: (tournamentId: string, notes: Array<JudgeNote>) => {
-      dispatch({
-        type: 'SUBMIT_NOTES',
-        promise: submitNotes(tournamentId, notes),
-      });
+      dispatch(getSubmitNotesAction(tournamentId, notes));
     },
   };
 }
