@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 async function parseResponse<T>(response: Response): Promise<T> {
   const { status } = response;
@@ -19,8 +19,7 @@ async function parseResponse<T>(response: Response): Promise<T> {
   } else if (status !== 200) {
     throw 'API Failure';
   } else {
-    // $FlowFixMe
-    return;
+    throw 'contentType Failure'
   }
 }
 
