@@ -12,6 +12,7 @@ import {
   GET_SINGLE_TOURNAMENT,
   CREATE_TOURNAMENT,
   TOURNAMENT_UPDATED,
+  EDIT_TOURNAMENT
 } from '../action-types';
 import { subscribeToUpdatesForTournaments } from '../../api/realtime';
 
@@ -80,4 +81,14 @@ export function getTournamentUpdatedAction(
     type: TOURNAMENT_UPDATED,
     payload: normalized,
   };
+}
+
+export function getEditTournamentAction(
+  tournamentId: string,
+  tournament: Tournament
+): EditTournamentAction {
+  return {
+    type: EDIT_TOURNAMENT,
+    promise: updateTournament(tournamentId, tournament),
+  }
 }

@@ -4,7 +4,9 @@ import type { RouterHistory } from 'react-router-dom';
 
 import { updateTournament } from '../../../api/tournament';
 
-import { getAdminTournamentsAction } from '../../../action-creators/tournament';
+import {
+  getAdminTournamentsAction,
+  getEditTournamentAction } from '../../../action-creators/tournament';
 
 import EditTournamentGeneral from './component';
 import PreloadContainer from '../../PreloadContainer';
@@ -45,10 +47,8 @@ function mapDispatchToProps(
   { tournamentId, history }: ConnectedProps,
 ) {
   return {
-    onSubmit: (tournament: Tournament) => dispatch({
-      type: 'EDIT_TOURNAMENT',
-      promise: updateTournament(tournamentId, tournament),
-    }),
+    onSubmit: (tournament: Tournament) =>
+      dispatch(getEditTournamentAction(tournamentId, tournament)),
     onClickLeaderboard: () => history.push(`/leaderboard/${tournamentId}`),
     load: () => dispatch(getAdminTournamentsAction()),
   };
