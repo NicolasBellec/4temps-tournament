@@ -1,7 +1,7 @@
 // @flow
 
 import { createParticipant, changeAttendance } from '../../api/participant';
-import { CREATE_PARTICIPANT, CHANGE_ATTENDANCE } from '../action-types';
+import { CREATE_PARTICIPANT, CHANGE_ATTENDANCE, SELECT_PAIR } from '../action-types';
 
 export function getCreateParticipantAction(
   tournamentId: string,
@@ -29,4 +29,8 @@ export function getChangeAttendanceAction(
     type: CHANGE_ATTENDANCE,
     promise: changeAttendance(tournamentId, id, isAttending),
   };
+}
+
+export function getSelectPairAction(pair: string): SelectPairAction {
+  return { type: SELECT_PAIR, payload: pair };
 }

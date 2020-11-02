@@ -1,14 +1,13 @@
 // no-flow
 
 import { connect } from 'react-redux';
-
 import Component from './component';
 import type {
   CriterionViewModel,
   StateProps,
   DispatchProps,
 } from './component';
-import { setTemporaryNote } from '../../../../api/note';
+import { getSetNoteAction } from '../../../action-creators/note';
 
 function mapStateToProps(state: ReduxState): StateProps {
   const round = getRound(state);
@@ -125,28 +124,8 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   return {
     onClick: (tournamentId: string, note: JudgeNote) => {
       const { leaderId, followerId } = getIds(note.participantId);
-      dispatch({
-        type: 'SET_NOTE',
-        promise: setTemporaryNote(tournamentId, {
-          ...note,
-          participantId: leaderId,
-        }),
-        payload: {
-          ...note,
-          participantId: leaderId,
-        },
-      });
-      dispatch({
-        type: 'SET_NOTE',
-        promise: setTemporaryNote(tournamentId, {
-          ...note,
-          participantId: followerId,
-        }),
-        payload: {
-          ...note,
-          participantId: followerId,
-        },
-      });
+      dispatch(getSetNoteAction(tournamentId, note, leaderId));
+      dispatch(getSetNoteAction(tournamentId, note, followerId));
     },
   };
 }

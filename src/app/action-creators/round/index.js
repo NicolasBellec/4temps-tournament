@@ -4,12 +4,14 @@ import type { RouterHistory } from 'react-router-dom';
 import {
   createRound,
   deleteRound,
-  startRound
+  startRound,
+  settleDraw
 } from '../../api/round';
 import {
   CREATE_ROUND,
   DELETE_ROUND,
-  START_ROUND
+  START_ROUND,
+  SETTLE_DRAW
  } from '../action-types';
 
 export function getCreateRoundAction(
@@ -43,5 +45,15 @@ export function getStartRoundAction(
     meta: {
       onSuccess: () => history.push(`/tournament/${tournamentId}/round/${roundId}`),
     },
+  };
+}
+
+export function getSettleDrawAction(
+  tournamentId: string,
+  roundScores: Array<Score>
+): SettleDrawAction {
+  return {
+    type: SETTLE_DRAW,
+    promise: settleDraw(tournamentId, roundScores),
   };
 }

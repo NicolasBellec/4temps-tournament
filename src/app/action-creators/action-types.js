@@ -29,8 +29,14 @@ export const CREATE_JUDGE = 'CREATE_JUDGE';
 // Participant related action type
 export const CREATE_PARTICIPANT = 'CREATE_PARTICIPANT';
 export const CHANGE_ATTENDANCE = 'CHANGE_ATTENDANCE';
+export const SELECT_PAIR = 'SELECT_PAIR';
 
 // Round related action type
 export const CREATE_ROUND = 'CREATE_ROUND';
 export const DELETE_ROUND = 'DELETE_ROUND';
 export const START_ROUND = 'START_ROUND';
+export const SETTLE_DRAW = 'SETTLE_DRAW';
+
+// Note related action type
+export const SET_NOTE = 'SET_NOTE';
+export const GET_NOTES = 'GET_NOTES';

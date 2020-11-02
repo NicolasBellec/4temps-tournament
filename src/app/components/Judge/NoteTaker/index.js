@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PreloadContainer from '../../PreloadContainer';
 import Component from './component';
 import type { StateProps } from './component';
-import { getTemporaryNotesForDance } from '../../../api/note';
+import { getGetNotesAction } from '../../../action-creators/note';
 
 type Props = {
   tournamentId: string,
@@ -31,10 +31,7 @@ function mapDispatchToProps(
   { tournamentId, danceId }: Props,
 ) {
   return {
-    load: () => dispatch({
-      type: 'GET_NOTES',
-      promise: getTemporaryNotesForDance(tournamentId, danceId),
-    }),
+    load: () => dispatch(getGetNotesAction(tournamentId, danceId))
   };
 }
 

@@ -1,13 +1,12 @@
 // no-flow
 
 import { connect } from 'react-redux';
-
-import { settleDraw } from '../../../api/round';
 import DrawSettler from './component';
 import type {
   Props as ComponentProps,
   ActionProps as ComponentActionProps,
 } from './component';
+import { getSettleDrawAction } from '../../../action-creators/round';
 
 type HydratedScore = { score: number, participant: Participant };
 
@@ -155,10 +154,7 @@ function mapDispatchToProps(
 ): ComponentActionProps {
   return {
     submitRoundScores: (roundScores: Array<Score>) => {
-      dispatch({
-        type: 'SETTLE_DRAW',
-        promise: settleDraw(tournamentId, roundScores),
-      });
+      dispatch(getSettleDrawAction(tournamentId, roundScores));
     },
   };
 }

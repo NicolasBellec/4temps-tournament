@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import type { PairViewModel, StateProps, DispatchProps } from './component';
 import Component from './component';
+import { getSelectPairAction } from '../../../action-creators/participant';
 
 type Props = {
   roundId: string,
@@ -101,7 +102,7 @@ function getPairsOfRound(round: Round): Array<Pair> {
 function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   return {
     onClickPair: (pair: string) => {
-      dispatch({ type: 'SELECT_PAIR', payload: pair });
+      dispatch(getSelectPairAction(pair));
     },
   };
 }

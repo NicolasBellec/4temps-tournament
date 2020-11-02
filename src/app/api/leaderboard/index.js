@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { apiGetRequest } from '../util';
 
