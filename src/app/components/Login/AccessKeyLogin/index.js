@@ -14,7 +14,7 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { history }: Props) {
   return {
-    onSubmit: (accessKey: string) => dispatch(getLoginWithAccessKey(accessKey))
+    onSubmit: (accessKey: string) => dispatch(getLoginWithAccessKey(accessKey, history)),
   };
 }
 

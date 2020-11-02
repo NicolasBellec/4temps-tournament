@@ -38,8 +38,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
         dispatch(getAdminTournamentsAction());
       }
     },
-    onChangeAttending: (id, isAttending) =>
-      dispatch(getChangeAttendanceAction(tournamentId, id, isAttending))
+    onChangeAttending: (id, isAttending) => dispatch(getChangeAttendanceAction(tournamentId, id, isAttending)),
   };
 }
 

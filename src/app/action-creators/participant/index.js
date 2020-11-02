@@ -1,13 +1,17 @@
 // @flow
 
 import { createParticipant, changeAttendance } from '../../api/participant';
-import { CREATE_PARTICIPANT, CHANGE_ATTENDANCE, SELECT_PAIR } from '../action-types';
+import {
+  CREATE_PARTICIPANT,
+  CHANGE_ATTENDANCE,
+  SELECT_PAIR,
+} from '../action-types';
 
 export function getCreateParticipantAction(
   tournamentId: string,
   name: string,
-  role: ParticipantRole
-) : CreateParticipantAction {
+  role: ParticipantRole,
+): CreateParticipantAction {
   return {
     type: CREATE_PARTICIPANT,
     promise: createParticipant(tournamentId, {
@@ -23,8 +27,8 @@ export function getCreateParticipantAction(
 export function getChangeAttendanceAction(
   tournamentId: string,
   id: string,
-  isAttending: bool
-) : ChangeAttendanceAction {
+  isAttending: boolean,
+): ChangeAttendanceAction {
   return {
     type: CHANGE_ATTENDANCE,
     promise: changeAttendance(tournamentId, id, isAttending),

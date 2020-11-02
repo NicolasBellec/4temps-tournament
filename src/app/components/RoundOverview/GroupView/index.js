@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 
 import Component from './component';
 import type { RoundViewModel, DanceNotes } from './component';
+import { regenerateGroup } from '../../../api/round';
 import {
-  startNextDance,
-  generateGroupsForRound,
-  endDance,
-  regenerateGroup,
-} from '../../../api/round';
+  getStartNextDanceAction,
+  getGenerateGroupsAction,
+  getEndDanceAction,
+} from '../../../action-creators/round';
 
 type Props = {
   tournamentId: string,
@@ -178,20 +178,11 @@ function mapDispatchToProps(
   { roundId, tournamentId }: Props,
 ) {
   return {
-    startDance: () => dispatch({
-      type: 'START_NEXT_DANCE',
-      promise: startNextDance(tournamentId),
-    }),
+    startDance: () => dispatch(getStartNextDanceAction(tournamentId)),
     generateGroups: () => {
-      dispatch({
-        type: 'GENERATE_GROUPS',
-        promise: generateGroupsForRound(tournamentId, roundId),
-      });
+      dispatch(getGenerateGroupsAction(tournamentId, roundId));
     },
-    endDance: () => dispatch({
-      type: 'END_DANCE',
-      promise: endDance(tournamentId),
-    }),
+    endDance: () => dispatch(getEndDanceAction(tournamentId)),
     regenerateGroup: (groupId: string) => {
       regenerateGroup(tournamentId, roundId, groupId);
     },

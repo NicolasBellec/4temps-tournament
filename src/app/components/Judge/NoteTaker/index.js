@@ -31,7 +31,7 @@ function mapDispatchToProps(
   { tournamentId, danceId }: Props,
 ) {
   return {
-    load: () => dispatch(getGetNotesAction(tournamentId, danceId))
+    load: () => dispatch(getGetNotesAction(tournamentId, danceId)),
   };
 }
 

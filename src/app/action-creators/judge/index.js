@@ -6,7 +6,7 @@ import { CREATE_JUDGE } from '../action-types';
 export function getCreateJudgeAction(
   tournamentId: string,
   name: string,
-  judgeType: JudgeType
+  judgeType: JudgeType,
 ): CreateJudgeAction {
   return {
     type: CREATE_JUDGE,

@@ -1,14 +1,14 @@
 // @flow
 
-import type { RouterHistory } from 'react-router-dom';
-import { loginAdmin, logoutAdmin } from '../../api/admin';
-import { LOGIN_USER, LOGOUT_USER } from '../action-types';
+import type { RouterHistory, Location } from 'react-router-dom';
+import { loginAdmin, logoutAdmin, createAdmin } from '../../api/admin';
+import { LOGIN_USER, LOGOUT_USER, SIGNUP } from '../action-types';
 
 export function getLoginUserAction(
-  credential: AdminCredentials,
+  credentials: AdminCredentials,
   history: RouterHistory,
-  referer: string
-): LoginUserAction {
+  referer: string,
+): LoginAction {
   return {
     type: LOGIN_USER,
     promise: loginAdmin(credentials),
@@ -18,12 +18,26 @@ export function getLoginUserAction(
   };
 }
 
-export function getLogoutUserAction(history: RouterHistory) : LogoutUserAction {
+export function getLogoutUserAction(history: RouterHistory): LogoutAction {
   return {
     type: LOGOUT_USER,
     promise: logoutAdmin(),
     meta: {
       onSuccess: () => history.push('/'),
+    },
+  };
+}
+
+export function getSignUpAction(
+  admin: AdminWithPassword,
+  history: RouterHistory,
+  location: Location,
+): SignUpAction {
+  return {
+    type: SIGNUP,
+    promise: createAdmin(admin),
+    meta: {
+      onSuccess: () => history.push(`/login${location.search}`),
     },
   };
 }

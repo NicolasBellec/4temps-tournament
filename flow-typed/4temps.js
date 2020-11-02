@@ -434,7 +434,7 @@ declare type ReduxAction =
   | DeleteRoundAction
   | CreateJudgeAction
   | StartRoundAction
-  | LoginJudgeAction
+  | LoginWithAccessKeyAction
   | GetAccessKeysAction
   | StartNextDanceAction
   | EndDanceAction
@@ -447,7 +447,8 @@ declare type ReduxAction =
   | SelectPairAction
   | GetLeaderboardAction
   | CreateAssistantAction
-  | SettleDrawAction;
+  | SettleDrawAction
+  | SubmitNotesAction;
 
 // Redux Actions
 declare type LogoutAction = {
@@ -536,7 +537,7 @@ declare type StartRoundAction = {
   type: 'START_ROUND',
   promise: Promise < mixed >
 };
-declare type LoginJudgeAction = {
+declare type LoginWithAccessKeyAction = {
   type: 'LOGIN_WITH_ACCESS_KEY',
   promise: mixed
 };
@@ -599,4 +600,9 @@ declare type GetLeaderboardAction = {
 declare type SettleDrawAction = {
   type: 'SETTLE_DRAW',
   promise: mixed
+};
+
+declare type SubmitNotesAction = {
+  type: 'SUBMIT_NOTES',
+  promise: Promise<mixed>
 };

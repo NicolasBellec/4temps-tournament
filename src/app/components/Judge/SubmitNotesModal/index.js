@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import type { StateProps, DispatchProps } from './component';
 import Component from './component';
 import NoteChecker from '../../../../domain/note-checker';
-import { getSubmitNotesAction } from '../../../../action-creators/note';
+import { getSubmitNotesAction } from '../../../action-creators/note';
 
 function mapStateToProps(state: ReduxState): StateProps {
   const tournament = getTournament(state);

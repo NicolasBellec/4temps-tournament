@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import type { RouterHistory } from 'react-router-dom';
 import PreloadContainer from '../../../PreloadContainer';
 import List from './component';
-import { getAdminTournamentsAction, } from '../../../../action-creators/tournament';
+import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
 import {
   getDeleteRoundAction,
-  getStartRoundAction
+  getStartRoundAction,
 } from '../../../../action-creators/round';
 
 type Props = {
@@ -37,10 +37,8 @@ function mapDispatchToProps(
 ) {
   return {
     load: () => dispatch(getAdminTournamentsAction()),
-    deleteRound: (deleteId: string) =>
-      dispatch(getDeleteRoundAction(tournamentId, deleteId)),
-    startRound: (roundId: string) =>
-      dispatch(getStartRoundAction(tournamentId, roundId, history)),
+    deleteRound: (deleteId: string) => dispatch(getDeleteRoundAction(tournamentId, deleteId)),
+    startRound: (roundId: string) => dispatch(getStartRoundAction(tournamentId, roundId, history)),
     onClick: (roundId: string) => history.push(`/tournament/${tournamentId}/round/${roundId}`),
   };
 }

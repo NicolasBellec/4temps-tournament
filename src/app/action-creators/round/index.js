@@ -5,18 +5,24 @@ import {
   createRound,
   deleteRound,
   startRound,
-  settleDraw
+  settleDraw,
+  startNextDance,
+  generateGroupsForRound,
+  endDance,
 } from '../../api/round';
 import {
   CREATE_ROUND,
   DELETE_ROUND,
   START_ROUND,
-  SETTLE_DRAW
- } from '../action-types';
+  SETTLE_DRAW,
+  START_NEXT_DANCE,
+  GENERATE_GROUPS,
+  END_DANCE,
+} from '../action-types';
 
 export function getCreateRoundAction(
   tournamentId: string,
-  round: Round
+  round: Round,
 ): CreateRoundAction {
   return {
     type: CREATE_ROUND,
@@ -26,7 +32,7 @@ export function getCreateRoundAction(
 
 export function getDeleteRoundAction(
   tournamentId: string,
-  deleteId: string
+  deleteId: string,
 ): DeleteRoundAction {
   return {
     type: DELETE_ROUND,
@@ -37,8 +43,8 @@ export function getDeleteRoundAction(
 export function getStartRoundAction(
   tournamentId: string,
   roundId: string,
-  history: RouterHistory
-) : StartRoundAction {
+  history: RouterHistory,
+): StartRoundAction {
   return {
     type: START_ROUND,
     promise: startRound(tournamentId, roundId),
@@ -50,10 +56,36 @@ export function getStartRoundAction(
 
 export function getSettleDrawAction(
   tournamentId: string,
-  roundScores: Array<Score>
+  roundScores: Array<Score>,
 ): SettleDrawAction {
   return {
     type: SETTLE_DRAW,
     promise: settleDraw(tournamentId, roundScores),
+  };
+}
+
+export function getStartNextDanceAction(
+  tournamentId: string,
+): StartNextDanceAction {
+  return {
+    type: START_NEXT_DANCE,
+    promise: startNextDance(tournamentId),
+  };
+}
+
+export function getGenerateGroupsAction(
+  tournamentId: string,
+  roundId: string,
+): GenerateGroupsAction {
+  return {
+    type: GENERATE_GROUPS,
+    promise: generateGroupsForRound(tournamentId, roundId),
+  };
+}
+
+export function getEndDanceAction(tournamentId: string): EndDanceAction {
+  return {
+    type: END_DANCE,
+    promise: endDance(tournamentId),
   };
 }

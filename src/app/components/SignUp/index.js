@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import type { Location, RouterHistory } from 'react-router-dom';
 
 import SignUp from './component';
-import { createAdmin } from '../../api/admin';
+import { getSignUpAction } from '../../action-creators/admin';
 
 type Props = {
   history: RouterHistory,
@@ -19,13 +19,7 @@ function mapDispatchToProps(
   { history, location }: Props,
 ) {
   return {
-    onSubmit: (admin: AdminWithPassword) => dispatch({
-      type: 'SIGNUP',
-      promise: createAdmin(admin),
-      meta: {
-        onSuccess: () => history.push(`/login${location.search}`),
-      },
-    }),
+    onSubmit: (admin: AdminWithPassword) => dispatch(getSignUpAction(admin, history, location)),
   };
 }
 

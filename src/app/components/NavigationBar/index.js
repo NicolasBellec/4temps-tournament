@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import type { Location, RouterHistory } from 'react-router-dom';
-import { getLogoutUserAction } from '../../../action-creators/admin';
+import { getLogoutUserAction } from '../../action-creators/admin';
 import NavigationBar from './component';
 
 type Props = {
@@ -32,8 +32,7 @@ function mapDispatchToProps(
   { history }: { history: RouterHistory },
 ) {
   return {
-    onClickLogout: () =>
-      dispatch(getLogoutUserAction(history))
+    onClickLogout: () => dispatch(getLogoutUserAction(history)),
   };
 }
 

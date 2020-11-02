@@ -23,8 +23,7 @@ function mapStateToProps(
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    onSubmit: ({ name, role }: ComponentState) =>
-    dispatch(getCreateParticipantAction(tournamentId, name, role))
+    onSubmit: ({ name, role }: ComponentState) => dispatch(getCreateParticipantAction(tournamentId, name, role)),
   };
 }
 

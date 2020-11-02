@@ -2,7 +2,9 @@
 import { apiGetRequest, apiPostRequest } from '../util';
 import isValidAccessKey from '../../../validators/validate-access-key';
 
-export function getAccessKeysForTournament(tournamentId: string): Promise<Response> {
+export function getAccessKeysForTournament(
+  tournamentId: string,
+): Promise<Response> {
   return apiGetRequest(`/api/access-key/${tournamentId}`);
 }
 
