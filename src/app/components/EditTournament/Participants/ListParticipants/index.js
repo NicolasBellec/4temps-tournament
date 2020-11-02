@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 
 import ListParticipants from './component';
 import PreloadContainer from '../../../PreloadContainer';
-import { changeAttendance } from '../../../../api/participant';
 import {
   getAdminTournamentsAction,
   getSingleTournamentAction,
 } from '../../../../action-creators/tournament';
+import { getChangeAttendanceAction } from '../../../../action-reactors/participant';
 
 type Props = {
   tournamentId: string,
@@ -38,10 +38,9 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
         dispatch(getAdminTournamentsAction());
       }
     },
-    onChangeAttending: (id, isAttending) => dispatch({
-      type: 'CHANGE_ATTENDANCE',
-      promise: changeAttendance(tournamentId, id, isAttending),
-    }),
+    onChangeAttending: (id, isAttending) =>
+      dispatch(getChangeAttendanceAction(tournamentId, id, isAttending))
+    ),
   };
 }
 

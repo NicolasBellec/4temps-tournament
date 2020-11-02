@@ -28,3 +28,4 @@ export const CREATE_JUDGE = 'CREATE_JUDGE';
 
 // Participant related action type
 export const CREATE_PARTICIPANT = 'CREATE_PARTICIPANT';
+export const CHANGE_ATTENDANCE = 'CHANGE_ATTENDANCE';

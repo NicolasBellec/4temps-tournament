@@ -438,7 +438,7 @@ declare type ReduxAction =
   | GetAccessKeysAction
   | StartNextDanceAction
   | EndDanceAction
-  | ChangeAttendance
+  | ChangeAttendanceAction
   | GetJudgeTournament
   | GetSingleTournament
   | GenerateGroupsAction
@@ -551,9 +551,9 @@ declare type StartNextDanceAction = {
   promise: mixed
 };
 
-declare type ChangeAttendance = {
+declare type ChangeAttendanceAction = {
   type: 'CHANGE_ATTENDANCE',
-  promise: mixed
+  promise: Promise<mixed>
 };
 
 declare type GetJudgeTournament = {
