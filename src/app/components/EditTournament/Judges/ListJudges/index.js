@@ -34,11 +34,14 @@ function mapStateToProps(
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
     load: () => {
-      dispatch({
-        type: 'GET_ACCESS_KEYS',
-        promise: getAccessKeysForTournament(tournamentId),
-      });
       dispatch(getAdminTournamentsAction());
+      dispatch(
+        // TODO: Move
+        {
+          type: 'GET_ACCESS_KEYS',
+          promise: getAccessKeysForTournament(tournamentId),
+        },
+      );
     },
   };
 }

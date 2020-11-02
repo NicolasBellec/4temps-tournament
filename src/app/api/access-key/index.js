@@ -1,12 +1,12 @@
-// no-flow
+// @flow
 import { apiGetRequest, apiPostRequest } from '../util';
 import isValidAccessKey from '../../../validators/validate-access-key';
 
-export function getAccessKeysForTournament(tournamentId: string): mixed {
+export function getAccessKeysForTournament(tournamentId: string): Promise<Response> {
   return apiGetRequest(`/api/access-key/${tournamentId}`);
 }
 
-export function loginWithAccessKey(accessKey: string) {
+export function loginWithAccessKey(accessKey: string): Promise<Response> {
   if (!isValidAccessKey(accessKey)) {
     throw { isValidAccessKey: false, doesAccessKeyExist: true };
   }

@@ -435,7 +435,7 @@ declare type ReduxAction =
   | CreateJudgeAction
   | StartRoundAction
   | LoginJudgeAction
-  | GetAccessKeys
+  | GetAccessKeysAction
   | StartNextDanceAction
   | EndDanceAction
   | ChangeAttendance
@@ -541,9 +541,9 @@ declare type LoginJudgeAction = {
   promise: mixed
 };
 
-declare type GetAccessKeys = {
+declare type GetAccessKeysAction = {
   type: 'GET_ACCESS_KEYS',
-  promise: mixed
+  promise: Promise < mixed >
 };
 
 declare type StartNextDanceAction = {
