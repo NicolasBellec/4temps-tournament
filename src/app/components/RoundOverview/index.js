@@ -25,7 +25,7 @@ function mapStateToProps(state: ReduxState, { match }: Props) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch) {
   return {
-    load: () => dispatch(getAdminTournamentsAction),
+    load: () => dispatch(getAdminTournamentsAction()),
   };
 }
 

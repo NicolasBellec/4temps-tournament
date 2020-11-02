@@ -33,8 +33,8 @@ function mapDispatchToProps(
   { tournamentId, history }: Props,
 ) {
   return {
-    load: () => dispatch(getAdminTournamentsAction),
     deleteRound: (deleteId: string) => dispatch({
+    load: () => dispatch(getAdminTournamentsAction()),
       type: 'DELETE_ROUND',
       promise: deleteRound(tournamentId, deleteId),
     }),

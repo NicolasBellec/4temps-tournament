@@ -50,7 +50,7 @@ function mapDispatchToProps(
       promise: updateTournament(tournamentId, tournament),
     }),
     onClickLeaderboard: () => history.push(`/leaderboard/${tournamentId}`),
-    load: () => dispatch(getAdminTournamentsAction),
+    load: () => dispatch(getAdminTournamentsAction()),
   };
 }
 
