@@ -119,11 +119,14 @@ function getPair(state: ReduxState): { leaderId: string, followerId: string } {
 function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   return {
     onClick: (tournamentId: string, note: JudgeNote) => {
-      dispatch({
-        type: 'SET_NOTE',
-        promise: setTemporaryNote(tournamentId, note),
-        payload: note,
-      });
+      dispatch(
+        // TODO: Move : in conflict with another SET_NOTE
+        {
+          type: 'SET_NOTE',
+          promise: setTemporaryNote(tournamentId, note),
+          payload: note,
+        },
+      );
     },
   };
 }

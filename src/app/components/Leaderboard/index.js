@@ -32,18 +32,21 @@ function mapDispatchToProps(
   }
 
   return {
-    load: () => dispatch({
-      type: 'GET_LEADERBOARD',
-      promise: getLeaderboardForTournament(tournamentId || ''),
-      meta: {
-        onSuccess: () => subscribeToLeaderboardForTournament(tournamentId || ''),
-        onFailure: (res) => {
-          if (!res.didFindTournament) {
-            history.push('/404');
-          }
+    load: () => dispatch(
+      // TODO: Move: Conflict
+      {
+        type: 'GET_LEADERBOARD',
+        promise: getLeaderboardForTournament(tournamentId || ''),
+        meta: {
+          onSuccess: () => subscribeToLeaderboardForTournament(tournamentId || ''),
+          onFailure: (res) => {
+            if (!res.didFindTournament) {
+              history.push('/404');
+            }
+          },
         },
       },
-    }),
+    ),
   };
 }
 
