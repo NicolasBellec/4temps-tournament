@@ -12,19 +12,19 @@ class DeleteRoundRoute {
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     const handler = new DeleteRoundRouteHandler(
       this._userId(req),
-      this._tournamentRepository
+      this._tournamentRepository,
     );
 
     try {
       handler.parseParams(req.params);
       if (
-        (await handler.isUserAuthorized()) &&
-        !(await handler.isRoundStartedOrFinished())
+        (await handler.isUserAuthorized())
+        && !(await handler.isRoundStartedOrFinished())
       ) {
         await handler.deleteRound();
         res.json({
           tournamentId: handler.getTournamentId(),
-          roundId: handler.getRoundId()
+          roundId: handler.getRoundId(),
         });
       } else {
         res.sendStatus(401);
@@ -34,9 +34,7 @@ class DeleteRoundRoute {
     }
   };
 
-  _userId = (req: ServerApiRequest) => {
-    return req.session.user != null ? req.session.user.id : '';
-  };
+  _userId = (req: ServerApiRequest) => (req.session.user != null ? req.session.user.id : '');
 
   _handleError = (e: { [string]: mixed }, res: ServerApiResponse) => {
     if (e.status != null && typeof e.status === 'number') {
@@ -49,9 +47,11 @@ class DeleteRoundRoute {
 
 class DeleteRoundRouteHandler {
   _userId: string;
+
   _tournamentRepository: TournamentRepository;
 
   _roundId: string;
+
   _tournamentId: string;
 
   constructor(userId: string, tournamentRepository: TournamentRepository) {
@@ -61,12 +61,12 @@ class DeleteRoundRouteHandler {
 
   parseParams = (params: mixed) => {
     if (
-      typeof params === 'object' &&
-      params != null &&
-      params.roundId != null &&
-      typeof params.roundId === 'string' &&
-      params.tournamentId != null &&
-      typeof params.tournamentId === 'string'
+      typeof params === 'object'
+      && params != null
+      && params.roundId != null
+      && typeof params.roundId === 'string'
+      && params.tournamentId != null
+      && typeof params.tournamentId === 'string'
     ) {
       this._roundId = params.roundId;
       this._tournamentId = params.tournamentId;
@@ -75,13 +75,9 @@ class DeleteRoundRouteHandler {
     }
   };
 
-  getRoundId = () => {
-    return this._roundId;
-  };
+  getRoundId = () => this._roundId;
 
-  getTournamentId = () => {
-    return this._tournamentId;
-  };
+  getTournamentId = () => this._tournamentId;
 
   isUserAuthorized = async () => {
     const tournament = await this._tournamentRepository.get(this._tournamentId);

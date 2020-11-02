@@ -8,19 +8,19 @@ import { createMalusCriterion } from '../util';
 
 export default function route(
   tournamentRepository: TournamentRepository,
-  accessRepository: AccessKeyRepository
+  accessRepository: AccessKeyRepository,
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const tournamentId = req.params.tournamentId;
+      const { tournamentId } = req.params;
       const { name, judgeType } = parseJudge(req.body);
       const judge = { name, judgeType, id: ObjectId.generate() };
 
       // $FlowFixMe
       if (validateJudge(judge)) {
         if (
-          hasPresidentJudge(await tournamentRepository.get(tournamentId)) &&
-          judgeType === 'president'
+          hasPresidentJudge(await tournamentRepository.get(tournamentId))
+          && judgeType === 'president'
         ) {
           throw new HasPresidentError();
         }
@@ -29,13 +29,13 @@ export default function route(
         await accessRepository.createForTournamentAndUserWithRole(
           tournamentId,
           judge.id,
-          'judge'
+          'judge',
         );
 
         if (judge.judgeType === 'sanctioner') {
           await addMalusCriterionToRoundsIfNotExists(
             tournamentId,
-            tournamentRepository
+            tournamentRepository,
           );
         }
 
@@ -51,10 +51,10 @@ export default function route(
 
 function parseJudge(body: mixed): { name: string, judgeType: string } {
   if (
-    typeof body === 'object' &&
-    body != null &&
-    typeof body.name === 'string' &&
-    typeof body.judgeType === 'string'
+    typeof body === 'object'
+    && body != null
+    && typeof body.name === 'string'
+    && typeof body.judgeType === 'string'
   ) {
     return { name: body.name, judgeType: body.judgeType };
   }
@@ -64,7 +64,7 @@ function parseJudge(body: mixed): { name: string, judgeType: string } {
 function statusFromError(e: mixed) {
   if (e instanceof ParseError) {
     return 400;
-  } else if (e instanceof HasPresidentError) {
+  } if (e instanceof HasPresidentError) {
     return 409;
   }
   return 500;
@@ -72,7 +72,7 @@ function statusFromError(e: mixed) {
 
 async function addMalusCriterionToRoundsIfNotExists(
   tournamentId: string,
-  tournamentRepository: TournamentRepository
+  tournamentRepository: TournamentRepository,
 ) {
   const tournament = await tournamentRepository.get(tournamentId);
   if (!tournament) {
@@ -89,14 +89,14 @@ async function addMalusCriterionToRoundsIfNotExists(
 
 function hasMalusCriterion(round: Round): boolean {
   return round.criteria.some(
-    ({ forJudgeType }) => forJudgeType === 'sanctioner'
+    ({ forJudgeType }) => forJudgeType === 'sanctioner',
   );
 }
 
 function hasPresidentJudge(tournament: ?Tournament): boolean {
   return (
-    tournament != null &&
-    tournament.judges.some(judge => judge.judgeType === 'president')
+    tournament != null
+    && tournament.judges.some((judge) => judge.judgeType === 'president')
   );
 }
 

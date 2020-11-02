@@ -11,7 +11,7 @@ type Props = {
   referer: string,
   path: string,
   component: ComponentType<*>,
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
 };
 
 const PrivateRoute = ({
@@ -19,32 +19,28 @@ const PrivateRoute = ({
   isAuthenticated,
   referer,
   ...rest
-}: Props) => {
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        isAuthenticated === true ? (
-          <Component {...props} />
-        ) : (
-          <SignUpOrLogin
-            {...props}
-            header="Please log in or sign up"
-            referer={referer}
-          />
-        )
-      }
-    />
-  );
-};
+}: Props) => (
+  <Route
+    {...rest}
+    render={(props) => (isAuthenticated === true ? (
+      <Component {...props} />
+    ) : (
+      <SignUpOrLogin
+        {...props}
+        header="Please log in or sign up"
+        referer={referer}
+      />
+    ))}
+  />
+);
 
 function mapStateToProps(
   { user }: ReduxState,
-  { location }: { location: Location }
+  { location }: { location: Location },
 ) {
   return {
     isAuthenticated: user.id !== '',
-    referer: location.pathname
+    referer: location.pathname,
   };
 }
 

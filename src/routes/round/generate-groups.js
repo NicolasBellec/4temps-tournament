@@ -12,11 +12,11 @@ export default class GenerateGroupsRoute {
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const tournamentId = req.params.tournamentId;
+      const { tournamentId } = req.params;
       const handler = new GenerateGroupsRouteHandler(
         this._repository,
         tournamentId,
-        req.params.roundId
+        req.params.roundId,
       );
 
       await handler.startRound();
@@ -28,14 +28,14 @@ export default class GenerateGroupsRoute {
 
   _statusFromError = (e: mixed) => {
     if (
-      e instanceof RoundNotFoundError ||
-      e instanceof TournamentNotFoundError
+      e instanceof RoundNotFoundError
+      || e instanceof TournamentNotFoundError
     ) {
       return 404;
-    } else if (
-      e instanceof DanceStartedError ||
-      e instanceof NotStartedError ||
-      e instanceof AlreadyFinishedError
+    } if (
+      e instanceof DanceStartedError
+      || e instanceof NotStartedError
+      || e instanceof AlreadyFinishedError
     ) {
       return 400;
     }
@@ -45,25 +45,26 @@ export default class GenerateGroupsRoute {
 
 class GenerateGroupsRouteHandler {
   _repository: TournamentRepository;
+
   _tournamentId: string;
+
   _roundId: string;
 
   _tournament: Tournament;
+
   _round: Round;
 
   constructor(
     repository: TournamentRepository,
     tournamentId: string,
-    roundId: string
+    roundId: string,
   ) {
     this._repository = repository;
     this._tournamentId = tournamentId;
     this._roundId = roundId;
   }
 
-  getUpdatedRound = () => {
-    return this._round;
-  };
+  getUpdatedRound = () => this._round;
 
   startRound = async () => {
     this._tournament = await this._getTournament();
@@ -100,7 +101,7 @@ class GenerateGroupsRouteHandler {
   };
 
   _createDances = (danceCount: number) => {
-    let dances: Array<Dance> = [];
+    const dances: Array<Dance> = [];
     for (let i = 0; i < danceCount; ++i) {
       dances.push({ id: ObjectId.generate(), active: false, finished: false });
     }
@@ -118,7 +119,7 @@ class GenerateGroupsRouteHandler {
 
   _getRound = (): Round => {
     const matches = this._tournament.rounds.filter(
-      ({ id }) => id === this._roundId
+      ({ id }) => id === this._roundId,
     );
 
     if (matches.length === 0) {
@@ -128,17 +129,14 @@ class GenerateGroupsRouteHandler {
     return matches[0];
   };
 
-  _hasActiveOrFinishedDance = (): boolean => {
-    return this._round.groups.reduce(
-      (acc, group) =>
-        acc ||
-        group.dances.reduce(
+  _hasActiveOrFinishedDance = (): boolean => this._round.groups.reduce(
+    (acc, group) => acc
+        || group.dances.reduce(
           (acc, dance) => acc || dance.active || dance.finished,
-          false
+          false,
         ),
-      false
-    );
-  };
+    false,
+  );
 }
 
 function TournamentNotFoundError() {}

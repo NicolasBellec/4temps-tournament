@@ -17,12 +17,12 @@ function mapStateToProps(state: ReduxState): StateProps {
     tournament.judges,
     activeRound.criteria,
     notes,
-    { allowNegative: true, countPresident: true }
+    { allowNegative: true, countPresident: true },
   ).scoreDance(danceId);
 
   return {
     columns: divideScoreIntoColumns(state, danceScores),
-    tournamentId: state.tournaments.forJudge
+    tournamentId: state.tournaments.forJudge,
   };
 }
 
@@ -30,27 +30,23 @@ function getTournament(state: ReduxState): Tournament {
   const tournament = state.tournaments.byId[state.tournaments.forJudge];
   return {
     ...tournament,
-    rounds: tournament.rounds.map(id => state.rounds.byId[id]),
-    judges: tournament.judges.map(id => state.judges.byId[id])
+    rounds: tournament.rounds.map((id) => state.rounds.byId[id]),
+    judges: tournament.judges.map((id) => state.judges.byId[id]),
   };
 }
 
 function getNotesForActiveDance(
   state: ReduxState,
-  activeDanceId: string
+  activeDanceId: string,
 ): Array<JudgeNote> {
   return Object.keys(state.notes.byParticipant)
-    .reduce((notes, participantId) => {
-      return [
-        ...notes,
-        ...Object.keys(state.notes.byParticipant[participantId]).reduce(
-          (acc, critId) => {
-            return [...acc, state.notes.byParticipant[participantId][critId]];
-          },
-          []
-        )
-      ];
-    }, [])
+    .reduce((notes, participantId) => [
+      ...notes,
+      ...Object.keys(state.notes.byParticipant[participantId]).reduce(
+        (acc, critId) => [...acc, state.notes.byParticipant[participantId][critId]],
+        [],
+      ),
+    ], [])
     .filter(({ danceId }) => danceId === activeDanceId);
 }
 
@@ -66,21 +62,21 @@ function getActiveDanceId(round: Round): string {
 
 function getActiveRound(state: ReduxState): Round {
   const tournament = state.tournaments.byId[state.tournaments.forJudge];
-  const rounds = tournament.rounds.map(id => state.rounds.byId[id]);
+  const rounds = tournament.rounds.map((id) => state.rounds.byId[id]);
   // $FlowFixMe
   return rounds.reduce((res, round) => (round.active ? round : res), null);
 }
 
 function divideScoreIntoColumns(
   state: ReduxState,
-  danceScores: Array<Score>
+  danceScores: Array<Score>,
 ): Array<ColumnViewModel> {
   const scoreMap = danceScores.reduce(
     (acc, score) => ({
       ...acc,
-      [score.participantId]: score
+      [score.participantId]: score,
     }),
-    {}
+    {},
   );
   if (isLastRound(state) || isClassicTournament(state)) {
     return [getPairColumn(state, scoreMap, getPairs(state))];
@@ -112,13 +108,13 @@ function getPairs(state: ReduxState): Array<Pair> {
 function getPairColumn(
   state: ReduxState,
   danceScores: { [id: string]: Array<Score> },
-  pairs: Array<Pair>
+  pairs: Array<Pair>,
 ): ColumnViewModel {
   const scoreViewModels = pairs
-    .map(pair => ({
+    .map((pair) => ({
       name: getPairName(state, pair),
       value:
-        danceScores[pair.leader] != null ? danceScores[pair.leader].score : 0
+        danceScores[pair.leader] != null ? danceScores[pair.leader].score : 0,
     }))
     .sort((a, b) => b.value - a.value);
   return { title: 'Couples', danceScores: scoreViewModels };
@@ -128,31 +124,29 @@ function getPairName(state: ReduxState, { leader, follower }: Pair) {
   if (isClassicTournament(state)) {
     return state.participants.byId[leader].attendanceId;
   }
-  return `L${state.participants.byId[leader].attendanceId} - F${
-    state.participants.byId[follower].attendanceId
-  }`;
+  return `L${state.participants.byId[leader].attendanceId} - F${state.participants.byId[follower].attendanceId}`;
 }
 
 function getSeparateColumns(
   state: ReduxState,
   danceScores: { [id: string]: Array<Score> },
-  pairs: Array<Pair>
+  pairs: Array<Pair>,
 ): Array<ColumnViewModel> {
   const leaderViewModels = pairs
     .map(({ leader }) => ({
       name: `L${state.participants.byId[leader].attendanceId}`,
-      value: danceScores[leader] != null ? danceScores[leader].score : 0
+      value: danceScores[leader] != null ? danceScores[leader].score : 0,
     }))
     .sort((a, b) => b.value - a.value);
   const followerViewModels = pairs
     .map(({ follower }) => ({
       name: `L${state.participants.byId[follower].attendanceId}`,
-      value: danceScores[follower] != null ? danceScores[follower].score : 0
+      value: danceScores[follower] != null ? danceScores[follower].score : 0,
     }))
     .sort((a, b) => b.value - a.value);
   return [
     { title: 'Leaders', danceScores: leaderViewModels },
-    { title: 'Followers', danceScores: followerViewModels }
+    { title: 'Followers', danceScores: followerViewModels },
   ];
 }
 

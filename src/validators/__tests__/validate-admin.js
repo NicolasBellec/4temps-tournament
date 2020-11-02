@@ -7,7 +7,7 @@ test('Valid object is valid', async () => {
     firstName: 'Simon',
     lastName: 'Smith',
     email: 'test@test.com',
-    password: 'p4ssw0rdh4xxor'
+    password: 'p4ssw0rdh4xxor',
   };
   const result = await validateAdmin(admin);
   expect(result.isValid).toBe(true);
@@ -23,7 +23,7 @@ test('Empty first name is invalid', async () => {
     firstName: '',
     lastName: 'Smith',
     email: 'test@test.com',
-    password: 'p4ssw0rdh4xxor'
+    password: 'p4ssw0rdh4xxor',
   };
   const result = await validateAdmin(admin);
 
@@ -41,7 +41,7 @@ test('Empty last name is invalid', async () => {
     firstName: 'Simon',
     lastName: '',
     email: 'test@test.com',
-    password: 'p4ssw0rdh4xxor'
+    password: 'p4ssw0rdh4xxor',
   };
 
   const result = await validateAdmin(admin);
@@ -60,7 +60,7 @@ test('Password requires at least 8 characters', async () => {
     firstName: 'Simon',
     lastName: 'Smith',
     email: 'test@test.com',
-    password: 'abc4567'
+    password: 'abc4567',
   };
 
   const result = await validateAdmin(admin);
@@ -76,11 +76,11 @@ test('Password requires at least 8 characters', async () => {
 
 test('Email requires valid format', async () => {
   const emails = ['@test.com', 't@t', 't@.com'];
-  const admins: Array<AdminWithPassword> = emails.map(email => ({
+  const admins: Array<AdminWithPassword> = emails.map((email) => ({
     firstName: 'Simon',
     lastName: 'Smith',
     email,
-    password: 'Password123'
+    password: 'Password123',
   }));
 
   for (let i = 0; i < admins.length; ++i) {
@@ -97,26 +97,22 @@ test('Email requires valid format', async () => {
 });
 
 test('Email in use is invalid', async () => {
-  const getAdmins = () => {
-    return new Promise(resolve =>
-      resolve([
-        {
-          // $FlowFixMe
-          _id: 'asdasd',
-          firstName: 'Other',
-          lastName: 'Other',
-          email: 'test@test.com',
-          password: 'asasdasdasd'
-        }
-      ])
-    );
-  };
+  const getAdmins = () => new Promise((resolve) => resolve([
+    {
+      // $FlowFixMe
+      _id: 'asdasd',
+      firstName: 'Other',
+      lastName: 'Other',
+      email: 'test@test.com',
+      password: 'asasdasdasd',
+    },
+  ]));
 
   const admin: AdminWithPassword = {
     firstName: 'Simon',
     lastName: 'Smith',
     email: 'test@test.com',
-    password: 'Password123'
+    password: 'Password123',
   };
 
   const result = await validateAdmin(admin, getAdmins);

@@ -4,19 +4,19 @@ import { handle } from 'redux-pack';
 
 export default function leaderboardsReducer(
   state: LeaderboardsReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): LeaderboardsReduxState {
   const { type, payload } = action;
   switch (type) {
   case 'GET_LEADERBOARD':
     return handle(state, action, {
-      success: prevState => ({
+      success: (prevState) => ({
         ...prevState,
         byId: {
           ...prevState.byId,
-          [payload.tournamentId]: payload
-        }
-      })
+          [payload.tournamentId]: payload,
+        },
+      }),
     });
   }
 

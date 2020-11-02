@@ -8,18 +8,20 @@ export function allow(...role: Array<PermissionRole>) {
 }
 
 export function authorizationMiddleware(repository: TournamentRepository) {
-  return (...roles: Array<PermissionRole>) => {
-    return new AuthorizationChecker(roles, repository).middleware();
-  };
+  return (...roles: Array<PermissionRole>) => new AuthorizationChecker(roles, repository).middleware();
 }
 
 class AuthorizationChecker {
   _roles: Array<PermissionRole>;
+
   _repository: TournamentRepository;
 
   _res: ServerApiResponse;
+
   _next: NextFunction;
+
   _user: ?{ id: string, role: PermissionRole };
+
   _tournamentId: string;
 
   constructor(roles: Array<PermissionRole>, repository: TournamentRepository) {
@@ -30,7 +32,7 @@ class AuthorizationChecker {
   middleware = () => async (
     req: ServerApiRequest,
     res: ServerApiResponse,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     this._res = res;
     this._next = next;
@@ -54,7 +56,7 @@ class AuthorizationChecker {
       authenticated: this._isAllowedAuthenticated,
       judge: this._isAllowedJudge,
       admin: this._isAllowedAdmin,
-      assistant: this._isAllowedAssistant
+      assistant: this._isAllowedAssistant,
     };
 
     let accumulator: boolean = false;
@@ -66,13 +68,12 @@ class AuthorizationChecker {
   };
 
   _isAllowedPublic = async () => true;
-  _isAllowedAuthenticated = async () =>
-    this._user != null && this._user.role === 'admin';
 
-  _isAllowedAdmin = async () =>
-    this._user != null &&
-    this._user.role === 'admin' &&
-    this._isAdminOfTournament(await this._getTournament());
+  _isAllowedAuthenticated = async () => this._user != null && this._user.role === 'admin';
+
+  _isAllowedAdmin = async () => this._user != null
+    && this._user.role === 'admin'
+    && this._isAdminOfTournament(await this._getTournament());
 
   _isAdminOfTournament = async (tournament: Tournament) => {
     if (tournament == null) {
@@ -83,10 +84,9 @@ class AuthorizationChecker {
     return tournament.creatorId == userId;
   };
 
-  _isAllowedJudge = async () =>
-    this._user != null &&
-    this._user.role === 'judge' &&
-    this._isJudgeInTournament(await this._getTournament());
+  _isAllowedJudge = async () => this._user != null
+    && this._user.role === 'judge'
+    && this._isJudgeInTournament(await this._getTournament());
 
   _getTournament = async (): Promise<Tournament> => {
     const tournament = await this._repository.get(this._tournamentId);
@@ -102,10 +102,9 @@ class AuthorizationChecker {
     return tournament.judges.filter(({ id }) => id === judgeId).length === 1;
   };
 
-  _isAllowedAssistant = async () =>
-    this._user != null &&
-    this._user.role === 'assistant' &&
-    this._isAssistantInTournament(await this._getTournament());
+  _isAllowedAssistant = async () => this._user != null
+    && this._user.role === 'assistant'
+    && this._isAssistantInTournament(await this._getTournament());
 
   _isAssistantInTournament = (tournament: Tournament): boolean => {
     const assistantId = this._user == null ? '' : this._user.id;

@@ -10,7 +10,7 @@ import {
   createCriterion,
   NoteRepositoryImpl,
   createJudge,
-  createDance
+  createDance,
 } from '../../../test-utils';
 import EndDanceRoute from '../end-dance';
 
@@ -31,16 +31,16 @@ describe('End dance route', () => {
   const participants = [
     { ...createParticipant(), role: 'leader' },
     { ...createParticipant(), role: 'follower' },
-    { ...createParticipant(), role: 'leader' }
+    { ...createParticipant(), role: 'leader' },
   ];
   const criterion = {
     ...createCriterion(),
-    type: 'one'
+    type: 'one',
   };
   const dance = {
     id: generateId(),
     active: true,
-    finished: false
+    finished: false,
   };
 
   const tournament: Tournament = {
@@ -61,21 +61,21 @@ describe('End dance route', () => {
             pairs: [
               {
                 leader: participants[0].id,
-                follower: participants[1].id
-              }
+                follower: participants[1].id,
+              },
             ],
             dances: [
               dance,
               {
                 id: generateId(),
                 active: false,
-                finished: false
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                finished: false,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   };
 
   test('Return 404 if there is no active dance', async () => {
@@ -90,17 +90,17 @@ describe('End dance route', () => {
           groups: [
             {
               ...tournament.rounds[0].groups[0],
-              dances: [{ ...dance, active: false }]
-            }
-          ]
-        }
-      ]
+              dances: [{ ...dance, active: false }],
+            },
+          ],
+        },
+      ],
     });
 
     const route = new EndDanceRoute(
       tournamentRepo,
       noteRepo,
-      updateLeaderboardFunc
+      updateLeaderboardFunc,
     );
 
     const req = Request.withParams({ tournamentId: tournament.id });
@@ -123,13 +123,13 @@ describe('End dance route', () => {
       criterionId: criterion.id,
       participantId: participants[0].id,
       value: 3,
-      danceId: dance.id
+      danceId: dance.id,
     });
 
     const route = new EndDanceRoute(
       tournamentRepo,
       noteRepo,
-      updateLeaderboardFunc
+      updateLeaderboardFunc,
     );
 
     const req = Request.withParams({ tournamentId: tournament.id });
@@ -149,19 +149,19 @@ describe('End dance route', () => {
       ...createRound(),
       active: true,
       finished: false,
-      draw: true
+      draw: true,
     };
 
     const tournament: Tournament = {
       ...createTournament(),
-      rounds: [round]
+      rounds: [round],
     };
     await tournamentRepo.create(tournament);
 
     const route = new EndDanceRoute(
       tournamentRepo,
       noteRepo,
-      updateLeaderboardFunc
+      updateLeaderboardFunc,
     );
 
     const req = Request.withParams({ tournamentId: tournament.id });
@@ -181,10 +181,10 @@ describe('End dance route', () => {
           ...tournament.rounds[0].groups[0],
           dances: [
             { ...dance, active: false, finished: true },
-            tournament.rounds[0].groups[0].dances[1]
-          ]
-        }
-      ]
+            tournament.rounds[0].groups[0].dances[1],
+          ],
+        },
+      ],
     };
 
     const noteRepo: NoteRepositoryImpl = new NoteRepositoryImpl();
@@ -196,14 +196,14 @@ describe('End dance route', () => {
         criterionId: criterion.id,
         participantId: participants[0].id,
         value: 7,
-        danceId: dance.id
+        danceId: dance.id,
       });
       await noteRepo.createOrUpdate({
         judgeId: judge.id,
         criterionId: criterion.id,
         participantId: participants[1].id,
         value: 3,
-        danceId: dance.id
+        danceId: dance.id,
       });
     });
 
@@ -216,7 +216,7 @@ describe('End dance route', () => {
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -232,7 +232,7 @@ describe('End dance route', () => {
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -242,7 +242,7 @@ describe('End dance route', () => {
 
       expect(res.getStatus()).toBe(200);
       expect((await tournamentRepo.get(tournament.id)).rounds[0]).toEqual(
-        expectedBody
+        expectedBody,
       );
     });
 
@@ -257,11 +257,11 @@ describe('End dance route', () => {
               {
                 ...tournament.rounds[0].groups[0].dances[1],
                 active: true,
-                finished: false
-              }
-            ]
-          }
-        ]
+                finished: false,
+              },
+            ],
+          },
+        ],
       };
 
       const expectedRound = {
@@ -274,25 +274,25 @@ describe('End dance route', () => {
               {
                 ...tournament.rounds[0].groups[0].dances[1],
                 active: false,
-                finished: true
-              }
-            ]
+                finished: true,
+              },
+            ],
           },
           {
             pairs: [
               {
                 leader: participants[2].id, // new participant
-                follower: participants[1].id
-              }
+                follower: participants[1].id,
+              },
             ],
             dances: [
               {
                 active: false,
-                finished: false
-              }
-            ]
-          }
-        ]
+                finished: false,
+              },
+            ],
+          },
+        ],
       };
 
       const danceId = tournament.rounds[0].groups[0].dances[1].id;
@@ -301,14 +301,14 @@ describe('End dance route', () => {
         criterionId: criterion.id,
         participantId: participants[0].id,
         value: 3,
-        danceId
+        danceId,
       });
       await noteRepo.createOrUpdate({
         judgeId: judge.id,
         criterionId: criterion.id,
         participantId: participants[1].id,
         value: 3,
-        danceId
+        danceId,
       });
 
       tournamentRepo.updateRound(tournament.id, updatedRound);
@@ -316,7 +316,7 @@ describe('End dance route', () => {
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -326,7 +326,7 @@ describe('End dance route', () => {
 
       expect(res.getStatus()).toBe(200);
       expect((await tournamentRepo.get(tournament.id)).rounds[0]).toMatchObject(
-        expectedRound
+        expectedRound,
       );
     });
 
@@ -349,14 +349,14 @@ describe('End dance route', () => {
                 pairs: [
                   {
                     leader: participants[0].id,
-                    follower: participants[1].id
-                  }
+                    follower: participants[1].id,
+                  },
                 ],
-                dances: [dance]
-              }
-            ]
-          }
-        ]
+                dances: [dance],
+              },
+            ],
+          },
+        ],
       };
 
       await tournamentRepo.create(tournament);
@@ -367,20 +367,20 @@ describe('End dance route', () => {
         finished: true,
         roundScores: [
           { participantId: participants[0].id, score: 7 },
-          { participantId: participants[1].id, score: 3 }
+          { participantId: participants[1].id, score: 3 },
         ],
         groups: [
           {
             ...tournament.rounds[0].groups[0],
-            dances: [{ ...dance, active: false, finished: true }]
-          }
-        ]
+            dances: [{ ...dance, active: false, finished: true }],
+          },
+        ],
       };
 
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -395,12 +395,12 @@ describe('End dance route', () => {
     test("If it's the last dance, finish the round, generate scores and winners, multiple groups", async () => {
       const newParticipants = [
         { ...createParticipant(), role: 'leader' },
-        { ...createParticipant(), role: 'follower' }
+        { ...createParticipant(), role: 'follower' },
       ];
       const newDance: Dance = {
         id: generateId(),
         active: true,
-        finished: false
+        finished: false,
       };
 
       const tournament: Tournament = {
@@ -409,7 +409,7 @@ describe('End dance route', () => {
           participants[0],
           participants[1],
           newParticipants[0],
-          newParticipants[1]
+          newParticipants[1],
         ],
         judges: [judge],
         rounds: [
@@ -427,24 +427,24 @@ describe('End dance route', () => {
                 pairs: [
                   {
                     leader: participants[0].id,
-                    follower: participants[1].id
-                  }
+                    follower: participants[1].id,
+                  },
                 ],
-                dances: [{ ...dance, active: false, finished: true }]
+                dances: [{ ...dance, active: false, finished: true }],
               },
               {
                 id: generateId(),
                 pairs: [
                   {
                     leader: newParticipants[0].id,
-                    follower: newParticipants[1].id
-                  }
+                    follower: newParticipants[1].id,
+                  },
                 ],
-                dances: [newDance]
-              }
-            ]
-          }
-        ]
+                dances: [newDance],
+              },
+            ],
+          },
+        ],
       };
 
       await tournamentRepo.create(tournament);
@@ -453,14 +453,14 @@ describe('End dance route', () => {
         criterionId: criterion.id,
         participantId: newParticipants[0].id,
         value: 2,
-        danceId: newDance.id
+        danceId: newDance.id,
       });
       await noteRepo.createOrUpdate({
         judgeId: judge.id,
         criterionId: criterion.id,
         participantId: newParticipants[1].id,
         value: 1,
-        danceId: newDance.id
+        danceId: newDance.id,
       });
 
       const expectedRound: Round = {
@@ -471,21 +471,21 @@ describe('End dance route', () => {
           { participantId: participants[0].id, score: 7 },
           { participantId: participants[1].id, score: 3 },
           { participantId: newParticipants[0].id, score: 2 },
-          { participantId: newParticipants[1].id, score: 1 }
+          { participantId: newParticipants[1].id, score: 1 },
         ],
         groups: [
           tournament.rounds[0].groups[0],
           {
             ...tournament.rounds[0].groups[1],
-            dances: [{ ...newDance, active: false, finished: true }]
-          }
-        ]
+            dances: [{ ...newDance, active: false, finished: true }],
+          },
+        ],
       };
 
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -511,7 +511,7 @@ describe('End dance route', () => {
       const danceGroup: DanceGroup = {
         id: generateId(),
         pairs: [{ leader: l1.id, follower: f1.id }],
-        dances: [dance]
+        dances: [dance],
       };
 
       const round: Round = {
@@ -523,7 +523,7 @@ describe('End dance route', () => {
         draw: false,
         criteria: [criterion],
         passingCouplesCount: 1,
-        groups: [danceGroup]
+        groups: [danceGroup],
       };
 
       const judge: Judge = createJudge();
@@ -532,18 +532,17 @@ describe('End dance route', () => {
         ...createTournament(),
         judges: [judge],
         participants: [l1, l2, l3, f1, f2, f3],
-        rounds: [round]
+        rounds: [round],
       };
       await tournamentRepo.create(tournament);
 
-      const addNoteForParticipant = (participant: Participant): Promise<void> =>
-        noteRepo.createOrUpdate({
-          judgeId: judge.id,
-          criterionId: criterion.id,
-          participantId: participant.id,
-          value: 1,
-          danceId: dance.id
-        });
+      const addNoteForParticipant = (participant: Participant): Promise<void> => noteRepo.createOrUpdate({
+        judgeId: judge.id,
+        criterionId: criterion.id,
+        participantId: participant.id,
+        value: 1,
+        danceId: dance.id,
+      });
 
       await addNoteForParticipant(l1);
       await addNoteForParticipant(f1);
@@ -551,7 +550,7 @@ describe('End dance route', () => {
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -582,7 +581,7 @@ describe('End dance route', () => {
       const danceGroup: DanceGroup = {
         id: generateId(),
         pairs: [pair1, pair2],
-        dances: [dance]
+        dances: [dance],
       };
 
       const round: Round = {
@@ -592,7 +591,7 @@ describe('End dance route', () => {
         draw: false,
         criteria: [criterion],
         passingCouplesCount: 1,
-        groups: [danceGroup]
+        groups: [danceGroup],
       };
 
       const judge: Judge = createJudge();
@@ -601,18 +600,17 @@ describe('End dance route', () => {
         ...createTournament(),
         judges: [judge],
         participants: [l1, l2, f1, f2],
-        rounds: [round]
+        rounds: [round],
       };
       await tournamentRepo.create(tournament);
 
-      const addNoteForParticipant = (participant: Participant): Promise<void> =>
-        noteRepo.createOrUpdate({
-          judgeId: judge.id,
-          criterionId: criterion.id,
-          participantId: participant.id,
-          value: 1,
-          danceId: dance.id
-        });
+      const addNoteForParticipant = (participant: Participant): Promise<void> => noteRepo.createOrUpdate({
+        judgeId: judge.id,
+        criterionId: criterion.id,
+        participantId: participant.id,
+        value: 1,
+        danceId: dance.id,
+      });
 
       await addNoteForParticipant(l1);
       await addNoteForParticipant(l2);
@@ -622,7 +620,7 @@ describe('End dance route', () => {
       const route = new EndDanceRoute(
         tournamentRepo,
         noteRepo,
-        updateLeaderboardFunc
+        updateLeaderboardFunc,
       );
 
       const req = Request.withParams({ tournamentId: tournament.id });
@@ -634,7 +632,7 @@ describe('End dance route', () => {
       expect(res.getBody()).toMatchObject({
         draw: true,
         finished: false,
-        active: true
+        active: true,
       });
       // $FlowFixMe
       const scores = res.getBody().roundScores;

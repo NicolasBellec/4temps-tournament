@@ -4,22 +4,23 @@ import type { PairViewModel, StateProps, DispatchProps } from './component';
 import Component from './component';
 
 type Props = {
-  roundId: string
+  roundId: string,
 };
 
 function mapStateToProps(
-  { tournaments, ui, rounds, participants, notes }: ReduxState,
-  { roundId }: Props
+  {
+    tournaments, ui, rounds, participants, notes,
+  }: ReduxState,
+  { roundId }: Props,
 ): StateProps {
   const round = rounds.byId[roundId];
   const pairs = getPairViewModels(
     round,
     participants,
     notes,
-    isClassicTournament(tournaments)
+    isClassicTournament(tournaments),
   );
-  const activePairId =
-    ui.notes.selectedPair == null ? pairs[0].id : ui.notes.selectedPair;
+  const activePairId = ui.notes.selectedPair == null ? pairs[0].id : ui.notes.selectedPair;
   return {
     activePairId,
     upperLayerPairs: pairs.map((pair, i) => {
@@ -33,7 +34,7 @@ function mapStateToProps(
         return null;
       }
       return pair;
-    })
+    }),
   };
 }
 
@@ -46,12 +47,12 @@ function getPairViewModels(
   round: Round,
   participants: ParticipantsReduxState,
   notes: NotesReduxState,
-  isClassic: boolean
+  isClassic: boolean,
 ): Array<PairViewModel> {
   const pairs = getPairsOfRound(round);
   const criterionCount = round.criteria.length;
 
-  return pairs.map(pair => {
+  return pairs.map((pair) => {
     const leader = participants.byId[pair.leader || ''];
     const follower = participants.byId[pair.follower || ''];
 
@@ -59,15 +60,15 @@ function getPairViewModels(
       id: leader.id + follower.id,
       name: getPairName({ leader, follower }, isClassic),
       hasAllNotes:
-        hasAllNotes(leader.id, notes, criterionCount) &&
-        hasAllNotes(follower.id, notes, criterionCount)
+        hasAllNotes(leader.id, notes, criterionCount)
+        && hasAllNotes(follower.id, notes, criterionCount),
     };
   });
 }
 
 function getPairName(
   { leader, follower }: { leader: Participant, follower: Participant },
-  isClassic: boolean
+  isClassic: boolean,
 ): string {
   if (isClassic) {
     return String(leader.attendanceId);
@@ -78,7 +79,7 @@ function getPairName(
 function hasAllNotes(
   participantId: string,
   notes: NotesReduxState,
-  criterionCount: number
+  criterionCount: number,
 ) {
   if (notes.byParticipant[participantId] == null) {
     return false;
@@ -90,7 +91,7 @@ function hasAllNotes(
 
 function getPairsOfRound(round: Round): Array<Pair> {
   return round.groups.reduce((res, group) => {
-    if (group.dances.findIndex(dance => dance.active) !== -1) {
+    if (group.dances.findIndex((dance) => dance.active) !== -1) {
       return group.pairs;
     }
     return res;
@@ -101,13 +102,13 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   return {
     onClickPair: (pair: string) => {
       dispatch({ type: 'SELECT_PAIR', payload: pair });
-    }
+    },
   };
 }
 
 const SelectPairGridContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default SelectPairGridContainer;

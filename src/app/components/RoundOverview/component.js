@@ -11,32 +11,30 @@ export type TabName = 'groups' | 'scores';
 
 export type Props = {
   tournamentId: string,
-  roundId: string
+  roundId: string,
 };
 
 type State = {
-  activeTab: TabName
+  activeTab: TabName,
 };
 
 class RoundOverview extends Component<Props, State> {
   state = {
-    activeTab: 'groups'
+    activeTab: 'groups',
   };
 
   onClickTab = (tab: TabName) => {
     this.setState({ activeTab: tab });
   };
 
-  renderTab = () => {
-    return this.state.activeTab === 'groups' ? (
-      <GroupView
-        tournamentId={this.props.tournamentId}
-        roundId={this.props.roundId}
-      />
-    ) : (
-      <ScoreView roundId={this.props.roundId} />
-    );
-  };
+  renderTab = () => (this.state.activeTab === 'groups' ? (
+    <GroupView
+      tournamentId={this.props.tournamentId}
+      roundId={this.props.roundId}
+    />
+  ) : (
+    <ScoreView roundId={this.props.roundId} />
+  ));
 
   render() {
     return (

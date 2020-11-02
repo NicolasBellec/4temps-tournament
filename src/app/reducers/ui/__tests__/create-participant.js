@@ -13,12 +13,12 @@ describe('Create participant UI reducer', () => {
       validation: {
         isValidParticipant: true,
         isValidName: true,
-        isValidRole: true
-      }
+        isValidRole: true,
+      },
     };
 
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
+      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
     ).toEqual(state);
     expect(getInitialState()).toEqual(state);
   });
@@ -27,20 +27,20 @@ describe('Create participant UI reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'INVALID_ACTION')
-      )
+        makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
+      ),
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'),
+      ),
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')
-      )
+        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'),
+      ),
     ).toEqual(getInitialState());
   });
 
@@ -48,10 +48,10 @@ describe('Create participant UI reducer', () => {
     const state = getInitialState();
 
     expect(
-      reducer(state, makePackAction(LIFECYCLE.START, 'CREATE_PARTICIPANT'))
+      reducer(state, makePackAction(LIFECYCLE.START, 'CREATE_PARTICIPANT')),
     ).toEqual({
       ...state,
-      isLoading: true
+      isLoading: true,
     });
   });
 
@@ -61,16 +61,16 @@ describe('Create participant UI reducer', () => {
       validation: {
         isValidParticipant: false,
         isValidName: true,
-        isValidRole: false
-      }
+        isValidRole: false,
+      },
     };
 
     expect(
-      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT'))
+      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT')),
     ).toEqual({
       isLoading: false,
       createdSuccessfully: true,
-      validation: getInitialState().validation
+      validation: getInitialState().validation,
     });
   });
 
@@ -78,18 +78,18 @@ describe('Create participant UI reducer', () => {
     const payload = {
       isValidParticipant: false,
       isValidName: true,
-      isValidRole: false
+      isValidRole: false,
     };
     const state = getInitialState();
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.FAILURE, 'CREATE_PARTICIPANT', payload)
-      )
+        makePackAction(LIFECYCLE.FAILURE, 'CREATE_PARTICIPANT', payload),
+      ),
     ).toEqual({
       ...state,
       createdSuccessfully: false,
-      validation: payload
+      validation: payload,
     });
   });
 });

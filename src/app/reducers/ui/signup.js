@@ -4,20 +4,20 @@ import { handle } from 'redux-pack';
 
 function uiSignUp(
   state: UiSignUpReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiSignUpReduxState {
   const { type, payload } = action;
 
   switch (type) {
   case 'SIGNUP':
     return handle(state, action, {
-      start: prevState => ({ ...prevState, isLoading: true }),
+      start: (prevState) => ({ ...prevState, isLoading: true }),
       success: getInitialState,
-      failure: prevState => ({
+      failure: (prevState) => ({
         ...prevState,
         isLoading: false,
-        validation: payload
-      })
+        validation: payload,
+      }),
     });
   default:
     return state;
@@ -33,8 +33,8 @@ export function getInitialState(): UiSignUpReduxState {
       isValidFirstName: true,
       isValidLastName: true,
       isValidEmail: true,
-      isValidPassword: true
-    }
+      isValidPassword: true,
+    },
   };
 }
 

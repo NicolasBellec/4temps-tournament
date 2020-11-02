@@ -26,14 +26,14 @@ const reducer: Reducer<ReduxState, ReduxPackAction> = combineReducers({
   assistants,
   notes,
   leaderboards,
-  ui
+  ui,
 });
 
 export function getInitialState(): ReduxState {
   return reducer(
     // $FlowFixMe
     undefined,
-    makePackAction(LIFECYCLE.START, 'INVALID_ACTION')
+    makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
   );
 }
 

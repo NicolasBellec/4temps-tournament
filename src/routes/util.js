@@ -1,10 +1,10 @@
-// no-flow
+// @flow
 
 import ObjectId from 'bson-objectid';
 
 export type RouteResult<T> = Promise<{
   status: number,
-  body: T
+  body: T,
 }>;
 
 // eslint-disable-next-line
@@ -15,6 +15,6 @@ export function createMalusCriterion(): RoundCriterion {
     description: 'Negative points in percentage of maximum possible score',
     minValue: 0,
     maxValue: 100,
-    forJudgeType: 'sanctioner'
+    forJudgeType: 'sanctioner',
   };
 }

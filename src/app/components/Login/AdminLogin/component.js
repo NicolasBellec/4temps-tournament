@@ -1,7 +1,9 @@
 // no-flow
 
 import React, { PureComponent } from 'react';
-import { Button, Form, FormInput, Header, Message } from 'semantic-ui-react';
+import {
+  Button, Form, FormInput, Header, Message,
+} from 'semantic-ui-react';
 
 import './styles.css';
 
@@ -12,19 +14,19 @@ type Props = {
   isValidEmail: boolean,
   isValidPassword: boolean,
   doesAdminExist: boolean,
-  isLoading: boolean
+  isLoading: boolean,
 };
 
 type State = AdminCredentials;
 
 class Login extends PureComponent<Props, State> {
   static defaultProps = {
-    headerTitle: 'Log in'
+    headerTitle: 'Log in',
   };
 
   state = {
     email: '',
-    password: ''
+    password: '',
   };
 
   _onEmailChange = (event: SyntheticInputEvent<HTMLInputElement>) => {

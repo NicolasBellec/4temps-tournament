@@ -9,7 +9,7 @@ type CriterionDbModel = {
   minValue: number,
   maxValue: number,
   description: string,
-  forJudgeType: JudgeType
+  forJudgeType: JudgeType,
 };
 
 export type RoundDbModel = {
@@ -28,24 +28,24 @@ export type RoundDbModel = {
   groups: Array<DanceGroupDbModel>,
   errorOnSameScore: boolean,
   roundScores: Array<{ participantId: ObjectId, score: number }>,
-  tieBreakerJudge: ?string
+  tieBreakerJudge: ?string,
 };
 
 type DanceGroupDbModel = {
   _id: ObjectId,
   pairs: Array<{ follower: ?ObjectId, leader: ?ObjectId }>,
-  dances: Array<DanceDbModel>
+  dances: Array<DanceDbModel>,
 };
 
 type DanceDbModel = {
   _id: ObjectId,
   active: boolean,
-  finished: boolean
+  finished: boolean,
 };
 
 const danceSchema = new mongoose.Schema({
   active: Boolean,
-  finished: Boolean
+  finished: Boolean,
 });
 
 const groupSchema = new mongoose.Schema({
@@ -53,46 +53,46 @@ const groupSchema = new mongoose.Schema({
     {
       follower: {
         type: mongoose.Schema.Types.ObjectId,
-        required: false
+        required: false,
       },
       leader: {
         type: mongoose.Schema.Types.ObjectId,
-        required: false
-      }
-    }
+        required: false,
+      },
+    },
   ],
-  dances: [danceSchema]
+  dances: [danceSchema],
 });
 
 export const schema = new mongoose.Schema({
   name: { type: String, required: true },
   danceCount: {
     type: Number,
-    required: true
+    required: true,
   },
   minPairCountPerGroup: {
     type: Number,
-    required: true
+    required: true,
   },
   maxPairCountPerGroup: {
     type: Number,
-    required: true
+    required: true,
   },
   passingCouplesCount: {
     type: Number,
-    required: true
+    required: true,
   },
   multipleDanceScoringRule: {
     type: String,
-    required: true
+    required: true,
   },
   errorOnSameScore: {
     type: Boolean,
-    required: true
+    required: true,
   },
   notationSystem: {
     type: String,
-    required: true
+    required: true,
   },
   criteria: [
     {
@@ -100,86 +100,90 @@ export const schema = new mongoose.Schema({
       minValue: { type: Number, required: true },
       maxValue: { type: Number, required: true },
       description: { type: String, required: true },
-      forJudgeType: { type: String, required: true }
-    }
+      forJudgeType: { type: String, required: true },
+    },
   ],
   active: {
     type: Boolean,
-    required: true
+    required: true,
   },
   finished: {
     type: Boolean,
-    required: true
+    required: true,
   },
   draw: {
     type: Boolean,
-    required: true
+    required: true,
   },
   groups: [groupSchema],
   roundScores: {
-    type: [{ participantId: mongoose.Schema.Types.ObjectId, score: Number }]
+    type: [{ participantId: mongoose.Schema.Types.ObjectId, score: Number }],
   },
   tieBreakerJudge: {
     type: String,
-    required: false
-  }
+    required: false,
+  },
 });
 
 export function mapToDomainModel(round: RoundDbModel): Round {
-  const { _id, groups, criteria, roundScores, ...same } = round;
+  const {
+    _id, groups, criteria, roundScores, ...same
+  } = round;
 
   return {
     id: _id.toString(),
     criteria: criteria.map(({ _id, ...sameCrit }) => ({
       id: _id.toString(),
-      ...sameCrit
+      ...sameCrit,
     })),
-    groups: groups.map(g => ({
+    groups: groups.map((g) => ({
       id: g._id.toString(),
-      pairs: g.pairs.map(p => ({
+      pairs: g.pairs.map((p) => ({
         follower: p.follower == null ? null : p.follower.toString(),
-        leader: p.leader == null ? null : p.leader.toString()
+        leader: p.leader == null ? null : p.leader.toString(),
       })),
-      dances: g.dances.map(d => ({
+      dances: g.dances.map((d) => ({
         id: d._id.toString(),
         active: d.active,
-        finished: d.finished
-      }))
+        finished: d.finished,
+      })),
     })),
-    roundScores: roundScores.map(entry => ({
+    roundScores: roundScores.map((entry) => ({
       participantId: entry.participantId.toString(),
-      score: entry.score
+      score: entry.score,
     })),
-    ...same
+    ...same,
   };
 }
 
 export function mapToDbModel(round: Round): RoundDbModel {
-  const { id, groups, criteria, roundScores, ...same } = round;
+  const {
+    id, groups, criteria, roundScores, ...same
+  } = round;
 
   return {
     _id: new mongoose.Types.ObjectId(id),
     criteria: criteria.map(({ id, ...sameCrit }) => ({
       _id: new mongoose.Types.ObjectId(id),
-      ...sameCrit
+      ...sameCrit,
     })),
-    groups: groups.map(g => ({
+    groups: groups.map((g) => ({
       _id: new mongoose.Types.ObjectId(g.id),
-      pairs: g.pairs.map(p => ({
+      pairs: g.pairs.map((p) => ({
         follower:
           p.follower == null ? null : new mongoose.Types.ObjectId(p.follower),
-        leader: p.leader == null ? null : new mongoose.Types.ObjectId(p.leader)
+        leader: p.leader == null ? null : new mongoose.Types.ObjectId(p.leader),
       })),
-      dances: g.dances.map(d => ({
+      dances: g.dances.map((d) => ({
         _id: new mongoose.Types.ObjectId(d.id),
         active: d.active,
-        finished: d.finished
-      }))
+        finished: d.finished,
+      })),
     })),
-    roundScores: roundScores.map(entry => ({
+    roundScores: roundScores.map((entry) => ({
       participantId: new mongoose.Types.ObjectId(entry.participantId),
-      score: entry.score
+      score: entry.score,
     })),
-    ...same
+    ...same,
   };
 }

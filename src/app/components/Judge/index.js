@@ -3,19 +3,19 @@ import { connect } from 'react-redux';
 import Judge from './component';
 import type { Props as JudgeComponentProps } from './component';
 import PreloadContainer from '../PreloadContainer';
-import { getJudgeTournament } from '../../action-creators';
+import { getJudgeTournamentAction } from '../../action-creators/tournament';
 
 function mapStateToProps(state: ReduxState): JudgeComponentProps {
   const { tournaments, rounds, user } = state;
-  const activeRound =
-    tournaments.forJudge !== ''
-      ? getActiveRound(
-        rounds.forTournament[tournaments.forJudge].map(id => rounds.byId[id])
-      )
-      : null;
+  const activeRound = tournaments.forJudge !== ''
+    ? getActiveRound(
+      rounds.forTournament[tournaments.forJudge].map(
+        (id) => rounds.byId[id],
+      ),
+    )
+    : null;
 
-  const activeDanceId =
-    activeRound != null ? getActiveDanceId(activeRound) : null;
+  const activeDanceId = activeRound != null ? getActiveDanceId(activeRound) : null;
   return {
     Child: Judge,
     shouldLoad: tournaments.forJudge === '',
@@ -26,25 +26,24 @@ function mapStateToProps(state: ReduxState): JudgeComponentProps {
       tournaments.forJudge === ''
         ? false
         : isNotesSubmittedForDance(state, activeDanceId),
-    judgeId: user.id
+    judgeId: user.id,
   };
 }
 
 function isNotesSubmittedForDance(
   { user, tournaments }: ReduxState,
-  danceId: ?string
+  danceId: ?string,
 ) {
   const tournament = tournaments.byId[tournaments.forJudge];
   if (tournament.dancesNoted && tournament.dancesNoted[user.id]) {
     return tournament.dancesNoted[user.id].includes(danceId);
-  } else {
-    return false;
   }
+  return false;
 }
 
 function mapDispatchToProps(dispatch: ReduxDispatch) {
   return {
-    load: () => getJudgeTournament(dispatch)
+    load: () => dispatch(getJudgeTournamentAction()),
   };
 }
 
@@ -69,7 +68,7 @@ function getActiveRound(rounds: Array<Round>): ?Round {
 
 const JudgeContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default JudgeContainer;

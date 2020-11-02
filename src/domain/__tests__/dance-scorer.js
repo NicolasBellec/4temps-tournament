@@ -4,7 +4,7 @@ import {
   createParticipant,
   createJudge,
   generateId,
-  createCriterion
+  createCriterion,
 } from '../../test-utils';
 
 describe('Dance scorer', () => {
@@ -21,50 +21,50 @@ describe('Dance scorer', () => {
         participantId: participants[0].id,
         criterionId: criterionIds[0],
         danceId: dances[0],
-        value: 1
+        value: 1,
       },
       {
         judgeId: judges[1].id,
         participantId: participants[0].id,
         criterionId: criterionIds[0],
         danceId: dances[0],
-        value: 2
+        value: 2,
       },
       {
         judgeId: judges[1].id,
         participantId: participants[0].id,
         criterionId: criterionIds[1],
         danceId: dances[0],
-        value: 5
+        value: 5,
       },
       {
         judgeId: judges[0].id,
         participantId: participants[1].id,
         criterionId: criterionIds[0],
         danceId: dances[0],
-        value: 2
+        value: 2,
       },
       {
         judgeId: judges[0].id,
         participantId: participants[1].id,
         criterionId: criterionIds[0],
         danceId: dances[0],
-        value: 10
+        value: 10,
       },
       {
         judgeId: judges[0].id,
         participantId: participants[1].id,
         criterionId: criterionIds[1],
         danceId: dances[0],
-        value: 20
+        value: 20,
       },
       {
         judgeId: judges[0].id,
         participantId: participants[1].id,
         criterionId: criterionIds[1],
         danceId: dances[1],
-        value: 123
-      }
+        value: 123,
+      },
     ];
 
     // participant0 => 1 + 2 + 5 = 8
@@ -73,7 +73,7 @@ describe('Dance scorer', () => {
     const scorer = new DanceScorer(judges, criteria, notes);
     expect(scorer.scoreDance(dances[0])).toEqual([
       { participantId: participants[1].id, score: 32 },
-      { participantId: participants[0].id, score: 8 }
+      { participantId: participants[0].id, score: 8 },
     ]);
   });
 
@@ -91,15 +91,15 @@ describe('Dance scorer', () => {
         criterionId,
         danceId,
         participantId: participants[0],
-        value: 1
+        value: 1,
       },
       {
         judgeId,
         criterionId,
         danceId,
         participantId: participants[1],
-        value: 1
-      }
+        value: 1,
+      },
     ];
 
     const scorer = new DanceScorer([judge], [criterion], notes);
@@ -119,10 +119,10 @@ describe('Dance scorer', () => {
 
     const malus = parseFloat(
       (
-        (maxValueCrit1 + maxValueCrit2) *
-        positiveJudgeCount *
-        (1 - (100 - malusPercentage) / 100)
-      ).toFixed(2)
+        (maxValueCrit1 + maxValueCrit2)
+        * positiveJudgeCount
+        * (1 - (100 - malusPercentage) / 100)
+      ).toFixed(2),
     );
 
     const scoreValue = 2;
@@ -138,20 +138,20 @@ describe('Dance scorer', () => {
       ...createCriterion(),
       minValue: 0,
       maxValue: 4,
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
     const normalCriterion2 = {
       ...createCriterion(),
       minValue: 0,
       maxValue: 2,
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
 
     const malusCriterion = {
       ...createCriterion(),
       minValue: 0,
       maxValue: 100,
-      forJudgeType: 'sanctioner'
+      forJudgeType: 'sanctioner',
     };
 
     // for the normal judges, set the value of 2 on each criteria
@@ -163,10 +163,10 @@ describe('Dance scorer', () => {
           participantId: participant.id,
           criterionId,
           danceId,
-          value: scoreValue
-        }))
+          value: scoreValue,
+        })),
       ],
-      []
+      [],
     );
 
     notes.push({
@@ -174,16 +174,16 @@ describe('Dance scorer', () => {
       judgeId: sanctioner.id,
       criterionId: malusCriterion.id,
       participantId: participant.id,
-      value: 10 // 10% of max value
+      value: 10, // 10% of max value
     });
 
     const scorer = new DanceScorer(
       [normalJudge1, normalJudge2, sanctioner],
       [normalCriterion1, normalCriterion2, malusCriterion],
-      notes
+      notes,
     );
     expect(scorer.scoreDance(danceId)).toEqual([
-      { participantId: participant.id, score: expectedScore }
+      { participantId: participant.id, score: expectedScore },
     ]);
   });
 
@@ -197,14 +197,14 @@ describe('Dance scorer', () => {
       ...createCriterion(),
       minValue: 0,
       maxValue: 4,
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
 
     const malusCriterion = {
       ...createCriterion(),
       minValue: 0,
       maxValue: 100,
-      forJudgeType: 'sanctioner'
+      forJudgeType: 'sanctioner',
     };
 
     const notes: Array<JudgeNote> = [
@@ -213,23 +213,23 @@ describe('Dance scorer', () => {
         participantId: participant.id,
         criterionId: normalCriterion.id,
         danceId,
-        value: 2
+        value: 2,
       },
       {
         judgeId: sanctioner.id,
         participantId: participant.id,
         criterionId: malusCriterion.id,
         danceId,
-        value: 100
-      }
+        value: 100,
+      },
     ];
     const scorer = new DanceScorer(
       [normalJudge, sanctioner],
       [normalCriterion, malusCriterion],
-      notes
+      notes,
     );
     expect(scorer.scoreDance(danceId)).toEqual([
-      { participantId: participant.id, score: 0 }
+      { participantId: participant.id, score: 0 },
     ]);
   });
 
@@ -243,14 +243,14 @@ describe('Dance scorer', () => {
       ...createCriterion(),
       minValue: 0,
       maxValue: 4,
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
 
     const malusCriterion = {
       ...createCriterion(),
       minValue: 0,
       maxValue: 100,
-      forJudgeType: 'sanctioner'
+      forJudgeType: 'sanctioner',
     };
 
     const notes: Array<JudgeNote> = [
@@ -259,24 +259,24 @@ describe('Dance scorer', () => {
         participantId: participant.id,
         criterionId: normalCriterion.id,
         danceId,
-        value: 2
+        value: 2,
       },
       {
         judgeId: sanctioner.id,
         participantId: participant.id,
         criterionId: malusCriterion.id,
         danceId,
-        value: 100
-      }
+        value: 100,
+      },
     ];
     const scorer = new DanceScorer(
       [normalJudge, sanctioner],
       [normalCriterion, malusCriterion],
       notes,
-      { allowNegative: true, countPresident: false }
+      { allowNegative: true, countPresident: false },
     );
     expect(scorer.scoreDance(danceId)).toEqual([
-      { participantId: participant.id, score: -2 }
+      { participantId: participant.id, score: -2 },
     ]);
   });
 
@@ -285,7 +285,7 @@ describe('Dance scorer', () => {
     const presidentJudge: Judge = { ...createJudge(), judgeType: 'president' };
     const criterion: RoundCriterion = {
       ...createCriterion(),
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
     const danceId = generateId();
 
@@ -295,15 +295,15 @@ describe('Dance scorer', () => {
         participantId: participants[0].id,
         criterionId: criterion.id,
         danceId,
-        value: 1
+        value: 1,
       },
       {
         judgeId: presidentJudge.id,
         participantId: participants[1].id,
         criterionId: criterion.id,
         danceId,
-        value: 2
-      }
+        value: 2,
+      },
     ];
 
     const scorer = new DanceScorer([presidentJudge], [criterion], notes);
@@ -315,7 +315,7 @@ describe('Dance scorer', () => {
     const presidentJudge: Judge = { ...createJudge(), judgeType: 'president' };
     const criterion: RoundCriterion = {
       ...createCriterion(),
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
     const danceId = generateId();
 
@@ -325,24 +325,24 @@ describe('Dance scorer', () => {
         participantId: participants[0].id,
         criterionId: criterion.id,
         danceId,
-        value: 1
+        value: 1,
       },
       {
         judgeId: presidentJudge.id,
         participantId: participants[1].id,
         criterionId: criterion.id,
         danceId,
-        value: 2
-      }
+        value: 2,
+      },
     ];
 
     const scorer = new DanceScorer([presidentJudge], [criterion], notes, {
       allowNegative: false,
-      countPresident: true
+      countPresident: true,
     });
     expect(scorer.scoreDance(danceId)).toEqual([
       { participantId: participants[1].id, score: 2 },
-      { participantId: participants[0].id, score: 1 }
+      { participantId: participants[0].id, score: 1 },
     ]);
   });
 
@@ -352,7 +352,7 @@ describe('Dance scorer', () => {
       ...createCriterion(),
       minValue: 0,
       maxValue: 10,
-      forJudgeType: 'normal'
+      forJudgeType: 'normal',
     };
 
     const sanctioner: Judge = { ...createJudge(), judgeType: 'sanctioner' };
@@ -360,7 +360,7 @@ describe('Dance scorer', () => {
       ...createCriterion(),
       minValue: 0,
       maxValue: 100,
-      forJudgeType: 'sanctioner'
+      forJudgeType: 'sanctioner',
     };
 
     const participant = createParticipant();
@@ -372,15 +372,15 @@ describe('Dance scorer', () => {
         participantId: participant.id,
         criterionId: normalCriterion.id,
         danceId,
-        value: 10
+        value: 10,
       },
       {
         judgeId: sanctioner.id,
         participantId: participant.id,
         criterionId: sanctionerCriterion.id,
         danceId,
-        value: 50 // 50% off
-      }
+        value: 50, // 50% off
+      },
     ];
 
     const scorer = new DanceScorer(
@@ -389,11 +389,11 @@ describe('Dance scorer', () => {
       notes,
       {
         allowNegative: false,
-        countPresident: true
-      }
+        countPresident: true,
+      },
     );
     expect(scorer.scoreDance(danceId)).toEqual([
-      { participantId: participant.id, score: 5 }
+      { participantId: participant.id, score: 5 },
     ]);
   });
 });

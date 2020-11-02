@@ -1,22 +1,24 @@
 // no-flow
 
 import React, { Component } from 'react';
-import { Form, FormInput, Message, Button } from 'semantic-ui-react';
+import {
+  Form, FormInput, Message, Button,
+} from 'semantic-ui-react';
 
 type Props = {
   onSubmit: (name: string) => void,
   isValid: boolean,
   isLoading: boolean,
-  createdSuccessfully: boolean
+  createdSuccessfully: boolean,
 };
 
 type State = {
-  name: string
+  name: string,
 };
 
 class CreateAssistant extends Component<Props, State> {
   state = {
-    name: ''
+    name: '',
   };
 
   _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {

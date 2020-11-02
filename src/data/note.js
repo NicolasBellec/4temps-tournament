@@ -8,30 +8,30 @@ type NoteDbModel = {
   danceId: ObjectId,
   criterionId: ObjectId,
   participantId: ObjectId,
-  value: number
+  value: number,
 };
 
 const schema = new mongoose.Schema({
   judgeId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   danceId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   criterionId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   participantId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   value: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const TempModel = mongoose.model('tempNote', schema);
@@ -50,9 +50,7 @@ export class TemporaryNoteRepository implements NoteRepository {
   }
 
   async getForDance(danceId: string) {
-    return (await TempModel.find({ danceId })).map(a =>
-      mapToDomainModel(a.toObject())
-    );
+    return (await TempModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()));
   }
 
   async delete(note: JudgeNote) {
@@ -66,10 +64,9 @@ export class SubmittedNoteRepository implements NoteRepository {
     const { value, ...ids } = note;
     await SubmittedModel.update({ ...ids }, note, { upsert: true });
   }
+
   async getForDance(danceId: string) {
-    return (await SubmittedModel.find({ danceId })).map(a =>
-      mapToDomainModel(a.toObject())
-    );
+    return (await SubmittedModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()));
   }
 
   async delete(note: JudgeNote) {
@@ -84,6 +81,6 @@ function mapToDomainModel(note: NoteDbModel): JudgeNote {
     danceId: note.danceId.toString(),
     criterionId: note.criterionId.toString(),
     participantId: note.participantId.toString(),
-    value: note.value
+    value: note.value,
   };
 }

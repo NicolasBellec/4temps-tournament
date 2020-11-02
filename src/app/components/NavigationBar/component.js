@@ -6,7 +6,7 @@ import {
   MenuItem,
   MenuMenu,
   Icon,
-  Sidebar
+  Sidebar,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -16,11 +16,11 @@ type Props = {
   activeItem: string,
   isAuthenticated: boolean,
   role: string,
-  onClickLogout: () => Promise<void>
+  onClickLogout: () => Promise<void>,
 };
 
 type State = {
-  visible: boolean
+  visible: boolean,
 };
 
 class NavigationBar extends PureComponent<Props, State> {
@@ -28,44 +28,39 @@ class NavigationBar extends PureComponent<Props, State> {
 
   toggleSideBar = () => this.setState({ visible: !this.state.visible });
 
-  _renderSignUpLogIn = () => {
-    return (
-      <MenuMenu position="right">
-        <MenuItem name="signup">
-          <Button primary as={Link} to="/signup">
-            Sign up
-          </Button>
-        </MenuItem>
-        <MenuItem name="login">
-          <Button secondary as={Link} to="/login">
-            Log in
-          </Button>
-        </MenuItem>
-      </MenuMenu>
-    );
-  };
-
-  _renderLogOut = () => {
-    return (
-      <MenuItem
-        position="right"
-        name="logout"
-        onClick={() => this.props.onClickLogout()}
-      >
-        <Button secondary>Log out </Button>
+  _renderSignUpLogIn = () => (
+    <MenuMenu position="right">
+      <MenuItem name="signup">
+        <Button primary as={Link} to="/signup">
+          Sign up
+        </Button>
       </MenuItem>
-    );
-  };
+      <MenuItem name="login">
+        <Button secondary as={Link} to="/login">
+          Log in
+        </Button>
+      </MenuItem>
+    </MenuMenu>
+  );
+
+  _renderLogOut = () => (
+    <MenuItem
+      position="right"
+      name="logout"
+      onClick={() => this.props.onClickLogout()}
+    >
+      <Button secondary>Log out </Button>
+    </MenuItem>
+  );
 
   _renderForRole = () => {
     if (this.props.isAuthenticated) {
       if (this.props.role == 'admin') {
         return this._renderAuthenticatedAdmin();
-      } else if (this.props.role == 'judge') {
+      } if (this.props.role == 'judge') {
         return this._renderAuthenticatedJudge();
-      } else {
-        //Undefined role, for now do nothing
       }
+      // Undefined role, for now do nothing
     } else {
       // Not authed, for now do nothing
     }
@@ -93,34 +88,32 @@ class NavigationBar extends PureComponent<Props, State> {
       >
         <Icon name="edit" />
         Edit Tournament
-      </Menu.Item>
+      </Menu.Item>,
     ];
   };
 
-  _renderAuthenticatedJudge = () => {
+  _renderAuthenticatedJudge = () =>
     // Judge specific navigation goes here
     // For now we dont want the judge to be able to navigate anywhere
     // Therefore, return empty menu item
-    return <Menu.Item />;
-  };
+    <Menu.Item />
+  ;
 
-  _renderDesktopView = () => {
-    return (
-      <Menu secondary styleName="nav">
-        <MenuItem as={Link} to="/" name="header" header>
-          4 Temps Tournaments
-        </MenuItem>
-        {this._renderForRole()}
-        {this.props.isAuthenticated
-          ? this._renderLogOut()
-          : this._renderSignUpLogIn()}
-      </Menu>
-    );
-  };
+  _renderDesktopView = () => (
+    <Menu secondary styleName="nav">
+      <MenuItem as={Link} to="/" name="header" header>
+        4 Temps Tournaments
+      </MenuItem>
+      {this._renderForRole()}
+      {this.props.isAuthenticated
+        ? this._renderLogOut()
+        : this._renderSignUpLogIn()}
+    </Menu>
+  );
 
-  _renderTabletView = () => {
+  _renderTabletView = () =>
     // Collapse navbar into a dropdown
-    return (
+    (
       <Menu secondary>
         <MenuItem as={Link} to="/" name="header" header>
           4 Temps Tournaments
@@ -130,8 +123,8 @@ class NavigationBar extends PureComponent<Props, State> {
           {this._renderSideBar()}
         </Menu.Item>
       </Menu>
-    );
-  };
+    )
+  ;
 
   _renderSideBar = () => {
     const { visible } = this.state;
@@ -189,7 +182,7 @@ class NavigationBar extends PureComponent<Props, State> {
   };
 
   render() {
-    /* Perform conditional rendering with CSS to not mess up the re-hydration*/
+    /* Perform conditional rendering with CSS to not mess up the re-hydration */
     return (
       <span>
         <span styleName="navbar">{this._renderDesktopView()}</span>

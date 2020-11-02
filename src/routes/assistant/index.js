@@ -13,7 +13,7 @@ const accessKeyRepository = new AccessKeyRepositoryImpl();
 router.post(
   '/:tournamentId/create',
   allow('admin'),
-  createAssistantRoute(tournamentRepository, accessKeyRepository)
+  createAssistantRoute(tournamentRepository, accessKeyRepository),
 );
 
 export default router;

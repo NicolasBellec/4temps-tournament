@@ -9,7 +9,7 @@ import {
   createRound,
   createTournament,
   createJudge,
-  TournamentRepositoryImpl as TournamentRepository
+  TournamentRepositoryImpl as TournamentRepository,
 } from '../../../test-utils';
 
 describe('/api/round/create route', () => {
@@ -36,7 +36,7 @@ describe('/api/round/create route', () => {
 
     await route.route(
       requestWithRound({ ...createRound(), name: '' }),
-      response
+      response,
     );
 
     expect(response.getStatus()).toBe(400);
@@ -52,7 +52,7 @@ describe('/api/round/create route', () => {
     expect(response.getStatus()).toBe(200);
     expect(response.getBody()).toMatchObject({
       tournamentId: tournament.id,
-      round
+      round,
     });
   });
 
@@ -83,7 +83,7 @@ describe('/api/round/create route', () => {
   test('Returns status 401 if user does not own tournament', async () => {
     const otherTournament = {
       ...createTournament(),
-      creatorId: generateId() // other user
+      creatorId: generateId(), // other user
     };
     await repo.create(otherTournament);
 
@@ -92,7 +92,7 @@ describe('/api/round/create route', () => {
 
     const body = {
       tournamentId: otherTournament.id,
-      round: createRound()
+      round: createRound(),
     };
     await route.route(Request.withBody(body), response);
 
@@ -105,7 +105,7 @@ describe('/api/round/create route', () => {
 
     const body = {
       tournamentId: generateId(), // another tournament id
-      round: createRound()
+      round: createRound(),
     };
     await route.route(Request.withBody(body), response);
 
@@ -119,7 +119,7 @@ describe('/api/round/create route', () => {
 
     await repo.addJudge(tournament.id, {
       ...createJudge(),
-      judgeType: 'sanctioner'
+      judgeType: 'sanctioner',
     });
 
     await route.route(requestWithRound(round), response);
@@ -130,8 +130,8 @@ describe('/api/round/create route', () => {
         .getBody()
         // $FlowFixMe
         .round.criteria.some(
-          ({ forJudgeType }) => forJudgeType === 'sanctioner'
-        )
+          ({ forJudgeType }) => forJudgeType === 'sanctioner',
+        ),
     ).toBe(true);
   });
 });
@@ -139,6 +139,6 @@ describe('/api/round/create route', () => {
 function requestWithRound(round: mixed): ServerApiRequest {
   return Request.withBody({
     tournamentId: TOURNAMENT_ID,
-    round: round
+    round,
   });
 }

@@ -1,6 +1,8 @@
 // no-flow
 import React from 'react';
-import { Grid, GridColumn, GridRow, Header } from 'semantic-ui-react';
+import {
+  Grid, GridColumn, GridRow, Header,
+} from 'semantic-ui-react';
 import NoteCriterion from '../NoteCriterion';
 
 export type StateProps = {
@@ -10,7 +12,7 @@ export type StateProps = {
   leaderId: string,
   followerId: string,
   leaderCriteria: Array<CriterionViewModel>,
-  followerCriteria: Array<CriterionViewModel>
+  followerCriteria: Array<CriterionViewModel>,
 };
 
 export type CriterionViewModel = {
@@ -20,11 +22,11 @@ export type CriterionViewModel = {
   maxValue: number,
   description: string,
   value: ?number,
-  forJudgeType: JudgeType
+  forJudgeType: JudgeType,
 };
 
 export type DispatchProps = {
-  onClick: (tournamentId: string, note: JudgeNote) => void
+  onClick: (tournamentId: string, note: JudgeNote) => void,
 };
 
 type Props = StateProps & DispatchProps;
@@ -37,7 +39,7 @@ function PairNoteTaker({
   onClick,
   tournamentId,
   judgeId,
-  danceId
+  danceId,
 }: Props) {
   return (
     <Grid columns={2}>
@@ -46,20 +48,18 @@ function PairNoteTaker({
           <Header as="h2">Leader</Header>
         </GridRow>
         <GridRow>
-          {leaderCriteria.map(criterion => (
+          {leaderCriteria.map((criterion) => (
             <NoteCriterion
               key={leaderId + criterion.id}
               notedEntity={leaderId}
-              onClick={(value: ?number) =>
-                onClick(tournamentId, {
-                  danceId,
-                  judgeId,
-                  participantId: leaderId,
-                  criterionId: criterion.id,
-                  // $FlowFixMe
-                  value
-                })
-              }
+              onClick={(value: ?number) => onClick(tournamentId, {
+                danceId,
+                judgeId,
+                participantId: leaderId,
+                criterionId: criterion.id,
+                // $FlowFixMe
+                value,
+              })}
               criterion={criterion}
             />
           ))}
@@ -70,20 +70,18 @@ function PairNoteTaker({
           <Header as="h2">Follower</Header>
         </GridRow>
         <GridRow>
-          {followerCriteria.map(criterion => (
+          {followerCriteria.map((criterion) => (
             <NoteCriterion
               key={followerId + criterion.id}
               notedEntity={followerId}
-              onClick={(value: ?number) =>
-                onClick(tournamentId, {
-                  danceId,
-                  judgeId,
-                  participantId: followerId,
-                  criterionId: criterion.id,
-                  // $FlowFixMe
-                  value
-                })
-              }
+              onClick={(value: ?number) => onClick(tournamentId, {
+                danceId,
+                judgeId,
+                participantId: followerId,
+                criterionId: criterion.id,
+                // $FlowFixMe
+                value,
+              })}
               criterion={criterion}
             />
           ))}

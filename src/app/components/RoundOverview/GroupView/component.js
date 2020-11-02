@@ -11,7 +11,7 @@ import {
   TableBody,
   TableHeaderCell,
   Container,
-  Grid
+  Grid,
 } from 'semantic-ui-react';
 
 type GroupViewModel = {
@@ -19,9 +19,9 @@ type GroupViewModel = {
   pairs: Array<{
     id: string,
     follower: { name: string, number: string },
-    leader: { name: string, number: string }
+    leader: { name: string, number: string },
   }>,
-  isStarted: boolean
+  isStarted: boolean,
 };
 
 export type RoundViewModel = {
@@ -36,12 +36,12 @@ export type RoundViewModel = {
   nextGroup: ?number,
   nextDance: ?number,
   groups: Array<GroupViewModel>,
-  notes: DanceNotes
+  notes: DanceNotes,
 };
 
 export type DanceNotes = {
   judgesNoted: Array<Judge>,
-  judgesNotNoted: Array<Judge>
+  judgesNotNoted: Array<Judge>,
 };
 
 export type Props = {
@@ -50,19 +50,19 @@ export type Props = {
   startDance: () => void,
   endDance: () => void,
   generateGroups: () => void,
-  regenerateGroup: (groupId: string) => void
+  regenerateGroup: (groupId: string) => void,
 };
 
 function DanceActions({
   activeDance,
   draw,
   startDance,
-  endDance
+  endDance,
 }: {
   activeDance: ?number,
   draw: boolean,
   startDance: () => void,
-  endDance: () => void
+  endDance: () => void,
 }) {
   if (draw) {
     return <strong>Waiting to settle draw...</strong>;
@@ -74,13 +74,12 @@ function DanceActions({
         Stop dance
       </Button>
     );
-  } else {
-    return (
-      <Button color="green" onClick={startDance}>
-        Start next dance
-      </Button>
-    );
   }
+  return (
+    <Button color="green" onClick={startDance}>
+      Start next dance
+    </Button>
+  );
 }
 
 class RoundOverview extends Component<Props> {
@@ -105,31 +104,30 @@ class RoundOverview extends Component<Props> {
           </TableBody>
         </Table>
       );
-    } else if (round.finished) {
+    } if (round.finished) {
       return 'Finished';
-    } else {
-      return 'Not started';
     }
+    return 'Not started';
   };
 
   _groupInformation() {
-    const round = this.props.round;
+    const { round } = this.props;
     let groupInformation = 'Current Group: None';
     if (round.activeGroup != null) {
-      groupInformation = 'Current Group: ' + round.activeGroup.toString();
+      groupInformation = `Current Group: ${round.activeGroup.toString()}`;
     } else if (round.nextGroup != null) {
-      groupInformation = 'Next Group: ' + round.nextGroup.toString();
+      groupInformation = `Next Group: ${round.nextGroup.toString()}`;
     }
     return <TableCell>{groupInformation}</TableCell>;
   }
 
   _danceInformation() {
-    const round = this.props.round;
+    const { round } = this.props;
     let danceInformation = 'Current Dance: None';
     if (round.activeDance != null) {
-      danceInformation = 'Current Dance: ' + round.activeDance.toString();
+      danceInformation = `Current Dance: ${round.activeDance.toString()}`;
     } else if (round.nextDance != null) {
-      danceInformation = 'Next Dance: ' + round.nextDance.toString();
+      danceInformation = `Next Dance: ${round.nextDance.toString()}`;
     }
     return <TableCell>{danceInformation}</TableCell>;
   }
@@ -138,7 +136,7 @@ class RoundOverview extends Component<Props> {
     const { active, groups } = this.props.round;
     if (active && groups.length === 0) {
       return <div>No groups generated / no participants in tournament</div>;
-    } else if (groups.length === 0) {
+    } if (groups.length === 0) {
       return (
         <div>You have to start the round before you can create groups</div>
       );
@@ -148,7 +146,10 @@ class RoundOverview extends Component<Props> {
       <div>
         {this.props.round.groups.map((group, i) => (
           <div key={group.id}>
-            <Header as="h4">Group {i + 1}</Header>
+            <Header as="h4">
+              Group
+              {i + 1}
+            </Header>
             {!group.isStarted && (
               <Button onClick={() => this.props.regenerateGroup(group.id)}>
                 {i !== this.props.round.groups.length - 1
@@ -163,42 +164,40 @@ class RoundOverview extends Component<Props> {
     );
   };
 
-  _renderGroup = (group: GroupViewModel) => {
-    return (
-      <Table unstackable>
-        <TableHeader>
-          <TableRow>
-            <TableHeaderCell colSpan="2">Leader</TableHeaderCell>
-            <TableHeaderCell colSpan="2">Follower</TableHeaderCell>
+  _renderGroup = (group: GroupViewModel) => (
+    <Table unstackable>
+      <TableHeader>
+        <TableRow>
+          <TableHeaderCell colSpan="2">Leader</TableHeaderCell>
+          <TableHeaderCell colSpan="2">Follower</TableHeaderCell>
+        </TableRow>
+        <TableRow>
+          <TableHeaderCell collapsing>Number</TableHeaderCell>
+          <TableHeaderCell>Name</TableHeaderCell>
+          <TableHeaderCell collapsing>Number</TableHeaderCell>
+          <TableHeaderCell>Name</TableHeaderCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {group.pairs.map(({ id, leader, follower }) => (
+          <TableRow key={id}>
+            <TableCell>
+              <Header as="h4">{leader.number}</Header>
+            </TableCell>
+            <TableCell>{leader.name}</TableCell>
+            <TableCell>
+              <Header as="h4">{follower.number}</Header>
+            </TableCell>
+            <TableCell>{follower.name}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableHeaderCell collapsing>Number</TableHeaderCell>
-            <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell collapsing>Number</TableHeaderCell>
-            <TableHeaderCell>Name</TableHeaderCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {group.pairs.map(({ id, leader, follower }) => (
-            <TableRow key={id}>
-              <TableCell>
-                <Header as="h4">{leader.number}</Header>
-              </TableCell>
-              <TableCell>{leader.name}</TableCell>
-              <TableCell>
-                <Header as="h4">{follower.number}</Header>
-              </TableCell>
-              <TableCell>{follower.name}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
-  };
+        ))}
+      </TableBody>
+    </Table>
+  );
 
   _renderScoreTable = () => {
-    const judgesNoted = this.props.round.notes.judgesNoted;
-    const judgesNotNoted = this.props.round.notes.judgesNotNoted;
+    const { judgesNoted } = this.props.round.notes;
+    const { judgesNotNoted } = this.props.round.notes;
     const judgeCount = judgesNoted.length + judgesNotNoted.length;
     return (
       <Grid columns={2} divided>
@@ -208,18 +207,20 @@ class RoundOverview extends Component<Props> {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>
-                    Has Voted ({judgesNoted.length}/{judgeCount})
+                    Has Voted (
+                    {judgesNoted.length}
+                    /
+                    {judgeCount}
+                    )
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {judgesNoted.map(judge => {
-                  return (
-                    <Table.Row key={judge.id}>
-                      <Table.Cell>{judge.name}</Table.Cell>
-                    </Table.Row>
-                  );
-                })}
+                {judgesNoted.map((judge) => (
+                  <Table.Row key={judge.id}>
+                    <Table.Cell>{judge.name}</Table.Cell>
+                  </Table.Row>
+                ))}
               </Table.Body>
             </Table>
           </Grid.Column>
@@ -228,18 +229,20 @@ class RoundOverview extends Component<Props> {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>
-                    Waiting For ({judgesNotNoted.length}/{judgeCount})
+                    Waiting For (
+                    {judgesNotNoted.length}
+                    /
+                    {judgeCount}
+                    )
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {judgesNotNoted.map(judge => {
-                  return (
-                    <Table.Row key={judge.id}>
-                      <Table.Cell>{judge.name}</Table.Cell>
-                    </Table.Row>
-                  );
-                })}
+                {judgesNotNoted.map((judge) => (
+                  <Table.Row key={judge.id}>
+                    <Table.Cell>{judge.name}</Table.Cell>
+                  </Table.Row>
+                ))}
               </Table.Body>
             </Table>
           </Grid.Column>
@@ -253,9 +256,7 @@ class RoundOverview extends Component<Props> {
     return active && activeDance == null && activeGroup == null;
   };
 
-  _hasActiveDance = () => {
-    return this.props.round.activeDance != null;
-  };
+  _hasActiveDance = () => this.props.round.activeDance != null;
 
   render() {
     return (

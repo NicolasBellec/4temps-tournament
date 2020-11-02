@@ -7,7 +7,7 @@ import { createAdmin } from '../../api/admin';
 
 type Props = {
   history: RouterHistory,
-  location: Location
+  location: Location,
 };
 
 function mapStateToProps({ ui }: ReduxState) {
@@ -16,23 +16,19 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { history, location }: Props
+  { history, location }: Props,
 ) {
   return {
-    onSubmit: (admin: AdminWithPassword) =>
-      dispatch({
-        type: 'SIGNUP',
-        promise: createAdmin(admin),
-        meta: {
-          onSuccess: () => history.push('/login' + location.search)
-        }
-      })
+    onSubmit: (admin: AdminWithPassword) => dispatch({
+      type: 'SIGNUP',
+      promise: createAdmin(admin),
+      meta: {
+        onSuccess: () => history.push(`/login${location.search}`),
+      },
+    }),
   };
 }
 
-const SignUpContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUp);
+const SignUpContainer = connect(mapStateToProps, mapDispatchToProps)(SignUp);
 
 export default SignUpContainer;

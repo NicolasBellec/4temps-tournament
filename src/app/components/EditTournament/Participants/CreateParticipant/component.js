@@ -6,7 +6,7 @@ import {
   FormRadio,
   FormGroup,
   FormInput,
-  Message
+  Message,
 } from 'semantic-ui-react';
 import type { ParticipantValidationSummary } from '../../../../../validators/validate-participant';
 
@@ -17,26 +17,25 @@ type Props = {
   createdSuccessfully: boolean,
 
   validation: ParticipantValidationSummary,
-  onSubmit: (state: State) => void
+  onSubmit: (state: State) => void,
 };
 
 export type State = {
   name: string,
-  role: ParticipantRole
+  role: ParticipantRole,
 };
 
 class CreateParticipant extends Component<Props, State> {
   state = {
     name: '',
-    role: 'none'
+    role: 'none',
   };
 
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) =>
-    this.setState({ name: event.target.value });
+  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => this.setState({ name: event.target.value });
 
   _onChangeRadio = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: ParticipantRole }
+    { value }: { value: ParticipantRole },
   ) => this.setState({ role: value });
 
   _onSubmit = async () => {

@@ -14,24 +14,24 @@ describe('Participant reducer', () => {
     const state: ParticipantsReduxState = {
       isLoading: false,
       forTournament: {},
-      byId: {}
+      byId: {},
     };
 
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
+      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
     ).toEqual(state);
     expect(getInitialState()).toEqual(state);
   });
 
   test('Invalid action does not change state', () => {
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.START, 'INVALID_ACTION'))
+      reducer(initialState, makePackAction(LIFECYCLE.START, 'INVALID_ACTION')),
     ).toEqual(initialState);
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'))
+      reducer(initialState, makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')),
     ).toEqual(initialState);
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
+      reducer(initialState, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
     ).toEqual(initialState);
   });
 
@@ -41,7 +41,7 @@ describe('Participant reducer', () => {
 
       const tournamentId = 'tournamentid';
       const forTournament = { [tournamentId]: ['1'] };
-      const byId = { '1': participant };
+      const byId = { 1: participant };
 
       const payload = { tournamentId, participant };
 
@@ -49,12 +49,12 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           state,
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload)
-        )
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload),
+        ),
       ).toEqual({
         ...state,
         forTournament,
-        byId
+        byId,
       });
     });
 
@@ -65,19 +65,19 @@ describe('Participant reducer', () => {
         ...initialState,
         forTournament: {
           [tournamentId]: ['p2id'],
-          other_tournamentid: ['p3id']
+          other_tournamentid: ['p3id'],
         },
         byId: {
           p2id: { ...createParticipant(), id: 'p2id' },
-          p3id: { ...createParticipant(), id: 'p3id' }
-        }
+          p3id: { ...createParticipant(), id: 'p3id' },
+        },
       };
 
       const participant = { ...createParticipant(), id: 'new' };
 
       const forTournament = {
         ...state.forTournament,
-        [tournamentId]: ['p2id', 'new']
+        [tournamentId]: ['p2id', 'new'],
       };
       const byId = { ...state.byId, new: participant };
       const payload = { tournamentId, participant };
@@ -85,12 +85,12 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           state,
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload)
-        )
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload),
+        ),
       ).toEqual({
         ...state,
         forTournament,
-        byId
+        byId,
       });
     });
   });
@@ -102,14 +102,14 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', tournament)
-        )
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', tournament),
+        ),
       ).toEqual({
         ...initialState,
         forTournament: {
-          [tournament.id]: []
+          [tournament.id]: [],
         },
-        byId: {}
+        byId: {},
       });
     });
   });
@@ -120,12 +120,12 @@ describe('Participant reducer', () => {
     const tournament1 = {
       ...createTournament(),
       id: 't1',
-      participants: participants1
+      participants: participants1,
     };
     const tournament2 = {
       ...createTournament(),
       id: 't2',
-      participants: participants2
+      participants: participants2,
     };
 
     const nom = normalizeTournamentArray([tournament1, tournament2]);
@@ -134,22 +134,22 @@ describe('Participant reducer', () => {
       ...initialState,
       forTournament: {
         [tournament1.id]: [participants1[0].id, participants1[1].id],
-        [tournament2.id]: [participants2[0].id, participants2[1].id]
+        [tournament2.id]: [participants2[0].id, participants2[1].id],
       },
       byId: {
         [participants1[0].id]: participants1[0],
         [participants1[1].id]: participants1[1],
         [participants2[0].id]: participants2[0],
-        [participants2[1].id]: participants2[1]
-      }
+        [participants2[1].id]: participants2[1],
+      },
     };
 
     test('GET_ALL success sets participants', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
-        )
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom),
+        ),
       ).toEqual(expected);
     });
 
@@ -157,8 +157,8 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
-        )
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
+        ),
       ).toEqual(expected);
     });
   });

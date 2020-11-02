@@ -4,7 +4,7 @@ import { handle } from 'redux-pack';
 
 function participants(
   state: ParticipantsReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { type } = action;
 
@@ -32,120 +32,120 @@ export function getInitialState(): ParticipantsReduxState {
   return {
     isLoading: false,
     forTournament: {},
-    byId: {}
+    byId: {},
   };
 }
 
 function createParticipant(
   state: ParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         [payload.tournamentId]: Array.from(
           new Set([
             ...(prevState.forTournament[payload.tournamentId] || []),
-            payload.participant.id
-          ]).values()
-        )
+            payload.participant.id,
+          ]).values(),
+        ),
       },
       byId: {
         ...prevState.byId,
-        [payload.participant.id]: payload.participant
-      }
-    })
+        [payload.participant.id]: payload.participant,
+      },
+    }),
   });
 }
 
 function getSingleTournament(
   state: ParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         [payload.result]:
-          payload.entities.tournaments[payload.result].participants
+          payload.entities.tournaments[payload.result].participants,
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.participants
-      }
-    })
+        ...payload.entities.participants,
+      },
+    }),
   });
 }
 
 function getTournaments(
   state: ParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    start: prevState => ({ ...prevState, isLoading: true }),
-    success: prevState => ({
+    start: (prevState) => ({ ...prevState, isLoading: true }),
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         ...payload.result.reduce((acc, id) => {
           acc[id] = payload.entities.tournaments[id].participants;
           return acc;
-        }, {})
+        }, {}),
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.participants
-      }
+        ...payload.entities.participants,
+      },
     }),
-    failure: prevState => ({ ...prevState, isLoading: false })
+    failure: (prevState) => ({ ...prevState, isLoading: false }),
   });
 }
 
 function createTournament(
   state: ParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
-        [payload.id]: []
-      }
-    })
+        [payload.id]: [],
+      },
+    }),
   });
 }
 
 function changeAttendance(
   state: ParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       byId: {
         ...prevState.byId,
-        [payload.id]: payload
-      }
-    })
+        [payload.id]: payload,
+      },
+    }),
   });
 }
 
 function tournamentUpdated(
   state: ParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): ParticipantsReduxState {
   const { payload } = action;
   return {
@@ -153,12 +153,12 @@ function tournamentUpdated(
     forTournament: {
       ...state.forTournament,
       [payload.result]:
-        payload.entities.tournaments[payload.result].participants
+        payload.entities.tournaments[payload.result].participants,
     },
     byId: {
       ...state.byId,
-      ...payload.entities.participants
-    }
+      ...payload.entities.participants,
+    },
   };
 }
 

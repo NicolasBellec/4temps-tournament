@@ -4,10 +4,12 @@ export type TournamentValidationSummary = {
   isValidTournament: boolean,
   isValidName: boolean,
   isValidDate: boolean,
-  isValidType: boolean
+  isValidType: boolean,
 };
 
-const validateTournament = (tournament: Tournament): TournamentValidationSummary => {
+const validateTournament = (
+  tournament: Tournament,
+): TournamentValidationSummary => {
   const isValidName = tournament.name !== '';
   const isValidType = tournament.type === 'jj' || tournament.type === 'classic';
   const isValidDate = !tournament.date.isSame(0);
@@ -17,7 +19,7 @@ const validateTournament = (tournament: Tournament): TournamentValidationSummary
     isValidTournament,
     isValidName,
     isValidDate,
-    isValidType
+    isValidType,
   };
 };
 

@@ -13,7 +13,7 @@ import {
   TableHeaderCell,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
 } from 'semantic-ui-react';
 
 export type Props = {
@@ -21,20 +21,20 @@ export type Props = {
   winningLeaderScores: Array<ScoreViewModel>,
   winningFollowerScores: Array<ScoreViewModel>,
   losingLeaderScores: Array<ScoreViewModel>,
-  losingFollowerScores: Array<ScoreViewModel>
+  losingFollowerScores: Array<ScoreViewModel>,
 };
 
 type ScoreViewTableProps = {
   winningLeaderScores: Array<ScoreViewModel>,
   winningFollowerScores: Array<ScoreViewModel>,
   losingLeaderScores: Array<ScoreViewModel>,
-  losingFollowerScores: Array<ScoreViewModel>
+  losingFollowerScores: Array<ScoreViewModel>,
 };
 
 export type ScoreViewModel = {
   participant: Participant,
   position: number,
-  score: number
+  score: number,
 };
 
 export default function ScoreView({ isFinished, ...rest }: Props) {

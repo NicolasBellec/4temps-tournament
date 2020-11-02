@@ -4,7 +4,7 @@ import type { AccessKeyRepository } from '../../data/access-key';
 import isValidKey from '../../validators/validate-access-key';
 
 export default function route(
-  accessKeyRepo: AccessKeyRepository
+  accessKeyRepo: AccessKeyRepository,
 ): (req: ServerApiRequest, res: ServerApiResponse) => Promise<void> {
   return async (req, res) => {
     const key = parseAccessKey(req.body);
@@ -22,7 +22,7 @@ async function loginWithKey(
   accessKeyRepo: AccessKeyRepository,
   key: string,
   req: ServerApiRequest,
-  res: ServerApiResponse
+  res: ServerApiResponse,
 ) {
   const accessKey = await accessKeyRepo.getForKey(key);
 
@@ -33,13 +33,13 @@ async function loginWithKey(
     const user = {
       userId: accessKey.userId,
       role: accessKey.role,
-      tournamentId: accessKey.tournamentId
+      tournamentId: accessKey.tournamentId,
     };
 
     req.session.user = {
       id: user.userId,
       role: user.role,
-      tournamentId: user.tournamentId
+      tournamentId: user.tournamentId,
     };
     res.json(user);
   }
@@ -47,10 +47,10 @@ async function loginWithKey(
 
 function parseAccessKey(body: mixed): ?string {
   if (
-    body !== null &&
-    typeof body === 'object' &&
-    typeof body.accessKey === 'string' &&
-    body.accessKey !== null
+    body !== null
+    && typeof body === 'object'
+    && typeof body.accessKey === 'string'
+    && body.accessKey !== null
   ) {
     return body.accessKey;
   }

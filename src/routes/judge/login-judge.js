@@ -6,7 +6,7 @@ import isValidAccessKey from '../../validators/validate-access-key';
 
 export default function route(
   tournamentRepository: TournamentRepository,
-  accessRepository: AccessKeyRepository
+  accessRepository: AccessKeyRepository,
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
@@ -16,7 +16,7 @@ export default function route(
         const dbModel = await accessRepository.getForKey(accessKey);
         if (dbModel) {
           const tournament = await tournamentRepository.get(
-            dbModel.tournamentId
+            dbModel.tournamentId,
           );
           if (tournament == null) {
             res.status(404);
@@ -42,10 +42,10 @@ export default function route(
 
 function parseAccessKey(body: mixed): string {
   if (
-    body != null &&
-    typeof body === 'object' &&
-    typeof body.accessKey === 'string' &&
-    body.accessKey != null
+    body != null
+    && typeof body === 'object'
+    && typeof body.accessKey === 'string'
+    && body.accessKey != null
   ) {
     return body.accessKey;
   }
@@ -60,9 +60,7 @@ function statusFromError(e: mixed) {
 }
 
 function getJudge(userId: string, tournament: Tournament): Judge {
-  const results = tournament.judges.filter(judge => {
-    return judge.id === userId;
-  });
+  const results = tournament.judges.filter((judge) => judge.id === userId);
 
   if (results.length !== 1) {
     throw new Error('Could not find judge!');

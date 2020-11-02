@@ -3,7 +3,7 @@
 export default function validateNoteForTournamentAndUser(
   note: JudgeNote,
   tournament: Tournament,
-  judge: ?Judge
+  judge: ?Judge,
 ) {
   if (judge == null || note.judgeId != judge.id) {
     throw new WrongJudgeError();
@@ -47,7 +47,7 @@ function isDanceActive(tournament: Tournament, danceId: string): boolean {
 }
 function getCriterion(
   tournament: Tournament,
-  criterionId: string
+  criterionId: string,
 ): RoundCriterion {
   for (const round of tournament.rounds) {
     for (const criterion of round.criteria) {
@@ -60,7 +60,7 @@ function getCriterion(
 }
 function getParticipant(
   tournament: Tournament,
-  participantId: string
+  participantId: string,
 ): Participant {
   for (const participant of tournament.participants) {
     if (participant.id === participantId) {
@@ -72,16 +72,16 @@ function getParticipant(
 
 function isValidCriterionForParticipant(
   criterion: RoundCriterion,
-  participant: Participant
+  participant: Participant,
 ): boolean {
   if (criterion.type === 'leader') {
     return (
       participant.role === 'leader' || participant.role === 'leaderAndFollower'
     );
-  } else if (criterion.type === 'follower') {
+  } if (criterion.type === 'follower') {
     return (
-      participant.role === 'follower' ||
-      participant.role === 'leaderAndFollower'
+      participant.role === 'follower'
+      || participant.role === 'leaderAndFollower'
     );
   }
 

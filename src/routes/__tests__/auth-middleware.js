@@ -8,7 +8,7 @@ import {
   createTournament,
   createAdmin,
   TournamentRepositoryImpl as TournamentRepository,
-  createJudge
+  createJudge,
 } from '../../test-utils';
 import { authorizationMiddleware } from '../auth-middleware';
 
@@ -31,31 +31,31 @@ describe('Authentication middleware', () => {
       await tournamentRepository.create({
         ...createTournament(),
         id: tournamentId,
-        creatorId: admin._id.toString()
+        creatorId: admin._id.toString(),
       });
     });
 
     describe('public', () => {
-      test('Calls next if public are allowed with tournamentId set', done => {
+      test('Calls next if public are allowed with tournamentId set', (done) => {
         allow('public')(req, res, done);
       });
 
-      test('Calls next if tournamentId param is not set and public are allowed', done => {
+      test('Calls next if tournamentId param is not set and public are allowed', (done) => {
         allow('public')(Request.withUserAndParams(admin, {}), res, done);
       });
 
-      test('Calls next if admin is null and public are allowed', done => {
+      test('Calls next if admin is null and public are allowed', (done) => {
         allow('public')(
           // $FlowFixMe
           Request.withUserAndParams(null, {}),
           res,
-          done
+          done,
         );
       });
     });
 
     describe('authenticated', () => {
-      test('Calls next if admin is set and authentication is required', done => {
+      test('Calls next if admin is set and authentication is required', (done) => {
         allow('authenticated')(req, res, done);
       });
 
@@ -80,7 +80,7 @@ describe('Authentication middleware', () => {
         expect(res.getStatus()).toBe(401);
       });
 
-      test('Returns 401 if the authenticated user is not an admin', async done => {
+      test('Returns 401 if the authenticated user is not an admin', async (done) => {
         const judge: Judge = createJudge();
         req = Request.withJudgeAndParams(judge, { tournamentId });
 
@@ -95,9 +95,9 @@ describe('Authentication middleware', () => {
         req = Request.withUserAndParams(
           {
             ...admin,
-            _id: generateId()
+            _id: generateId(),
           },
-          { tournamentId }
+          { tournamentId },
         );
 
         await allow('admin')(req, res, () => {
@@ -116,7 +116,7 @@ describe('Authentication middleware', () => {
         expect(res.getStatus()).toBe(401);
       });
 
-      test('Calls next if admin is admin of tournament', done => {
+      test('Calls next if admin is admin of tournament', (done) => {
         allow('admin')(req, res, done);
       });
 
@@ -138,7 +138,7 @@ describe('Authentication middleware', () => {
     });
 
     describe('judge', () => {
-      test('Judge is not allowed if the judge is not part of the tournament', async done => {
+      test('Judge is not allowed if the judge is not part of the tournament', async (done) => {
         const judge = createJudge();
         req = Request.withJudgeAndParams(judge, { tournamentId });
         await allow('judge')(req, res, () => {});
@@ -146,14 +146,14 @@ describe('Authentication middleware', () => {
         done();
       });
 
-      test('Judge is allowed if the judge is part of the tournament', async done => {
+      test('Judge is allowed if the judge is part of the tournament', async (done) => {
         const judge = createJudge();
         const tournament = { ...createTournament(), id: generateId() };
         await tournamentRepository.create(tournament);
         await tournamentRepository.addJudge(tournament.id, judge);
 
         req = Request.withJudgeAndParams(judge, {
-          tournamentId: tournament.id
+          tournamentId: tournament.id,
         });
         await allow('judge')(req, res, done);
       });

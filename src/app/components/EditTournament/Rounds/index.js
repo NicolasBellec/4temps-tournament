@@ -6,7 +6,7 @@ import ListRounds from './ListRounds';
 
 type Props = {
   tournamentId: string,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 function EditTournamentRounds({ tournamentId, history }: Props) {

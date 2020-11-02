@@ -6,6 +6,7 @@ type Role = 'leader' | 'follower';
 
 class WinnerPicker {
   _judges: Array<Judge>;
+
   _round: Round;
 
   constructor(judges: Array<Judge>, round: Round) {
@@ -14,16 +15,16 @@ class WinnerPicker {
   }
 
   pickWinners = (
-    notes: Array<JudgeNote>
+    notes: Array<JudgeNote>,
   ): {
     leaders: Array<string>,
-    followers: Array<string>
+    followers: Array<string>,
   } => {
     const roundScores = this._getScores(notes);
 
     return {
       leaders: this._pickTopLeaders(roundScores),
-      followers: this._pickTopFollowers(roundScores)
+      followers: this._pickTopFollowers(roundScores),
     };
   };
 
@@ -31,7 +32,7 @@ class WinnerPicker {
     if (this._round.notationSystem == 'rpss') {
       const scorer = new RPSSRoundScorer(this._judges, this._round);
       return scorer.scoreRound(notes);
-    } else if (this._round.notationSystem == 'sum') {
+    } if (this._round.notationSystem == 'sum') {
       const scorer = new RoundScorer(this._judges, this._round);
       return scorer.scoreRound(notes);
     }
@@ -39,13 +40,9 @@ class WinnerPicker {
     return [];
   };
 
-  _pickTopLeaders = (roundScores: Array<Score>): Array<string> => {
-    return this._pickTopRole(roundScores, 'leader');
-  };
+  _pickTopLeaders = (roundScores: Array<Score>): Array<string> => this._pickTopRole(roundScores, 'leader');
 
-  _pickTopFollowers = (roundScores: Array<Score>): Array<string> => {
-    return this._pickTopRole(roundScores, 'follower');
-  };
+  _pickTopFollowers = (roundScores: Array<Score>): Array<string> => this._pickTopRole(roundScores, 'follower');
 
   _pickTopRole = (roundScores: Array<Score>, role: Role) => {
     const participants = this._getRole(role);
@@ -62,24 +59,23 @@ class WinnerPicker {
 
     return top;
   };
-  _getRole = (role: Role): Array<string> => {
-    return this._round.groups.reduce(
-      (participant, group) => [
-        ...participant,
-        ...group.pairs.reduce((acc, pair) => {
-          const arr = [];
-          if (pair.follower != null && role == 'follower') {
-            arr.push(pair.follower);
-          }
-          if (pair.leader != null && role == 'leader') {
-            arr.push(pair.leader);
-          }
-          return [...acc, ...arr];
-        }, [])
-      ],
-      []
-    );
-  };
+
+  _getRole = (role: Role): Array<string> => this._round.groups.reduce(
+    (participant, group) => [
+      ...participant,
+      ...group.pairs.reduce((acc, pair) => {
+        const arr = [];
+        if (pair.follower != null && role == 'follower') {
+          arr.push(pair.follower);
+        }
+        if (pair.leader != null && role == 'leader') {
+          arr.push(pair.leader);
+        }
+        return [...acc, ...arr];
+      }, []),
+    ],
+    [],
+  );
 }
 
 export default WinnerPicker;

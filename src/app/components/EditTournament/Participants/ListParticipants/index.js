@@ -5,50 +5,49 @@ import ListParticipants from './component';
 import PreloadContainer from '../../../PreloadContainer';
 import { changeAttendance } from '../../../../api/participant';
 import {
-  getAdminTournaments,
-  getSingleTournament
-} from '../../../../action-creators';
+  getAdminTournamentsAction,
+  getSingleTournamentAction,
+} from '../../../../action-creators/tournament';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function mapStateToProps(
   { user, tournaments, participants }: ReduxState,
-  { tournamentId }: Props
+  { tournamentId }: Props,
 ) {
   const shouldLoad = !participants.forTournament[tournamentId];
   return {
     Child: ListParticipants,
     shouldLoad,
     participants: (participants.forTournament[tournamentId] || []).map(
-      id => participants.byId[id]
+      (id) => participants.byId[id],
     ),
     isClassic: !shouldLoad && tournaments.byId[tournamentId].type === 'classic',
-    loadArgs: user.role !== 'admin' ? user.tournamentId : null
+    loadArgs: user.role !== 'admin' ? user.tournamentId : null,
   };
 }
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    load: tournamentId => {
+    load: (tournamentId) => {
       if (tournamentId) {
-        getSingleTournament(dispatch, tournamentId);
+        getSingleTournamentAction(dispatch, tournamentId);
       } else {
-        dispatch(getAdminTournaments);
+        dispatch(getAdminTournamentsAction);
       }
     },
-    onChangeAttending: (id, isAttending) =>
-      dispatch({
-        type: 'CHANGE_ATTENDANCE',
-        promise: changeAttendance(tournamentId, id, isAttending)
-      })
+    onChangeAttending: (id, isAttending) => dispatch({
+      type: 'CHANGE_ATTENDANCE',
+      promise: changeAttendance(tournamentId, id, isAttending),
+    }),
   };
 }
 
 const ListParticipantsContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default ListParticipantsContainer;

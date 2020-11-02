@@ -11,19 +11,19 @@ test('Default value is that all fields are valid and not loading', () => {
     isValid: true,
     isValidEmail: true,
     isValidPassword: true,
-    doesAdminExist: true
+    doesAdminExist: true,
   });
 });
 
 test('When a login starts, isLoading is set to true', () => {
   expect(
-    reducer(undefined, makePackAction(LIFECYCLE.START, 'LOGIN_USER'))
+    reducer(undefined, makePackAction(LIFECYCLE.START, 'LOGIN_USER')),
   ).toMatchObject({ isLoading: true });
 });
 
 test('Only LOGIN_USER affects the state', () => {
   expect(
-    reducer(undefined, makePackAction(LIFECYCLE.START, 'SOMETHING_ELSE'))
+    reducer(undefined, makePackAction(LIFECYCLE.START, 'SOMETHING_ELSE')),
   ).toMatchObject({ isLoading: false });
 });
 
@@ -32,7 +32,7 @@ test('When a login is successful, isLoading is set to false', () => {
   state.isLoading = true;
 
   expect(
-    reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGIN_USER'))
+    reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGIN_USER')),
   ).toMatchObject({ isLoading: false });
 });
 
@@ -41,7 +41,7 @@ test('When a login fails, isLoading is set to false', () => {
   state.isLoading = true;
 
   expect(
-    reducer(state, makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER'))
+    reducer(state, makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER')),
   ).toMatchObject({ isLoading: false });
 });
 
@@ -50,7 +50,7 @@ test('When a login is successful, the validation parameters are set', () => {
     isValid: false,
     isValidEmail: false,
     isValidPassword: false,
-    doesAdminExist: false
+    doesAdminExist: false,
   };
 
   const state = {
@@ -58,11 +58,11 @@ test('When a login is successful, the validation parameters are set', () => {
     isValid: true,
     isValidEmail: true,
     isValidPassword: true,
-    doesAdminExist: true
+    doesAdminExist: true,
   };
 
   expect(
-    reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGIN_USER', payload))
+    reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGIN_USER', payload)),
   ).toMatchObject(payload);
 });
 
@@ -71,7 +71,7 @@ test('When a login fails, the validation parameters are set', () => {
     isValid: false,
     isValidEmail: false,
     isValidPassword: false,
-    doesAdminExist: false
+    doesAdminExist: false,
   };
 
   const state = {
@@ -79,10 +79,10 @@ test('When a login fails, the validation parameters are set', () => {
     isValid: true,
     isValidEmail: true,
     isValidPassword: true,
-    doesAdminExist: true
+    doesAdminExist: true,
   };
 
   expect(
-    reducer(state, makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER', payload))
+    reducer(state, makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER', payload)),
   ).toMatchObject(payload);
 });

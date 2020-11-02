@@ -6,7 +6,7 @@ import {
   createRound,
   generateId,
   TournamentRepositoryImpl,
-  createParticipant
+  createParticipant,
 } from '../../../test-utils';
 import StartRoundRoute from '../start-round';
 
@@ -21,7 +21,7 @@ describe('Start round route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);
@@ -38,7 +38,7 @@ describe('Start round route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: generateId()
+      roundId: generateId(),
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);
@@ -59,12 +59,12 @@ describe('Start round route', () => {
 
     const expectedRound = {
       ...round,
-      active: true
+      active: true,
     };
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);
@@ -74,7 +74,7 @@ describe('Start round route', () => {
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
     expect((await repo.get(tournament.id)).rounds[0]).toMatchObject(
-      expectedRound
+      expectedRound,
     );
   });
 
@@ -82,14 +82,14 @@ describe('Start round route', () => {
     const round = { ...createRound(), active: false, finished: false };
     const participants = [
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
 
     const tournament = {
       ...createTournament(),
       id: generateId(),
       rounds: [round],
-      participants
+      participants,
     };
     const repo = new TournamentRepositoryImpl();
     await repo.create(tournament);
@@ -107,16 +107,16 @@ describe('Start round route', () => {
           pairs: [
             {
               leader: participants[0].id,
-              follower: participants[1].id
-            }
-          ]
-        }
-      ]
+              follower: participants[1].id,
+            },
+          ],
+        },
+      ],
     };
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);
@@ -126,7 +126,7 @@ describe('Start round route', () => {
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
     expect((await repo.get(tournament.id)).rounds[0]).toMatchObject(
-      expectedRound
+      expectedRound,
     );
   });
 
@@ -140,7 +140,7 @@ describe('Start round route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: startedRound.id
+      roundId: startedRound.id,
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);
@@ -160,7 +160,7 @@ describe('Start round route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: startedRound.id
+      roundId: startedRound.id,
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);
@@ -176,7 +176,7 @@ describe('Start round route', () => {
       minPairCountPerGroup: 1,
       maxPairCountPerGroup: 2,
       active: false,
-      finished: false
+      finished: false,
     };
     const participants = [
       { ...createParticipant(), id: 'l1', role: 'leader' },
@@ -186,14 +186,14 @@ describe('Start round route', () => {
       { ...createParticipant(), id: 'l5', role: 'leader' },
       { ...createParticipant(), id: 'f1', role: 'follower' },
       { ...createParticipant(), id: 'f2', role: 'follower' },
-      { ...createParticipant(), id: 'f3', role: 'follower' }
+      { ...createParticipant(), id: 'f3', role: 'follower' },
     ];
 
     const tournament = {
       ...createTournament(),
       id: generateId(),
       rounds: [round],
-      participants
+      participants,
     };
     const repo = new TournamentRepositoryImpl();
     await repo.create(tournament);
@@ -203,7 +203,7 @@ describe('Start round route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new StartRoundRoute(repo);

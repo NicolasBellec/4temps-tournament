@@ -1,7 +1,7 @@
 // no-flow
 
 function parseRound(bodyRound: mixed): Round {
-  let round: Round = {
+  const round: Round = {
     id: '',
     name: '',
     danceCount: -1,
@@ -21,9 +21,9 @@ function parseRound(bodyRound: mixed): Round {
     errorOnSameScore: false,
     winners: {
       leaders: [],
-      followers: []
+      followers: [],
     },
-    tieBreakerJudge: null
+    tieBreakerJudge: null,
   };
 
   if (typeof bodyRound === 'object' && bodyRound != null) {

@@ -9,7 +9,7 @@ import { subscribeToLeaderboardForTournament } from '../../api/realtime';
 
 type Props = {
   match: Match,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 function mapStateToProps({ leaderboards }: ReduxState, { match }: Props) {
@@ -17,41 +17,39 @@ function mapStateToProps({ leaderboards }: ReduxState, { match }: Props) {
   return {
     shouldLoad: leaderboards.byId[tournamentId] == null,
     Child: Component,
-    leaderboard: leaderboards.byId[tournamentId]
+    leaderboard: leaderboards.byId[tournamentId],
   };
 }
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { match, history }: Props
+  { match, history }: Props,
 ) {
-  const tournamentId = match.params.tournamentId;
+  const { tournamentId } = match.params;
 
   if (tournamentId == null) {
     history.push('/404');
   }
 
   return {
-    load: () =>
-      dispatch({
-        type: 'GET_LEADERBOARD',
-        promise: getLeaderboardForTournament(tournamentId || ''),
-        meta: {
-          onSuccess: () =>
-            subscribeToLeaderboardForTournament(tournamentId || ''),
-          onFailure: res => {
-            if (!res.didFindTournament) {
-              history.push('/404');
-            }
+    load: () => dispatch({
+      type: 'GET_LEADERBOARD',
+      promise: getLeaderboardForTournament(tournamentId || ''),
+      meta: {
+        onSuccess: () => subscribeToLeaderboardForTournament(tournamentId || ''),
+        onFailure: (res) => {
+          if (!res.didFindTournament) {
+            history.push('/404');
           }
-        }
-      })
+        },
+      },
+    }),
   };
 }
 
 const LeaderboardContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default LeaderboardContainer;

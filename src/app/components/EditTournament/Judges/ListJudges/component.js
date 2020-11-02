@@ -7,11 +7,11 @@ import {
   TableHeaderCell,
   TableBody,
   TableCell,
-  TableRow
+  TableRow,
 } from 'semantic-ui-react';
 
 type JudgeViewModel = Judge & {
-  accessKey: string
+  accessKey: string,
 };
 
 function ListJudges({ judges }: { judges: Array<JudgeViewModel> }) {
@@ -25,7 +25,7 @@ function ListJudges({ judges }: { judges: Array<JudgeViewModel> }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {judges.map(j => (
+        {judges.map((j) => (
           <TableRow key={j.id}>
             <TableCell>{j.name}</TableCell>
             <TableCell>{typeToDisplayName(j.judgeType)}</TableCell>
@@ -40,13 +40,12 @@ function ListJudges({ judges }: { judges: Array<JudgeViewModel> }) {
 function typeToDisplayName(judgeType: JudgeType): string {
   if (judgeType === 'normal') {
     return 'Normal';
-  } else if (judgeType === 'sanctioner') {
+  } if (judgeType === 'sanctioner') {
     return 'Sanctioner';
-  } else if (judgeType === 'president') {
+  } if (judgeType === 'president') {
     return 'President';
-  } else {
-    return 'Unknown';
   }
+  return 'Unknown';
 }
 
 export default ListJudges;

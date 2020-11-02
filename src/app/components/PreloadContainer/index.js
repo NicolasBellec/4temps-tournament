@@ -8,7 +8,7 @@ type Props = {
   load: (args: mixed) => void,
   shouldLoad: boolean,
   Child: ElementType,
-  loadArgs: mixed
+  loadArgs: mixed,
 };
 
 class PreloadContainer extends Component<Props> {

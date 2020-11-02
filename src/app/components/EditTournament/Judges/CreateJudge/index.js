@@ -5,7 +5,7 @@ import Component from './component';
 import { createJudge } from '../../../../api/judge';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function mapStateToProps({ ui }: ReduxState) {
@@ -14,17 +14,16 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    onSubmit: ({ name, judgeType }: { name: string, judgeType: JudgeType }) =>
-      dispatch({
-        type: 'CREATE_JUDGE',
-        promise: createJudge(tournamentId, { id: '', name, judgeType })
-      })
+    onSubmit: ({ name, judgeType }: { name: string, judgeType: JudgeType }) => dispatch({
+      type: 'CREATE_JUDGE',
+      promise: createJudge(tournamentId, { id: '', name, judgeType }),
+    }),
   };
 }
 
 const CreateJudgeContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default CreateJudgeContainer;

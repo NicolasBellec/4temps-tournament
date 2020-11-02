@@ -2,10 +2,10 @@
 
 import { connect } from 'react-redux';
 import Component from './component';
-import { createAssistant } from '../../../../api/assistant';
+import { createAssistantAction } from '../../../../action-creators/assistant';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function mapStateToProps({ ui }: ReduxState) {
@@ -14,17 +14,13 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    onSubmit: (name: string) =>
-      dispatch({
-        type: 'CREATE_ASSISTANT',
-        promise: createAssistant(tournamentId, { id: '', name })
-      })
+    onSubmit: (name: string) => dispatch(createAssistantAction(tournamentId, name)),
   };
 }
 
 const CreateAssistantContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default CreateAssistantContainer;

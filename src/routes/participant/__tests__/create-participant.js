@@ -6,7 +6,7 @@ import {
   generateId,
   createAdmin,
   createTournament,
-  TournamentRepositoryImpl as TournamentRepository
+  TournamentRepositoryImpl as TournamentRepository,
 } from '../../../test-utils';
 
 describe('/api/participant/create', () => {
@@ -15,8 +15,8 @@ describe('/api/participant/create', () => {
     tournamentId: TOURNAMENT_ID,
     participant: {
       name: 'Test Admin',
-      role: 'leader'
-    }
+      role: 'leader',
+    },
   };
 
   let tournamentRepository: TournamentRepository;
@@ -29,7 +29,7 @@ describe('/api/participant/create', () => {
   test('Valid participant and tournament has status 200', async () => {
     const route = new CreateParticipantRouteHandler(
       admin._id.toString(),
-      tournamentRepository
+      tournamentRepository,
     );
 
     await tournamentRepository.create(createTournament());
@@ -44,12 +44,12 @@ describe('/api/participant/create', () => {
   test('Invalid participant has status 400', async () => {
     const route = new CreateParticipantRouteHandler(
       admin._id.toString(),
-      tournamentRepository
+      tournamentRepository,
     );
 
     route.parseBody({
       ...VALID_BODY,
-      participant: null
+      participant: null,
     });
     await route.createParticipant();
     expect(route.status).toBe(400);
@@ -58,7 +58,7 @@ describe('/api/participant/create', () => {
   test('Non-existing tournament has status 404', async () => {
     const route = new CreateParticipantRouteHandler(
       admin._id.toString(),
-      tournamentRepository
+      tournamentRepository,
     );
 
     route.parseBody({ ...VALID_BODY, tournamentId: generateId() });

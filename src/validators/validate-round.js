@@ -9,48 +9,43 @@ function validateRound(round: Round): RoundValidationSummary {
     passingCouplesCount,
     criteria,
     errorOnSameScore,
-    notationSystem
+    notationSystem,
   } = round;
 
   const isValidName = name.length > 0;
   const isValidDanceCount = danceCount != null && danceCount >= 1;
-  const isValidPassingCouplesCount =
-    passingCouplesCount != null && passingCouplesCount >= 1;
-  const isValidMinPairCount =
-    minPairCountPerGroup != null && minPairCountPerGroup >= 1;
-  const isValidMaxPairCount =
-    maxPairCountPerGroup != null && maxPairCountPerGroup >= 1;
+  const isValidPassingCouplesCount = passingCouplesCount != null && passingCouplesCount >= 1;
+  const isValidMinPairCount = minPairCountPerGroup != null && minPairCountPerGroup >= 1;
+  const isValidMaxPairCount = maxPairCountPerGroup != null && maxPairCountPerGroup >= 1;
 
-  const isMaxPairGreaterOrEqualToMinPair =
-    minPairCountPerGroup == null ||
-    maxPairCountPerGroup == null ||
-    maxPairCountPerGroup >= minPairCountPerGroup;
+  const isMaxPairGreaterOrEqualToMinPair = minPairCountPerGroup == null
+    || maxPairCountPerGroup == null
+    || maxPairCountPerGroup >= minPairCountPerGroup;
 
   const isValidMultipleDanceScoringRule = validateMultipleDanceScoringRule(
-    round
+    round,
   );
 
   const isValidAmountOfCriteria = criteria.length > 0;
 
   const isValidErrorOnSameScore = typeof errorOnSameScore === 'boolean';
 
-  const isValidNotationSystem =
-    notationSystem === 'sum' || notationSystem === 'rpss';
+  const isValidNotationSystem = notationSystem === 'sum' || notationSystem === 'rpss';
 
   const { isValidCriteria, criteriaValidation } = validateCriteria(criteria);
 
   return {
     isValidRound:
-      isValidName &&
-      isValidDanceCount &&
-      isValidMinPairCount &&
-      isValidMaxPairCount &&
-      isValidPassingCouplesCount &&
-      isMaxPairGreaterOrEqualToMinPair &&
-      isValidMultipleDanceScoringRule &&
-      isValidNotationSystem &&
-      isValidAmountOfCriteria &&
-      isValidCriteria,
+      isValidName
+      && isValidDanceCount
+      && isValidMinPairCount
+      && isValidMaxPairCount
+      && isValidPassingCouplesCount
+      && isMaxPairGreaterOrEqualToMinPair
+      && isValidMultipleDanceScoringRule
+      && isValidNotationSystem
+      && isValidAmountOfCriteria
+      && isValidCriteria,
     isValidName,
     isValidDanceCount,
     isValidMinPairCount,
@@ -62,17 +57,16 @@ function validateRound(round: Round): RoundValidationSummary {
     isValidCriteria,
     criteriaValidation,
     isValidErrorOnSameScore,
-    isValidNotationSystem
+    isValidNotationSystem,
   };
 }
 
 function validateMultipleDanceScoringRule({
   danceCount,
-  multipleDanceScoringRule
+  multipleDanceScoringRule,
 }: Round) {
-  const isValidRule =
-    multipleDanceScoringRule === 'average' ||
-    multipleDanceScoringRule === 'best';
+  const isValidRule = multipleDanceScoringRule === 'average'
+    || multipleDanceScoringRule === 'best';
 
   const isValidEnum = isValidRule || multipleDanceScoringRule === 'none';
   danceCount = danceCount || 0;
@@ -88,12 +82,12 @@ function validateCriteria(criteria: Array<RoundCriterion>) {
   const criteriaValidation = criteria.map(validateCriterion);
   const isValidCriteria = criteriaValidation.reduce(
     (acc, cur) => acc && cur.isValidCriterion,
-    true
+    true,
   );
 
   return {
     isValidCriteria,
-    criteriaValidation
+    criteriaValidation,
   };
 }
 
@@ -102,34 +96,32 @@ function validateCriterion({
   description,
   minValue,
   maxValue,
-  forJudgeType
+  forJudgeType,
 }: RoundCriterion) {
   const isValidName = name.length > 0;
   const isValidMinValue = minValue != null;
   const isValidMaxValue = maxValue != null;
 
-  const isValidValueCombination =
-    maxValue != null && minValue != null ? maxValue > minValue : true;
+  const isValidValueCombination = maxValue != null && minValue != null ? maxValue > minValue : true;
 
   const isValidDescription = description.length > 0;
 
-  const isValidForJudgeType =
-    forJudgeType === 'normal' || forJudgeType === 'sanctioner';
+  const isValidForJudgeType = forJudgeType === 'normal' || forJudgeType === 'sanctioner';
 
   return {
     isValidCriterion:
-      isValidName &&
-      isValidMinValue &&
-      isValidMaxValue &&
-      isValidValueCombination &&
-      isValidDescription &&
-      isValidForJudgeType,
+      isValidName
+      && isValidMinValue
+      && isValidMaxValue
+      && isValidValueCombination
+      && isValidDescription
+      && isValidForJudgeType,
     isValidName,
     isValidMinValue,
     isValidMaxValue,
     isValidValueCombination,
     isValidDescription,
-    isValidForJudgeType
+    isValidForJudgeType,
   };
 }
 

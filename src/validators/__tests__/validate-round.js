@@ -6,7 +6,7 @@ import { createRound as createRoundTestUtils } from '../../test-utils';
 function createRound(vals: mixed): Round {
   return {
     ...createRoundTestUtils(),
-    ...vals
+    ...vals,
   };
 }
 
@@ -19,7 +19,7 @@ function createCriterion(vals: mixed): RoundCriterion {
     maxValue: 100,
     type: 'both',
     forJudgeType: 'normal',
-    ...vals
+    ...vals,
   };
 }
 
@@ -27,161 +27,161 @@ describe('Round validator', () => {
   test('Empty name is invalid', () => {
     expect(validateRound(createRound({ name: '' }))).toMatchObject({
       isValidRound: false,
-      isValidName: false
+      isValidName: false,
     });
   });
   test('null dance count is invalid', () => {
     expect(validateRound(createRound({ danceCount: null }))).toMatchObject({
       isValidRound: false,
-      isValidDanceCount: false
+      isValidDanceCount: false,
     });
   });
   test('Zero dance count is invalid', () => {
     expect(validateRound(createRound({ danceCount: 0 }))).toMatchObject({
       isValidRound: false,
-      isValidDanceCount: false
+      isValidDanceCount: false,
     });
   });
   test('Negative dance count is invalid', () => {
     expect(validateRound(createRound({ danceCount: -1 }))).toMatchObject({
       isValidRound: false,
-      isValidDanceCount: false
+      isValidDanceCount: false,
     });
   });
   test('Positive dance count is valid', () => {
     expect(validateRound(createRound({ danceCount: 1 }))).toMatchObject({
       isValidRound: true,
-      isValidDanceCount: true
+      isValidDanceCount: true,
     });
     expect(validateRound(createRound({ danceCount: 100 }))).toMatchObject({
       isValidRound: true,
-      isValidDanceCount: true
+      isValidDanceCount: true,
     });
   });
 
   test('At least one couple has to pass', () => {
     expect(
-      validateRound(createRound({ passingCouplesCount: 0 }))
+      validateRound(createRound({ passingCouplesCount: 0 })),
     ).toMatchObject({
       isValidRound: false,
-      isValidPassingCouplesCount: false
+      isValidPassingCouplesCount: false,
     });
     expect(
-      validateRound(createRound({ passingCouplesCount: 1 }))
+      validateRound(createRound({ passingCouplesCount: 1 })),
     ).toMatchObject({
       isValidRound: true,
-      isValidPassingCouplesCount: true
+      isValidPassingCouplesCount: true,
     });
   });
 
   test('null minPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: null }))
+      validateRound(createRound({ minPairCountPerGroup: null })),
     ).toMatchObject({
       isValidRound: false,
-      isValidMinPairCount: false
+      isValidMinPairCount: false,
     });
   });
   test('Zero minPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: 0 }))
+      validateRound(createRound({ minPairCountPerGroup: 0 })),
     ).toMatchObject({
       isValidRound: false,
-      isValidMinPairCount: false
+      isValidMinPairCount: false,
     });
   });
   test('Negative minPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: -1 }))
+      validateRound(createRound({ minPairCountPerGroup: -1 })),
     ).toMatchObject({
       isValidRound: false,
-      isValidMinPairCount: false
+      isValidMinPairCount: false,
     });
   });
   test('Positive minPairCountPerGroup is valid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: 1 }))
+      validateRound(createRound({ minPairCountPerGroup: 1 })),
     ).toMatchObject({
       isValidRound: true,
-      isValidMinPairCount: true
+      isValidMinPairCount: true,
     });
   });
 
   test('null maxPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: null }))
+      validateRound(createRound({ maxPairCountPerGroup: null })),
     ).toMatchObject({
       isValidRound: false,
-      isValidMaxPairCount: false
+      isValidMaxPairCount: false,
     });
   });
   test('Zero maxPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: 0 }))
+      validateRound(createRound({ maxPairCountPerGroup: 0 })),
     ).toMatchObject({
       isValidRound: false,
-      isValidMaxPairCount: false
+      isValidMaxPairCount: false,
     });
   });
   test('Negative maxPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: -1 }))
+      validateRound(createRound({ maxPairCountPerGroup: -1 })),
     ).toMatchObject({
       isValidRound: false,
-      isValidMaxPairCount: false
+      isValidMaxPairCount: false,
     });
   });
   test('Positive maxPairCountPerGroup is valid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: 1 }))
+      validateRound(createRound({ maxPairCountPerGroup: 1 })),
     ).toMatchObject({
       isValidRound: true,
-      isValidMaxPairCount: true
+      isValidMaxPairCount: true,
     });
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: 123 }))
+      validateRound(createRound({ maxPairCountPerGroup: 123 })),
     ).toMatchObject({
       isValidRound: true,
-      isValidMaxPairCount: true
+      isValidMaxPairCount: true,
     });
   });
 
   test('Max pair count may be equal to min pair count', () => {
     expect(
       validateRound(
-        createRound({ minPairCountPerGroup: 1, maxPairCountPerGroup: 1 })
-      )
+        createRound({ minPairCountPerGroup: 1, maxPairCountPerGroup: 1 }),
+      ),
     ).toMatchObject({ isValidRound: true });
   });
   test('Max pair count may not be less than min pair count', () => {
     expect(
       validateRound(
-        createRound({ minPairCountPerGroup: 2, maxPairCountPerGroup: 1 })
-      )
+        createRound({ minPairCountPerGroup: 2, maxPairCountPerGroup: 1 }),
+      ),
     ).toMatchObject({
       isValidRound: false,
-      isMaxPairGreaterOrEqualToMinPair: false
+      isMaxPairGreaterOrEqualToMinPair: false,
     });
   });
 
   test('Notation system must be set', () => {
     expect(
-      validateRound(createRound({ notationSystem: 'none' }))
+      validateRound(createRound({ notationSystem: 'none' })),
     ).toMatchObject({ isValidRound: false });
   });
 
   test('Multiple dances scoring rule may not be set if the dance count is 1', () => {
-    ['none', 'average', 'best'].map(multipleDanceScoringRule => {
+    ['none', 'average', 'best'].map((multipleDanceScoringRule) => {
       expect(
         validateRound(
           createRound({
             multipleDanceScoringRule,
-            danceCount: 1
-          })
-        )
+            danceCount: 1,
+          }),
+        ),
       ).toMatchObject({
         isValidRound: true,
-        isValidMultipleDanceScoringRule: true
+        isValidMultipleDanceScoringRule: true,
       });
     });
   });
@@ -191,25 +191,25 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           multipleDanceScoringRule: 'none',
-          danceCount: 2
-        })
-      )
+          danceCount: 2,
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
-      isValidMultipleDanceScoringRule: false
+      isValidMultipleDanceScoringRule: false,
     });
 
-    ['average', 'best'].map(multipleDanceScoringRule => {
+    ['average', 'best'].map((multipleDanceScoringRule) => {
       expect(
         validateRound(
           createRound({
             multipleDanceScoringRule,
-            danceCount: 2
-          })
-        )
+            danceCount: 2,
+          }),
+        ),
       ).toMatchObject({
         isValidRound: true,
-        isValidMultipleDanceScoringRule: true
+        isValidMultipleDanceScoringRule: true,
       });
     });
   });
@@ -218,27 +218,27 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          multipleDanceScoringRule: 'bogus_value'
-        })
-      )
+          multipleDanceScoringRule: 'bogus_value',
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
-      isValidMultipleDanceScoringRule: false
+      isValidMultipleDanceScoringRule: false,
     });
   });
 
   test('Having no criteria is invalid', () => {
     expect(validateRound(createRound({ criteria: [] }))).toMatchObject({
       isValidRound: false,
-      isValidAmountOfCriteria: false
+      isValidAmountOfCriteria: false,
     });
   });
   test('Having least one criteria is valid', () => {
     expect(
-      validateRound(createRound({ criteria: [createCriterion()] }))
+      validateRound(createRound({ criteria: [createCriterion()] })),
     ).toMatchObject({
       isValidRound: true,
-      isValidAmountOfCriteria: true
+      isValidAmountOfCriteria: true,
     });
 
     expect(
@@ -248,13 +248,13 @@ describe('Round validator', () => {
             createCriterion(),
             createCriterion(),
             createCriterion(),
-            createCriterion()
-          ]
-        })
-      )
+            createCriterion(),
+          ],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: true,
-      isValidAmountOfCriteria: true
+      isValidAmountOfCriteria: true,
     });
   });
 
@@ -262,18 +262,18 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ name: '' })]
-        })
-      )
+          criteria: [createCriterion({ name: '' })],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidName: false
-        }
-      ]
+          isValidName: false,
+        },
+      ],
     });
   });
 
@@ -281,18 +281,18 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ name: 'style' })]
-        })
-      )
+          criteria: [createCriterion({ name: 'style' })],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: true,
       isValidCriteria: true,
       criteriaValidation: [
         {
           isValidCriterion: true,
-          isValidName: true
-        }
-      ]
+          isValidName: true,
+        },
+      ],
     });
   });
 
@@ -300,18 +300,18 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ description: '' })]
-        })
-      )
+          criteria: [createCriterion({ description: '' })],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidDescription: false
-        }
-      ]
+          isValidDescription: false,
+        },
+      ],
     });
   });
 
@@ -320,17 +320,17 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [
-            createCriterion({ description: 'They have to be beautiful' })
-          ]
-        })
-      )
+            createCriterion({ description: 'They have to be beautiful' }),
+          ],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: true,
       criteriaValidation: [
         {
-          isValidDescription: true
-        }
-      ]
+          isValidDescription: true,
+        },
+      ],
     });
   });
 
@@ -338,18 +338,18 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ minValue: null })]
-        })
-      )
+          criteria: [createCriterion({ minValue: null })],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidMinValue: false
-        }
-      ]
+          isValidMinValue: false,
+        },
+      ],
     });
   });
 
@@ -357,11 +357,11 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ minValue: -1 })]
-        })
-      )
+          criteria: [createCriterion({ minValue: -1 })],
+        }),
+      ),
     ).toMatchObject({
-      isValidRound: true
+      isValidRound: true,
     });
   });
 
@@ -371,12 +371,12 @@ describe('Round validator', () => {
         createRound({
           criteria: [
             createCriterion({ minValue: 0 }),
-            createCriterion({ minValue: 3 })
-          ]
-        })
-      )
+            createCriterion({ minValue: 3 }),
+          ],
+        }),
+      ),
     ).toMatchObject({
-      isValidRound: true
+      isValidRound: true,
     });
   });
 
@@ -384,18 +384,18 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ maxValue: null })]
-        })
-      )
+          criteria: [createCriterion({ maxValue: null })],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidMaxValue: false
-        }
-      ]
+          isValidMaxValue: false,
+        },
+      ],
     });
   });
 
@@ -403,11 +403,11 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ maxValue: -1, minValue: -2 })]
-        })
-      )
+          criteria: [createCriterion({ maxValue: -1, minValue: -2 })],
+        }),
+      ),
     ).toMatchObject({
-      isValidRound: true
+      isValidRound: true,
     });
   });
 
@@ -415,11 +415,11 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ maxValue: 3 })]
-        })
-      )
+          criteria: [createCriterion({ maxValue: 3 })],
+        }),
+      ),
     ).toMatchObject({
-      isValidRound: true
+      isValidRound: true,
     });
   });
 
@@ -427,51 +427,51 @@ describe('Round validator', () => {
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ minValue: 1, maxValue: 1 })]
-        })
-      )
+          criteria: [createCriterion({ minValue: 1, maxValue: 1 })],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidValueCombination: false
-        }
-      ]
+          isValidValueCombination: false,
+        },
+      ],
     });
   });
 
   test('A criterion must be for a valid judge type', () => {
     expect(
       validateRound(
-        createRound({ criteria: [createCriterion({ forJudgeType: '' })] })
-      )
+        createRound({ criteria: [createCriterion({ forJudgeType: '' })] }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidForJudgeType: false
-        }
-      ]
+          isValidForJudgeType: false,
+        },
+      ],
     });
     expect(
       validateRound(
-        createRound({ criteria: [createCriterion({ forJudgeType: 'normal' })] })
-      )
+        createRound({ criteria: [createCriterion({ forJudgeType: 'normal' })] }),
+      ),
     ).toMatchObject({
-      isValidRound: true
+      isValidRound: true,
     });
     expect(
       validateRound(
         createRound({
-          criteria: [createCriterion({ forJudgeType: 'sanctioner' })]
-        })
-      )
+          criteria: [createCriterion({ forJudgeType: 'sanctioner' })],
+        }),
+      ),
     ).toMatchObject({
-      isValidRound: true
+      isValidRound: true,
     });
   });
 
@@ -483,31 +483,31 @@ describe('Round validator', () => {
             createCriterion({ name: '' }),
             createCriterion({ minValue: null }),
             createCriterion({ maxValue: null }),
-            createCriterion({ description: '' })
-          ]
-        })
-      )
+            createCriterion({ description: '' }),
+          ],
+        }),
+      ),
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
       criteriaValidation: [
         {
           isValidCriterion: false,
-          isValidName: false
+          isValidName: false,
         },
         {
           isValidCriterion: false,
-          isValidMinValue: false
+          isValidMinValue: false,
         },
         {
           isValidCriterion: false,
-          isValidMaxValue: false
+          isValidMaxValue: false,
         },
         {
           isValidCriterion: false,
-          isValidDescription: false
-        }
-      ]
+          isValidDescription: false,
+        },
+      ],
     });
   });
 });

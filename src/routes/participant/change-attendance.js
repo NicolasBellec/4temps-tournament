@@ -11,17 +11,17 @@ export default class ChangeAttendance {
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     if (
-      typeof req.body === 'object' &&
-      req.body != null &&
-      typeof req.body.participantId === 'string' &&
-      req.body.participantId != null &&
-      typeof req.body.isAttending === 'boolean' &&
-      req.body.isAttending != null
+      typeof req.body === 'object'
+      && req.body != null
+      && typeof req.body.participantId === 'string'
+      && req.body.participantId != null
+      && typeof req.body.isAttending === 'boolean'
+      && req.body.isAttending != null
     ) {
       const { participantId, isAttending } = req.body;
       const participant = await this._repository.updateParticipantAttendance(
         participantId,
-        isAttending
+        isAttending,
       );
       res.json(participant);
     } else {

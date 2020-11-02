@@ -6,7 +6,7 @@ import validateRound from '../../../validators/validate-round';
 
 export async function createRound(
   tournamentId: string,
-  round: Round
+  round: Round,
 ): Promise<Round> {
   const validation = validateRound(round);
   if (!validation.isValidRound) {
@@ -15,33 +15,33 @@ export async function createRound(
 
   return apiPostRequest(`/api/round/${tournamentId}/create`, {
     tournamentId,
-    round
+    round,
   });
 }
 
 export async function deleteRound(
   tournamentId: string,
-  roundId: string
+  roundId: string,
 ): Promise<{
   tournamentId: string,
-  roundId: string
+  roundId: string,
 }> {
   return apiDeleteRequest(`/api/round/${tournamentId}/delete/${roundId}`);
 }
 
 export async function startRound(
   tournamentId: string,
-  roundId: string
+  roundId: string,
 ): Promise<mixed> {
   return apiPostRequest(`/api/round/${tournamentId}/start/${roundId}`);
 }
 
 export async function generateGroupsForRound(
   tournamentId: string,
-  roundId: string
+  roundId: string,
 ): Promise<mixed> {
   return apiPostRequest(
-    `/api/round/${tournamentId}/generate-groups/${roundId}`
+    `/api/round/${tournamentId}/generate-groups/${roundId}`,
   );
 }
 
@@ -56,16 +56,16 @@ export async function endDance(tournamentId: string): Promise<mixed> {
 export async function regenerateGroup(
   tournamentId: string,
   roundId: string,
-  groupId: string
+  groupId: string,
 ): Promise<mixed> {
   return apiPostRequest(
-    `/api/round/${tournamentId}/regenerate/${roundId}/group/${groupId}`
+    `/api/round/${tournamentId}/regenerate/${roundId}/group/${groupId}`,
   );
 }
 
 export async function settleDraw(
   tournamentId: string,
-  roundScores: Array<Score>
+  roundScores: Array<Score>,
 ) {
   return apiPostRequest(`/api/round/${tournamentId}/settle-draw`, roundScores);
 }

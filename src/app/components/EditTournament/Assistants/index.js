@@ -6,7 +6,7 @@ import ListAssistants from './ListAssistants';
 import CreateAssistant from './CreateAssistant';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function Assistants(props: Props) {

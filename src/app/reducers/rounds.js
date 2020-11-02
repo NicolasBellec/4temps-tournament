@@ -3,7 +3,7 @@ import { handle } from 'redux-pack';
 
 function rounds(
   state: RoundsReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { type } = action;
 
@@ -34,138 +34,138 @@ export function getInitialState(): RoundsReduxState {
   return {
     isLoading: false,
     forTournament: {},
-    byId: {}
+    byId: {},
   };
 }
 
 function createRound(
   state: RoundsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         [payload.tournamentId]: Array.from(
           new Set([
             ...(prevState.forTournament[payload.tournamentId] || []),
-            payload.round.id
-          ]).values()
-        )
+            payload.round.id,
+          ]).values(),
+        ),
       },
       byId: {
         ...prevState.byId,
-        [payload.round.id]: payload.round
-      }
-    })
+        [payload.round.id]: payload.round,
+      },
+    }),
   });
 }
 
 function deleteRound(
   state: RoundsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { payload } = action;
   return handle(state, action, {
-    start: prevState => ({ ...prevState, isLoading: true }),
-    success: prevState => ({
+    start: (prevState) => ({ ...prevState, isLoading: true }),
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         [payload.tournamentId]: prevState.forTournament[
           payload.tournamentId
-        ].filter(id => id != payload.roundId)
+        ].filter((id) => id != payload.roundId),
       },
       byId: Object.keys(prevState.byId).reduce((obj, id) => {
         if (id != payload.roundId) {
           return { ...obj, [id]: prevState.byId[id] };
         }
         return obj;
-      }, {})
+      }, {}),
     }),
-    failure: prevState => ({ ...prevState, isLoading: false })
+    failure: (prevState) => ({ ...prevState, isLoading: false }),
   });
 }
 
 function getTournaments(
   state: RoundsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         ...payload.result.reduce((acc, id) => {
           acc[id] = payload.entities.tournaments[id].rounds;
           return acc;
-        }, {})
+        }, {}),
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.rounds
-      }
-    })
+        ...payload.entities.rounds,
+      },
+    }),
   });
 }
 
 function getJudgeTournament(
   state: RoundsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
-        [payload.result]: payload.entities.tournaments[payload.result].rounds
+        [payload.result]: payload.entities.tournaments[payload.result].rounds,
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.rounds
-      }
-    })
+        ...payload.entities.rounds,
+      },
+    }),
   });
 }
 
 function payloadIsRound(
   state: RoundsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       byId: {
         ...prevState.byId,
-        [payload.id]: payload
-      }
-    })
+        [payload.id]: payload,
+      },
+    }),
   });
 }
 
 function tournamentUpdated(
   state: RoundsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): RoundsReduxState {
   const { payload } = action;
   return {
     ...state,
     forTournament: {
       ...state.forTournament,
-      [payload.result]: payload.entities.tournaments[payload.result].rounds
+      [payload.result]: payload.entities.tournaments[payload.result].rounds,
     },
     byId: {
       ...state.byId,
-      ...payload.entities.rounds
-    }
+      ...payload.entities.rounds,
+    },
   };
 }
 

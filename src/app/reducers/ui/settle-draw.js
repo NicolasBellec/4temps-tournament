@@ -3,25 +3,25 @@ import { handle } from 'redux-pack';
 
 export default function uiSettleDrawReducer(
   state: UiSettleDrawReduxState = createInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiSettleDrawReduxState {
   switch (action.type) {
   case 'SETTLE_DRAW':
     return handle(state, action, {
       start: () => ({ ...createInitialState(), isLoading: true }),
-      success: prevState => ({
+      success: (prevState) => ({
         ...prevState,
         isLoading: false,
         didSubmit: true,
-        successfulSubmit: true
+        successfulSubmit: true,
       }),
-      failure: prevState => ({
+      failure: (prevState) => ({
         ...prevState,
         isLoading: false,
         didSubmit: true,
         successfulSubmit: false,
-        errorMessage: action.payload.error
-      })
+        errorMessage: action.payload.error,
+      }),
     });
   }
 
@@ -33,6 +33,6 @@ export function createInitialState(): UiSettleDrawReduxState {
     isLoading: false,
     didSubmit: false,
     successfulSubmit: false,
-    errorMessage: ''
+    errorMessage: '',
   };
 }

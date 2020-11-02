@@ -7,7 +7,7 @@ import {
   createTournament,
   createAdmin,
   TournamentRepositoryImpl as TournamentRepository,
-  AccessKeyRepositoryImpl as AccessKeyRepository
+  AccessKeyRepositoryImpl as AccessKeyRepository,
 } from '../../../test-utils';
 
 describe('/api/assistant/create', () => {
@@ -44,7 +44,7 @@ describe('/api/assistant/create', () => {
     expect(res.getStatus()).toBe(200);
     expect(await tournamentRepo.get(tournament.id)).toMatchObject({
       ...tournament,
-      assistants: [{ name }]
+      assistants: [{ name }],
     });
   });
 
@@ -54,7 +54,7 @@ describe('/api/assistant/create', () => {
     expect(res.getStatus()).toBe(200);
     expect(res.getBody()).toMatchObject({
       tournamentId: tournament.id,
-      assistant: { name }
+      assistant: { name },
     });
   });
 
@@ -63,12 +63,12 @@ describe('/api/assistant/create', () => {
 
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
-    const assistant: Assistant = res.getBody().assistant;
+    const { assistant } = res.getBody();
     expect(accessRepo.getAll()).toMatchObject([
       {
         tournamentId: tournament.id,
-        userId: assistant.id
-      }
+        userId: assistant.id,
+      },
     ]);
   });
 

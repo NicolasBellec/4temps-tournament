@@ -2,7 +2,7 @@
 import {
   createTournament,
   generateId,
-  TournamentRepositoryImpl as TournamentRepository
+  TournamentRepositoryImpl as TournamentRepository,
 } from '../../../test-utils';
 import { updateTournamentRoute } from '../update-tournament';
 
@@ -17,10 +17,10 @@ describe('/api/tournament/update', () => {
 
   test('Valid tournament with correct user returns new tournament with status 200', async () => {
     expect(
-      await updateTournamentRoute(tournament.creatorId, tournament, repository)
+      await updateTournamentRoute(tournament.creatorId, tournament, repository),
     ).toEqual({
       status: 200,
-      body: tournament
+      body: tournament,
     });
   });
 
@@ -29,47 +29,47 @@ describe('/api/tournament/update', () => {
       await updateTournamentRoute(
         tournament.creatorId,
         { ...tournament, name: '' },
-        repository
-      )
+        repository,
+      ),
     ).toEqual({
       status: 400,
-      body: null
+      body: null,
     });
   });
 
-  test(`Tournament that doesn't exist returns 404`, async () => {
+  test('Tournament that doesn\'t exist returns 404', async () => {
     const otherId = generateId();
     expect(
       await updateTournamentRoute(
         tournament.creatorId,
         { ...tournament, id: otherId },
-        repository
-      )
+        repository,
+      ),
     ).toEqual({
       status: 404,
-      body: null
+      body: null,
     });
   });
 
-  test(`When tournament can't be updated 500 is returned`, async () => {
+  test('When tournament can\'t be updated 500 is returned', async () => {
     repository.update = () => {
       throw 0;
     };
     expect(
-      await updateTournamentRoute(tournament.creatorId, tournament, repository)
+      await updateTournamentRoute(tournament.creatorId, tournament, repository),
     ).toEqual({
       status: 500,
-      body: null
+      body: null,
     });
   });
 
-  test(`When tournament is owned by other user be updated 401 is returned`, async () => {
+  test('When tournament is owned by other user be updated 401 is returned', async () => {
     const otherId = generateId();
     expect(
-      await updateTournamentRoute(otherId, tournament, repository)
+      await updateTournamentRoute(otherId, tournament, repository),
     ).toEqual({
       status: 401,
-      body: null
+      body: null,
     });
   });
 });

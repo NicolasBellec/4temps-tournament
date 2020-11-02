@@ -4,7 +4,7 @@ import { handle } from 'redux-pack';
 
 export default function reducer(
   state: AssistantsReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): AssistantsReduxState {
   switch (action.type) {
   case 'GET_ALL_TOURNAMENTS':
@@ -24,93 +24,93 @@ export default function reducer(
 export function getInitialState(): AssistantsReduxState {
   return {
     byId: {},
-    forTournament: {}
+    forTournament: {},
   };
 }
 
 function getTournaments(
   state: AssistantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): AssistantsReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         ...payload.result.reduce((acc, id) => {
           acc[id] = payload.entities.tournaments[id].assistants;
           return acc;
-        }, {})
+        }, {}),
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.assistants
-      }
-    })
+        ...payload.entities.assistants,
+      },
+    }),
   });
 }
 
 function createAssistant(
   state: AssistantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): AssistantsReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.byId,
         [payload.tournamentId]: Array.from(
           new Set([
             ...(prevState.forTournament[payload.tournamentId] || []),
-            payload.assistant.id
-          ]).values()
-        )
+            payload.assistant.id,
+          ]).values(),
+        ),
       },
       byId: {
         ...prevState.byId,
-        [payload.assistant.id]: payload.assistant
-      }
-    })
+        [payload.assistant.id]: payload.assistant,
+      },
+    }),
   });
 }
 
 function getSingleTournament(
   state: AssistantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): AssistantsReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         [payload.result]:
-          payload.entities.tournaments[payload.result].assistants
+          payload.entities.tournaments[payload.result].assistants,
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.assistants
-      }
-    })
+        ...payload.entities.assistants,
+      },
+    }),
   });
 }
 
 function tournamentUpdated(
   state: AssistantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): AssistantsReduxState {
   const { payload } = action;
   return {
     ...state,
     forTournament: {
       ...state.forTournament,
-      [payload.result]: payload.entities.tournaments[payload.result].assistants
+      [payload.result]: payload.entities.tournaments[payload.result].assistants,
     },
     byId: {
       ...state.byId,
-      ...payload.entities.assistants
-    }
+      ...payload.entities.assistants,
+    },
   };
 }

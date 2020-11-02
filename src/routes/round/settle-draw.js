@@ -9,16 +9,16 @@ export default class SettleDrawRoute {
   }
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
-    const tournamentId: string = req.params.tournamentId;
+    const { tournamentId } = req.params;
 
     const tournament: ?Tournament = await this._tournamentRepository.get(
-      tournamentId
+      tournamentId,
     );
 
     if (!tournament) {
       res.status(404);
       res.json({
-        error: 'no such tournament'
+        error: 'no such tournament',
       });
     } else {
       const activeRound: ?Round = findActiveRound(tournament.rounds);
@@ -26,34 +26,34 @@ export default class SettleDrawRoute {
       if (!activeRound) {
         res.status(404);
         res.json({
-          error: 'no round is active'
+          error: 'no round is active',
         });
       } else if (!activeRound.draw) {
         res.status(404);
         res.json({
-          error: 'no round is draw'
+          error: 'no round is draw',
         });
       } else if (
         !isTieBreakingJudge(
           (req.session.user && req.session.user.id) || '',
-          activeRound
+          activeRound,
         )
       ) {
         res.status(403);
         res.json({
-          error: 'must be tie breaking judge'
+          error: 'must be tie breaking judge',
         });
       } else if (!scoreIncludesAllParticipants(activeRound, roundScores)) {
         res.status(400);
         res.json({
-          error: 'score does not include all participants'
+          error: 'score does not include all participants',
         });
       } else if (
         !scoreIncludesOnlyParticipantsOfRound(activeRound, roundScores)
       ) {
         res.status(400);
         res.json({
-          error: 'score includes participant(s) not in this round'
+          error: 'score includes participant(s) not in this round',
         });
       } else {
         res.status(200);
@@ -62,12 +62,12 @@ export default class SettleDrawRoute {
           active: false,
           finished: true,
           draw: false,
-          roundScores
+          roundScores,
         };
         try {
           await this._tournamentRepository.updateRound(
             tournamentId,
-            updatedRound
+            updatedRound,
           );
           res.json(updatedRound);
         } catch (e) {
@@ -85,14 +85,14 @@ function parseRoundScores(body: mixed): Array<Score> {
     return body
       .map((obj: mixed) => {
         if (
-          typeof obj === 'object' &&
-          obj != null &&
-          typeof obj.participantId === 'string' &&
-          typeof obj.score === 'number'
+          typeof obj === 'object'
+          && obj != null
+          && typeof obj.participantId === 'string'
+          && typeof obj.score === 'number'
         ) {
           return {
             participantId: obj.participantId,
-            score: obj.score
+            score: obj.score,
           };
         }
         return null;
@@ -104,23 +104,23 @@ function parseRoundScores(body: mixed): Array<Score> {
 }
 
 function findActiveRound(rounds: Array<Round>): ?Round {
-  return rounds.find(round => round.active);
+  return rounds.find((round) => round.active);
 }
 
 function isTieBreakingJudge(judgeId: string, activeRound: Round): boolean {
   return (
-    activeRound.tieBreakerJudge != null &&
-    activeRound.tieBreakerJudge === judgeId
+    activeRound.tieBreakerJudge != null
+    && activeRound.tieBreakerJudge === judgeId
   );
 }
 
 function scoreIncludesAllParticipants(
   round: Round,
-  scores: Array<Score>
+  scores: Array<Score>,
 ): boolean {
   const participants = participantsInRound(round);
   const scoreOfParticipantInTournamentCount = scores
-    .map(score => participants.includes(score.participantId))
+    .map((score) => participants.includes(score.participantId))
     .filter(Boolean).length;
 
   return participants.length === scoreOfParticipantInTournamentCount;
@@ -128,11 +128,11 @@ function scoreIncludesAllParticipants(
 
 function scoreIncludesOnlyParticipantsOfRound(
   round: Round,
-  scores: Array<Score>
+  scores: Array<Score>,
 ): boolean {
   const participants = participantsInRound(round);
   return scores
-    .map(score => participants.includes(score.participantId))
+    .map((score) => participants.includes(score.participantId))
     .every(Boolean);
 }
 
@@ -142,9 +142,9 @@ function participantsInRound(round: Round): Array<string> {
       (participants: Array<?string>, pair) => [
         ...participants,
         pair.leader,
-        pair.follower
+        pair.follower,
       ],
-      []
+      [],
     )
     .filter(Boolean);
 }
@@ -152,6 +152,6 @@ function participantsInRound(round: Round): Array<string> {
 function pairsInRound(round: Round): Array<Pair> {
   return round.groups.reduce(
     (pairs: Array<Pair>, group: DanceGroup) => [...pairs, ...group.pairs],
-    []
+    [],
   );
 }

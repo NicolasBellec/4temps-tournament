@@ -7,11 +7,11 @@ import validateAssistant from '../../validators/validate-assistant';
 
 export default function route(
   tournamentRepository: TournamentRepository,
-  accessRepository: AccessKeyRepository
+  accessRepository: AccessKeyRepository,
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const tournamentId = req.params.tournamentId;
+      const { tournamentId } = req.params;
       const assistantName = parseName(req.body);
       const assistant = { name: assistantName, id: ObjectId.generate() };
 
@@ -20,7 +20,7 @@ export default function route(
         await accessRepository.createForTournamentAndUserWithRole(
           tournamentId,
           assistant.id,
-          'assistant'
+          'assistant',
         );
         res.json({ tournamentId, assistant });
       } else {
@@ -34,9 +34,9 @@ export default function route(
 
 function parseName(body: mixed): string {
   if (
-    typeof body === 'object' &&
-    body != null &&
-    typeof body.name === 'string'
+    typeof body === 'object'
+    && body != null
+    && typeof body.name === 'string'
   ) {
     return body.name;
   }

@@ -10,7 +10,7 @@ import type { AdminModel } from '../../data/admin';
 export const createAdminRoute = async (
   admin: AdminWithPassword,
   createAdmin: (admin: AdminWithPassword) => Promise<boolean>,
-  getAdmins: () => Promise<Array<AdminModel>>
+  getAdmins: () => Promise<Array<AdminModel>>,
 ): RouteResult<AdminCreateValidationSummary> => {
   let status = 200;
   const validation = await validateAdmin(admin, getAdmins);
@@ -28,7 +28,7 @@ export const createAdminRoute = async (
 
   return {
     status,
-    body: validation
+    body: validation,
   };
 };
 
@@ -41,13 +41,13 @@ export default async (req: $Request, res: $Response) => {
     // $FlowFixMe
     lastName: req.body.lastName || '',
     // $FlowFixMe
-    password: req.body.password || ''
+    password: req.body.password || '',
   };
 
   const { status, body } = await createAdminRoute(
     admin,
     createAdmin,
-    getAdmins
+    getAdmins,
   );
   res.status(status);
   res.json(body);

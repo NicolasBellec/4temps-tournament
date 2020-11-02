@@ -11,10 +11,10 @@ export default class StartDanceRoute {
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const tournamentId = req.params.tournamentId;
+      const { tournamentId } = req.params;
       const handler = new StartDanceRouteHandler(
         this._repository,
-        tournamentId
+        tournamentId,
       );
 
       await handler.startDance();
@@ -34,9 +34,11 @@ export default class StartDanceRoute {
 
 class StartDanceRouteHandler {
   _repository: TournamentRepository;
+
   _tournamentId: string;
 
   _tournament: Tournament;
+
   _round: Round;
 
   constructor(repository: TournamentRepository, tournamentId: string) {
@@ -44,9 +46,7 @@ class StartDanceRouteHandler {
     this._tournamentId = tournamentId;
   }
 
-  getUpdatedRound = () => {
-    return this._round;
-  };
+  getUpdatedRound = () => this._round;
 
   startDance = async () => {
     const tournament = await this._repository.get(this._tournamentId);

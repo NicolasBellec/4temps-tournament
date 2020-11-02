@@ -4,7 +4,7 @@ import {
   createTournament,
   createRound,
   createParticipant,
-  createJudge
+  createJudge,
 } from '../../test-utils';
 
 describe('Next group generator', () => {
@@ -14,15 +14,15 @@ describe('Next group generator', () => {
       name: 'leader1',
       role: 'leader',
       attendanceId: 1,
-      isAttending: true
+      isAttending: true,
     },
     {
       id: 'leader2',
       name: 'leader2',
       role: 'leader',
       attendanceId: 2,
-      isAttending: true
-    }
+      isAttending: true,
+    },
   ];
   const followers: Array<Participant> = [
     {
@@ -30,15 +30,15 @@ describe('Next group generator', () => {
       name: 'follower1',
       role: 'follower',
       attendanceId: 3,
-      isAttending: true
+      isAttending: true,
     },
     {
       id: 'follower2',
       name: 'follower2',
       role: 'follower',
       attendanceId: 3,
-      isAttending: true
-    }
+      isAttending: true,
+    },
   ];
 
   describe('Single round', () => {
@@ -52,22 +52,22 @@ describe('Next group generator', () => {
             {
               id: 'dance1',
               active: true,
-              finished: false
-            }
-          ]
-        }
-      ]
+              finished: false,
+            },
+          ],
+        },
+      ],
     };
 
     test('null if no more participants', () => {
       const tournament = {
         ...createTournament(),
         participants: [leaders[0], followers[0]],
-        rounds: [round]
+        rounds: [round],
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(round.id)
+        new NextGroupGenerator(tournament, []).generateForRound(round.id),
       ).toBeNull();
     });
 
@@ -75,19 +75,19 @@ describe('Next group generator', () => {
       const tournament = {
         ...createTournament(),
         participants: [...leaders, ...followers],
-        rounds: [round]
+        rounds: [round],
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(round.id)
+        new NextGroupGenerator(tournament, []).generateForRound(round.id),
       ).toMatchObject({
         pairs: [{ leader: leaders[1].id, follower: followers[1].id }],
         dances: [
           {
             active: false,
-            finished: false
-          }
-        ]
+            finished: false,
+          },
+        ],
       });
     });
 
@@ -97,7 +97,7 @@ describe('Next group generator', () => {
         ...createTournament(),
         judges: [{ ...createJudge(), id: judgeId }],
         participants: [...leaders, followers[0]],
-        rounds: [round]
+        rounds: [round],
       };
 
       const danceId = 'dance1';
@@ -108,27 +108,27 @@ describe('Next group generator', () => {
           criterionId,
           participantId: leaders[0].id,
           judgeId,
-          value: 5
+          value: 5,
         },
         {
           danceId,
           criterionId,
           participantId: followers[0].id,
           judgeId,
-          value: 1
-        }
+          value: 1,
+        },
       ];
 
       expect(
-        new NextGroupGenerator(tournament, notes).generateForRound(round.id)
+        new NextGroupGenerator(tournament, notes).generateForRound(round.id),
       ).toMatchObject({
         pairs: [{ leader: leaders[1].id, follower: followers[0].id }],
         dances: [
           {
             active: false,
-            finished: false
-          }
-        ]
+            finished: false,
+          },
+        ],
       });
     });
 
@@ -143,9 +143,9 @@ describe('Next group generator', () => {
               {
                 id: 'dance1',
                 active: false,
-                finished: false
-              }
-            ]
+                finished: false,
+              },
+            ],
           },
           {
             id: 'group2',
@@ -154,11 +154,11 @@ describe('Next group generator', () => {
               {
                 id: 'dance2',
                 active: false,
-                finished: false
-              }
-            ]
-          }
-        ]
+                finished: false,
+              },
+            ],
+          },
+        ],
       };
 
       const judgeId = 'judge1';
@@ -172,11 +172,11 @@ describe('Next group generator', () => {
             id: 'leader3',
             role: 'leader',
             isAttending: true,
-            attendanceId: 10
+            attendanceId: 10,
           },
-          ...followers
+          ...followers,
         ],
-        rounds: [round]
+        rounds: [round],
       };
 
       const danceId = 'dance1';
@@ -187,41 +187,41 @@ describe('Next group generator', () => {
           criterionId,
           participantId: leaders[0].id,
           judgeId,
-          value: 1
+          value: 1,
         },
         {
           danceId,
           criterionId,
           participantId: followers[0].id, // follower with worst leader
           judgeId,
-          value: 2
+          value: 2,
         },
         {
           danceId,
           criterionId,
           participantId: leaders[1].id,
           judgeId,
-          value: 3
+          value: 3,
         },
         {
           danceId,
           criterionId,
           participantId: followers[1].id,
           judgeId,
-          value: 4
-        }
+          value: 4,
+        },
       ];
 
       expect(
-        new NextGroupGenerator(tournament, notes).generateForRound(round.id)
+        new NextGroupGenerator(tournament, notes).generateForRound(round.id),
       ).toMatchObject({
         pairs: [{ leader: 'leader3', follower: followers[0].id }],
         dances: [
           {
             active: false,
-            finished: false
-          }
-        ]
+            finished: false,
+          },
+        ],
       });
     });
 
@@ -238,9 +238,9 @@ describe('Next group generator', () => {
               {
                 id: 'dance1',
                 active: false,
-                finished: false
-              }
-            ]
+                finished: false,
+              },
+            ],
           },
           {
             id: 'group2',
@@ -249,11 +249,11 @@ describe('Next group generator', () => {
               {
                 id: 'dance2',
                 active: false,
-                finished: false
-              }
-            ]
-          }
-        ]
+                finished: false,
+              },
+            ],
+          },
+        ],
       };
 
       const judgeId = 'judge1';
@@ -267,18 +267,18 @@ describe('Next group generator', () => {
             id: 'leader3',
             role: 'leader',
             isAttending: true,
-            attendanceId: 10
+            attendanceId: 10,
           },
           {
             name: 'leader4',
             id: 'leader4',
             role: 'leader',
             isAttending: true,
-            attendanceId: 11
+            attendanceId: 11,
           },
-          ...followers
+          ...followers,
         ],
-        rounds: [round]
+        rounds: [round],
       };
 
       const danceId = 'dance1';
@@ -289,40 +289,40 @@ describe('Next group generator', () => {
           criterionId,
           participantId: leaders[0].id,
           judgeId,
-          value: 1
+          value: 1,
         },
         {
           danceId,
           criterionId,
           participantId: followers[0].id, // follower with worst leader
           judgeId,
-          value: 2
+          value: 2,
         },
         {
           danceId,
           criterionId,
           participantId: leaders[1].id,
           judgeId,
-          value: 3
+          value: 3,
         },
         {
           danceId,
           criterionId,
           participantId: followers[1].id,
           judgeId,
-          value: 4
-        }
+          value: 4,
+        },
       ];
 
       // $FlowFixMe
       const resultGroup: DanceGroup = new NextGroupGenerator(
         tournament,
-        notes
+        notes,
       ).generateForRound(round.id);
 
       const resultingLeaders = resultGroup.pairs.map(({ leader }) => leader);
       const resultingFollowers = resultGroup.pairs.map(
-        ({ follower }) => follower
+        ({ follower }) => follower,
       );
 
       expect(resultingLeaders).toContainEqual('leader3');
@@ -336,11 +336,11 @@ describe('Next group generator', () => {
       const tournament: Tournament = {
         ...createTournament(),
         participants: [leaders[0]],
-        rounds: [newRound]
+        rounds: [newRound],
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(newRound.id)
+        new NextGroupGenerator(tournament, []).generateForRound(newRound.id),
       ).toBeNull();
     });
 
@@ -348,7 +348,7 @@ describe('Next group generator', () => {
       const tournament = {
         ...createTournament(),
         participants: [...leaders, followers[0]],
-        rounds: [round]
+        rounds: [round],
       };
 
       const generator = new NextGroupGenerator(tournament, []);
@@ -365,57 +365,57 @@ describe('Next group generator', () => {
       roundScores: [
         {
           participantId: leaders[0].id,
-          score: 10
+          score: 10,
         },
         { participantId: followers[0].id, score: 5 },
         {
           participantId: leaders[1].id,
-          score: 5
+          score: 5,
         },
-        { participantId: followers[1].id, score: 3 }
+        { participantId: followers[1].id, score: 3 },
       ],
       groups: [
         {
           id: 'group1',
           pairs: [
             { leader: leaders[0].id, follower: followers[0].id },
-            { leader: leaders[1].id, follower: followers[1].id }
+            { leader: leaders[1].id, follower: followers[1].id },
           ],
           dances: [
             {
               id: 'dance1',
               active: false,
-              finished: true
-            }
-          ]
-        }
-      ]
+              finished: true,
+            },
+          ],
+        },
+      ],
     };
 
     const roundTwo: Round = {
       ...createRound(),
       active: true,
       finished: false,
-      groups: []
+      groups: [],
     };
 
     test('Uses winners of previous round', () => {
       const tournament = {
         ...createTournament(),
         participants: [...leaders, ...followers],
-        rounds: [roundOne, roundTwo]
+        rounds: [roundOne, roundTwo],
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(roundTwo.id)
+        new NextGroupGenerator(tournament, []).generateForRound(roundTwo.id),
       ).toMatchObject({
         pairs: [{ leader: leaders[0].id, follower: followers[0].id }],
         dances: [
           {
             active: false,
-            finished: false
-          }
-        ]
+            finished: false,
+          },
+        ],
       });
     });
 
@@ -424,7 +424,7 @@ describe('Next group generator', () => {
         ...createParticipant(),
         id: `L${i + 1}`,
         role: 'leader',
-        isAttending: true
+        isAttending: true,
       }));
       const followers: Array<Participant> = Array.from(
         { length: 4 },
@@ -432,8 +432,8 @@ describe('Next group generator', () => {
           ...createParticipant(),
           id: `F${i + 1}`,
           role: 'follower',
-          isAttending: true
-        })
+          isAttending: true,
+        }),
       );
 
       // in this round, L1 has danced twice as it had the worst follower
@@ -451,9 +451,9 @@ describe('Next group generator', () => {
               {
                 id: 'dance1',
                 active: false,
-                finished: true
-              }
-            ]
+                finished: true,
+              },
+            ],
           },
           {
             id: 'group2',
@@ -462,9 +462,9 @@ describe('Next group generator', () => {
               {
                 id: 'dance2',
                 active: false,
-                finished: true
-              }
-            ]
+                finished: true,
+              },
+            ],
           },
           {
             id: 'group3',
@@ -473,11 +473,11 @@ describe('Next group generator', () => {
               {
                 id: 'dance3',
                 active: false,
-                finished: true
-              }
-            ]
-          }
-        ]
+                finished: true,
+              },
+            ],
+          },
+        ],
       };
 
       const judgeId = 'judge1';
@@ -485,7 +485,7 @@ describe('Next group generator', () => {
         ...createTournament(),
         judges: [{ ...createJudge(), id: judgeId }],
         participants: [...leaders, ...followers],
-        rounds: [round]
+        rounds: [round],
       };
 
       const criterionId = round.criteria[0].id;
@@ -497,50 +497,50 @@ describe('Next group generator', () => {
           criterionId,
           participantId: 'L1',
           judgeId,
-          value: 50
+          value: 50,
         },
         {
           danceId: 'dance1',
           criterionId,
           participantId: 'F1',
           judgeId,
-          value: 1
+          value: 1,
         },
         {
           danceId: 'dance2',
           criterionId,
           participantId: 'L2',
           judgeId,
-          value: 10
+          value: 10,
         },
         {
           danceId: 'dance2',
           criterionId,
           participantId: 'F2',
           judgeId,
-          value: 100
+          value: 100,
         },
         {
           danceId: 'dance3',
           criterionId,
           participantId: 'L1',
           judgeId,
-          value: 50
+          value: 50,
         },
         {
           danceId: 'dance3',
           criterionId,
           participantId: 'F3',
           judgeId,
-          value: 1
-        }
+          value: 1,
+        },
       ];
 
       expect(
-        new NextGroupGenerator(tournament, notes).generateForRound(round.id)
+        new NextGroupGenerator(tournament, notes).generateForRound(round.id),
       ).toMatchObject({
         // L1 already danced twice, L2's turn
-        pairs: [{ leader: 'L2', follower: 'F4' }]
+        pairs: [{ leader: 'L2', follower: 'F4' }],
       });
     });
   });

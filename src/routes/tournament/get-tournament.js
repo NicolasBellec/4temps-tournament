@@ -16,12 +16,12 @@ export default class GetTournamentRoute {
     }
 
     const userId: string = req.session.user.id;
-    const tournamentId = req.params.tournamentId;
+    const { tournamentId } = req.params;
 
     const { status, body } = await getTournamentRoute(
       tournamentId,
       userId,
-      this._tournamentRepository
+      this._tournamentRepository,
     );
 
     res.status(status);
@@ -32,7 +32,7 @@ export default class GetTournamentRoute {
 export async function getTournamentRoute(
   tournamentId: string,
   userId: string,
-  tournamentRepository: TournamentRepository
+  tournamentRepository: TournamentRepository,
 ): RouteResult<?Tournament> {
   const tournament = await tournamentRepository.get(tournamentId);
 
@@ -42,6 +42,6 @@ export async function getTournamentRoute(
 
   return {
     status: 200,
-    body: tournament
+    body: tournament,
   };
 }

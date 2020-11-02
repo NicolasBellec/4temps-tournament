@@ -5,13 +5,13 @@ import type { NoteRepository } from '../../data/note';
 
 export default function regenerateGroupRoute(
   tournamentRepository: TournamentRepository,
-  noteRepository: NoteRepository
+  noteRepository: NoteRepository,
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
       const tournament = await getTournament(
         tournamentRepository,
-        req.params.tournamentId
+        req.params.tournamentId,
       );
       const round = getRound(tournament, req.params.roundId);
       const group = getGroup(round, req.params.groupId);
@@ -21,7 +21,7 @@ export default function regenerateGroupRoute(
         generateGroups(
           tournament,
           round,
-          await getNotesForRound(noteRepository, round)
+          await getNotesForRound(noteRepository, round),
         );
 
         await tournamentRepository.updateRound(tournament.id, round);
@@ -38,7 +38,7 @@ export default function regenerateGroupRoute(
 
 async function getTournament(
   tournamentRepository: TournamentRepository,
-  id: string
+  id: string,
 ): Promise<Tournament> {
   const tournament = await tournamentRepository.get(id);
 
@@ -52,7 +52,7 @@ async function getTournament(
 function getRound(tournament: Tournament, id: string): Round {
   const round = tournament.rounds.reduce(
     (res, round) => (round.id === id ? round : res),
-    null
+    null,
   );
 
   if (round == null) {
@@ -65,7 +65,7 @@ function getRound(tournament: Tournament, id: string): Round {
 function getGroup(round: Round, id: string): DanceGroup {
   const group = round.groups.reduce(
     (res, group) => (group.id === id ? group : res),
-    null
+    null,
   );
 
   if (group == null) {
@@ -78,7 +78,7 @@ function getGroup(round: Round, id: string): DanceGroup {
 function isGroupActive(group: DanceGroup): boolean {
   return group.dances.reduce(
     (acc, { active, finished }) => acc || active || finished,
-    false
+    false,
   );
 }
 
@@ -89,11 +89,11 @@ function removeLaterGroupsIncluding(round: Round, group: DanceGroup): void {
 
 async function getNotesForRound(
   repo: NoteRepository,
-  round: Round
+  round: Round,
 ): Promise<Array<JudgeNote>> {
   const dances = round.groups.reduce(
     (dances, group) => [...dances, ...group.dances],
-    []
+    [],
   );
 
   let notes: Array<JudgeNote> = [];
@@ -107,7 +107,7 @@ async function getNotesForRound(
 function generateGroups(
   tournament: Tournament,
   round: Round,
-  notes: Array<JudgeNote>
+  notes: Array<JudgeNote>,
 ) {
   let group = null;
   do {
@@ -121,7 +121,7 @@ function generateGroups(
 function generateGroup(
   tournament: Tournament,
   notes: Array<JudgeNote>,
-  roundId: string
+  roundId: string,
 ): ?DanceGroup {
   const generator = new NextGroupGenerator(tournament, notes);
   generator.disableReuseOfParticipants();
@@ -130,9 +130,9 @@ function generateGroup(
 
 function handleError(e: mixed, res: ServerApiResponse) {
   if (
-    e instanceof NoTournamentError ||
-    e instanceof NoRoundError ||
-    e instanceof NoGroupError
+    e instanceof NoTournamentError
+    || e instanceof NoRoundError
+    || e instanceof NoGroupError
   ) {
     res.sendStatus(404);
   } else {

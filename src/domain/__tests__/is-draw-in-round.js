@@ -18,19 +18,19 @@ it('Can be draw even if zero score', () => {
     { participantId: leaderId1, score: 0 },
     { participantId: leaderId2, score: 0 },
     { participantId: followerId1, score: 0 },
-    { participantId: followerId2, score: 0 }
+    { participantId: followerId2, score: 0 },
   ];
 
   const pairs: Array<Pair> = [
     { leader: leaderId1, follower: followerId1 },
-    { leader: leaderId2, follower: followerId2 }
+    { leader: leaderId2, follower: followerId2 },
   ];
   const group: DanceGroup = { id: 'group', dances: [], pairs };
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 1,
     groups: [group],
-    roundScores: scores
+    roundScores: scores,
   };
 
   expect(isDrawInRound(round)).toBe(true);
@@ -46,19 +46,19 @@ it('Returns true if both leaders and followers have a draw', () => {
     { participantId: leaderId1, score: 1 },
     { participantId: leaderId2, score: 1 },
     { participantId: followerId1, score: 1 },
-    { participantId: followerId2, score: 1 }
+    { participantId: followerId2, score: 1 },
   ];
 
   const pairs: Array<Pair> = [
     { leader: leaderId1, follower: followerId1 },
-    { leader: leaderId2, follower: followerId2 }
+    { leader: leaderId2, follower: followerId2 },
   ];
   const group: DanceGroup = { id: 'group', dances: [], pairs };
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 1,
     groups: [group],
-    roundScores: scores
+    roundScores: scores,
   };
 
   expect(isDrawInRound(round)).toBe(true);
@@ -74,19 +74,19 @@ it('Returns true if only leaders have a draw', () => {
     { participantId: leaderId1, score: 1 },
     { participantId: leaderId2, score: 1 },
     { participantId: followerId1, score: 100 },
-    { participantId: followerId2, score: 1 }
+    { participantId: followerId2, score: 1 },
   ];
 
   const pairs: Array<Pair> = [
     { leader: leaderId1, follower: followerId1 },
-    { leader: leaderId2, follower: followerId2 }
+    { leader: leaderId2, follower: followerId2 },
   ];
   const group: DanceGroup = { id: 'group', dances: [], pairs };
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 1,
     groups: [group],
-    roundScores: scores
+    roundScores: scores,
   };
 
   expect(isDrawInRound(round)).toBe(true);
@@ -102,19 +102,19 @@ it('Returns true if only followers have a draw', () => {
     { participantId: leaderId1, score: 100 },
     { participantId: leaderId2, score: 1 },
     { participantId: followerId1, score: 1 },
-    { participantId: followerId2, score: 1 }
+    { participantId: followerId2, score: 1 },
   ];
 
   const pairs: Array<Pair> = [
     { leader: leaderId1, follower: followerId1 },
-    { leader: leaderId2, follower: followerId2 }
+    { leader: leaderId2, follower: followerId2 },
   ];
   const group: DanceGroup = { id: 'group', dances: [], pairs };
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 1,
     groups: [group],
-    roundScores: scores
+    roundScores: scores,
   };
 
   expect(isDrawInRound(round)).toBe(true);
@@ -130,19 +130,19 @@ it('Returns false if draw, if there are fewer winners than the maximum passing c
     { participantId: leaderId1, score: 1 },
     { participantId: leaderId2, score: 1 },
     { participantId: followerId1, score: 1 },
-    { participantId: followerId2, score: 1 }
+    { participantId: followerId2, score: 1 },
   ];
 
   const pairs: Array<Pair> = [
     { leader: leaderId1, follower: followerId1 },
-    { leader: leaderId2, follower: followerId2 }
+    { leader: leaderId2, follower: followerId2 },
   ];
   const group: DanceGroup = { id: 'group', dances: [], pairs };
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 2,
     groups: [group],
-    roundScores: scores
+    roundScores: scores,
   };
 
   expect(isDrawInRound(round)).toBe(false);
@@ -158,19 +158,19 @@ it('Returns false if no draw', () => {
     { participantId: leaderId1, score: 2 },
     { participantId: leaderId2, score: 1 },
     { participantId: followerId1, score: 2 },
-    { participantId: followerId2, score: 1 }
+    { participantId: followerId2, score: 1 },
   ];
 
   const pairs: Array<Pair> = [
     { leader: leaderId1, follower: followerId1 },
-    { leader: leaderId2, follower: followerId2 }
+    { leader: leaderId2, follower: followerId2 },
   ];
   const group: DanceGroup = { id: 'group', dances: [], pairs };
   const round: Round = {
     ...createRound(),
     passingCouplesCount: 1,
     groups: [group],
-    roundScores: scores
+    roundScores: scores,
   };
 
   expect(isDrawInRound(round)).toBe(false);

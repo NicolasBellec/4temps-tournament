@@ -1,5 +1,3 @@
-// no-flow
+// @flow
 
-export default (assistant: Assistant): boolean => {
-  return assistant.name.length !== 0;
-};
+export default (assistant: Assistant): boolean => assistant.name.length !== 0;

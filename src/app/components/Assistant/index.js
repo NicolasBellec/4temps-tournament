@@ -8,11 +8,11 @@ import {
   Header,
   Container,
   Menu,
-  MenuItem
+  MenuItem,
 } from 'semantic-ui-react';
 import Participants from '../EditTournament/Participants';
 import PreloadContainer from '../PreloadContainer';
-import { getSingleTournament } from '../../action-creators';
+import { getSingleTournamentAction } from '../../action-creators/tournament';
 
 import './styles.css';
 
@@ -23,7 +23,7 @@ type State = { activeTab: Tabs };
 
 class AssistantView extends Component<Props, State> {
   state = {
-    activeTab: 'groups'
+    activeTab: 'groups',
   };
 
   render() {
@@ -31,7 +31,7 @@ class AssistantView extends Component<Props, State> {
       <Container>
         <TabMenu
           activeTab={this.state.activeTab}
-          onClickTab={tab => this.setState({ activeTab: tab })}
+          onClickTab={(tab) => this.setState({ activeTab: tab })}
         />
         <TabContentContainer
           activeTab={this.state.activeTab}
@@ -44,10 +44,10 @@ class AssistantView extends Component<Props, State> {
 
 function TabMenu({
   activeTab,
-  onClickTab
+  onClickTab,
 }: {
   activeTab: Tabs,
-  onClickTab: (tab: Tabs) => void
+  onClickTab: (tab: Tabs) => void,
 }) {
   return (
     <Menu tabular>
@@ -69,18 +69,17 @@ function TabMenu({
 
 function TabContent({
   activeTab,
-  tournamentId
+  tournamentId,
 }: {
   activeTab: Tabs,
-  tournamentId: string
+  tournamentId: string,
 }) {
   if (activeTab === 'groups') {
     return <GroupsContainer tournamentId={tournamentId} />;
-  } else if (activeTab === 'participants') {
+  } if (activeTab === 'participants') {
     return <Participants tournamentId={tournamentId} />;
-  } else {
-    return 'Invalid tab';
   }
+  return 'Invalid tab';
 }
 
 // $FlowFixMe
@@ -88,17 +87,17 @@ const TabContentContainer = connect(
   ({ tournaments }, props) => ({
     Child: TabContent,
     shouldLoad: tournaments.byId[props.tournamentId] === undefined,
-    ...props
+    ...props,
   }),
   (dispatch, { tournamentId }) => ({
-    load: () => getSingleTournament(dispatch, tournamentId)
-  })
+    load: () => dispatch(getSingleTournamentAction(tournamentId)),
+  }),
 )(PreloadContainer);
 
 type GroupsProps = {
   hasActiveRound: boolean,
   roundName: string,
-  groups: Array<{ number: number, pairs: Array<string> }>
+  groups: Array<{ number: number, pairs: Array<string> }>,
 };
 function Groups({ hasActiveRound, roundName, groups }: GroupsProps) {
   if (!hasActiveRound) {
@@ -106,66 +105,63 @@ function Groups({ hasActiveRound, roundName, groups }: GroupsProps) {
   }
 
   return (
-    <Fragment>
+    <>
       <Header as="h1" textAlign="center">
         {roundName}
       </Header>
-      {groups.map(group => (
+      {groups.map((group) => (
         <div styleName="group" key={group.number}>
-          <Header as="h2">Group {group.number}</Header>
+          <Header as="h2">
+            Group
+            {group.number}
+          </Header>
           <Grid>
             <GridRow columns={group.pairs.length}>
-              {group.pairs.map(
-                (couple, i) =>
-                  i % 2 === 0 ? (
-                    <GridColumn styleName="column" key={`upper-${couple}`} />
-                  ) : (
-                    <GridColumn styleName="column" key={`upper-${couple}`}>
-                      {couple}
-                    </GridColumn>
-                  )
-              )}
+              {group.pairs.map((couple, i) => (i % 2 === 0 ? (
+                <GridColumn styleName="column" key={`upper-${couple}`} />
+              ) : (
+                <GridColumn styleName="column" key={`upper-${couple}`}>
+                  {couple}
+                </GridColumn>
+              )))}
             </GridRow>
             <GridRow columns={group.pairs.length}>
-              {group.pairs.map(
-                (couple, i) =>
-                  i % 2 !== 0 ? (
-                    <GridColumn styleName="column" key={`lower-${couple}`} />
-                  ) : (
-                    <GridColumn styleName="column" key={`lower-${couple}`}>
-                      {couple}
-                    </GridColumn>
-                  )
-              )}
+              {group.pairs.map((couple, i) => (i % 2 !== 0 ? (
+                <GridColumn styleName="column" key={`lower-${couple}`} />
+              ) : (
+                <GridColumn styleName="column" key={`lower-${couple}`}>
+                  {couple}
+                </GridColumn>
+              )))}
             </GridRow>
           </Grid>
         </div>
       ))}
-    </Fragment>
+    </>
   );
 }
 
 const GroupsContainer = connect(
   (
     { tournaments, rounds, participants }: ReduxState,
-    { tournamentId }: { tournamentId: string }
+    { tournamentId }: { tournamentId: string },
   ): GroupsProps => {
     const tournament = tournaments.byId[tournamentId];
     const round = tournament.rounds
-      .map(id => rounds.byId[id])
-      .filter(round => round.active)[0];
+      .map((id) => rounds.byId[id])
+      .filter((round) => round.active)[0];
 
     if (!round) {
       return {
         hasActiveRound: false,
         roundName: '',
-        groups: []
+        groups: [],
       };
     }
 
-    const roundName = `Round ${tournament.rounds.findIndex(
-      id => id === round.id
-    ) + 1}`;
+    const roundName = `Round ${
+      tournament.rounds.findIndex((id) => id === round.id) + 1
+    }`;
     const groups = round.groups.map((group, i) => ({
       number: i + 1,
       pairs: group.pairs.map(({ leader, follower }) => {
@@ -177,19 +173,17 @@ const GroupsContainer = connect(
           return String(participants.byId[leader].attendanceId);
         }
 
-        return `L${participants.byId[leader].attendanceId} - F${
-          participants.byId[follower].attendanceId
-        }`;
-      })
+        return `L${participants.byId[leader].attendanceId} - F${participants.byId[follower].attendanceId}`;
+      }),
     }));
 
     return { hasActiveRound: true, roundName, groups };
-  }
+  },
 )(Groups);
 
 function mapStateToProps({ user }: ReduxState): Props {
   return {
-    tournamentId: user.tournamentId
+    tournamentId: user.tournamentId,
   };
 }
 

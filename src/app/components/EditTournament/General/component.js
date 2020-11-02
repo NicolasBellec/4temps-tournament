@@ -6,7 +6,7 @@ import {
   FormButton,
   FormInput,
   Message,
-  Button
+  Button,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import type Moment from 'moment';
@@ -19,26 +19,26 @@ type Props = {
   isValidDate: boolean,
 
   onSubmit: (tournament: Tournament) => Promise<void>,
-  onClickLeaderboard: () => void
+  onClickLeaderboard: () => void,
 };
 
 type State = {
   name: string,
-  date: Moment
+  date: Moment,
 };
 
 class EditTournamentGeneral extends Component<Props, State> {
   state = {
     name: this.props.tournament ? this.props.tournament.name : '',
-    date: this.props.tournament ? this.props.tournament.date : moment()
+    date: this.props.tournament ? this.props.tournament.date : moment(),
   };
 
   componentWillReceiveProps({ tournament }: Props) {
     const { name, date } = tournament;
     if (
-      !this.props.tournament ||
-      (this.props.tournament.name !== name ||
-        this.props.tournament.date !== date)
+      !this.props.tournament
+      || this.props.tournament.name !== name
+      || this.props.tournament.date !== date
     ) {
       this.setState({ name, date });
     }

@@ -6,7 +6,7 @@ import Component from './component';
 import type {
   CriterionViewModel,
   StateProps,
-  DispatchProps
+  DispatchProps,
 } from './component';
 import { setTemporaryNote } from '../../../../api/note';
 
@@ -24,7 +24,7 @@ function mapStateToProps(state: ReduxState): StateProps {
     danceId,
     judgeId,
     pairId,
-    criteria: getCriteriaForJudgeType(state, pairId, judge.judgeType)
+    criteria: getCriteriaForJudgeType(state, pairId, judge.judgeType),
   };
 }
 
@@ -60,7 +60,7 @@ function getFirstPair(round: Round): Pair {
       }
       return res;
     },
-    { leader: null, follower: null }
+    { leader: null, follower: null },
   );
 }
 
@@ -79,42 +79,37 @@ function getRound(state: ReduxState): Round {
 function getCriteriaForJudgeType(
   state: ReduxState,
   pairId: string,
-  judgeType: JudgeType
+  judgeType: JudgeType,
 ): Array<CriterionViewModel> {
   return getRound(state)
-    .criteria.filter(
-      criterion =>
-        criterion.forJudgeType === 'normal'
-          ? judgeType === 'normal' || judgeType === 'president'
-          : criterion.forJudgeType === judgeType
-    )
-    .map(crit => ({
+    .criteria.filter((criterion) => (criterion.forJudgeType === 'normal'
+      ? judgeType === 'normal' || judgeType === 'president'
+      : criterion.forJudgeType === judgeType))
+    .map((crit) => ({
       id: crit.id,
       name: crit.name,
       description: crit.description,
       minValue: crit.minValue,
       maxValue: crit.maxValue,
       value: getValue(state.notes, pairId, crit.id),
-      forJudgeType: crit.forJudgeType
+      forJudgeType: crit.forJudgeType,
     }));
 }
 
 function getValue(notes: NotesReduxState, pairId: string, criterionId: string) {
   const { leaderId, followerId } = getIds(pairId);
 
-  const leaderValue =
-    notes.byParticipant[leaderId] != null
-      ? notes.byParticipant[leaderId][criterionId] != null
-        ? notes.byParticipant[leaderId][criterionId].value
-        : null
-      : null;
+  const leaderValue = notes.byParticipant[leaderId] != null
+    ? notes.byParticipant[leaderId][criterionId] != null
+      ? notes.byParticipant[leaderId][criterionId].value
+      : null
+    : null;
 
-  const followerValue =
-    notes.byParticipant[followerId] != null
-      ? notes.byParticipant[followerId][criterionId] != null
-        ? notes.byParticipant[followerId][criterionId].value
-        : null
-      : null;
+  const followerValue = notes.byParticipant[followerId] != null
+    ? notes.byParticipant[followerId][criterionId] != null
+      ? notes.byParticipant[followerId][criterionId].value
+      : null
+    : null;
 
   return leaderValue === followerValue ? leaderValue : null;
 }
@@ -134,31 +129,31 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
         type: 'SET_NOTE',
         promise: setTemporaryNote(tournamentId, {
           ...note,
-          participantId: leaderId
+          participantId: leaderId,
         }),
         payload: {
           ...note,
-          participantId: leaderId
-        }
+          participantId: leaderId,
+        },
       });
       dispatch({
         type: 'SET_NOTE',
         promise: setTemporaryNote(tournamentId, {
           ...note,
-          participantId: followerId
+          participantId: followerId,
         }),
         payload: {
           ...note,
-          participantId: followerId
-        }
+          participantId: followerId,
+        },
       });
-    }
+    },
   };
 }
 
 const PairNoteTakerContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default PairNoteTakerContainer;

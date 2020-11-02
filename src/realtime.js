@@ -10,7 +10,7 @@ export function setup(server: mixed) {
 }
 
 function onConnection(socket: SocketIO) {
-  socket.on('subscribe', room => {
+  socket.on('subscribe', (room) => {
     socket.join(room);
   });
 }
@@ -22,6 +22,6 @@ export function pushTournamentUpdate(tournament: Tournament) {
 export function pushLeaderboardUpdate(leaderboard: Leaderboard) {
   io.to(`leaderboard/${leaderboard.tournamentId}`).emit(
     'leaderboard update',
-    leaderboard
+    leaderboard,
   );
 }

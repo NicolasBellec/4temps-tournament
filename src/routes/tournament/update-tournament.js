@@ -25,7 +25,7 @@ export default class UpdateTournamentRoute {
     const { status, body } = await updateTournamentRoute(
       userId,
       tournament,
-      this._repository
+      this._repository,
     );
 
     res.status(status);
@@ -36,7 +36,7 @@ export default class UpdateTournamentRoute {
 export async function updateTournamentRoute(
   userId: string,
   tournament: Tournament,
-  repository: TournamentRepository
+  repository: TournamentRepository,
 ): RouteResult<?Tournament> {
   const { isValidTournament } = validateTournament(tournament);
   let status: number = 200;
@@ -50,7 +50,7 @@ export async function updateTournamentRoute(
     } else {
       const newTournament = {
         ...tournament,
-        creatorId: dbTournament.creatorId
+        creatorId: dbTournament.creatorId,
       };
       try {
         await repository.update(newTournament);

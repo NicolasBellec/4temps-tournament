@@ -10,7 +10,7 @@ import {
   Dimmer,
   Loader,
   Message,
-  Popup
+  Popup,
 } from 'semantic-ui-react';
 // $FlowFixMe
 import NoteTable from '../NoteTable';
@@ -21,11 +21,11 @@ export type StateProps = {
   isLoading: boolean,
   didSubmit: boolean,
   successfulSubmit: boolean,
-  hasAllNotes: boolean
+  hasAllNotes: boolean,
 };
 
 export type DispatchProps = {
-  onSubmit: (tournamentId: string, notes: Array<JudgeNote>) => void
+  onSubmit: (tournamentId: string, notes: Array<JudgeNote>) => void,
 };
 
 type Props = StateProps & DispatchProps;
@@ -47,9 +47,9 @@ class SubmitNotesModal extends PureComponent<Props> {
 
   _didFail(): boolean {
     return (
-      this.props.didSubmit &&
-      !this.props.successfulSubmit &&
-      !this.props.isLoading
+      this.props.didSubmit
+      && !this.props.successfulSubmit
+      && !this.props.isLoading
     );
   }
 
@@ -73,6 +73,7 @@ class SubmitNotesModal extends PureComponent<Props> {
       </Modal>
     );
   }
+
   render() {
     return this.props.hasAllNotes ? (
       this._submitModal()

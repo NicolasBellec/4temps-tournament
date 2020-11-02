@@ -13,13 +13,15 @@ type UpdateLeaderboardFunc = (leaderboard: Leaderboard) => void;
 
 export default class StartDanceRoute {
   _tournamentRepository: TournamentRepository;
+
   _noteRepository: NoteRepository;
+
   _updateLeaderboardFunc: UpdateLeaderboardFunc;
 
   constructor(
     repository: TournamentRepository,
     noteRepository: NoteRepository,
-    updateLeaderboard: UpdateLeaderboardFunc
+    updateLeaderboard: UpdateLeaderboardFunc,
   ) {
     this._tournamentRepository = repository;
     this._noteRepository = noteRepository;
@@ -28,12 +30,12 @@ export default class StartDanceRoute {
 
   route = () => async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const tournamentId = req.params.tournamentId;
+      const { tournamentId } = req.params;
       const handler = new EndDanceRouteHandler(
         this._tournamentRepository,
         this._noteRepository,
         this._updateLeaderboardFunc,
-        tournamentId
+        tournamentId,
       );
 
       await handler.endDance();
@@ -50,29 +52,29 @@ export default class StartDanceRoute {
     if (e instanceof NoStartedDanceError) {
       res.status(404);
       res.json({
-        hasActiveDance: false
+        hasActiveDance: false,
       });
     } else if (e instanceof NotAllNotesError) {
       res.status(400);
       res.json({
-        isAllSubmitted: false
+        isAllSubmitted: false,
       });
     } else if (e instanceof RoundHasDrawError) {
       res.status(409);
       res.json({
-        isDraw: true
+        isDraw: true,
       });
     } else if (e instanceof DebuggingError) {
       res.status(500);
       res.json({
-        mess: 'Debugging trap'
+        mess: 'Debugging trap',
       });
     } else {
       res.status(500);
 
       res.json({
         // $FlowFixMe
-        error: e.toString()
+        error: e.toString(),
       });
     }
   };
@@ -80,18 +82,22 @@ export default class StartDanceRoute {
 
 class EndDanceRouteHandler {
   _tournamentRepository: TournamentRepository;
+
   _noteRepository: NoteRepository;
+
   _updateLeaderboardFunc: UpdateLeaderboardFunc;
+
   _tournamentId: string;
 
   _tournament: Tournament;
+
   _round: Round;
 
   constructor(
     repository: TournamentRepository,
     noteRepository: NoteRepository,
     updateLeaderboard: UpdateLeaderboardFunc,
-    tournamentId: string
+    tournamentId: string,
   ) {
     this._tournamentRepository = repository;
     this._noteRepository = noteRepository;
@@ -100,9 +106,7 @@ class EndDanceRouteHandler {
     this._tournamentId = tournamentId;
   }
 
-  getUpdatedRound = () => {
-    return this._round;
-  };
+  getUpdatedRound = () => this._round;
 
   endDance = async () => {
     const tournament = await this._tournamentRepository.get(this._tournamentId);
@@ -123,8 +127,8 @@ class EndDanceRouteHandler {
     }
 
     if (
-      this._isLastDanceInGroup(round, dance) &&
-      this._isLastGroup(round, dance)
+      this._isLastDanceInGroup(round, dance)
+      && this._isLastGroup(round, dance)
     ) {
       await this._generateNextGroups(tournament, round);
       // if it's still the last after having generated a new one, it's the very last
@@ -169,7 +173,7 @@ class EndDanceRouteHandler {
 
   _hasAllNotesForDance = async (
     tournament: Tournament,
-    dance: Dance
+    dance: Dance,
   ): Promise<boolean> => {
     const checker = new NoteChecker(tournament);
     const notes = await this._noteRepository.getForDance(dance.id);
@@ -201,11 +205,11 @@ class EndDanceRouteHandler {
 
   _generateNextGroups = async (
     tournament: Tournament,
-    round: Round
+    round: Round,
   ): Promise<void> => {
     const generator = new NextGroupGenerator(
       tournament,
-      await this._getNotes(round)
+      await this._getNotes(round),
     );
 
     let group = null;
@@ -218,7 +222,7 @@ class EndDanceRouteHandler {
   };
 
   _selectRandomJudge = (tournament: Tournament): string => {
-    const judges = tournament.judges;
+    const { judges } = tournament;
 
     // Get a random number in [ 0, judges.length [
     const randomJudge = Math.floor(Math.random() * judges.length);
@@ -233,7 +237,7 @@ class EndDanceRouteHandler {
       round.roundScores = scorer.scoreRound(notes);
     } else if (round.notationSystem == 'sum') {
       round.roundScores = new RoundScorer(tournament.judges, round).scoreRound(
-        notes
+        notes,
       );
     }
 

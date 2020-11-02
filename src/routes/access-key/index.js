@@ -13,13 +13,13 @@ router.get(
   async (req: ServerApiRequest, res: ServerApiResponse) => {
     const repo = new AccessKeyRepositoryImpl();
     res.json(await repo.getForTournament(req.params.tournamentId));
-  }
+  },
 );
 
 router.post(
   '/login',
   allow('public'),
-  loginRoute(new AccessKeyRepositoryImpl())
+  loginRoute(new AccessKeyRepositoryImpl()),
 );
 
 export default router;

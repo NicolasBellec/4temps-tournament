@@ -8,20 +8,21 @@ import {
   Container,
   Header,
   Divider,
-  SyntheticEvent
+  SyntheticEvent,
 } from 'semantic-ui-react';
 import '../styles.css';
 
 type Props = {
-  rounds: Array<LeaderboardRound>
+  rounds: Array<LeaderboardRound>,
 };
 type State = {
-  activeIndex: number
+  activeIndex: number,
 };
 export default class RoundTables extends Component<Props, State> {
   state = {
-    activeIndex: -1
+    activeIndex: -1,
   };
+
   handleClick = (e: SyntheticEvent, titleProps: { index: number }) => {
     const { index } = titleProps;
     const { activeIndex } = this.state;
@@ -90,6 +91,7 @@ export default class RoundTables extends Component<Props, State> {
       </Container>
     );
   };
+
   render() {
     const { rounds } = this.props;
     return (
@@ -104,10 +106,10 @@ export default class RoundTables extends Component<Props, State> {
 
 function ScoreTable({
   roundId,
-  scores
+  scores,
 }: {
   roundId: string,
-  scores: Array<LeaderboardScore>
+  scores: Array<LeaderboardScore>,
 }) {
   return (
     <Table unstackable>
@@ -119,7 +121,7 @@ function ScoreTable({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {scores.map(score => (
+        {scores.map((score) => (
           <ScoreTableRow key={roundId + score.id} score={score} />
         ))}
       </Table.Body>

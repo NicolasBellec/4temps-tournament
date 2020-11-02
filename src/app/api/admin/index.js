@@ -7,9 +7,9 @@ import type { AdminLoginValidationSummary } from '../../../validators/validate-a
 import type { AdminCreateValidationSummary } from '../../../validators/validate-admin';
 
 export const createAdmin = async (
-  admin: AdminWithPassword
+  admin: AdminWithPassword,
 ): Promise<AdminCreateValidationSummary> => {
-  let result = await validateAdmin(admin);
+  const result = await validateAdmin(admin);
   if (!result.isValid) {
     throw result;
   }
@@ -17,9 +17,9 @@ export const createAdmin = async (
 };
 
 export const loginAdmin = async (
-  credentials: AdminCredentials
+  credentials: AdminCredentials,
 ): Promise<AdminLoginValidationSummary> => {
-  let result = await validateAdminLogin(credentials);
+  const result = await validateAdminLogin(credentials);
   if (!result.isValid) {
     throw result;
   }
@@ -27,6 +27,4 @@ export const loginAdmin = async (
   return apiPostRequest('/api/admin/login', credentials);
 };
 
-export const logoutAdmin = async (): Promise<boolean> => {
-  return apiPostRequest('/api/admin/logout');
-};
+export const logoutAdmin = async (): Promise<boolean> => apiPostRequest('/api/admin/logout');

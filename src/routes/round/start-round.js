@@ -12,11 +12,11 @@ export default class StartRoundRoute {
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const tournamentId = req.params.tournamentId;
+      const { tournamentId } = req.params;
       const handler = new StartRoundRouteHandler(
         this._repository,
         tournamentId,
-        req.params.roundId
+        req.params.roundId,
       );
 
       await handler.startRound();
@@ -28,13 +28,13 @@ export default class StartRoundRoute {
 
   _statusFromError = (e: mixed) => {
     if (
-      e instanceof RoundNotFoundError ||
-      e instanceof TournamentNotFoundError
+      e instanceof RoundNotFoundError
+      || e instanceof TournamentNotFoundError
     ) {
       return 404;
-    } else if (
-      e instanceof AlreadyStartedError ||
-      e instanceof AlreadyFinishedError
+    } if (
+      e instanceof AlreadyStartedError
+      || e instanceof AlreadyFinishedError
     ) {
       return 400;
     }
@@ -44,25 +44,26 @@ export default class StartRoundRoute {
 
 class StartRoundRouteHandler {
   _repository: TournamentRepository;
+
   _tournamentId: string;
+
   _roundId: string;
 
   _tournament: Tournament;
+
   _round: Round;
 
   constructor(
     repository: TournamentRepository,
     tournamentId: string,
-    roundId: string
+    roundId: string,
   ) {
     this._repository = repository;
     this._tournamentId = tournamentId;
     this._roundId = roundId;
   }
 
-  getUpdatedRound = () => {
-    return this._round;
-  };
+  getUpdatedRound = () => this._round;
 
   startRound = async () => {
     this._tournament = await this._getTournament();
@@ -91,7 +92,7 @@ class StartRoundRouteHandler {
 
   _getRound = (): Round => {
     const matches = this._tournament.rounds.filter(
-      ({ id }) => id === this._roundId
+      ({ id }) => id === this._roundId,
     );
 
     if (matches.length === 0) {
@@ -118,7 +119,7 @@ class StartRoundRouteHandler {
   };
 
   _createDances = (danceCount: number) => {
-    let dances: Array<Dance> = [];
+    const dances: Array<Dance> = [];
     for (let i = 0; i < danceCount; ++i) {
       dances.push({ id: ObjectId.generate(), active: false, finished: false });
     }
@@ -136,7 +137,7 @@ class StartRoundRouteHandler {
 
   _getRound = (): Round => {
     const matches = this._tournament.rounds.filter(
-      ({ id }) => id === this._roundId
+      ({ id }) => id === this._roundId,
     );
 
     if (matches.length === 0) {

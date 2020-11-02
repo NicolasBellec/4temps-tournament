@@ -56,7 +56,7 @@ describe('Tournament validator', () => {
       const tournament = {
         ...createTournament(),
         // $FlowFixMe (ignored on purpose)
-        type: 'some other type'
+        type: 'some other type',
       };
       const validation = validateTournament(tournament);
 

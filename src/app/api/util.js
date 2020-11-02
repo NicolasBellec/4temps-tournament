@@ -3,8 +3,7 @@
 async function parseResponse<T>(response: Response): Promise<T> {
   const { status } = response;
   const contentType = response.headers.get('content-type');
-  const isCorrectContentType =
-    contentType != null && contentType.indexOf('application/json') !== -1;
+  const isCorrectContentType = contentType != null && contentType.indexOf('application/json') !== -1;
 
   if (status !== 200) {
     if (isCorrectContentType) {
@@ -14,27 +13,27 @@ async function parseResponse<T>(response: Response): Promise<T> {
   }
   if (status === 200 && isCorrectContentType) {
     return await response.json();
-  } else if (status !== 200 && isCorrectContentType) {
+  } if (status !== 200 && isCorrectContentType) {
     throw await response.json();
   } else if (status !== 200) {
     throw 'API Failure';
   } else {
-    throw 'contentType Failure'
+    throw 'contentType Failure';
   }
 }
 
 export async function apiGetRequest<T>(
   url: string,
-  deserialize: ?(T) => T
+  deserialize: ?(T) => T,
 ): Promise<T> {
   const response = await parseResponse(
     await fetch(url, {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
       },
       method: 'GET',
-      credentials: 'include'
-    })
+      credentials: 'include',
+    }),
   );
 
   if (response != null && deserialize != null) {
@@ -46,18 +45,18 @@ export async function apiGetRequest<T>(
 export async function apiPostRequest<Body, T>(
   url: string,
   body: ?Body,
-  deserialize: ?(T) => T
+  deserialize: ?(T) => T,
 ): Promise<T> {
   const response = await parseResponse(
     await fetch(url, {
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify(body),
-      credentials: 'include'
-    })
+      credentials: 'include',
+    }),
   );
 
   if (response != null && deserialize != null) {
@@ -68,16 +67,16 @@ export async function apiPostRequest<Body, T>(
 
 export async function apiDeleteRequest<T>(
   url: string,
-  deserialize: ?(T) => T
+  deserialize: ?(T) => T,
 ): Promise<T> {
   const response = await parseResponse(
     await fetch(url, {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
       },
       method: 'DELETE',
-      credentials: 'include'
-    })
+      credentials: 'include',
+    }),
   );
 
   if (response != null && deserialize != null) {

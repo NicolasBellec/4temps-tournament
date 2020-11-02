@@ -8,7 +8,7 @@ import { loginAdmin } from '../../../api/admin';
 
 type Props = {
   location: Location,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 function mapStateToProps({ ui }: ReduxState) {
@@ -17,24 +17,23 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { location, history }: Props
+  { location, history }: Props,
 ) {
   const referer = location.search.replace(/\?referer=/, '');
   return {
-    onSubmit: (credentials: AdminCredentials) =>
-      dispatch({
-        type: 'LOGIN_USER',
-        promise: loginAdmin(credentials),
-        meta: {
-          onSuccess: () => history.push(referer)
-        }
-      })
+    onSubmit: (credentials: AdminCredentials) => dispatch({
+      type: 'LOGIN_USER',
+      promise: loginAdmin(credentials),
+      meta: {
+        onSuccess: () => history.push(referer),
+      },
+    }),
   };
 }
 
 const LoginContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(LoginComponent);
 
 export default LoginContainer;

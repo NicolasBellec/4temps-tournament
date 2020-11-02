@@ -6,7 +6,7 @@ import {
   Response,
   createTournament,
   createJudge,
-  AccessKeyRepositoryImpl as AccessKeyRepository
+  AccessKeyRepositoryImpl as AccessKeyRepository,
 } from '../../../test-utils';
 
 describe('/api/access-key/login', () => {
@@ -29,7 +29,7 @@ describe('/api/access-key/login', () => {
       userId: judge.id,
       tournamentId: tournament.id,
       key: VALID_KEY,
-      role: 'judge'
+      role: 'judge',
     });
 
     req.body = { accessKey: VALID_KEY };
@@ -39,7 +39,7 @@ describe('/api/access-key/login', () => {
     expect(res.getBody()).toEqual({
       userId: judge.id,
       role: 'judge',
-      tournamentId: tournament.id
+      tournamentId: tournament.id,
     });
   });
 
@@ -48,7 +48,7 @@ describe('/api/access-key/login', () => {
       userId: 'assistantId',
       tournamentId: tournament.id,
       key: VALID_KEY,
-      role: 'assistant'
+      role: 'assistant',
     });
     req.body = { accessKey: VALID_KEY };
     await route(accessKeyRepo)(req, res);
@@ -57,7 +57,7 @@ describe('/api/access-key/login', () => {
     expect(req.session.user).toEqual({
       id: 'assistantId',
       role: 'assistant',
-      tournamentId: tournament.id
+      tournamentId: tournament.id,
     });
   });
 

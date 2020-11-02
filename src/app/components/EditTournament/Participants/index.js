@@ -7,7 +7,7 @@ import ListParticipants from './ListParticipants';
 import CreateParticipant from './CreateParticipant';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 export default function EditTournamentParticipants(props: Props) {

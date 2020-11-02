@@ -8,7 +8,7 @@ import getNotesForDanceRoute from './get-notes-for-dance';
 import { TournamentRepositoryImpl } from '../../data/tournament';
 import {
   TemporaryNoteRepository,
-  SubmittedNoteRepository
+  SubmittedNoteRepository,
 } from '../../data/note';
 
 const router = Router();
@@ -18,17 +18,17 @@ const temporaryNotesRepository = new TemporaryNoteRepository();
 router.post(
   '/:tournamentId/temporary/set',
   allow('judge'),
-  setNoteRoute(tournamentRepository, temporaryNotesRepository)
+  setNoteRoute(tournamentRepository, temporaryNotesRepository),
 );
 router.get(
   '/:tournamentId/temporary/dance/:danceId',
   allow('judge'),
-  getNotesForDanceRoute(temporaryNotesRepository)
+  getNotesForDanceRoute(temporaryNotesRepository),
 );
 router.post(
   '/:tournamentId/final/submit',
   allow('judge'),
-  submitNotesRoute(tournamentRepository, new SubmittedNoteRepository())
+  submitNotesRoute(tournamentRepository, new SubmittedNoteRepository()),
 );
 
 export default router;

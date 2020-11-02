@@ -16,7 +16,7 @@ export type Props = {
   judgeId: string,
   activeRound: ?Round,
   activeDanceId: ?string,
-  notesSubmitted: boolean
+  notesSubmitted: boolean,
 };
 
 export default function Judge({
@@ -24,7 +24,7 @@ export default function Judge({
   activeRound,
   activeDanceId,
   notesSubmitted,
-  judgeId
+  judgeId,
 }: Props) {
   if (activeRound != null && activeRound.draw) {
     return (
@@ -34,7 +34,7 @@ export default function Judge({
         judgeId={judgeId}
       />
     );
-  } else if (activeRound != null && activeDanceId != null) {
+  } if (activeRound != null && activeDanceId != null) {
     return (
       <ActiveDance
         tournamentId={tournamentId}
@@ -50,11 +50,11 @@ export default function Judge({
 function Draw({
   tournamentId,
   judgeId,
-  activeRound
+  activeRound,
 }: {
   tournamentId: string,
   judgeId: string,
-  activeRound: Round
+  activeRound: Round,
 }) {
   if (judgeId === activeRound.tieBreakerJudge) {
     return (
@@ -74,7 +74,7 @@ function NoActiveDance() {
 }
 
 type ActiveDanceProps = TakeNotesProps & {
-  notesSubmitted: boolean
+  notesSubmitted: boolean,
 };
 function ActiveDance(props: ActiveDanceProps) {
   return (
@@ -89,7 +89,7 @@ function ActiveDance(props: ActiveDanceProps) {
 type TakeNotesProps = {
   roundId: string,
   danceId: string,
-  tournamentId: string
+  tournamentId: string,
 };
 
 function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {

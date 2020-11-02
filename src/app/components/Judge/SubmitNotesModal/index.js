@@ -17,7 +17,7 @@ function mapStateToProps(state: ReduxState): StateProps {
     ...uiNotes,
     tournamentId: state.tournaments.forJudge,
     notes,
-    hasAllNotes: hasAllNotes(tournament, danceId, notes, state.user.id)
+    hasAllNotes: hasAllNotes(tournament, danceId, notes, state.user.id),
   };
 }
 
@@ -25,7 +25,7 @@ function hasAllNotes(
   tournament: Tournament,
   danceId: string,
   notes: Array<JudgeNote>,
-  judgeId: string
+  judgeId: string,
 ) {
   const noteChecker = new NoteChecker(tournament);
   return noteChecker.allSetForDanceByJudge(danceId, notes, judgeId);
@@ -33,20 +33,16 @@ function hasAllNotes(
 
 function getNotesForActiveDance(
   state: ReduxState,
-  activeDanceId: string
+  activeDanceId: string,
 ): Array<JudgeNote> {
   return Object.keys(state.notes.byParticipant)
-    .reduce((notes, participantId) => {
-      return [
-        ...notes,
-        ...Object.keys(state.notes.byParticipant[participantId]).reduce(
-          (acc, critId) => {
-            return [...acc, state.notes.byParticipant[participantId][critId]];
-          },
-          []
-        )
-      ];
-    }, [])
+    .reduce((notes, participantId) => [
+      ...notes,
+      ...Object.keys(state.notes.byParticipant[participantId]).reduce(
+        (acc, critId) => [...acc, state.notes.byParticipant[participantId][critId]],
+        [],
+      ),
+    ], [])
     .filter(({ danceId }) => danceId === activeDanceId);
 }
 
@@ -65,7 +61,7 @@ function getActiveRound(state: ReduxState): Round {
   // $FlowFixMe
   return tournament.rounds.reduce(
     (res, round) => (round.active ? round : res),
-    null
+    null,
   );
 }
 
@@ -73,8 +69,8 @@ function getTournament(state: ReduxState): Tournament {
   const tournament = state.tournaments.byId[state.tournaments.forJudge];
   return {
     ...tournament,
-    rounds: tournament.rounds.map(id => state.rounds.byId[id]),
-    judges: tournament.judges.map(id => state.judges.byId[id])
+    rounds: tournament.rounds.map((id) => state.rounds.byId[id]),
+    judges: tournament.judges.map((id) => state.judges.byId[id]),
   };
 }
 
@@ -83,15 +79,15 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
     onSubmit: (tournamentId: string, notes: Array<JudgeNote>) => {
       dispatch({
         type: 'SUBMIT_NOTES',
-        promise: submitNotes(tournamentId, notes)
+        promise: submitNotes(tournamentId, notes),
       });
-    }
+    },
   };
 }
 
 const SubmitNotesModalContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default SubmitNotesModalContainer;

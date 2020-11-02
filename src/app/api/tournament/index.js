@@ -7,13 +7,13 @@ import { apiGetRequest, apiPostRequest } from '../util';
 import validateTournament from '../../../validators/validate-tournament';
 import {
   normalizeTournamentArray,
-  normalizeTournament
+  normalizeTournament,
 } from '../../reducers/normalize';
 
 export const createTournamentApi = async (
-  tournament: Tournament
+  tournament: Tournament,
 ): Promise<Tournament> => {
-  let validation = validateTournament(tournament);
+  const validation = validateTournament(tournament);
   if (!validation.isValidTournament) {
     throw validation;
   }
@@ -21,7 +21,7 @@ export const createTournamentApi = async (
   return apiPostRequest(
     '/api/tournament/create',
     tournament,
-    deserializeTournament
+    deserializeTournament,
   );
 };
 
@@ -30,31 +30,19 @@ export const deserializeTournament = (tour: Tournament): Tournament => {
   return { date: moment(date), ...rest };
 };
 
-export const getTournamentsForUser = (): Promise<Array<mixed>> => {
-  return apiGetRequest('/api/tournament/get', tours =>
-    normalizeTournamentArray(tours.map(deserializeTournament))
-  );
-};
+export const getTournamentsForUser = (): Promise<Array<mixed>> => apiGetRequest('/api/tournament/get', (tours) => normalizeTournamentArray(tours.map(deserializeTournament)));
 
-export const getTournament = (id: string): Promise<mixed> => {
-  return apiGetRequest(`/api/tournament/get/${id}`, normalizeTournament);
-};
+export const getTournament = (id: string): Promise<mixed> => apiGetRequest(`/api/tournament/get/${id}`, normalizeTournament);
 
-export const getTournamentForJudge = (): Promise<mixed> => {
-  return apiGetRequest('/api/tournament/get/judge', normalizeTournament);
-};
+export const getTournamentForJudge = (): Promise<mixed> => apiGetRequest('/api/tournament/get/judge', normalizeTournament);
 
-export const getAllTournaments = (): Promise<mixed> => {
-  return apiGetRequest('/api/tournament/get/all', tours =>
-    normalizeTournamentArray(tours.map(deserializeTournament))
-  );
-};
+export const getAllTournaments = (): Promise<mixed> => apiGetRequest('/api/tournament/get/all', (tours) => normalizeTournamentArray(tours.map(deserializeTournament)));
 
 export const updateTournament = async (
   tournamentId: string,
-  tournament: Tournament
+  tournament: Tournament,
 ): Promise<Tournament> => {
-  let validation = validateTournament(tournament);
+  const validation = validateTournament(tournament);
   if (!validation.isValidTournament) {
     throw validation;
   }
@@ -62,6 +50,6 @@ export const updateTournament = async (
   return apiPostRequest(
     `/api/tournament/update/${tournamentId}`,
     { tournamentId, tournament },
-    deserializeTournament
+    deserializeTournament,
   );
 };

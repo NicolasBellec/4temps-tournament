@@ -5,48 +5,47 @@ import PreloadContainer from '../../../PreloadContainer';
 import Component from './component';
 
 import { getAccessKeysForTournament } from '../../../../api/access-key';
-import { getAdminTournaments } from '../../../../action-creators';
+import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function mapStateToProps(
   { judges, accessKeys }: ReduxState,
-  { tournamentId }: Props
+  { tournamentId }: Props,
 ) {
   const hasTournament = judges.forTournament[tournamentId] != null;
-  const hasKeys =
-    hasTournament &&
-    judges.forTournament[tournamentId].reduce(
+  const hasKeys = hasTournament
+    && judges.forTournament[tournamentId].reduce(
       (acc, curr) => acc && accessKeys[curr] != null,
-      true
+      true,
     );
   return {
     Child: Component,
     shouldLoad: !hasKeys,
-    judges: (judges.forTournament[tournamentId] || []).map(id => ({
+    judges: (judges.forTournament[tournamentId] || []).map((id) => ({
       ...judges.byId[id],
-      accessKey: accessKeys[id]
-    }))
+      accessKey: accessKeys[id],
+    })),
   };
 }
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
     load: () => {
-      dispatch(getAdminTournaments);
+      dispatch(getAdminTournamentsAction);
       dispatch({
         type: 'GET_ACCESS_KEYS',
-        promise: getAccessKeysForTournament(tournamentId)
+        promise: getAccessKeysForTournament(tournamentId),
       });
-    }
+    },
   };
 }
 
 const ListJudgesContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default ListJudgesContainer;

@@ -5,17 +5,17 @@ import { createParticipant } from '../../test-utils';
 
 test('An empty name is invalid', () => {
   expect(
-    validateParticipant({ ...createParticipant(), name: '' })
+    validateParticipant({ ...createParticipant(), name: '' }),
   ).toMatchObject({
     isValidParticipant: false,
-    isValidName: false
+    isValidName: false,
   });
 
   expect(
     validateParticipant({
       ...createParticipant(),
-      name: 'sweet'
-    })
+      name: 'sweet',
+    }),
   ).toMatchObject({ isValidName: true });
 });
 
@@ -23,25 +23,25 @@ test('Any role other than "none" is valid', () => {
   expect(
     validateParticipant({
       ...createParticipant(),
-      role: 'none'
-    })
+      role: 'none',
+    }),
   ).toMatchObject({ isValidParticipant: false, isValidRole: false });
   expect(
     validateParticipant({
       ...createParticipant(),
-      role: 'leader'
-    })
+      role: 'leader',
+    }),
   ).toMatchObject({ isValidRole: true });
   expect(
     validateParticipant({
       ...createParticipant(),
-      role: 'follower'
-    })
+      role: 'follower',
+    }),
   ).toMatchObject({ isValidRole: true });
   expect(
     validateParticipant({
       ...createParticipant(),
-      role: 'leaderAndFollower'
-    })
+      role: 'leaderAndFollower',
+    }),
   ).toMatchObject({ isValidRole: true });
 });

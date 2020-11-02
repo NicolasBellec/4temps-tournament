@@ -13,7 +13,7 @@ import {
   createJudge,
   TournamentRepositoryImpl,
   createParticipant,
-  AccessKeyRepositoryImpl
+  AccessKeyRepositoryImpl,
 } from '../test-utils';
 import validateAdmin from '../validators/validate-admin';
 import validateRound from '../validators/validate-round';
@@ -141,7 +141,7 @@ describe('Round route test helpers', () => {
         const tour = {
           ...createTournament(),
           id: generateId(),
-          creatorId: generateId()
+          creatorId: generateId(),
         };
         await repo.create(tour);
         return tour;
@@ -153,17 +153,17 @@ describe('Round route test helpers', () => {
       expect(await repo.getAll()).toEqual([t1, t2]);
     });
 
-    test('getForUser returns only a users tournaments ', async () => {
+    test('getForUser returns only a users tournaments', async () => {
       const creatorId = generateId();
       const t1 = {
         ...createTournament(),
         creatorId,
-        id: generateId()
+        id: generateId(),
       };
       const t2 = {
         ...createTournament(),
         creatorId: generateId(),
-        id: generateId()
+        id: generateId(),
       };
 
       await repo.create(t1);
@@ -191,7 +191,7 @@ describe('Round route test helpers', () => {
 
       expect(await repo.get(tournament.id)).toEqual({
         ...tournament,
-        participants: [participant]
+        participants: [participant],
       });
     });
 
@@ -204,7 +204,7 @@ describe('Round route test helpers', () => {
 
       expect(await repo.get(tournament.id)).toEqual({
         ...tournament,
-        rounds: [round]
+        rounds: [round],
       });
     });
 
@@ -218,7 +218,7 @@ describe('Round route test helpers', () => {
 
       expect(await repo.get(tournament.id)).toEqual({
         ...tournament,
-        rounds: []
+        rounds: [],
       });
     });
 
@@ -231,7 +231,7 @@ describe('Round route test helpers', () => {
 
       expect(await repo.get(tournament.id)).toEqual({
         ...tournament,
-        judges: [judge]
+        judges: [judge],
       });
     });
 
@@ -244,7 +244,7 @@ describe('Round route test helpers', () => {
 
       expect(await repo.get(tournament.id)).toEqual({
         ...tournament,
-        assistants: [assistant]
+        assistants: [assistant],
       });
     });
   });
@@ -258,7 +258,7 @@ describe('Round route test helpers', () => {
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge'
+        'judge',
       );
 
       expect(repo.getAll()).toHaveLength(1);
@@ -270,12 +270,12 @@ describe('Round route test helpers', () => {
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge'
+        'judge',
       );
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge'
+        'judge',
       );
 
       const keys = repo.getAll();
@@ -287,12 +287,12 @@ describe('Round route test helpers', () => {
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge'
+        'judge',
       );
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         generateId(),
-        'judge'
+        'judge',
       );
 
       const expected = repo.getAll()[0];

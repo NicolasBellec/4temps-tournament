@@ -6,7 +6,7 @@ import type { AdminModel } from '../../data/admin';
 test('Valid info is valid', async () => {
   const admin: AdminCredentials = {
     email: 'test@test.com',
-    password: 'password'
+    password: 'password',
   };
 
   const result = await validateAdminLogin(admin);
@@ -19,9 +19,9 @@ test('Valid info is valid', async () => {
 
 test('Email has to be valid', async () => {
   const emails = ['@test.com', 't@t', 't@.com'];
-  const admins: Array<AdminCredentials> = emails.map(email => ({
+  const admins: Array<AdminCredentials> = emails.map((email) => ({
     email,
-    password: 'Password123'
+    password: 'Password123',
   }));
 
   for (let i = 0; i < admins.length; ++i) {
@@ -38,7 +38,7 @@ test('Email has to be valid', async () => {
 test('Password may not be empty', async () => {
   const admin: AdminCredentials = {
     email: 'test@test.com',
-    password: ''
+    password: '',
   };
 
   const result = await validateAdminLogin(admin);
@@ -53,7 +53,7 @@ test('Password may not be empty', async () => {
 test('Returns valid admin if exists', async () => {
   const admin: AdminCredentials = {
     email: 'test@test.com',
-    password: 'password'
+    password: 'password',
   };
 
   const fullAdmin: AdminModel = {
@@ -62,12 +62,12 @@ test('Returns valid admin if exists', async () => {
     email: admin.email,
     firstName: 'Test',
     lastName: 'WopWop',
-    password: 'asdasdasd'
+    password: 'asdasdasd',
   };
 
   const result = await validateAdminLogin(
     admin,
-    () => new Promise(resolve => resolve(fullAdmin))
+    () => new Promise((resolve) => resolve(fullAdmin)),
   );
 
   expect(result.isValid).toBe(true);
@@ -80,12 +80,12 @@ test('Returns valid admin if exists', async () => {
 test('Returns null admin if not exists', async () => {
   const admin: AdminCredentials = {
     email: 'test@test.com',
-    password: 'password'
+    password: 'password',
   };
 
   const result = await validateAdminLogin(
     admin,
-    () => new Promise(resolve => resolve(null))
+    () => new Promise((resolve) => resolve(null)),
   );
 
   expect(result.isValid).toBe(false);

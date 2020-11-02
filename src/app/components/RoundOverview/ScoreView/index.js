@@ -4,12 +4,12 @@ import type { Props as ComponentProps } from './component';
 import Component from './component';
 
 type Props = {
-  roundId: string
+  roundId: string,
 };
 
 function mapStateToProps(
   { rounds, participants }: ReduxState,
-  { roundId }: Props
+  { roundId }: Props,
 ): ComponentProps {
   const round = rounds.byId[roundId];
   const roundScores = hydrateScores(round.roundScores, participants);
@@ -32,17 +32,17 @@ function mapStateToProps(
     winningLeaderScores: leaderScores.slice(0, round.passingCouplesCount),
     winningFollowerScores: followerScores.slice(0, round.passingCouplesCount),
     losingLeaderScores: leaderScores.slice(round.passingCouplesCount),
-    losingFollowerScores: followerScores.slice(round.passingCouplesCount)
+    losingFollowerScores: followerScores.slice(round.passingCouplesCount),
   };
 }
 
 function hydrateScores(
   roundScores: Array<Score>,
-  participants: ParticipantsReduxState
+  participants: ParticipantsReduxState,
 ) {
-  return roundScores.map(score => ({
+  return roundScores.map((score) => ({
     score: score.score,
-    participant: participants.byId[score.participantId]
+    participant: participants.byId[score.participantId],
   }));
 }
 
@@ -53,14 +53,14 @@ function getPairs(round: Round): Array<Pair> {
 function getLeaders(pairs: Array<Pair>): Array<string> {
   return pairs.reduce(
     (acc, pair) => (pair.leader != null ? [...acc, pair.leader] : acc),
-    []
+    [],
   );
 }
 
 function getFollowers(pairs: Array<Pair>): Array<string> {
   return pairs.reduce(
     (acc, pair) => (pair.follower != null ? [...acc, pair.follower] : acc),
-    []
+    [],
   );
 }
 

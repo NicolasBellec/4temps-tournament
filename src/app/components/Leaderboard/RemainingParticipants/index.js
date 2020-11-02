@@ -4,9 +4,9 @@ import { Container, Table } from 'semantic-ui-react';
 import '../styles.css';
 
 export default function RemainingParticipants({
-  participants
+  participants,
 }: {
-  participants: Array<Participant>
+  participants: Array<Participant>,
 }) {
   return (
     <Container styleName="pad">

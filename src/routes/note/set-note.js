@@ -8,35 +8,38 @@ import validateNoteForTournamentAndUser, {
   InvalidCriterionForParticipant,
   InvalidValueError,
   WrongJudgeError,
-  WrongJudgeType
+  WrongJudgeType,
 } from './validate-note';
 import { parseNote, InvalidBodyError } from './parse-note';
 
 export default function CreateNoteRoute(
   tournamentRepository: TournamentRepository,
-  noteRepository: NoteRepository
+  noteRepository: NoteRepository,
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     await new CreateNoteRouteHandler(
       tournamentRepository,
       noteRepository,
       req,
-      res
+      res,
     ).route();
   };
 }
 
 class CreateNoteRouteHandler {
   _tournamentRepository: TournamentRepository;
+
   _noteRepository: NoteRepository;
+
   _req: ServerApiRequest;
+
   _res: ServerApiResponse;
 
   constructor(
     tournamentRepository: TournamentRepository,
     noteRepository: NoteRepository,
     req: ServerApiRequest,
-    res: ServerApiResponse
+    res: ServerApiResponse,
   ) {
     this._tournamentRepository = tournamentRepository;
     this._noteRepository = noteRepository;
@@ -64,15 +67,14 @@ class CreateNoteRouteHandler {
   _validateNote = async (note: JudgeNote) => {
     const tournament: Tournament = await this._getTournament();
     const judge: ?Judge = tournament.judges.find(
-      judge =>
-        judge.id === (this._req.session.user && this._req.session.user.id)
+      (judge) => judge.id === (this._req.session.user && this._req.session.user.id),
     );
     validateNoteForTournamentAndUser(note, tournament, judge);
   };
 
   _getTournament = async (): Promise<Tournament> => {
     const tournament = await this._tournamentRepository.get(
-      this._req.params.tournamentId
+      this._req.params.tournamentId,
     );
 
     if (tournament == null) {

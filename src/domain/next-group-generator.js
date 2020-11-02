@@ -8,11 +8,15 @@ type Role = 'leader' | 'follower';
 
 export default class NextGroupGenerator {
   _tournament: Tournament;
+
   _notes: Array<JudgeNote>;
 
   _round: Round;
+
   _roundParticipants: Array<Participant>;
+
   _removeUneven: boolean = false;
+
   _allowReuseOfParticipants: boolean = true;
 
   constructor(tournament: Tournament, notes: Array<JudgeNote>) {
@@ -38,7 +42,7 @@ export default class NextGroupGenerator {
 
   _getRound = (roundId: string): Round => {
     const roundsWithId = this._tournament.rounds.filter(
-      ({ id }) => id === roundId
+      ({ id }) => id === roundId,
     );
     if (roundsWithId.length === 0) {
       throw new RoundNotFoundError();
@@ -53,12 +57,10 @@ export default class NextGroupGenerator {
     } else {
       participants = this._tournament.participants;
     }
-    return participants.filter(par => par.isAttending);
+    return participants.filter((par) => par.isAttending);
   };
 
-  _hasPreviousRound = () => {
-    return this._tournament.rounds[0].id !== this._round.id;
-  };
+  _hasPreviousRound = () => this._tournament.rounds[0].id !== this._round.id;
 
   _getWinnersOfPreviousRound = (): Array<Participant> => {
     let prevRound: ?Round = null;
@@ -68,7 +70,7 @@ export default class NextGroupGenerator {
         return (
           winners
             // $FlowFixMe
-            .map(id => this._tournament.participants.find(p => p.id === id))
+            .map((id) => this._tournament.participants.find((p) => p.id === id))
         );
       }
       prevRound = round;
@@ -97,11 +99,11 @@ export default class NextGroupGenerator {
     const count = round.passingCouplesCount;
     const passingLeaders = round.roundScores
       .map(({ participantId }) => participantId)
-      .filter(id => isAttending[id] && leaderSet.has(id))
+      .filter((id) => isAttending[id] && leaderSet.has(id))
       .slice(0, count);
     const passingFollowers = round.roundScores
       .map(({ participantId }) => participantId)
-      .filter(id => isAttending[id] && followerSet.has(id))
+      .filter((id) => isAttending[id] && followerSet.has(id))
       .slice(0, count);
 
     // $FlowFixMe
@@ -130,7 +132,7 @@ export default class NextGroupGenerator {
 
     if (this._removeUneven && pairs != null) {
       pairs = pairs.filter(
-        ({ leader, follower }) => leader != null && follower != null
+        ({ leader, follower }) => leader != null && follower != null,
       );
     }
 
@@ -141,17 +143,17 @@ export default class NextGroupGenerator {
     return {
       id: ObjectId.generate(),
       pairs,
-      dances: this._createDances(this._round.danceCount)
+      dances: this._createDances(this._round.danceCount),
     };
   };
 
   _getRemainingParticipants = (): Array<Participant> => {
     const alreadyDancedParticipants = new Set(
-      this._getAlreadyCompetedParticipants()
+      this._getAlreadyCompetedParticipants(),
     );
 
     return this._roundParticipants.filter(
-      par => !alreadyDancedParticipants.has(par.id)
+      (par) => !alreadyDancedParticipants.has(par.id),
     );
   };
 
@@ -180,8 +182,8 @@ export default class NextGroupGenerator {
   _isUnevenPairing = (
     pairs: Array<{
       follower: ?string,
-      leader: ?string
-    }>
+      leader: ?string,
+    }>,
   ) => {
     const counts = this._roleCounts(pairs);
 
@@ -201,11 +203,11 @@ export default class NextGroupGenerator {
       const roleCounts = this._roleCounts(pairs);
       if (roleCounts.leader < roleCounts.follower) {
         remainingParticipants.push(
-          this._getLeaderWithWorstFollower(remainingParticipants)
+          this._getLeaderWithWorstFollower(remainingParticipants),
         );
       } else {
         remainingParticipants.push(
-          this._getFollowerWithWorstLeader(remainingParticipants)
+          this._getFollowerWithWorstLeader(remainingParticipants),
         );
       }
 
@@ -218,40 +220,34 @@ export default class NextGroupGenerator {
   _roleCounts = (
     pairs: Array<{
       follower: ?string,
-      leader: ?string
-    }>
-  ) => {
-    return pairs.reduce(
-      (acc, pair) => ({
-        follower: acc.follower + (pair.follower != null ? 1 : 0),
-        leader: acc.leader + (pair.leader != null ? 1 : 0)
-      }),
-      {
-        leader: 0,
-        follower: 0
-      }
-    );
-  };
+      leader: ?string,
+    }>,
+  ) => pairs.reduce(
+    (acc, pair) => ({
+      follower: acc.follower + (pair.follower != null ? 1 : 0),
+      leader: acc.leader + (pair.leader != null ? 1 : 0),
+    }),
+    {
+      leader: 0,
+      follower: 0,
+    },
+  );
 
   _getFollowerWithWorstLeader = (
-    excluding: Array<Participant>
-  ): Participant => {
-    return this._getParticipantWithWorstCounterpart('follower', excluding);
-  };
+    excluding: Array<Participant>,
+  ): Participant => this._getParticipantWithWorstCounterpart('follower', excluding);
 
   _getLeaderWithWorstFollower = (
-    excluding: Array<Participant>
-  ): Participant => {
-    return this._getParticipantWithWorstCounterpart('leader', excluding);
-  };
+    excluding: Array<Participant>,
+  ): Participant => this._getParticipantWithWorstCounterpart('leader', excluding);
 
   _getParticipantWithWorstCounterpart = (
     role: Role,
-    excluding: Array<Participant>
+    excluding: Array<Participant>,
   ): Participant => {
     const excludeIds = new Set(excluding.map(({ id }) => id));
     const worstParticipants = this._getScoresOfParticipantsWithRole(
-      role === 'leader' ? 'follower' : 'leader'
+      role === 'leader' ? 'follower' : 'leader',
     )
       .map(({ participantId }) => participantId)
       .reverse();
@@ -260,8 +256,8 @@ export default class NextGroupGenerator {
     for (const worstId of worstParticipants) {
       counterPart = this._getCounterPartOf(worstId);
       if (
-        !excludeIds.has(counterPart) &&
-        !this._didDanceMoreThanOthers(counterPart)
+        !excludeIds.has(counterPart)
+        && !this._didDanceMoreThanOthers(counterPart)
       ) {
         break;
       }
@@ -272,17 +268,14 @@ export default class NextGroupGenerator {
 
   _getCounterPartOf = (participantId: string): string => {
     for (const group of this._round.groups) {
-      const pair = group.pairs.find(pair => {
-        return pair.follower === participantId || pair.leader === participantId;
-      });
+      const pair = group.pairs.find((pair) => pair.follower === participantId || pair.leader === participantId);
       if (pair != null) {
         if (pair.leader === participantId) {
           // $FlowFixMe
           return pair.follower;
-        } else {
-          // $FlowFixMe
-          return pair.leader;
         }
+        // $FlowFixMe
+        return pair.leader;
       }
     }
 
@@ -295,23 +288,21 @@ export default class NextGroupGenerator {
     const scorer = new RoundScorer(this._tournament.judges, this._round);
     const roundScores = scorer.scoreRound(this._notes);
 
-    return roundScores.filter(score => participants.has(score.participantId));
+    return roundScores.filter((score) => participants.has(score.participantId));
   };
 
-  _getParticipantsWithRole = (role: Role): Set<string> => {
-    return new Set(
-      this._round.groups.reduce(
-        (participants, group) => [
-          ...participants,
-          ...group.pairs
-            .map(pair => (pair[role] != null ? [pair[role]] : []))
-            .reduce((acc, ids) => [...acc, ...ids], [])
-            .filter(id => id != null)
-        ],
-        []
-      )
-    );
-  };
+  _getParticipantsWithRole = (role: Role): Set<string> => new Set(
+    this._round.groups.reduce(
+      (participants, group) => [
+        ...participants,
+        ...group.pairs
+          .map((pair) => (pair[role] != null ? [pair[role]] : []))
+          .reduce((acc, ids) => [...acc, ...ids], [])
+          .filter((id) => id != null),
+      ],
+      [],
+    ),
+  );
 
   _getRandomParticipantWithRole = (role: Role): string => {
     const participants = Array.from(this._getParticipantsWithRole(role));
@@ -320,7 +311,7 @@ export default class NextGroupGenerator {
 
   _getParticipantWithId = (participantId: string): Participant => {
     const participantsWithId = this._roundParticipants.filter(
-      ({ id }) => id === participantId
+      ({ id }) => id === participantId,
     );
     if (participantsWithId.length !== 1) {
       throw new ParticipantNotFoundError();
@@ -330,12 +321,12 @@ export default class NextGroupGenerator {
   };
 
   _createDances = (danceCount: number) => {
-    let dances: Array<Dance> = [];
+    const dances: Array<Dance> = [];
     for (let i = 0; i < danceCount; ++i) {
       dances.push({
         id: ObjectId.generate(),
         active: false,
-        finished: false
+        finished: false,
       });
     }
     return dances;
@@ -345,52 +336,49 @@ export default class NextGroupGenerator {
     const { leaders, followers } = this._getDanceCountPerParticipant();
     if (participantId in leaders) {
       return (
-        leaders[participantId] >
-        Math.min(...Object.keys(leaders).map(id => leaders[id]))
-      );
-    } else {
-      return (
-        followers[participantId] >
-        Math.min(...Object.keys(followers).map(id => followers[id]))
+        leaders[participantId]
+        > Math.min(...Object.keys(leaders).map((id) => leaders[id]))
       );
     }
+    return (
+      followers[participantId]
+        > Math.min(...Object.keys(followers).map((id) => followers[id]))
+    );
   };
 
   _getDanceCountPerParticipant = (): {
     leaders: {
-      [id: string]: number
+      [id: string]: number,
     },
     followers: {
-      [id: string]: number
-    }
-  } => {
-    return this._round.groups.reduce(
-      (acc, group) => {
-        for (const pair of group.pairs) {
-          if (pair.leader != null) {
-            if (acc.leaders[pair.leader]) {
-              acc.leaders[pair.leader] += 1;
-            } else {
-              acc.leaders[pair.leader] = 1;
-            }
-          }
-          if (pair.follower != null) {
-            if (acc.followers[pair.follower]) {
-              acc.followers[pair.follower] += 1;
-            } else {
-              acc.followers[pair.follower] = 1;
-            }
+      [id: string]: number,
+    },
+  } => this._round.groups.reduce(
+    (acc, group) => {
+      for (const pair of group.pairs) {
+        if (pair.leader != null) {
+          if (acc.leaders[pair.leader]) {
+            acc.leaders[pair.leader] += 1;
+          } else {
+            acc.leaders[pair.leader] = 1;
           }
         }
-
-        return acc;
-      },
-      {
-        leaders: {},
-        followers: {}
+        if (pair.follower != null) {
+          if (acc.followers[pair.follower]) {
+            acc.followers[pair.follower] += 1;
+          } else {
+            acc.followers[pair.follower] = 1;
+          }
+        }
       }
-    );
-  };
+
+      return acc;
+    },
+    {
+      leaders: {},
+      followers: {},
+    },
+  );
 }
 
 function RoundNotFoundError() {}

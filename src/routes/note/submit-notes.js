@@ -8,36 +8,39 @@ import validateNoteForTournamentAndUser, {
   InvalidCriterionForParticipant,
   InvalidValueError,
   WrongJudgeError,
-  WrongJudgeType
+  WrongJudgeType,
 } from './validate-note';
 import { parseNotes, InvalidBodyError } from './parse-note';
 import NoteChecker from '../../domain/note-checker';
 
 export default function submitNotesRoute(
   tournamentRepository: TournamentRepository,
-  noteRepository: NoteRepository
+  noteRepository: NoteRepository,
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     await new SubmitNotesRouteHandler(
       tournamentRepository,
       noteRepository,
       req,
-      res
+      res,
     ).route();
   };
 }
 
 class SubmitNotesRouteHandler {
   _tournamentRepository: TournamentRepository;
+
   _noteRepository: NoteRepository;
+
   _req: ServerApiRequest;
+
   _res: ServerApiResponse;
 
   constructor(
     tournamentRepository: TournamentRepository,
     noteRepository: NoteRepository,
     req: ServerApiRequest,
-    res: ServerApiResponse
+    res: ServerApiResponse,
   ) {
     this._tournamentRepository = tournamentRepository;
     this._noteRepository = noteRepository;
@@ -51,11 +54,11 @@ class SubmitNotesRouteHandler {
       const tournament = await this._getTournament();
       this._validateNotes(notes, tournament);
 
-      const danceId = notes[0].danceId;
+      const { danceId } = notes[0];
 
       if (
-        this._hasPreviouslySubmitted(danceId, tournament) ||
-        !this._hasAllNotes(notes, tournament)
+        this._hasPreviouslySubmitted(danceId, tournament)
+        || !this._hasAllNotes(notes, tournament)
       ) {
         this._res.sendStatus(400);
       } else {
@@ -63,7 +66,7 @@ class SubmitNotesRouteHandler {
           this._req.params.tournamentId,
           // $FlowFixMe
           this._req.session.user.id,
-          danceId
+          danceId,
         );
 
         for (const note of notes) {
@@ -78,12 +81,9 @@ class SubmitNotesRouteHandler {
 
   _validateNotes = (notes: Array<JudgeNote>, tournament: Tournament) => {
     const judge: ?Judge = tournament.judges.find(
-      judge =>
-        judge.id === (this._req.session.user && this._req.session.user.id)
+      (judge) => judge.id === (this._req.session.user && this._req.session.user.id),
     );
-    notes.forEach(note =>
-      validateNoteForTournamentAndUser(note, tournament, judge)
-    );
+    notes.forEach((note) => validateNoteForTournamentAndUser(note, tournament, judge));
   };
 
   _hasPreviouslySubmitted = (danceId: string, tournament: Tournament) => {
@@ -97,14 +97,14 @@ class SubmitNotesRouteHandler {
   };
 
   _hasAllNotes = (notes: Array<JudgeNote>, tournament: Tournament) => {
-    const danceId = notes[0].danceId;
+    const { danceId } = notes[0];
     // $FlowFixMe
     const userId = this._req.session.user.id;
 
     const hasAll = new NoteChecker(tournament).allSetForDanceByJudge(
       danceId,
       notes,
-      userId
+      userId,
     );
 
     return hasAll;
@@ -112,7 +112,7 @@ class SubmitNotesRouteHandler {
 
   _getTournament = async (): Promise<Tournament> => {
     const tournament = await this._tournamentRepository.get(
-      this._req.params.tournamentId
+      this._req.params.tournamentId,
     );
 
     if (tournament == null) {
@@ -126,15 +126,15 @@ class SubmitNotesRouteHandler {
     if (e instanceof InvalidBodyError) {
       this._res.sendStatus(400);
     } else if (
-      e instanceof TournamentNotFoundError ||
-      e instanceof DanceNotActiveError ||
-      e instanceof CriterionNotFoundError ||
-      e instanceof ParticipantNotFoundError
+      e instanceof TournamentNotFoundError
+      || e instanceof DanceNotActiveError
+      || e instanceof CriterionNotFoundError
+      || e instanceof ParticipantNotFoundError
     ) {
       this._res.status(404);
     } else if (
-      e instanceof InvalidCriterionForParticipant ||
-      e instanceof InvalidValueError
+      e instanceof InvalidCriterionForParticipant
+      || e instanceof InvalidValueError
     ) {
       this._res.status(400);
     } else if (e instanceof WrongJudgeError || e instanceof WrongJudgeType) {

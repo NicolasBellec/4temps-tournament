@@ -8,13 +8,13 @@ import { getTemporaryNotesForDance } from '../../../api/note';
 
 type Props = {
   tournamentId: string,
-  danceId: string
+  danceId: string,
 };
 
 function mapStateToProps({
   tournaments,
   rounds,
-  notes
+  notes,
 }: ReduxState): StateProps {
   const tournament = tournaments.byId[tournaments.forJudge];
   return {
@@ -22,26 +22,25 @@ function mapStateToProps({
     Child: Component,
     isLastRound:
       rounds.byId[tournament.rounds[tournament.rounds.length - 1]].active,
-    isClassic: tournament.type === 'classic'
+    isClassic: tournament.type === 'classic',
   };
 }
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId, danceId }: Props
+  { tournamentId, danceId }: Props,
 ) {
   return {
-    load: () =>
-      dispatch({
-        type: 'GET_NOTES',
-        promise: getTemporaryNotesForDance(tournamentId, danceId)
-      })
+    load: () => dispatch({
+      type: 'GET_NOTES',
+      promise: getTemporaryNotesForDance(tournamentId, danceId),
+    }),
   };
 }
 
 const NoteTakerContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default NoteTakerContainer;

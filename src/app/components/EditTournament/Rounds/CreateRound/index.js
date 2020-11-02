@@ -5,7 +5,7 @@ import { createRound } from '../../../../api/round';
 import Component from './component';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function mapStateToProps({ ui }: ReduxState) {
@@ -14,17 +14,16 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    onSubmit: (round: Round) =>
-      dispatch({
-        type: 'CREATE_ROUND',
-        promise: createRound(tournamentId, round)
-      })
+    onSubmit: (round: Round) => dispatch({
+      type: 'CREATE_ROUND',
+      promise: createRound(tournamentId, round),
+    }),
   };
 }
 
 const EditTournamentRoundsContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default EditTournamentRoundsContainer;

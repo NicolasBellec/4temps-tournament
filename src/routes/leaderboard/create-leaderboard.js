@@ -5,56 +5,50 @@ export default function createLeaderboard(tournament: Tournament): Leaderboard {
     acc[participant.id] = participant;
     return acc;
   }, {});
-  const rounds = tournament.rounds.map(round =>
-    createLeaderboardRound(round, participantMap)
-  );
+  const rounds = tournament.rounds.map((round) => createLeaderboardRound(round, participantMap));
   return {
     tournamentId: tournament.id,
     rounds,
     remainingParticipants: getRemainingParticipants(rounds, participantMap),
-    tournamentName: tournament.name
+    tournamentName: tournament.name,
   };
 }
 
 function getRemainingParticipants(
   rounds: Array<LeaderboardRound>,
-  participants: { [id: string]: Participant }
+  participants: { [id: string]: Participant },
 ): Array<Participant> {
   return Object.keys(participants)
-    .map(id => {
-      return participants[id];
-    })
-    .filter(p => p.isAttending)
-    .filter(p => !hasLost(p, rounds))
-    .map(p => {
-      return {
-        id: p.id,
-        name: '',
-        isAttending: true,
-        attendanceId: p.attendanceId,
-        role: p.role
-      };
-    });
+    .map((id) => participants[id])
+    .filter((p) => p.isAttending)
+    .filter((p) => !hasLost(p, rounds))
+    .map((p) => ({
+      id: p.id,
+      name: '',
+      isAttending: true,
+      attendanceId: p.attendanceId,
+      role: p.role,
+    }));
 }
 
 function hasLost(participant: Participant, rounds: Array<LeaderboardRound>) {
   const losingFollowers = rounds.reduce(
     (ack, r) => [...ack, ...r.losingFollowerScores],
-    []
+    [],
   );
   const losingLeaders = rounds.reduce(
     (ack, r) => [...ack, ...r.losingLeaderScores],
-    []
+    [],
   );
   return (
-    losingFollowers.find(s => s.id === participant.id) ||
-    losingLeaders.find(s => s.id === participant.id)
+    losingFollowers.find((s) => s.id === participant.id)
+    || losingLeaders.find((s) => s.id === participant.id)
   );
 }
 
 function createLeaderboardRound(
   round: Round,
-  participants: { [id: string]: Participant }
+  participants: { [id: string]: Participant },
 ): LeaderboardRound {
   if (!round.finished) {
     return {
@@ -64,7 +58,7 @@ function createLeaderboardRound(
       winningLeaderScores: [],
       winningFollowerScores: [],
       losingLeaderScores: [],
-      losingFollowerScores: []
+      losingFollowerScores: [],
     };
   }
 
@@ -86,13 +80,13 @@ function createLeaderboardRound(
     winningLeaderScores: leaderScores.slice(0, round.passingCouplesCount),
     winningFollowerScores: followerScores.slice(0, round.passingCouplesCount),
     losingLeaderScores: leaderScores.slice(round.passingCouplesCount),
-    losingFollowerScores: followerScores.slice(round.passingCouplesCount)
+    losingFollowerScores: followerScores.slice(round.passingCouplesCount),
   };
 }
 
 function hydrateScores(
   roundScores: Array<Score>,
-  participants: { [id: string]: Participant }
+  participants: { [id: string]: Participant },
 ) {
   let prevScore: ?number;
   let prevPosition: number = 1;
@@ -111,7 +105,7 @@ function hydrateScores(
       id: participant.id,
       attendanceId: participant.attendanceId,
       position,
-      score: score.score
+      score: score.score,
     };
   });
 }
@@ -123,13 +117,13 @@ function getPairs(round: Round): Array<Pair> {
 function getLeaders(pairs: Array<Pair>): Array<string> {
   return pairs.reduce(
     (acc, pair) => (pair.leader != null ? [...acc, pair.leader] : acc),
-    []
+    [],
   );
 }
 
 function getFollowers(pairs: Array<Pair>): Array<string> {
   return pairs.reduce(
     (acc, pair) => (pair.follower != null ? [...acc, pair.follower] : acc),
-    []
+    [],
   );
 }

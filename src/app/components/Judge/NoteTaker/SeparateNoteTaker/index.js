@@ -6,7 +6,7 @@ import Component from './component';
 import type {
   CriterionViewModel,
   StateProps,
-  DispatchProps
+  DispatchProps,
 } from './component';
 import { setTemporaryNote } from '../../../../api/note';
 
@@ -29,8 +29,8 @@ function mapStateToProps(state: ReduxState): StateProps {
     followerCriteria: getCriteriaForJudgeType(
       state,
       followerId,
-      judge.judgeType
-    )
+      judge.judgeType,
+    ),
   };
 }
 
@@ -56,7 +56,7 @@ function getFirstPair(round: Round): Pair {
       }
       return res;
     },
-    { leader: null, follower: null }
+    { leader: null, follower: null },
   );
 }
 
@@ -75,30 +75,27 @@ function getRound(state: ReduxState): Round {
 function getCriteriaForJudgeType(
   state: ReduxState,
   participantId: string,
-  judgeType: JudgeType
+  judgeType: JudgeType,
 ): Array<CriterionViewModel> {
   return getRound(state)
-    .criteria.filter(
-      criterion =>
-        criterion.forJudgeType === 'normal'
-          ? judgeType === 'normal' || judgeType === 'president'
-          : criterion.forJudgeType === judgeType
-    )
-    .map(crit => ({
+    .criteria.filter((criterion) => (criterion.forJudgeType === 'normal'
+      ? judgeType === 'normal' || judgeType === 'president'
+      : criterion.forJudgeType === judgeType))
+    .map((crit) => ({
       id: crit.id,
       name: crit.name,
       description: crit.description,
       minValue: crit.minValue,
       maxValue: crit.maxValue,
       value: getValue(state.notes, participantId, crit.id),
-      forJudgeType: crit.forJudgeType
+      forJudgeType: crit.forJudgeType,
     }));
 }
 
 function getValue(
   notes: NotesReduxState,
   participantId: string,
-  criterionId: string
+  criterionId: string,
 ) {
   return notes.byParticipant[participantId] != null
     ? notes.byParticipant[participantId][criterionId] != null
@@ -125,15 +122,15 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
       dispatch({
         type: 'SET_NOTE',
         promise: setTemporaryNote(tournamentId, note),
-        payload: note
+        payload: note,
       });
-    }
+    },
   };
 }
 
 const SeparateNoteTakerContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default SeparateNoteTakerContainer;

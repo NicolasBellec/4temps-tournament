@@ -1,12 +1,14 @@
 // no-flow
 import React from 'react';
-import { Container, Header, Divider, Tab } from 'semantic-ui-react';
+import {
+  Container, Header, Divider, Tab,
+} from 'semantic-ui-react';
 import './styles.css';
 import RoundTables from './RoundTables';
 import RemainingParticipants from './RemainingParticipants';
 
 type Props = {
-  leaderboard: ?Leaderboard
+  leaderboard: ?Leaderboard,
 };
 
 export default function Leaderboard({ leaderboard }: Props) {
@@ -20,13 +22,12 @@ function ActualLeaderboard({ leaderboard }: { leaderboard: Leaderboard }) {
   const panes = [
     {
       menuItem: 'Round Results',
-      render: () => RenderRoundResults(leaderboard.rounds)
+      render: () => RenderRoundResults(leaderboard.rounds),
     },
     {
       menuItem: 'Remaining Participants',
-      render: () =>
-        RenderRemainingParticipants(leaderboard.remainingParticipants)
-    }
+      render: () => RenderRemainingParticipants(leaderboard.remainingParticipants),
+    },
   ];
   return (
     <Container styleName="pad">

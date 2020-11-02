@@ -7,14 +7,14 @@ import {
   Grid,
   GridRow,
   GridColumn,
-  Popup
+  Popup,
 } from 'semantic-ui-react';
 
 import './styles.css';
 
 export type StateProps = {
   notedEntity: string,
-  criterion: CriterionViewModel
+  criterion: CriterionViewModel,
 };
 
 export type CriterionViewModel = {
@@ -24,11 +24,11 @@ export type CriterionViewModel = {
   maxValue: number,
   description: string,
   value: ?number,
-  forJudgeType: JudgeType
+  forJudgeType: JudgeType,
 };
 
 export type DispatchProps = {
-  onClick: (value: ?number) => void
+  onClick: (value: ?number) => void,
 };
 
 type Props = StateProps & DispatchProps;
@@ -70,7 +70,7 @@ function NoteCriterion({ notedEntity, criterion, onClick }: Props) {
 function NormalInput({ notedEntity, criterion, onClick }: Props) {
   return (
     <GridRow columns="equal">
-      {getRange(criterion.minValue, criterion.maxValue).map(val => (
+      {getRange(criterion.minValue, criterion.maxValue).map((val) => (
         <GridColumn key={notedEntity + criterion.id + val}>
           <div className="field ui ">
             <input
@@ -93,10 +93,10 @@ function NormalInput({ notedEntity, criterion, onClick }: Props) {
 
 function SanctionerInput({
   criterion,
-  onClick
+  onClick,
 }: {
   criterion: CriterionViewModel,
-  onClick: (val: ?number) => void
+  onClick: (val: ?number) => void,
 }) {
   return (
     <GridRow>
@@ -127,7 +127,7 @@ function isInRange(min: number, max: number, val: ?number) {
 function getRange(minValue: number, maxValue: number) {
   return Array.from(
     { length: maxValue - minValue + 1 },
-    (v, i) => minValue + i
+    (v, i) => minValue + i,
   );
 }
 

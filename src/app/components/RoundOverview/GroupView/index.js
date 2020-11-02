@@ -8,12 +8,12 @@ import {
   startNextDance,
   generateGroupsForRound,
   endDance,
-  regenerateGroup
+  regenerateGroup,
 } from '../../../api/round';
 
 type Props = {
   tournamentId: string,
-  roundId: string
+  roundId: string,
 };
 
 function mapStateToProps(state: ReduxState, { roundId, tournamentId }: Props) {
@@ -23,16 +23,16 @@ function mapStateToProps(state: ReduxState, { roundId, tournamentId }: Props) {
     round: viewModel,
     areAllGroupsGenerated: areAllGroupsGenerated(
       viewModel,
-      (state.participants.forTournament[tournamentId] &&
-        state.participants.forTournament[tournamentId].length) ||
-        0
-    )
+      (state.participants.forTournament[tournamentId]
+        && state.participants.forTournament[tournamentId].length)
+        || 0,
+    ),
   };
 }
 
 function areAllGroupsGenerated(
   viewModel: RoundViewModel,
-  participantCount: number
+  participantCount: number,
 ) {
   const participants = viewModel.groups
     .reduce(
@@ -40,10 +40,10 @@ function areAllGroupsGenerated(
         ...participants,
         ...group.pairs.reduce(
           (pairs, pair) => [...pairs, pair.leader.number, pair.follower.number],
-          []
-        )
+          [],
+        ),
       ],
-      []
+      [],
     )
     .filter(Boolean);
 
@@ -52,9 +52,11 @@ function areAllGroupsGenerated(
 }
 
 function createViewModelsForRound(
-  { rounds, participants, tournaments, judges }: ReduxState,
+  {
+    rounds, participants, tournaments, judges,
+  }: ReduxState,
   roundId: string,
-  tournamentId: string
+  tournamentId: string,
 ): ?RoundViewModel {
   const round = rounds.byId[roundId];
   if (!round) {
@@ -75,10 +77,9 @@ function createViewModelsForRound(
       }
     }
   }
-  const notes: DanceNotes =
-    activeDance != null
-      ? getNotes(activeDanceId, tournaments.byId[tournamentId], judges)
-      : { judgesNoted: [], judgesNotNoted: [] };
+  const notes: DanceNotes = activeDance != null
+    ? getNotes(activeDanceId, tournaments.byId[tournamentId], judges)
+    : { judgesNoted: [], judgesNotNoted: [] };
 
   const viewModel: RoundViewModel = {
     ...rest,
@@ -87,20 +88,20 @@ function createViewModelsForRound(
     nextDance,
     nextGroup,
     notes,
-    groups: groups.map(g => ({
+    groups: groups.map((g) => ({
       id: g.id,
       pairs: g.pairs.map((p, i) => ({
         id: i.toString(),
         leader: createParticipantViewModel(participants.byId[p.leader || '']),
         follower: createParticipantViewModel(
-          participants.byId[p.follower || '']
-        )
+          participants.byId[p.follower || ''],
+        ),
       })),
       isStarted: g.dances.reduce(
         (isStarted, { active, finished }) => isStarted || active || finished,
-        false
-      )
-    }))
+        false,
+      ),
+    })),
   };
 
   return viewModel;
@@ -111,7 +112,7 @@ function getNotes(danceId, tournament, judges) {
   const dancesNoted = tournament.dancesNoted || {};
   const judgesNoted = [];
   const judgesNotNoted = [];
-  for (let judgeId of tournamentJudges) {
+  for (const judgeId of tournamentJudges) {
     const judgeNotes = dancesNoted[judgeId] || [];
     const judge = judges.byId[judgeId];
     if (judgeNotes.includes(danceId)) {
@@ -122,45 +123,39 @@ function getNotes(danceId, tournament, judges) {
   }
   return {
     judgesNoted,
-    judgesNotNoted
+    judgesNotNoted,
   };
 }
 
 function getActiveGroup(groups) {
-  const activeGroups = [...Array(groups.length).keys()].filter(i => {
+  const activeGroups = [...Array(groups.length).keys()].filter((i) => {
     const group = groups[i];
     return group.dances
-      .map(d => !d.finished)
+      .map((d) => !d.finished)
       .reduce((ack, r) => ack || r, false);
   });
   return activeGroups.length > 0 ? activeGroups[0] + 1 : null;
 }
 
 function getNextGroup(groups) {
-  const groupsNotDanced = [...Array(groups.length).keys()].filter(i => {
-    return notDanced(groups[i]);
-  });
+  const groupsNotDanced = [...Array(groups.length).keys()].filter((i) => notDanced(groups[i]));
   return groupsNotDanced.length > 0 ? groupsNotDanced[0] + 1 : null;
 }
 
 function notDanced(group) {
   return !group.dances
-    .map(dance => dance.finished || dance.active)
+    .map((dance) => dance.finished || dance.active)
     .reduce((ack, r) => ack || r, false);
 }
 
 function getNextDance(groups) {
   let nextDance = 1;
-  const relevantGroups = groups.filter(group => {
-    return !group.dances
-      .map(d => d.finished)
-      .reduce((ack, r) => ack && r, true);
-  });
+  const relevantGroups = groups.filter((group) => !group.dances
+    .map((d) => d.finished)
+    .reduce((ack, r) => ack && r, true));
   if (relevantGroups.length != 0) {
-    const dances = relevantGroups[0].dances;
-    const nonStartedDances = [...Array(dances.length).keys()].filter(i => {
-      return !(dances[i].finished || dances[i].active);
-    });
+    const { dances } = relevantGroups[0];
+    const nonStartedDances = [...Array(dances.length).keys()].filter((i) => !(dances[i].finished || dances[i].active));
     if (nonStartedDances.length > 0) {
       nextDance = nonStartedDances[0] + 1;
     }
@@ -178,34 +173,32 @@ function createParticipantViewModel(participant: ?Participant) {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { roundId, tournamentId }: Props
+  { roundId, tournamentId }: Props,
 ) {
   return {
-    startDance: () =>
-      dispatch({
-        type: 'START_NEXT_DANCE',
-        promise: startNextDance(tournamentId)
-      }),
+    startDance: () => dispatch({
+      type: 'START_NEXT_DANCE',
+      promise: startNextDance(tournamentId),
+    }),
     generateGroups: () => {
       dispatch({
         type: 'GENERATE_GROUPS',
-        promise: generateGroupsForRound(tournamentId, roundId)
+        promise: generateGroupsForRound(tournamentId, roundId),
       });
     },
-    endDance: () =>
-      dispatch({
-        type: 'END_DANCE',
-        promise: endDance(tournamentId)
-      }),
+    endDance: () => dispatch({
+      type: 'END_DANCE',
+      promise: endDance(tournamentId),
+    }),
     regenerateGroup: (groupId: string) => {
       regenerateGroup(tournamentId, roundId, groupId);
-    }
+    },
   };
 }
 
 const RoundGroupContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Component);
 
 export default RoundGroupContainer;

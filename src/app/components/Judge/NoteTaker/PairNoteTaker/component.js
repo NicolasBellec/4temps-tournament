@@ -8,7 +8,7 @@ export type StateProps = {
   judgeId: string,
   danceId: string,
   pairId: string,
-  criteria: Array<CriterionViewModel>
+  criteria: Array<CriterionViewModel>,
 };
 
 export type CriterionViewModel = {
@@ -18,11 +18,11 @@ export type CriterionViewModel = {
   maxValue: number,
   description: string,
   value: ?number,
-  forJudgeType: JudgeType
+  forJudgeType: JudgeType,
 };
 
 export type DispatchProps = {
-  onClick: (tournamentId: string, note: JudgeNote) => void
+  onClick: (tournamentId: string, note: JudgeNote) => void,
 };
 
 type Props = StateProps & DispatchProps;
@@ -33,27 +33,25 @@ function PairNoteTaker({
   onClick,
   tournamentId,
   judgeId,
-  danceId
+  danceId,
 }: Props) {
   return (
     <Grid centered>
       <GridRow>
         <Header as="h2">Couple</Header>
       </GridRow>
-      {criteria.map(criterion => (
+      {criteria.map((criterion) => (
         <GridRow key={pairId + criterion.id}>
           <NoteCriterion
             notedEntity={pairId}
-            onClick={(value: ?number) =>
-              onClick(tournamentId, {
-                danceId,
-                judgeId,
-                participantId: pairId,
-                criterionId: criterion.id,
-                // $FlowFixMe
-                value
-              })
-            }
+            onClick={(value: ?number) => onClick(tournamentId, {
+              danceId,
+              judgeId,
+              participantId: pairId,
+              criterionId: criterion.id,
+              // $FlowFixMe
+              value,
+            })}
             criterion={criterion}
           />
         </GridRow>

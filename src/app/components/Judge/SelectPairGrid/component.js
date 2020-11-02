@@ -1,24 +1,26 @@
 // no-flow
 
 import React from 'react';
-import { Grid, GridRow, GridColumn, Header, Button } from 'semantic-ui-react';
+import {
+  Grid, GridRow, GridColumn, Header, Button,
+} from 'semantic-ui-react';
 
 type Props = StateProps & DispatchProps;
 
 export type StateProps = {
   upperLayerPairs: Array<?PairViewModel>,
   lowerLayerPairs: Array<?PairViewModel>,
-  activePairId: string
+  activePairId: string,
 };
 
 export type DispatchProps = {
-  onClickPair: (id: string) => void
+  onClickPair: (id: string) => void,
 };
 
 export type PairViewModel = {
   id: string,
   name: string,
-  hasAllNotes: boolean
+  hasAllNotes: boolean,
 };
 
 function SelectPairGrid(props: Props) {
@@ -31,14 +33,14 @@ function SelectPairGrid(props: Props) {
         {renderColumns(
           props.upperLayerPairs,
           props.activePairId,
-          props.onClickPair
+          props.onClickPair,
         )}
       </GridRow>
       <GridRow columns={props.lowerLayerPairs.length}>
         {renderColumns(
           props.lowerLayerPairs,
           props.activePairId,
-          props.onClickPair
+          props.onClickPair,
         )}
       </GridRow>
     </Grid>
@@ -48,29 +50,26 @@ function SelectPairGrid(props: Props) {
 function renderColumns(
   pairs: Array<?PairViewModel>,
   activeId: string,
-  onClick: (id: string) => void
+  onClick: (id: string) => void,
 ) {
-  return pairs.map(
-    (pair, i) =>
-      pair == null ? (
-        // eslint-disable-next-line
-        <GridColumn key={i} />
-      ) : (
-        <PairGridColumn
-          key={pair.id}
-          pair={pair}
-          // $FlowFixMe
-          onClick={() => onClick(pair.id)}
-          isActive={pair.id === activeId}
-        />
-      )
-  );
+  return pairs.map((pair, i) => (pair == null ? (
+  // eslint-disable-next-line
+      <GridColumn key={i} />
+  ) : (
+    <PairGridColumn
+      key={pair.id}
+      pair={pair}
+      // $FlowFixMe
+      onClick={() => onClick(pair.id)}
+      isActive={pair.id === activeId}
+    />
+  )));
 }
 
 type PairButtonProps = {
   pair: PairViewModel,
   onClick: (id: string) => void,
-  isActive: boolean
+  isActive: boolean,
 };
 
 function PairGridColumn({ pair, onClick, isActive }: PairButtonProps) {

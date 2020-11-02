@@ -1,6 +1,8 @@
 // no-flow
 import React, { Component } from 'react';
-import { Header, Form, FormInput, Button, Message } from 'semantic-ui-react';
+import {
+  Header, Form, FormInput, Button, Message,
+} from 'semantic-ui-react';
 import type { AdminCreateValidationSummary } from '../../../validators/validate-admin';
 
 import './styles.css';
@@ -8,7 +10,7 @@ import './styles.css';
 type Props = {
   onSubmit: (admin: AdminWithPassword) => Promise<void>,
   validation: AdminCreateValidationSummary,
-  isLoading: boolean
+  isLoading: boolean,
 };
 
 class SignUp extends Component<Props, AdminWithPassword> {
@@ -16,7 +18,7 @@ class SignUp extends Component<Props, AdminWithPassword> {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
   };
 
   _onChangeFirstName = (event: SyntheticInputEvent<HTMLInputElement>) => {

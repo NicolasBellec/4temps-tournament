@@ -7,7 +7,7 @@ import {
   createRound,
   createTournament,
   createJudge,
-  createParticipant
+  createParticipant,
 } from '../../../test-utils';
 import SettleDrawRoute from '../settle-draw';
 
@@ -28,12 +28,12 @@ it('Returns 404 if there is no round that is active', async () => {
     ...createRound(),
     draw: false,
     active: false,
-    finished: false
+    finished: false,
   };
   const tournament: Tournament = {
     ...createTournament(),
     judges: [president],
-    rounds: [round]
+    rounds: [round],
   };
 
   const tournamentRepository = new TournamentRepositoryImpl();
@@ -42,7 +42,7 @@ it('Returns 404 if there is no round that is active', async () => {
   const route = new SettleDrawRoute(tournamentRepository);
 
   const req = Request.withJudgeAndParams(president, {
-    tournamentId: tournament.id
+    tournamentId: tournament.id,
   });
   const res = new Response();
   await route.route(req, res);
@@ -57,12 +57,12 @@ it('Returns 404 if there is no round that is flagged as draw', async () => {
     ...createRound(),
     draw: false,
     active: true,
-    finished: false
+    finished: false,
   };
   const tournament: Tournament = {
     ...createTournament(),
     judges: [president],
-    rounds: [round]
+    rounds: [round],
   };
 
   const tournamentRepository = new TournamentRepositoryImpl();
@@ -71,7 +71,7 @@ it('Returns 404 if there is no round that is flagged as draw', async () => {
   const route = new SettleDrawRoute(tournamentRepository);
 
   const req = Request.withJudgeAndParams(president, {
-    tournamentId: tournament.id
+    tournamentId: tournament.id,
   });
   const res = new Response();
   await route.route(req, res);
@@ -87,7 +87,7 @@ it('Returns 400 if not all participants are included in the score', async () => 
   const danceGroup: DanceGroup = {
     id: 'danceGroup',
     dances: [],
-    pairs: [{ leader: leader.id, follower: follower.id }]
+    pairs: [{ leader: leader.id, follower: follower.id }],
   };
 
   const round: Round = {
@@ -96,13 +96,13 @@ it('Returns 400 if not all participants are included in the score', async () => 
     draw: true,
     active: true,
     finished: false,
-    tieBreakerJudge: president.id
+    tieBreakerJudge: president.id,
   };
   const tournament: Tournament = {
     ...createTournament(),
     judges: [president],
     participants: [leader, follower],
-    rounds: [round]
+    rounds: [round],
   };
 
   const tournamentRepository = new TournamentRepositoryImpl();
@@ -113,11 +113,11 @@ it('Returns 400 if not all participants are included in the score', async () => 
   // no follower score
   const leaderScore: Score = {
     participantId: leader.id,
-    score: 10
+    score: 10,
   };
 
   const req = Request.withJudgeAndParams(president, {
-    tournamentId: tournament.id
+    tournamentId: tournament.id,
   });
   req.body = [leaderScore];
 
@@ -126,7 +126,7 @@ it('Returns 400 if not all participants are included in the score', async () => 
 
   expect(res.getStatus()).toBe(400);
   expect(res.getBody()).toEqual({
-    error: 'score does not include all participants'
+    error: 'score does not include all participants',
   });
 });
 
@@ -137,7 +137,7 @@ it('Returns 400 if a participant not in the tournament is included in the score'
   const danceGroup: DanceGroup = {
     id: 'danceGroup',
     dances: [],
-    pairs: [{ leader: leader.id, follower: follower.id }]
+    pairs: [{ leader: leader.id, follower: follower.id }],
   };
 
   const round: Round = {
@@ -146,13 +146,13 @@ it('Returns 400 if a participant not in the tournament is included in the score'
     draw: true,
     active: true,
     finished: false,
-    tieBreakerJudge: president.id
+    tieBreakerJudge: president.id,
   };
   const tournament: Tournament = {
     ...createTournament(),
     judges: [president],
     participants: [leader, follower],
-    rounds: [round]
+    rounds: [round],
   };
 
   const tournamentRepository = new TournamentRepositoryImpl();
@@ -162,16 +162,16 @@ it('Returns 400 if a participant not in the tournament is included in the score'
 
   const invalidParticipantScore: Score = {
     participantId: 'false id',
-    score: 10
+    score: 10,
   };
 
   const roundScores: Array<Score> = [
     { participantId: leader.id, score: 10 },
     { participantId: follower.id, score: 5 },
-    invalidParticipantScore
+    invalidParticipantScore,
   ];
   const req = Request.withJudgeAndParams(president, {
-    tournamentId: tournament.id
+    tournamentId: tournament.id,
   });
   req.body = roundScores;
 
@@ -180,7 +180,7 @@ it('Returns 400 if a participant not in the tournament is included in the score'
 
   expect(res.getStatus()).toBe(400);
   expect(res.getBody()).toEqual({
-    error: 'score includes participant(s) not in this round'
+    error: 'score includes participant(s) not in this round',
   });
 });
 
@@ -192,7 +192,7 @@ it('Returns 200 and ends round with updated score', async () => {
   const danceGroup: DanceGroup = {
     id: 'danceGroup',
     dances: [],
-    pairs: [{ leader: leader.id, follower: follower.id }]
+    pairs: [{ leader: leader.id, follower: follower.id }],
   };
   const round: Round = {
     ...createRound(),
@@ -200,13 +200,13 @@ it('Returns 200 and ends round with updated score', async () => {
     draw: true,
     active: true,
     finished: false,
-    tieBreakerJudge: president.id
+    tieBreakerJudge: president.id,
   };
   const tournament: Tournament = {
     ...createTournament(),
     judges: [president],
     participants: [leader, follower],
-    rounds: [round]
+    rounds: [round],
   };
 
   const tournamentRepository = new TournamentRepositoryImpl();
@@ -216,10 +216,10 @@ it('Returns 200 and ends round with updated score', async () => {
 
   const roundScores: Array<Score> = [
     { participantId: leader.id, score: 10 },
-    { participantId: follower.id, score: 5 }
+    { participantId: follower.id, score: 5 },
   ];
   const req = Request.withJudgeAndParams(president, {
-    tournamentId: tournament.id
+    tournamentId: tournament.id,
   });
   req.body = roundScores;
 
@@ -231,11 +231,11 @@ it('Returns 200 and ends round with updated score', async () => {
     draw: false,
     active: false,
     finished: true,
-    roundScores
+    roundScores,
   };
   expect(res.getStatus()).toBe(200);
   expect(res.getBody()).toEqual(expectedRound);
   expect((await tournamentRepository.get(tournament.id)).rounds[0]).toEqual(
-    expectedRound
+    expectedRound,
   );
 });

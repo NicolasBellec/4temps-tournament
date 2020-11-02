@@ -14,34 +14,32 @@ import RoundOverview from '../RoundOverview';
 import PrivateRoute from './private-route';
 import Leaderboard from '../Leaderboard';
 
-const Router = () => {
-  return (
-    <Switch>
-      <Route path="/(|home)" exact component={Home} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/login" component={Login} />
-      <Route path="/leaderboard/:tournamentId" component={Leaderboard} />
-      <PrivateRoute
-        path="/tournament/create"
-        exact
-        component={CreateTournament}
-      />
-      <PrivateRoute
-        path="/tournament/edit"
-        exact
-        component={EditTournamentList}
-      />
-      <PrivateRoute
-        path="/tournament/edit/:tournamentId"
-        component={EditTournament}
-      />
-      <PrivateRoute
-        path="/tournament/:tournamentId/round/:roundId"
-        component={RoundOverview}
-      />
-      <Route component={FourOFour} />
-    </Switch>
-  );
-};
+const Router = () => (
+  <Switch>
+    <Route path="/(|home)" exact component={Home} />
+    <Route path="/signup" component={SignUp} />
+    <Route path="/login" component={Login} />
+    <Route path="/leaderboard/:tournamentId" component={Leaderboard} />
+    <PrivateRoute
+      path="/tournament/create"
+      exact
+      component={CreateTournament}
+    />
+    <PrivateRoute
+      path="/tournament/edit"
+      exact
+      component={EditTournamentList}
+    />
+    <PrivateRoute
+      path="/tournament/edit/:tournamentId"
+      component={EditTournament}
+    />
+    <PrivateRoute
+      path="/tournament/:tournamentId/round/:roundId"
+      component={RoundOverview}
+    />
+    <Route component={FourOFour} />
+  </Switch>
+);
 
 export default Router;

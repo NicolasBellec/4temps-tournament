@@ -9,14 +9,14 @@ type Lifecycle = typeof LIFECYCLE;
 function makePackAction(
   lifecycle: Lifecycle,
   type: string,
-  payload: ?mixed = null
+  payload: ?mixed = null,
 ) {
   return {
     type,
     payload,
     meta: {
-      [KEY.LIFECYCLE]: lifecycle
-    }
+      [KEY.LIFECYCLE]: lifecycle,
+    },
   };
 }
 

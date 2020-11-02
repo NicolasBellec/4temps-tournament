@@ -20,36 +20,32 @@ class CreateRoundRoute {
       await handler.executeForUser(this._userId(req));
       res.json({
         tournamentId: handler.getTournamentId(),
-        round: handler.getCreatedRound()
+        round: handler.getCreatedRound(),
       });
     } catch (e) {
       res.sendStatus(e.status);
     }
   };
 
-  _userId = (req: ServerApiRequest) => {
-    return req.session.user != null ? req.session.user.id : '';
-  };
+  _userId = (req: ServerApiRequest) => (req.session.user != null ? req.session.user.id : '');
 }
 
 class CreateRoundRouteHandler {
   _tournamentRepository: TournamentRepository;
 
   _tournamentId: string;
+
   _round: Round;
+
   _userId: string;
 
   constructor(tournamentRepository: TournamentRepository) {
     this._tournamentRepository = tournamentRepository;
   }
 
-  getTournamentId = () => {
-    return this._tournamentId;
-  };
+  getTournamentId = () => this._tournamentId;
 
-  getCreatedRound = () => {
-    return this._round;
-  };
+  getCreatedRound = () => this._round;
 
   async executeForUser(userId: string) {
     this._userId = userId;
@@ -76,15 +72,11 @@ class CreateRoundRouteHandler {
     return tournament;
   }
 
-  _userOwnsTournament = (tournament: Tournament): boolean => {
-    return tournament.creatorId == this._userId;
-  };
+  _userOwnsTournament = (tournament: Tournament): boolean => tournament.creatorId == this._userId;
 
-  _tournamentHasSanctioner = (tournament: Tournament): boolean => {
-    return tournament.judges.some(
-      ({ judgeType }) => judgeType === 'sanctioner'
-    );
-  };
+  _tournamentHasSanctioner = (tournament: Tournament): boolean => tournament.judges.some(
+    ({ judgeType }) => judgeType === 'sanctioner',
+  );
 
   _addMalusCriterion = () => {
     this._round.criteria.push(createMalusCriterion());
@@ -102,42 +94,36 @@ class CreateRoundRouteHandler {
   _parseRound = (body: mixed) => {
     if (typeof body === 'object' && body != null) {
       return parseRound(body.round);
-    } else {
-      throw { status: 400 };
     }
+    throw { status: 400 };
   };
 
   _parseTournamentId = (body: mixed) => {
     if (
-      typeof body === 'object' &&
-      body != null &&
-      typeof body.tournamentId === 'string'
+      typeof body === 'object'
+      && body != null
+      && typeof body.tournamentId === 'string'
     ) {
       return body.tournamentId;
-    } else {
-      throw { status: 400 };
     }
+    throw { status: 400 };
   };
 
-  _isValidRound = () => {
-    return validateRound(this._round).isValidRound;
-  };
+  _isValidRound = () => validateRound(this._round).isValidRound;
 
   _create = async () => {
     this._round.id = this._generateId();
     try {
       await this._tournamentRepository.createRound(
         this._tournamentId,
-        this._round
+        this._round,
       );
     } catch (e) {
       throw { status: 500 };
     }
   };
 
-  _generateId = () => {
-    return ObjectId.generate().toString();
-  };
+  _generateId = () => ObjectId.generate().toString();
 }
 
 export default CreateRoundRoute;

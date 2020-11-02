@@ -8,7 +8,7 @@ import type { RouteResult } from '../util';
 export const loginAdminRoute = async (
   credentials: AdminCredentials,
   setSessionAdmin: (admin: AdminModel) => void,
-  getAdmin: (admin: AdminCredentials) => Promise<?AdminModel>
+  getAdmin: (admin: AdminCredentials) => Promise<?AdminModel>,
 ): RouteResult<AdminLoginValidationSummary> => {
   let status: number = 200;
 
@@ -37,14 +37,14 @@ export default async (req: ServerApiRequest, res: ServerApiResponse) => {
     const setSessionAdmin = (admin: AdminModel) => {
       req.session.user = {
         id: admin._id.toString(),
-        role: 'admin'
+        role: 'admin',
       };
     };
 
     const { status, body } = await loginAdminRoute(
       credentials,
       setSessionAdmin,
-      getAdminFromCredentials
+      getAdminFromCredentials,
     );
 
     res.status(status);
@@ -60,14 +60,14 @@ export default async (req: ServerApiRequest, res: ServerApiResponse) => {
 
 function parseBody(body: mixed): AdminCredentials {
   if (
-    typeof body === 'object' &&
-    body != null &&
-    typeof body.email === 'string' &&
-    typeof body.password === 'string'
+    typeof body === 'object'
+    && body != null
+    && typeof body.email === 'string'
+    && typeof body.password === 'string'
   ) {
     return {
       email: body.email || '',
-      password: body.password || ''
+      password: body.password || '',
     };
   }
 

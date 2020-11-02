@@ -8,7 +8,7 @@ import {
   FormInput,
   FormRadio,
   FormGroup,
-  Message
+  Message,
 } from 'semantic-ui-react';
 import moment from 'moment';
 import type Moment from 'moment';
@@ -20,20 +20,20 @@ import type { TournamentValidationSummary } from '../../../validators/validate-t
 type Props = {
   onSubmit: (state: State) => void,
   isLoading: boolean,
-  validation: TournamentValidationSummary
+  validation: TournamentValidationSummary,
 };
 
 export type State = {
   name: string,
   date: Moment,
-  type: TournamentType
+  type: TournamentType,
 };
 
 class CreateTournament extends Component<Props, State> {
   state = {
     name: '',
     date: moment(),
-    type: 'none'
+    type: 'none',
   };
 
   _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -48,7 +48,7 @@ class CreateTournament extends Component<Props, State> {
 
   _onChangeRadio = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: TournamentType }
+    { value }: { value: TournamentType },
   ) => {
     this.setState({ type: value });
   };

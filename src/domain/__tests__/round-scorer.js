@@ -4,7 +4,7 @@ import {
   createParticipant,
   createJudge,
   generateId,
-  createRound
+  createRound,
 } from '../../test-utils';
 
 describe('Round scorer', () => {
@@ -15,7 +15,7 @@ describe('Round scorer', () => {
 
     const round = {
       ...createRoundWithGroups(dances),
-      multipleDanceScoringRule: 'best'
+      multipleDanceScoringRule: 'best',
     };
     const criterionId = round.criteria[0].id;
 
@@ -25,23 +25,23 @@ describe('Round scorer', () => {
         participantId: participants[0].id,
         criterionId,
         danceId: dances[0],
-        value: 1
+        value: 1,
       },
       {
         judgeId: judges[0].id,
         participantId: participants[0].id,
         criterionId,
         danceId: dances[1],
-        value: 10
-      }
+        value: 10,
+      },
     ];
 
     const scorer = new RoundScorer(judges, round);
     expect(scorer.scoreRound(notes)).toEqual([
       {
         participantId: participants[0].id,
-        score: 10
-      }
+        score: 10,
+      },
     ]);
   });
 
@@ -52,7 +52,7 @@ describe('Round scorer', () => {
 
     const round = {
       ...createRoundWithGroups(dances),
-      multipleDanceScoringRule: 'average'
+      multipleDanceScoringRule: 'average',
     };
     const criterionId = round.criteria[0].id;
 
@@ -62,34 +62,34 @@ describe('Round scorer', () => {
         participantId: participants[0].id,
         criterionId,
         danceId: dances[0],
-        value: 1
+        value: 1,
       },
       {
         judgeId: judges[0].id,
         participantId: participants[0].id,
         criterionId,
         danceId: dances[1],
-        value: 10
-      }
+        value: 10,
+      },
     ];
 
     const scorer = new RoundScorer(judges, round);
     expect(scorer.scoreRound(notes)).toEqual([
       {
         participantId: participants[0].id,
-        score: 5.5
-      }
+        score: 5.5,
+      },
     ]);
   });
 
   test('Generates 0-score if no notes', () => {
     const leader = {
       ...createParticipant(),
-      role: 'leader'
+      role: 'leader',
     };
     const follower = {
       ...createParticipant(),
-      role: 'follower'
+      role: 'follower',
     };
 
     const round: Round = {
@@ -100,29 +100,29 @@ describe('Round scorer', () => {
           pairs: [
             {
               leader: leader.id,
-              follower: follower.id
-            }
+              follower: follower.id,
+            },
           ],
           dances: [
             {
               id: 'dance1',
               active: false,
-              finished: true
-            }
-          ]
-        }
-      ]
+              finished: true,
+            },
+          ],
+        },
+      ],
     };
 
     const scorer = new RoundScorer([], round);
     const roundScores = scorer.scoreRound([]);
     expect(roundScores).toContainEqual({
       participantId: leader.id,
-      score: 0
+      score: 0,
     });
     expect(roundScores).toContainEqual({
       participantId: follower.id,
-      score: 0
+      score: 0,
     });
   });
 
@@ -138,22 +138,22 @@ describe('Round scorer', () => {
           pairs: [
             {
               leader: 'l1',
-              follower: 'f1'
+              follower: 'f1',
             },
             {
               leader: 'l2',
-              follower: 'f2'
-            }
+              follower: 'f2',
+            },
           ],
           dances: [
             {
               id: danceId,
               active: false,
-              finished: true
-            }
-          ]
-        }
-      ]
+              finished: true,
+            },
+          ],
+        },
+      ],
     };
     const criterionId = round.criteria[0].id;
 
@@ -164,29 +164,29 @@ describe('Round scorer', () => {
         criterionId,
         danceId,
         participantId: 'l1',
-        value: 3
+        value: 3,
       },
       {
         judgeId: judge.id,
         criterionId,
         danceId,
         participantId: 'l2',
-        value: 3
+        value: 3,
       },
       {
         judgeId: judge.id,
         criterionId,
         danceId,
         participantId: 'f1',
-        value: 1
+        value: 1,
       },
       {
         judgeId: judge.id,
         criterionId,
         danceId,
         participantId: 'f2',
-        value: 1
-      }
+        value: 1,
+      },
     ];
 
     const scorer = new RoundScorer([judge], round);
@@ -208,7 +208,7 @@ describe('Round scorer', () => {
   test('Account for score by president judge if configured to do so', () => {
     const president = {
       ...createJudge(),
-      judgeType: 'president'
+      judgeType: 'president',
     };
     const danceId = 'd1';
 
@@ -220,18 +220,18 @@ describe('Round scorer', () => {
           pairs: [
             {
               leader: 'l1',
-              follower: 'f1'
-            }
+              follower: 'f1',
+            },
           ],
           dances: [
             {
               id: danceId,
               active: false,
-              finished: true
-            }
-          ]
-        }
-      ]
+              finished: true,
+            },
+          ],
+        },
+      ],
     };
     const criterionId = round.criteria[0].id;
 
@@ -241,40 +241,40 @@ describe('Round scorer', () => {
         criterionId,
         danceId,
         participantId: 'l1',
-        value: 3
+        value: 3,
       },
       {
         judgeId: president.id,
         criterionId,
         danceId,
         participantId: 'f1',
-        value: 3
-      }
+        value: 3,
+      },
     ];
 
     const scoresWithoutPresident = new RoundScorer(
       [president],
-      round
+      round,
     ).scoreRound(notes);
     expect(scoresWithoutPresident).toContainEqual({
       participantId: 'l1',
-      score: 0
+      score: 0,
     });
     expect(scoresWithoutPresident).toContainEqual({
       participantId: 'f1',
-      score: 0
+      score: 0,
     });
 
     const scoresWithPresident = new RoundScorer([president], round, {
-      countPresident: true
+      countPresident: true,
     }).scoreRound(notes);
     expect(scoresWithPresident).toContainEqual({
       participantId: 'l1',
-      score: 3
+      score: 3,
     });
     expect(scoresWithPresident).toContainEqual({
       participantId: 'f1',
-      score: 3
+      score: 3,
     });
   });
 });
@@ -290,14 +290,14 @@ function createRoundWithGroups(danceIds: Array<string>): Round {
           {
             id: danceIds[0],
             active: false,
-            finished: false
+            finished: false,
           },
           {
             id: danceIds[1],
             active: false,
-            finished: false
-          }
-        ]
+            finished: false,
+          },
+        ],
       },
       {
         id: generateId(),
@@ -306,15 +306,15 @@ function createRoundWithGroups(danceIds: Array<string>): Round {
           {
             id: danceIds[2],
             active: false,
-            finished: false
+            finished: false,
           },
           {
             id: danceIds[3],
             active: false,
-            finished: false
-          }
-        ]
-      }
-    ]
+            finished: false,
+          },
+        ],
+      },
+    ],
   };
 }

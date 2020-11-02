@@ -16,12 +16,12 @@ describe('Tournament reducer', () => {
       forJudge: '',
       forAdmin: [],
       allIds: [],
-      byId: {}
+      byId: {},
     };
 
     expect(getInitialState()).toEqual(defaults);
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
+      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
     ).toEqual(getInitialState());
   });
 
@@ -29,20 +29,20 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'INVALID_ACTION')
-      )
+        makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
+      ),
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'),
+      ),
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')
-      )
+        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'),
+      ),
     ).toEqual(getInitialState());
   });
 
@@ -50,15 +50,15 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'GET_ALL_TOURNAMENTS')
-      )
+        makePackAction(LIFECYCLE.START, 'GET_ALL_TOURNAMENTS'),
+      ),
     ).toEqual({ ...getInitialState(), isLoading: true });
   });
 
   test('GET_ALL_TOURNAMENTS success sets flags and tournaments', () => {
     const tournaments: Array<Tournament> = [
       { ...createTournament(), id: '1' },
-      { ...createTournament(), id: '2' }
+      { ...createTournament(), id: '2' },
     ];
 
     const nom = normalizeTournamentArray(tournaments);
@@ -69,47 +69,47 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom),
+      ),
     ).toEqual({
       ...getInitialState(),
       isLoading: false,
       isInvalidated: false,
       allIds,
-      byId
+      byId,
     });
   });
 
   test(
-    'GET_ALL_TOURNAMENTS failure sets isLoading to false and' +
-      'isInvalidated to true',
+    'GET_ALL_TOURNAMENTS failure sets isLoading to false and'
+      + 'isInvalidated to true',
     () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.FAILURE, 'GET_ALL_TOURNAMENTS')
-        )
+          makePackAction(LIFECYCLE.FAILURE, 'GET_ALL_TOURNAMENTS'),
+        ),
       ).toEqual({
         ...getInitialState(),
         isLoading: false,
-        isInvalidated: false
+        isInvalidated: false,
       });
-    }
+    },
   );
 
   test('GET_ADMIN_TOURNAMENTS start sets loading to true', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'GET_ADMIN_TOURNAMENTS')
-      )
+        makePackAction(LIFECYCLE.START, 'GET_ADMIN_TOURNAMENTS'),
+      ),
     ).toEqual({ ...getInitialState(), isLoading: true });
   });
 
   test('GET_ADMIN_TOURNAMENTS success sets forAdmin and tournaments', () => {
     const tournaments: Array<Tournament> = [
       { ...createTournament(), id: '1' },
-      { ...createTournament(), id: '2' }
+      { ...createTournament(), id: '2' },
     ];
 
     const nom = normalizeTournamentArray(tournaments);
@@ -121,14 +121,14 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
+      ),
     ).toEqual({
       ...getInitialState(),
       didLoadAdminTournaments: true,
       allIds,
       byId,
-      forAdmin
+      forAdmin,
     });
   });
 
@@ -137,13 +137,13 @@ describe('Tournament reducer', () => {
       ...getInitialState(),
       allIds: ['3'],
       byId: {
-        '3': { ...createTournament(), id: '3' }
-      }
+        3: { ...createTournament(), id: '3' },
+      },
     };
 
     const tournaments: Array<Tournament> = [
       { ...createTournament(), id: '1' },
-      { ...createTournament(), id: '2' }
+      { ...createTournament(), id: '2' },
     ];
 
     const nom = normalizeTournamentArray(tournaments);
@@ -156,14 +156,14 @@ describe('Tournament reducer', () => {
       reducer(
         // $FlowFixMe
         prevState,
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
+      ),
     ).toEqual({
       ...getInitialState(),
       didLoadAdminTournaments: true,
       allIds,
       byId,
-      forAdmin
+      forAdmin,
     });
   });
 
@@ -172,16 +172,16 @@ describe('Tournament reducer', () => {
       ...getInitialState(),
       allIds: ['1'],
       byId: {
-        '1': {
+        1: {
           ...createTournament(),
-          id: '1'
-        }
-      }
+          id: '1',
+        },
+      },
     };
 
     const tournaments: Array<Tournament> = [
       { ...createTournament(), id: '1' },
-      { ...createTournament(), id: '2' }
+      { ...createTournament(), id: '2' },
     ];
 
     const nom = normalizeTournamentArray(tournaments);
@@ -194,14 +194,14 @@ describe('Tournament reducer', () => {
       reducer(
         // $FlowFixMe
         prevState,
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
+      ),
     ).toEqual({
       ...getInitialState(),
       didLoadAdminTournaments: true,
       allIds,
       byId,
-      forAdmin
+      forAdmin,
     });
   });
 
@@ -209,11 +209,11 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         { ...getInitialState(), isLoading: true },
-        makePackAction(LIFECYCLE.FAILURE, 'GET_ADMIN_TOURNAMENTS')
-      )
+        makePackAction(LIFECYCLE.FAILURE, 'GET_ADMIN_TOURNAMENTS'),
+      ),
     ).toEqual({
       ...getInitialState(),
-      isLoading: false
+      isLoading: false,
     });
   });
 
@@ -229,13 +229,13 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', payload)
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', payload),
+      ),
     ).toEqual({
       ...state,
       allIds,
       byId,
-      forAdmin
+      forAdmin,
     });
   });
 
@@ -250,24 +250,24 @@ describe('Tournament reducer', () => {
       ...getInitialState(),
       allIds,
       forAdmin,
-      byId
+      byId,
     };
 
     const payload = {
       ...tournament,
-      name: 'new name'
+      name: 'new name',
     };
 
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.SUCCESS, 'EDIT_TOURNAMENT', payload)
-      )
+        makePackAction(LIFECYCLE.SUCCESS, 'EDIT_TOURNAMENT', payload),
+      ),
     ).toEqual({
       ...state,
       byId: {
-        [tournament.id]: payload
-      }
+        [tournament.id]: payload,
+      },
     });
   });
 
@@ -275,11 +275,11 @@ describe('Tournament reducer', () => {
     const state = {
       ...getInitialState(),
       forAdmin: ['1', '2'],
-      didLoadAdminTournaments: true
+      didLoadAdminTournaments: true,
     };
 
     expect(
-      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGOUT_USER'))
+      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGOUT_USER')),
     ).toEqual(getInitialState());
   });
 });

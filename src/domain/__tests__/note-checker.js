@@ -5,7 +5,7 @@ import {
   createParticipant,
   createTournament,
   createRound,
-  generateId
+  generateId,
 } from '../../test-utils';
 import NoteChecker from '../note-checker';
 
@@ -33,13 +33,13 @@ describe('Checker that all notes are submitted', () => {
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes = [];
@@ -67,19 +67,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[0].id, leader: participants[1].id }
+                { follower: participants[0].id, leader: participants[1].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes: Array<JudgeNote> = [
@@ -88,15 +88,15 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
 
     const checker = new NoteChecker(tournament);
@@ -106,12 +106,12 @@ describe('Checker that all notes are submitted', () => {
   test('Everything must be set, missing criteria', () => {
     const criteria = [
       { ...createCriterion(), type: 'both' },
-      { ...createCriterion(), type: 'one' }
+      { ...createCriterion(), type: 'one' },
     ];
     const judges = [createJudge(), createJudge()];
     const participants = [
       createParticipant(),
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const danceId = generateId();
 
@@ -128,19 +128,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[1].id, leader: participants[0].id }
+                { follower: participants[1].id, leader: participants[0].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes: Array<JudgeNote> = [
@@ -150,28 +150,28 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       // follower
       {
@@ -179,29 +179,29 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[1].id,
-        value: 0
-      }
-      //{
+        value: 0,
+      },
+      // {
       //  judgeId: judges[1].id,
       //  danceId,
       //  criterionId: criteria[1].id,
       //  participantId: participants[1].id,
       //  value: 0
-      //},
+      // },
     ];
 
     const checker = new NoteChecker(tournament);
@@ -211,12 +211,12 @@ describe('Checker that all notes are submitted', () => {
   test('Everything must be set, valid', () => {
     const criteria = [
       { ...createCriterion(), type: 'both' },
-      { ...createCriterion(), type: 'one' }
+      { ...createCriterion(), type: 'one' },
     ];
     const judges = [createJudge(), createJudge()];
     const participants = [
       createParticipant(),
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const danceId = generateId();
 
@@ -233,19 +233,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[1].id, leader: participants[0].id }
+                { follower: participants[1].id, leader: participants[0].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes: Array<JudgeNote> = [
@@ -255,28 +255,28 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       // follower
       {
@@ -284,29 +284,29 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[1].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[1].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
 
     const checker = new NoteChecker(tournament);
@@ -316,12 +316,12 @@ describe('Checker that all notes are submitted', () => {
   test('Can check for one judge', () => {
     const criteria = [
       { ...createCriterion(), type: 'both' },
-      { ...createCriterion(), type: 'one' }
+      { ...createCriterion(), type: 'one' },
     ];
     const judges = [createJudge(), createJudge()];
     const participants = [
       createParticipant(),
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const danceId = generateId();
 
@@ -338,19 +338,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[1].id, leader: participants[0].id }
+                { follower: participants[1].id, leader: participants[0].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes: Array<JudgeNote> = [
@@ -360,40 +360,40 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
-      //{
+      // {
       //  judgeId: judges[0].id,
       //  danceId,
       //  criterionId: criteria[1].id,
       //  participantId: participants[0].id,
       //  value: 0
-      //},
+      // },
       // follower
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
 
     const checker = new NoteChecker(tournament);
     expect(checker.allSetForDanceByJudge(danceId, notes, judges[0].id)).toBe(
-      false
+      false,
     );
   });
 
   test('Can check for one judge, true', () => {
     const criteria = [
       { ...createCriterion(), type: 'both' },
-      { ...createCriterion(), type: 'one' }
+      { ...createCriterion(), type: 'one' },
     ];
     const judges = [createJudge(), createJudge()];
     const participants = [
       createParticipant(),
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const danceId = generateId();
 
@@ -410,19 +410,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[1].id, leader: participants[0].id }
+                { follower: participants[1].id, leader: participants[0].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes: Array<JudgeNote> = [
@@ -432,14 +432,14 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       // follower
       {
@@ -447,20 +447,20 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: criteria[0].id,
         participantId: participants[1].id,
-        value: 0
+        value: 0,
       },
       {
         judgeId: judges[0].id,
         danceId,
         criterionId: criteria[1].id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
 
     const checker = new NoteChecker(tournament);
     expect(checker.allSetForDanceByJudge(danceId, notes, judges[0].id)).toBe(
-      true
+      true,
     );
   });
 
@@ -471,12 +471,12 @@ describe('Checker that all notes are submitted', () => {
     const sanctioner = { ...createJudge(), judgeType: 'sanctioner' };
     const sanctionerCriterion = {
       ...createCriterion(),
-      forJudgeType: 'sanctioner'
+      forJudgeType: 'sanctioner',
     };
 
     const participants: Array<Participant> = [
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const danceId = generateId();
 
@@ -493,19 +493,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[1].id, leader: participants[0].id }
+                { follower: participants[1].id, leader: participants[0].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const normalNotes = [
@@ -515,7 +515,7 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: normalCriterion.id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       // follower
       {
@@ -523,8 +523,8 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: normalCriterion.id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
     const sanctionerNotes = [
       // leader
@@ -533,7 +533,7 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: sanctionerCriterion.id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       // follower
       {
@@ -541,23 +541,23 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: sanctionerCriterion.id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
 
     const checker = new NoteChecker(tournament);
     expect(checker.allSetForDance(danceId, normalNotes)).toBe(false);
     expect(
-      checker.allSetForDanceByJudge(danceId, normalNotes, normalJudge.id)
+      checker.allSetForDanceByJudge(danceId, normalNotes, normalJudge.id),
     ).toBe(true);
 
     expect(checker.allSetForDance(danceId, sanctionerNotes)).toBe(false);
     expect(
-      checker.allSetForDanceByJudge(danceId, sanctionerNotes, sanctioner.id)
+      checker.allSetForDanceByJudge(danceId, sanctionerNotes, sanctioner.id),
     ).toBe(true);
 
     expect(
-      checker.allSetForDance(danceId, [...normalNotes, ...sanctionerNotes])
+      checker.allSetForDance(danceId, [...normalNotes, ...sanctionerNotes]),
     ).toBe(true);
   });
 
@@ -567,7 +567,7 @@ describe('Checker that all notes are submitted', () => {
 
     const participants: Array<Participant> = [
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const danceId = generateId();
 
@@ -584,19 +584,19 @@ describe('Checker that all notes are submitted', () => {
             {
               id: generateId(),
               pairs: [
-                { follower: participants[1].id, leader: participants[0].id }
+                { follower: participants[1].id, leader: participants[0].id },
               ],
               dances: [
                 {
                   id: danceId,
                   active: true,
-                  finished: false
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  finished: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const notes: Array<JudgeNote> = [
@@ -606,7 +606,7 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: normalCriterion.id,
         participantId: participants[0].id,
-        value: 0
+        value: 0,
       },
       // follower
       {
@@ -614,8 +614,8 @@ describe('Checker that all notes are submitted', () => {
         danceId,
         criterionId: normalCriterion.id,
         participantId: participants[1].id,
-        value: 0
-      }
+        value: 0,
+      },
     ];
 
     const checker = new NoteChecker(tournament);

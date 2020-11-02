@@ -8,7 +8,7 @@ import {
   Table,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
 } from 'semantic-ui-react';
 import moment from 'moment';
 import type Moment from 'moment';
@@ -18,39 +18,33 @@ import './styles.css';
 type Props = {
   isLoading: boolean,
   tournaments: Array<Tournament>,
-  onClick: ?(tournamentId: string) => void
+  onClick: ?(tournamentId: string) => void,
 };
 
 type State = {
   previousTournaments: Array<Tournament>,
-  futureTournaments: Array<Tournament>
+  futureTournaments: Array<Tournament>,
 };
 
 function getPreviousTournaments(tournaments: Array<Tournament>) {
   const now = moment();
-  return sortTournaments(tournaments).filter(tour =>
-    tour.date.isSameOrBefore(now)
-  );
+  return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrBefore(now));
 }
 
 function getFutureTournaments(tournaments: Array<Tournament>) {
   const now = moment();
-  return sortTournaments(tournaments).filter(tour =>
-    tour.date.isSameOrAfter(now)
-  );
+  return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrAfter(now));
 }
 
 function sortTournaments(tournaments: Array<Tournament>) {
   // sort by latest date first
-  return tournaments.sort(
-    (a: Tournament, b: Tournament) => (a.date.isSameOrBefore(b.date) ? 1 : -1)
-  );
+  return tournaments.sort((a: Tournament, b: Tournament) => (a.date.isSameOrBefore(b.date) ? 1 : -1));
 }
 
 class TournamentList extends Component<Props, State> {
   state = {
     previousTournaments: getPreviousTournaments(this.props.tournaments),
-    futureTournaments: getFutureTournaments(this.props.tournaments)
+    futureTournaments: getFutureTournaments(this.props.tournaments),
   };
 
   componentWillReceiveProps(nextProps: Props) {
@@ -62,7 +56,7 @@ class TournamentList extends Component<Props, State> {
 
   _renderHeaderAndTournaments = (
     header: string,
-    tournaments: Array<Tournament>
+    tournaments: Array<Tournament>,
   ) => {
     if (this._shouldRenderTable(tournaments)) {
       return (
@@ -74,19 +68,17 @@ class TournamentList extends Component<Props, State> {
     }
   };
 
-  _renderTable = (tournaments: Array<Tournament>) => {
-    return (
-      <Table selectable textAlign="center" fixed>
-        <TableBody>{tournaments.map(this._renderRow)}</TableBody>
-      </Table>
-    );
-  };
+  _renderTable = (tournaments: Array<Tournament>) => (
+    <Table selectable textAlign="center" fixed>
+      <TableBody>{tournaments.map(this._renderRow)}</TableBody>
+    </Table>
+  );
 
-  _shouldRenderTable = (tournaments: Array<Tournament>) => {
-    return tournaments.length > 0;
-  };
+  _shouldRenderTable = (tournaments: Array<Tournament>) => tournaments.length > 0;
 
-  _renderRow = ({ id, name, date, type }: Tournament) => {
+  _renderRow = ({
+    id, name, date, type,
+  }: Tournament) => {
     const { onClick } = this.props;
     return (
       <TableRow key={id} onClick={onClick != null ? () => onClick(id) : null}>
@@ -100,15 +92,13 @@ class TournamentList extends Component<Props, State> {
   _typeToName = (type: TournamentType): string => {
     if (type === 'jj') {
       return "Jack n' Jill";
-    } else if (type === 'classic') {
+    } if (type === 'classic') {
       return 'Classic';
     }
     return 'Unknown';
   };
 
-  _formatDate = (moment: Moment) => {
-    return moment.format('LL');
-  };
+  _formatDate = (moment: Moment) => moment.format('LL');
 
   render() {
     return (
@@ -116,11 +106,11 @@ class TournamentList extends Component<Props, State> {
         {this.props.isLoading && <Loader active={this.props.isLoading} />}
         {this._renderHeaderAndTournaments(
           'Upcoming',
-          this.state.futureTournaments
+          this.state.futureTournaments,
         )}
         {this._renderHeaderAndTournaments(
           'Past',
-          this.state.previousTournaments
+          this.state.previousTournaments,
         )}
       </Container>
     );

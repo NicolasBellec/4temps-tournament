@@ -4,7 +4,7 @@ import { handle } from 'redux-pack';
 
 function userReducer(
   state: UserReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UserReduxState {
   const { type } = action;
 
@@ -26,34 +26,34 @@ export function getInitialState(): UserReduxState {
 
 function loginUser(
   state: UserReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UserReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: () => ({ id: payload.userId, role: 'admin', tournamentId: '' })
+    success: () => ({ id: payload.userId, role: 'admin', tournamentId: '' }),
   });
 }
 
 function loginWithAccessKey(
   state: UserReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UserReduxState {
   const { payload } = action;
   return handle(state, action, {
     success: () => ({
       id: payload.userId,
       role: payload.role,
-      tournamentId: payload.tournamentId
-    })
+      tournamentId: payload.tournamentId,
+    }),
   });
 }
 
 function logoutUser(
   state: UserReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UserReduxState {
   return handle(state, action, {
-    success: getInitialState
+    success: getInitialState,
   });
 }
 

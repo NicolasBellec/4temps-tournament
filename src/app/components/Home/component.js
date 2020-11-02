@@ -11,20 +11,19 @@ type Props = {
   isAuthenticated: boolean,
   role: string,
   location: Location,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 class Home extends PureComponent<Props> {
   _renderForRole() {
     if (this.props.role == 'admin') {
       return <EditTournamentList history={this.props.history} />;
-    } else if (this.props.role == 'judge') {
+    } if (this.props.role == 'judge') {
       return <Judge />;
-    } else if (this.props.role == 'assistant') {
+    } if (this.props.role == 'assistant') {
       return <Assistant />;
-    } else {
-      return <LoginContainer {...this.props} />;
     }
+    return <LoginContainer {...this.props} />;
   }
 
   render() {

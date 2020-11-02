@@ -6,7 +6,7 @@ import ListJudges from './ListJudges';
 import CreateJudge from './CreateJudge';
 
 type Props = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 function Judges(props: Props) {

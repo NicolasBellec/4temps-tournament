@@ -3,30 +3,30 @@ import { handle } from 'redux-pack';
 
 export default function uiNotesReducer(
   state: UiNotesReduxState = createInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiNotesReduxState {
   switch (action.type) {
   case 'SELECT_PAIR':
     return { ...state, selectedPair: action.payload };
   case 'SUBMIT_NOTES':
     return handle(state, action, {
-      start: prevState => ({
+      start: (prevState) => ({
         ...prevState,
         isLoading: true,
-        didSubmit: true
+        didSubmit: true,
       }),
-      success: prevState => ({
+      success: (prevState) => ({
         ...prevState,
         isLoading: false,
         didSubmit: true,
-        successfulSubmit: true
+        successfulSubmit: true,
       }),
-      failure: prevState => ({
+      failure: (prevState) => ({
         ...prevState,
         isLoading: false,
         didSubmit: true,
-        successfulSubmit: false
-      })
+        successfulSubmit: false,
+      }),
     });
   }
 
@@ -38,6 +38,6 @@ export function createInitialState(): UiNotesReduxState {
     selectedPair: null,
     isLoading: false,
     didSubmit: false,
-    successfulSubmit: false
+    successfulSubmit: false,
   };
 }

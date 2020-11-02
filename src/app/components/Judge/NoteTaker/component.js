@@ -7,7 +7,7 @@ import SeparateNoteTaker from './SeparateNoteTaker';
 
 export type StateProps = {
   isClassic: boolean,
-  isLastRound: boolean
+  isLastRound: boolean,
 };
 
 function NoteTaker({ isLastRound, isClassic }: StateProps) {

@@ -9,26 +9,26 @@ type AccessKeyDbModel = {
   tournamentId: ObjectId,
   userId: ObjectId,
   key: string,
-  role: 'assistant' | 'judge'
+  role: 'assistant' | 'judge',
 };
 
 const schema = new mongoose.Schema({
   tournamentId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   key: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const Model = mongoose.model('accessKey', schema);
@@ -47,7 +47,7 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
   async createForTournamentAndUserWithRole(
     tournamentId: string,
     userId: string,
-    role: 'judge' | 'assistant'
+    role: 'judge' | 'assistant',
   ) {
     const key = await this._generateUniqueKey();
     /*
@@ -55,7 +55,9 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
      * and the insert. However, there will not be a lot of concurrent
      * inserts, and let's believe in the randomness for now
      */
-    await Model.create({ tournamentId, userId, key, role });
+    await Model.create({
+      tournamentId, userId, key, role,
+    });
   }
 
   async _generateUniqueKey() {
@@ -79,19 +81,21 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
       return null;
     }
 
-    const { key, userId, tournamentId, role } = dbModel;
+    const {
+      key, userId, tournamentId, role,
+    } = dbModel;
     return {
       key,
       userId: userId.toString(),
       tournamentId: tournamentId.toString(),
-      role
+      role,
     };
   }
 
   async getForTournament(tournamentId: string) {
     const found = await Model.find({ tournamentId });
     if (found) {
-      return found.map(o => this.mapToDomainModel(o.toObject()));
+      return found.map((o) => this.mapToDomainModel(o.toObject()));
     }
     return [];
   }

@@ -6,10 +6,10 @@ import { validateParticipant } from '../../../validators/validate-participant';
 
 export const createParticipant = async (
   tournamentId: string,
-  participant: Participant
+  participant: Participant,
 ): Promise<{
   tournamentId: string,
-  participant: Participant
+  participant: Participant,
 }> => {
   const validation = validateParticipant(participant);
   if (!validation.isValidParticipant) {
@@ -18,18 +18,18 @@ export const createParticipant = async (
 
   return apiPostRequest(`/api/participant/${tournamentId}/create`, {
     tournamentId,
-    participant
+    participant,
   });
 };
 
 export async function changeAttendance(
   tournamentId: string,
   participantId: string,
-  isAttending: boolean
+  isAttending: boolean,
 ) {
   return apiPostRequest(`/api/participant/${tournamentId}/attendance`, {
     participantId,
-    isAttending
+    isAttending,
   });
 }
 

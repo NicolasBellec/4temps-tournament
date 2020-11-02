@@ -7,17 +7,17 @@ import {
   TableHeaderCell,
   TableBody,
   TableCell,
-  TableRow
+  TableRow,
 } from 'semantic-ui-react';
 
 type AssistantViewModel = Assistant & {
-  accessKey: string
+  accessKey: string,
 };
 
 function ListAssistants({
-  assistants
+  assistants,
 }: {
-  assistants: Array<AssistantViewModel>
+  assistants: Array<AssistantViewModel>,
 }) {
   return (
     <Table unstackable basic="very">
@@ -28,7 +28,7 @@ function ListAssistants({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {assistants.map(j => (
+        {assistants.map((j) => (
           <TableRow key={j.id}>
             <TableCell>{j.name}</TableCell>
             <TableCell>{j.accessKey}</TableCell>

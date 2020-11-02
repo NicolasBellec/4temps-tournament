@@ -24,31 +24,31 @@ const noteRepository = new SubmittedNoteRepository();
 router.post(
   '/:tournamentId/create',
   allow('admin'),
-  new CreateRoundRoute(tournamentRepository).route
+  new CreateRoundRoute(tournamentRepository).route,
 );
 
 router.delete(
   '/:tournamentId/delete/:roundId',
   allow('admin'),
-  new DeleteRoundRoute(tournamentRepository).route
+  new DeleteRoundRoute(tournamentRepository).route,
 );
 
 router.post(
   '/:tournamentId/start/:roundId',
   allow('admin'),
-  new StartRoundRoute(tournamentRepository).route
+  new StartRoundRoute(tournamentRepository).route,
 );
 
 router.post(
   '/:tournamentId/start-dance/',
   allow('admin'),
-  new StartDanceRoute(tournamentRepository).route
+  new StartDanceRoute(tournamentRepository).route,
 );
 
 router.post(
   '/:tournamentId/generate-groups/:roundId',
   allow('admin'),
-  new GenerateGroupsRoute(tournamentRepository).route
+  new GenerateGroupsRoute(tournamentRepository).route,
 );
 
 router.post(
@@ -57,18 +57,18 @@ router.post(
   new EndDanceRoute(
     tournamentRepository,
     noteRepository,
-    pushLeaderboardUpdate
-  ).route()
+    pushLeaderboardUpdate,
+  ).route(),
 );
 
 router.post(
   '/:tournamentId/regenerate/:roundId/group/:groupId/',
-  RegenerateGroupRoute(tournamentRepository, noteRepository)
+  RegenerateGroupRoute(tournamentRepository, noteRepository),
 );
 
 router.post(
   '/:tournamentId/settle-draw',
-  new SettleDrawRoute(tournamentRepository).route
+  new SettleDrawRoute(tournamentRepository).route,
 );
 
 export default router;

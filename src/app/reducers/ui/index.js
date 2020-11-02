@@ -24,5 +24,5 @@ export default combineReducers({
   createJudge,
   createAssistant,
   notes,
-  settleDraw
+  settleDraw,
 });

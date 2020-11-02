@@ -1,7 +1,9 @@
 // no-flow
 
 import React, { PureComponent } from 'react';
-import { Button, Form, FormInput, Header, Message } from 'semantic-ui-react';
+import {
+  Button, Form, FormInput, Header, Message,
+} from 'semantic-ui-react';
 
 import './styles.css';
 
@@ -10,20 +12,20 @@ type Props = {
   headerTitle: string,
   isValidAccessKey: boolean,
   isLoading: boolean,
-  doesAccessKeyExist: boolean
+  doesAccessKeyExist: boolean,
 };
 
 type State = {
-  accessKey: string
+  accessKey: string,
 };
 
 class Login extends PureComponent<Props, State> {
   static defaultProps = {
-    headerTitle: 'Log in'
+    headerTitle: 'Log in',
   };
 
   state = {
-    accessKey: ''
+    accessKey: '',
   };
 
   _onAccessKeyChange = (event: SyntheticInputEvent<HTMLInputElement>) => {

@@ -5,11 +5,11 @@ import type { Match, RouterHistory } from 'react-router-dom';
 
 import PreloadContainer from '../PreloadContainer';
 import Component from './component';
-import { getAdminTournaments } from '../../action-creators';
+import { getAdminTournamentsAction } from '../../action-creators/tournament';
 
 type Props = {
   match: Match,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 function mapStateToProps(state: ReduxState, { match }: Props) {
@@ -19,19 +19,19 @@ function mapStateToProps(state: ReduxState, { match }: Props) {
     shouldLoad: !state.rounds.byId[roundId],
     Child: Component,
     roundId,
-    tournamentId
+    tournamentId,
   };
 }
 
 function mapDispatchToProps(dispatch: ReduxDispatch) {
   return {
-    load: () => dispatch(getAdminTournaments)
+    load: () => dispatch(getAdminTournamentsAction),
   };
 }
 
 const RoundOverviewContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default RoundOverviewContainer;

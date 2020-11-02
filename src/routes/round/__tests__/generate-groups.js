@@ -6,7 +6,7 @@ import {
   createRound,
   generateId,
   createParticipant,
-  TournamentRepositoryImpl
+  TournamentRepositoryImpl,
 } from '../../../test-utils';
 import GenerateGroupsRoute from '../generate-groups';
 
@@ -21,7 +21,7 @@ describe('Generate groups route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);
@@ -38,7 +38,7 @@ describe('Generate groups route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: generateId()
+      roundId: generateId(),
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);
@@ -57,7 +57,7 @@ describe('Generate groups route', () => {
 
     const participants = [
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
 
     await repo.create(tournament);
@@ -72,16 +72,16 @@ describe('Generate groups route', () => {
           pairs: [
             {
               leader: participants[0].id,
-              follower: participants[1].id
-            }
-          ]
-        }
-      ]
+              follower: participants[1].id,
+            },
+          ],
+        },
+      ],
     };
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);
@@ -91,7 +91,7 @@ describe('Generate groups route', () => {
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
     expect((await repo.get(tournament.id)).rounds[0]).toMatchObject(
-      expectedRound
+      expectedRound,
     );
   });
 
@@ -105,7 +105,7 @@ describe('Generate groups route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: startedRound.id
+      roundId: startedRound.id,
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);
@@ -125,7 +125,7 @@ describe('Generate groups route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: startedRound.id
+      roundId: startedRound.id,
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);
@@ -140,7 +140,7 @@ describe('Generate groups route', () => {
       { ...createParticipant(), role: 'leader' },
       { ...createParticipant(), role: 'follower' },
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const round1 = {
       ...createRound(),
@@ -150,28 +150,28 @@ describe('Generate groups route', () => {
       roundScores: [
         {
           participantId: participants[0].id,
-          score: 10
+          score: 10,
         },
         { participantId: participants[1].id, score: 6 },
         { participantId: participants[2].id, score: 5 },
-        { participantId: participants[3].id, score: 4 }
+        { participantId: participants[3].id, score: 4 },
       ],
       groups: [
         {
           id: 'group1',
           pairs: [
             { leader: participants[0].id, follower: participants[1].id },
-            { leader: participants[2].id, follower: participants[3].id }
+            { leader: participants[2].id, follower: participants[3].id },
           ],
           dances: [
             {
               id: 'dance1',
               active: false,
-              finished: true
-            }
-          ]
-        }
-      ]
+              finished: true,
+            },
+          ],
+        },
+      ],
     };
     const round2 = { ...createRound(), active: true };
 
@@ -179,7 +179,7 @@ describe('Generate groups route', () => {
       ...createTournament(),
       id: generateId(),
       rounds: [round1, round2],
-      participants
+      participants,
     };
     const repo = new TournamentRepositoryImpl();
     await repo.create(tournament);
@@ -192,16 +192,16 @@ describe('Generate groups route', () => {
           pairs: [
             {
               leader: participants[0].id,
-              follower: participants[1].id
-            }
-          ]
-        }
-      ]
+              follower: participants[1].id,
+            },
+          ],
+        },
+      ],
     };
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round2.id
+      roundId: round2.id,
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);
@@ -218,7 +218,7 @@ describe('Generate groups route', () => {
       minPairCountPerGroup: 1,
       maxPairCountPerGroup: 2,
       active: true,
-      finished: false
+      finished: false,
     };
     const participants = [
       { ...createParticipant(), id: 'l1', role: 'leader' },
@@ -228,14 +228,14 @@ describe('Generate groups route', () => {
       { ...createParticipant(), id: 'l5', role: 'leader' },
       { ...createParticipant(), id: 'f1', role: 'follower' },
       { ...createParticipant(), id: 'f2', role: 'follower' },
-      { ...createParticipant(), id: 'f3', role: 'follower' }
+      { ...createParticipant(), id: 'f3', role: 'follower' },
     ];
 
     const tournament = {
       ...createTournament(),
       id: generateId(),
       rounds: [round],
-      participants
+      participants,
     };
     const repo = new TournamentRepositoryImpl();
     await repo.create(tournament);
@@ -245,7 +245,7 @@ describe('Generate groups route', () => {
 
     const req = Request.withParams({
       tournamentId: tournament.id,
-      roundId: round.id
+      roundId: round.id,
     });
     const res = new Response();
     const route = new GenerateGroupsRoute(repo);

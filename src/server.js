@@ -9,14 +9,14 @@ import compression from 'compression';
 import type {
   $Application as ExpressApplication,
   $Request,
-  $Response
+  $Response,
 } from 'express';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import bodyParser from 'body-parser';
-import { v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 import ApiRoute from './routes';
 import getDbConnection from './data/setup';
@@ -27,6 +27,7 @@ import { setup as setupRealTime } from './realtime';
 
 class Server {
   _app: ExpressApplication;
+
   // This is the nodejs http server, but I can't seem to import the type
   // $FlowFixMe
   _server: any;
@@ -78,17 +79,14 @@ class Server {
         if (req.originalUrl === '/health-check' || forwardedProto === 'https') {
           next();
         } else {
-          const redirectUrl =
-            'https://' + String(req.header('Host')) + req.originalUrl;
+          const redirectUrl = `https://${String(req.header('Host'))}${req.originalUrl}`;
           res.redirect(301, redirectUrl);
         }
       });
     }
   };
 
-  _isProduction = () => {
-    return process.env.NODE_ENV === 'production';
-  };
+  _isProduction = () => process.env.NODE_ENV === 'production';
 
   _enableSessions = () => {
     if (this._isProduction()) {
@@ -109,10 +107,10 @@ class Server {
           // Only use secure in prod
           secure: this._isProduction(),
           httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24 * 365 * 10 // ~10 years
+          maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // ~10 years
         },
-        store: new MongoStore({ mongooseConnection: getDbConnection() })
-      })
+        store: new MongoStore({ mongooseConnection: getDbConnection() }),
+      }),
     );
   };
 
@@ -127,14 +125,14 @@ class Server {
               "'self'",
               (req: $Request, res: $Response) =>
                 // $FlowFixMe
-                `'nonce-${res.locals.cspNonce}'`
+                `'nonce-${res.locals.cspNonce}'`,
             ],
             fontSrc: ["'self'", 'data:'],
             formAction: ["'self'"],
-            connectSrc: ["'self'", this._getWebsocketConnectionString()]
-          }
-        }
-      })
+            connectSrc: ["'self'", this._getWebsocketConnectionString()],
+          },
+        },
+      }),
     );
   };
 
@@ -147,8 +145,7 @@ class Server {
   };
 
   _getWebsocketConnectionString = () => {
-    const port =
-      this._isProduction() || process.env.PORT === '' ? '80' : process.env.PORT;
+    const port = this._isProduction() || process.env.PORT === '' ? '80' : process.env.PORT;
     return `ws://${String(process.env.HOSTNAME)}:${String(port)}`;
   };
 
@@ -164,15 +161,15 @@ class Server {
     this._app.use(
       '/',
       Express.static(path.join(__dirname, '../public'), {
-        maxAge
-      })
+        maxAge,
+      }),
     );
     // used for files that should be public, but that's generated
     this._app.use(
       '/',
       Express.static(path.join(__dirname, '../public-build'), {
-        maxAge
-      })
+        maxAge,
+      }),
     );
   };
 
@@ -186,7 +183,7 @@ class Server {
   _enableHealthCheckRouting = () => {
     this._app.use('/health-check', (req: $Request, res: $Response) => {
       res.status(200);
-      res.send(`I'm all healthy!`);
+      res.send('I\'m all healthy!');
     });
   };
 
@@ -203,19 +200,19 @@ class Server {
       // $FlowFixMe: Add user to req type
       role: req.session.user != null ? req.session.user.role : '',
       // $FlowFixMe
-      tournamentId: (req.session.user && req.session.user.tournamentId) || ''
+      tournamentId: (req.session.user && req.session.user.tournamentId) || '',
     };
 
     const html = renderToString(
       <StaticRouter location={req.url} context={context}>
         {appWithPreloadedState({ user })}
-      </StaticRouter>
+      </StaticRouter>,
     );
 
     // redirects
     if (context.url) {
       res.writeHead(301, {
-        Location: context.url
+        Location: context.url,
       });
     } else {
       res.type('html');
@@ -224,8 +221,8 @@ class Server {
           html,
           getReduxState(),
           // $FlowFixMe: It's set a bit higher up
-          res.locals.cspNonce
-        )
+          res.locals.cspNonce,
+        ),
       );
     }
     res.end();

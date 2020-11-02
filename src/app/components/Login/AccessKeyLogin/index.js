@@ -5,7 +5,7 @@ import { loginWithAccessKey } from '../../../api/access-key';
 import LoginComponent from './component';
 
 type Props = {
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 function mapStateToProps({ ui }: ReduxState) {
@@ -14,20 +14,19 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { history }: Props) {
   return {
-    onSubmit: (accessKey: string) =>
-      dispatch({
-        type: 'LOGIN_WITH_ACCESS_KEY',
-        promise: loginWithAccessKey(accessKey),
-        meta: {
-          onSuccess: () => history.push('/')
-        }
-      })
+    onSubmit: (accessKey: string) => dispatch({
+      type: 'LOGIN_WITH_ACCESS_KEY',
+      promise: loginWithAccessKey(accessKey),
+      meta: {
+        onSuccess: () => history.push('/'),
+      },
+    }),
   };
 }
 
 const LoginContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(LoginComponent);
 
 export default LoginContainer;

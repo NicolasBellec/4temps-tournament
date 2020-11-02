@@ -10,14 +10,14 @@ import {
   createJudge,
   createParticipant,
   NoteRepositoryImpl,
-  createCriterion
+  createCriterion,
 } from '../../../test-utils';
 
 describe('Create note route', () => {
   const judge = createJudge();
   const participant = {
     ...createParticipant(),
-    role: 'leader'
+    role: 'leader',
   };
   const dance = { id: generateId(), active: true, finished: false };
 
@@ -28,7 +28,7 @@ describe('Create note route', () => {
     danceId: dance.id,
     criterionId: criterion.id,
     participantId: participant.id,
-    value: 1
+    value: 1,
   };
 
   const hydratedTournament: Tournament = {
@@ -43,23 +43,23 @@ describe('Create note route', () => {
           {
             id: generateId(),
             pairs: [],
-            dances: [dance]
-          }
-        ]
-      }
-    ]
+            dances: [dance],
+          },
+        ],
+      },
+    ],
   };
 
   test('404 is returned if the tournament does not exist', async () => {
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: generateId()
+      tournamentId: generateId(),
     });
     req.body = validNote;
     const res = new Response();
 
     await setNoteRoute(
       new TournamentRepositoryImpl(),
-      new NoteRepositoryImpl()
+      new NoteRepositoryImpl(),
     )(req, res);
 
     expect(res.getStatus()).toBe(404);
@@ -72,7 +72,7 @@ describe('Create note route', () => {
     await tournamentRepository.create(tournament);
 
     const req = Request.withJudgeAndParams(createJudge(), {
-      tournamentId: tournament.id
+      tournamentId: tournament.id,
     });
 
     req.body = validNote;
@@ -80,7 +80,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res
+      res,
     );
 
     expect(res.getStatus()).toBe(401);
@@ -92,14 +92,14 @@ describe('Create note route', () => {
     await tournamentRepository.create(tournament);
 
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: tournament.id
+      tournamentId: tournament.id,
     });
     req.body = validNote;
     const res = new Response();
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res
+      res,
     );
 
     expect(res.getStatus()).toBe(404);
@@ -111,7 +111,7 @@ describe('Create note route', () => {
     await tournamentRepository.create(hydratedTournament);
 
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: hydratedTournament.id
+      tournamentId: hydratedTournament.id,
     });
 
     req.body = { ...validNote, criterionId: generateId() };
@@ -119,7 +119,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res
+      res,
     );
 
     expect(res.getStatus()).toBe(404);
@@ -131,14 +131,14 @@ describe('Create note route', () => {
     await tournamentRepository.create(hydratedTournament);
 
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: hydratedTournament.id
+      tournamentId: hydratedTournament.id,
     });
     req.body = { ...validNote, participantId: generateId() };
     const res = new Response();
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res
+      res,
     );
 
     expect(res.getStatus()).toBe(404);
@@ -150,19 +150,19 @@ describe('Create note route', () => {
     await tournamentRepository.create(hydratedTournament);
 
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: hydratedTournament.id
+      tournamentId: hydratedTournament.id,
     });
     req.body = { ...validNote, value: 100 };
     const res = new Response();
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res
+      res,
     );
 
     expect(res.getStatus()).toBe(400);
     expect(res.getBody()).toEqual({
-      isValueInRange: false
+      isValueInRange: false,
     });
   });
 
@@ -171,14 +171,14 @@ describe('Create note route', () => {
     await tournamentRepository.create(hydratedTournament);
 
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: hydratedTournament.id
+      tournamentId: hydratedTournament.id,
     });
     req.body = validNote;
     const res = new Response();
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res
+      res,
     );
 
     expect(res.getStatus()).toBe(200);
@@ -192,7 +192,7 @@ describe('Create note route', () => {
     const noteRepository = new NoteRepositoryImpl();
 
     const req = Request.withJudgeAndParams(judge, {
-      tournamentId: hydratedTournament.id
+      tournamentId: hydratedTournament.id,
     });
     req.body = validNote;
     const res = new Response();

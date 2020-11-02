@@ -8,7 +8,7 @@ import makePackAction from '../../test-utils';
 describe('Create judge UI reducer', () => {
   test('Default value is set', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID'))
+      reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID')),
     ).toEqual(getInitialState());
   });
 
@@ -17,15 +17,15 @@ describe('Create judge UI reducer', () => {
       const initial = {
         ...getInitialState(),
         isLoading: false,
-        createdSuccessfully: true
+        createdSuccessfully: true,
       };
       const expected = {
         ...getInitialState(),
         isLoading: true,
-        createdSuccessfully: false
+        createdSuccessfully: false,
       };
       expect(
-        reducer(initial, makePackAction(LIFECYCLE.START, 'CREATE_JUDGE'))
+        reducer(initial, makePackAction(LIFECYCLE.START, 'CREATE_JUDGE')),
       ).toEqual(expected);
     });
 
@@ -34,16 +34,16 @@ describe('Create judge UI reducer', () => {
         ...getInitialState(),
         isValid: false,
         isLoading: true,
-        createdSuccessfully: false
+        createdSuccessfully: false,
       };
       const expected = {
         ...getInitialState(),
         isValid: true,
         isLoading: false,
-        createdSuccessfully: true
+        createdSuccessfully: true,
       };
       expect(
-        reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_JUDGE'))
+        reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_JUDGE')),
       ).toEqual(expected);
     });
 
@@ -52,16 +52,16 @@ describe('Create judge UI reducer', () => {
         ...getInitialState(),
         isValid: true,
         isLoading: true,
-        createdSuccessfully: false
+        createdSuccessfully: false,
       };
       const expected = {
         ...getInitialState(),
         isValid: false,
         isLoading: false,
-        createdSuccessfully: false
+        createdSuccessfully: false,
       };
       expect(
-        reducer(initial, makePackAction(LIFECYCLE.FAILURE, 'CREATE_JUDGE'))
+        reducer(initial, makePackAction(LIFECYCLE.FAILURE, 'CREATE_JUDGE')),
       ).toEqual(expected);
     });
   });

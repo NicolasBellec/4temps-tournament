@@ -8,7 +8,7 @@ import {
   createAdmin,
   createRound,
   TournamentRepositoryImpl as TournamentRepository,
-  AccessKeyRepositoryImpl as AccessKeyRepository
+  AccessKeyRepositoryImpl as AccessKeyRepository,
 } from '../../../test-utils';
 
 describe('/api/judge/create', () => {
@@ -17,7 +17,7 @@ describe('/api/judge/create', () => {
   const tournament: Tournament = {
     ...createTournament(),
     creatorId: admin._id.toString(),
-    rounds: [round]
+    rounds: [round],
   };
   const judge = { name: 'judgeName', judgeType: 'normal' };
 
@@ -50,7 +50,7 @@ describe('/api/judge/create', () => {
     expect(res.getStatus()).toBe(200);
     expect(await tournamentRepo.get(tournament.id)).toMatchObject({
       ...tournament,
-      judges: [judge]
+      judges: [judge],
     });
   });
 
@@ -60,7 +60,7 @@ describe('/api/judge/create', () => {
     expect(res.getStatus()).toBe(200);
     expect(res.getBody()).toMatchObject({
       tournamentId: tournament.id,
-      judge: judge
+      judge,
     });
   });
 
@@ -69,12 +69,12 @@ describe('/api/judge/create', () => {
 
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
-    const judge: Judge = res.getBody().judge;
+    const { judge } = res.getBody();
     expect(accessRepo.getAll()).toMatchObject([
       {
         tournamentId: tournament.id,
-        userId: judge.id
-      }
+        userId: judge.id,
+      },
     ]);
   });
 
@@ -91,7 +91,7 @@ describe('/api/judge/create', () => {
 
     expect(
       tournamentRepo._tournaments[tournament.id].rounds[0].criteria[0]
-        .forJudgeType
+        .forJudgeType,
     ).toBe('sanctioner');
   });
 });

@@ -6,12 +6,12 @@ export type AdminLoginValidationSummary = {
   isValid: boolean,
   isValidEmail: boolean,
   isValidPassword: boolean,
-  doesAdminExist: boolean
+  doesAdminExist: boolean,
 };
 
 const validateAdminLogin = async (
   admin: AdminCredentials,
-  getAdmin: ?(AdminCredentials) => Promise<?AdminModel>
+  getAdmin: ?(AdminCredentials) => Promise<?AdminModel>,
 ): Promise<AdminLoginValidationSummary> => {
   const isValidEmail = validateEmail(admin.email);
   const isValidPassword = admin.password.length > 0;
@@ -25,7 +25,7 @@ const validateAdminLogin = async (
     isValid: isValidEmail && isValidPassword && doesAdminExist,
     isValidEmail,
     isValidPassword,
-    doesAdminExist
+    doesAdminExist,
   };
 };
 

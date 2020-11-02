@@ -21,7 +21,7 @@ export class CreateParticipantRoute {
 
     const handler = new CreateParticipantRouteHandler(
       userId,
-      this._tournamentRepository
+      this._tournamentRepository,
     );
 
     handler.parseBody(req.body);
@@ -30,7 +30,7 @@ export class CreateParticipantRoute {
     res.status(handler.status);
     res.json({
       tournamentId: handler._tournamentId,
-      participant: handler._participant
+      participant: handler._participant,
     });
   };
 }
@@ -39,9 +39,11 @@ export class CreateParticipantRouteHandler {
   status: number = 200;
 
   _userId: string;
+
   _tournamentRepository: TournamentRepository;
 
   _tournamentId: string;
+
   _participant: Participant;
 
   constructor(userId: string, tournamentRepository: TournamentRepository) {
@@ -59,7 +61,7 @@ export class CreateParticipantRouteHandler {
       id: new ObjectID().toString(),
       name: participant.name || '',
       role: participant.role || 'none',
-      isAttending: participant.isAttending || false
+      isAttending: participant.isAttending || false,
     };
   }
 
@@ -88,7 +90,7 @@ export class CreateParticipantRouteHandler {
     try {
       await this._tournamentRepository.createParticipant(
         this._tournamentId,
-        this._participant
+        this._participant,
       );
     } catch (e) {
       this.status = 500;

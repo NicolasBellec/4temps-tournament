@@ -3,7 +3,7 @@ import { handle } from 'redux-pack';
 
 export default function notesReducer(
   state: NotesReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): NotesReduxState {
   switch (action.type) {
   case 'GET_NOTES':
@@ -22,45 +22,43 @@ export function getInitialState(): NotesReduxState {
 
 function getNotes(
   state: NotesReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): NotesReduxState {
   const { payload }: { payload: Array<JudgeNote> } = action;
   return handle(state, action, {
-    start: prevState => ({
+    start: (prevState) => ({
       ...prevState,
-      isLoading: true
+      isLoading: true,
     }),
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       isLoading: false,
       didLoad: true,
       byParticipant: {
-        ...payload.reduce((acc, note) => {
-          return {
-            ...acc,
-            [note.participantId]: {
-              ...acc[note.participantId],
-              [note.criterionId]: note
-            }
-          };
-        }, {})
-      }
+        ...payload.reduce((acc, note) => ({
+          ...acc,
+          [note.participantId]: {
+            ...acc[note.participantId],
+            [note.criterionId]: note,
+          },
+        }), {}),
+      },
     }),
-    failure: prevState => ({
+    failure: (prevState) => ({
       ...prevState,
       isLoading: false,
-      didLoad: false
-    })
+      didLoad: false,
+    }),
   });
 }
 
 function setNote(
   state: NotesReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): NotesReduxState {
   return handle(state, action, {
-    start: prevState => updateNotesWithNote(prevState, action.payload),
-    success: prevState => updateNotesWithNote(prevState, action.payload)
+    start: (prevState) => updateNotesWithNote(prevState, action.payload),
+    success: (prevState) => updateNotesWithNote(prevState, action.payload),
   });
 }
 
@@ -71,9 +69,9 @@ function updateNotesWithNote(prevState: NotesReduxState, note: JudgeNote) {
       ...prevState.byParticipant,
       [note.participantId]: {
         ...prevState.byParticipant[note.participantId],
-        [note.criterionId]: note
-      }
-    }
+        [note.criterionId]: note,
+      },
+    },
   };
 
   if (note.value == null) {
@@ -85,9 +83,9 @@ function updateNotesWithNote(prevState: NotesReduxState, note: JudgeNote) {
 
 function logout(
   state: NotesReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): NotesReduxState {
   return handle(state, action, {
-    success: () => getInitialState()
+    success: () => getInitialState(),
   });
 }

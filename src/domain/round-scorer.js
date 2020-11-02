@@ -4,15 +4,17 @@ import DanceScorer from './dance-scorer';
 
 export default class RoundScorer {
   _judges: Array<Judge>;
+
   _round: Round;
+
   _countPresident: boolean;
 
   constructor(
     judges: Array<Judge>,
     round: Round,
     { countPresident }: { countPresident: boolean } = {
-      countPresident: false
-    }
+      countPresident: false,
+    },
   ) {
     this._judges = judges;
     this._round = round;
@@ -20,10 +22,10 @@ export default class RoundScorer {
   }
 
   scoreRound = (
-    notes: Array<JudgeNote>
+    notes: Array<JudgeNote>,
   ): Array<{
     participantId: string,
-    score: number
+    score: number,
   }> => {
     const danceScorer = new DanceScorer(
       this._judges,
@@ -31,17 +33,17 @@ export default class RoundScorer {
       notes,
       {
         countPresident: this._countPresident,
-        allowNegative: false
-      }
+        allowNegative: false,
+      },
     );
     const totals: { [id: string]: Array<number> } = this._initializeTotals(
-      this._getParticipants()
+      this._getParticipants(),
     );
 
     for (const dance of this._getDances()) {
       const danceScore = danceScorer.scoreDance(dance.id);
       for (const entry of danceScore) {
-        const participantId = entry.participantId;
+        const { participantId } = entry;
         if (totals[participantId]) {
           totals[participantId].push(entry.score);
         } else {
@@ -51,43 +53,39 @@ export default class RoundScorer {
     }
 
     return Object.keys(totals)
-      .map(participantId => ({
+      .map((participantId) => ({
         participantId,
-        score: this._scoreFromDanceRule(totals[participantId])
+        score: this._scoreFromDanceRule(totals[participantId]),
       }))
       .sort(this._sort);
   };
 
-  _getParticipants = (): Array<string> => {
-    return this._round.groups.reduce(
-      (pairs, group) => [
-        ...pairs,
-        ...group.pairs.reduce((acc, pair) => {
-          const arr = [];
-          if (pair.follower != null) {
-            arr.push(pair.follower);
-          }
-          if (pair.leader != null) {
-            arr.push(pair.leader);
-          }
-          return [...acc, ...arr];
-        }, [])
-      ],
-      []
-    );
-  };
+  _getParticipants = (): Array<string> => this._round.groups.reduce(
+    (pairs, group) => [
+      ...pairs,
+      ...group.pairs.reduce((acc, pair) => {
+        const arr = [];
+        if (pair.follower != null) {
+          arr.push(pair.follower);
+        }
+        if (pair.leader != null) {
+          arr.push(pair.leader);
+        }
+        return [...acc, ...arr];
+      }, []),
+    ],
+    [],
+  );
 
   _initializeTotals = (
-    participants: Array<string>
-  ): { [id: string]: Array<number> } => {
-    return participants.reduce((totals, id) => ({ ...totals, [id]: [0] }), {});
-  };
+    participants: Array<string>,
+  ): { [id: string]: Array<number> } => participants.reduce((totals, id) => ({ ...totals, [id]: [0] }), {});
 
   _scoreFromDanceRule = (danceScores: Array<number>) => {
     if (this._round.multipleDanceScoringRule === 'average') {
       return (
-        (danceScores.reduce((acc, score) => acc + score, 0) * 1.0) /
-        danceScores.length
+        (danceScores.reduce((acc, score) => acc + score, 0) * 1.0)
+        / danceScores.length
       );
     }
     return Math.max(...danceScores);
@@ -96,7 +94,7 @@ export default class RoundScorer {
   _getDances = (): Array<Dance> => {
     let dances: Array<Dance> = [];
 
-    this._round.groups.forEach(g => {
+    this._round.groups.forEach((g) => {
       dances = [...dances, ...g.dances];
     });
 

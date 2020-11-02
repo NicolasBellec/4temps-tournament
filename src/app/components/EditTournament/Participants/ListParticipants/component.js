@@ -16,13 +16,13 @@ import {
   ModalActions,
   Icon,
   Search,
-  SyntheticEvent
+  SyntheticEvent,
 } from 'semantic-ui-react';
 
 type Props = {
   isClassic: boolean,
   participants: Array<Participant>,
-  onChangeAttending: (id: string, isAttending: boolean) => void
+  onChangeAttending: (id: string, isAttending: boolean) => void,
 };
 
 type State = {
@@ -30,7 +30,7 @@ type State = {
   searchValue: string,
   filterPresent: boolean,
   didClickUnAttend: boolean,
-  unAttendParticipant: ?Participant
+  unAttendParticipant: ?Participant,
 };
 
 class ListParticipants extends Component<Props, State> {
@@ -39,11 +39,13 @@ class ListParticipants extends Component<Props, State> {
     searchValue: '',
     filterPresent: false,
     didClickUnAttend: false,
-    unAttendParticipant: null
+    unAttendParticipant: null,
   };
 
   _renderItem = (participant: Participant) => {
-    const { id, name, role, isAttending, attendanceId } = participant;
+    const {
+      id, name, role, isAttending, attendanceId,
+    } = participant;
     return (
       <TableRow key={id}>
         <Table.Cell collapsing>
@@ -54,7 +56,7 @@ class ListParticipants extends Component<Props, State> {
               if (isAttending) {
                 this.setState({
                   didClickUnAttend: true,
-                  unAttendParticipant: participant
+                  unAttendParticipant: participant,
                 });
               } else {
                 this.props.onChangeAttending(id, true);
@@ -76,12 +78,12 @@ class ListParticipants extends Component<Props, State> {
         return 'Pair';
       }
       return 'Leader';
-    } else if (role === 'follower') {
+    } if (role === 'follower') {
       if (isClassic) {
         return 'Dummy';
       }
       return 'Follower';
-    } else if (role === 'leaderAndFollower') {
+    } if (role === 'leaderAndFollower') {
       return 'Both';
     }
     return 'Invalid role';
@@ -90,7 +92,7 @@ class ListParticipants extends Component<Props, State> {
   _hideModal = () => {
     this.setState({
       didClickUnAttend: false,
-      unAttendParticipant: null
+      unAttendParticipant: null,
     });
   };
 
@@ -99,63 +101,63 @@ class ListParticipants extends Component<Props, State> {
     this.setState({ filterPresent: checked });
   };
 
-  _renderUnattendModal = () => {
-    return (
-      <Modal open={this.state.didClickUnAttend} onClose={this._hideModal}>
-        <Header content="Un-attending participant" />
-        <ModalContent>
-          <p>
-            Marking{' '}
-            <b>
-              {this.state.unAttendParticipant == null
-                ? 'someone'
-                : this.state.unAttendParticipant.name +
-                  ' (' +
-                  this.state.unAttendParticipant.attendanceId +
-                  ')'}{' '}
-            </b>
-            as not-present
-          </p>
-        </ModalContent>
-        <ModalActions>
-          <Button
-            color="green"
-            inverted
-            onClick={() => {
-              this.props.onChangeAttending(
-                // $FlowFixMe
-                this.state.unAttendParticipant.id,
-                false
-              );
-              this._hideModal();
-            }}
-          >
-            <Icon name="checkmark" /> OK
-          </Button>
-          <Button color="red" onClick={this._hideModal}>
-            <Icon name="remove" /> No
-          </Button>
-        </ModalActions>
-      </Modal>
-    );
-  };
+  _renderUnattendModal = () => (
+    <Modal open={this.state.didClickUnAttend} onClose={this._hideModal}>
+      <Header content="Un-attending participant" />
+      <ModalContent>
+        <p>
+          Marking
+          {' '}
+          <b>
+            {this.state.unAttendParticipant == null
+              ? 'someone'
+              : `${this.state.unAttendParticipant.name
+              } (${
+                this.state.unAttendParticipant.attendanceId
+              })`}
+            {' '}
+          </b>
+          as not-present
+        </p>
+      </ModalContent>
+      <ModalActions>
+        <Button
+          color="green"
+          inverted
+          onClick={() => {
+            this.props.onChangeAttending(
+              // $FlowFixMe
+              this.state.unAttendParticipant.id,
+              false,
+            );
+            this._hideModal();
+          }}
+        >
+          <Icon name="checkmark" />
+          {' '}
+          OK
+        </Button>
+        <Button color="red" onClick={this._hideModal}>
+          <Icon name="remove" />
+          {' '}
+          No
+        </Button>
+      </ModalActions>
+    </Modal>
+  );
 
   handleSearchChange = (e: SyntheticEvent, { value }: { value: string }) => {
     this.setState({ isSearchLoading: true, searchValue: value });
     this.setState({ isSearchLoading: false });
   };
 
-  _getNotPresent = () => {
-    return this.props.participants.filter(p => !p.isAttending);
-  };
+  _getNotPresent = () => this.props.participants.filter((p) => !p.isAttending);
 
-  _searchParticipants = (participants: Array<Participant>) => {
-    return participants.filter(p => {
-      const name = p.name.toLowerCase();
-      const search = this.state.searchValue.toLowerCase();
-      return name.indexOf(search) !== -1;
-    });
-  };
+  _searchParticipants = (participants: Array<Participant>) => participants.filter((p) => {
+    const name = p.name.toLowerCase();
+    const search = this.state.searchValue.toLowerCase();
+    return name.indexOf(search) !== -1;
+  });
 
   render() {
     let participants = this.state.filterPresent

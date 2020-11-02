@@ -14,13 +14,13 @@ const accessKeyRepository = new AccessKeyRepositoryImpl();
 router.post(
   '/login',
   allow('public'),
-  loginJudgeRoute(tournamentRepository, accessKeyRepository)
+  loginJudgeRoute(tournamentRepository, accessKeyRepository),
 );
 
 router.post(
   '/:tournamentId/create',
   allow('admin'),
-  createJudgeRoute(tournamentRepository, accessKeyRepository)
+  createJudgeRoute(tournamentRepository, accessKeyRepository),
 );
 
 export default router;

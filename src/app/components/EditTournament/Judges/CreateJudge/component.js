@@ -7,16 +7,16 @@ import {
   FormGroup,
   FormRadio,
   Message,
-  Button
+  Button,
 } from 'semantic-ui-react';
 
 type OnSubmitParams = { name: string, judgeType: JudgeType };
 
 type Props = {
-  onSubmit: OnSubmitParams => void,
+  onSubmit: (OnSubmitParams) => void,
   isValid: boolean,
   isLoading: boolean,
-  createdSuccessfully: boolean
+  createdSuccessfully: boolean,
 };
 
 type State = OnSubmitParams;
@@ -24,7 +24,7 @@ type State = OnSubmitParams;
 class CreateJudge extends Component<Props, State> {
   state = {
     name: '',
-    judgeType: 'normal'
+    judgeType: 'normal',
   };
 
   _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ class CreateJudge extends Component<Props, State> {
 
   _onChangeJugeType = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: JudgeType }
+    { value }: { value: JudgeType },
   ) => {
     this.setState({ judgeType: value });
   };

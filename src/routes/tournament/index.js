@@ -19,27 +19,27 @@ const tournamentRepository = new TournamentRepositoryImpl();
 router.post(
   '/create',
   allow('authenticated'),
-  new CreateTournamentRoute(tournamentRepository).route
+  new CreateTournamentRoute(tournamentRepository).route,
 );
 router.post(
   '/update/:tournamentId',
   allow('admin'),
-  new UpdateTournamentRoute(tournamentRepository).route
+  new UpdateTournamentRoute(tournamentRepository).route,
 );
 router.get(
   '/get',
   allow('authenticated'),
-  new GetUserTournamentsRoute(tournamentRepository).route
+  new GetUserTournamentsRoute(tournamentRepository).route,
 );
 router.get('/get/all', new GetAllTournamentsRoute(tournamentRepository).route);
 router.get(
   '/get/judge',
-  new GetJudgeTournamentRoute(tournamentRepository).route
+  new GetJudgeTournamentRoute(tournamentRepository).route,
 );
 router.get(
   '/get/:tournamentId',
   allow('admin', 'judge', 'assistant'),
-  new GetTournamentRoute(tournamentRepository).route
+  new GetTournamentRoute(tournamentRepository).route,
 );
 
 export default router;

@@ -5,7 +5,7 @@ import {
   createTournament,
   createRound,
   generateId,
-  TournamentRepositoryImpl
+  TournamentRepositoryImpl,
 } from '../../../test-utils';
 import StartDanceRoute from '../start-dance';
 
@@ -31,12 +31,12 @@ describe('Start dance API', () => {
     await repo.createRound(tournament.id, {
       ...createRound(),
       active: false,
-      finished: true
+      finished: true,
     });
     await repo.createRound(tournament.id, {
       ...createRound(),
       active: false,
-      finished: false
+      finished: false,
     });
     const req = Request.withParams({ tournamentId: tournament.id });
     const res = new Response();
@@ -56,12 +56,12 @@ describe('Start dance API', () => {
           pairs: [],
           dances: [
             { id: generateId(), active: false, finished: true },
-            { id: generateId(), active: false, finished: false }
-          ]
-        }
+            { id: generateId(), active: false, finished: false },
+          ],
+        },
       ],
       active: true,
-      finished: false
+      finished: false,
     };
 
     const expected = JSON.parse(JSON.stringify(activeRound));

@@ -6,7 +6,7 @@ import {
   Response,
   TournamentRepositoryImpl as TournamentRepository,
   createTournament,
-  createRound
+  createRound,
 } from '../../../test-utils';
 import DeleteRoundRoute from '../delete-round';
 
@@ -44,9 +44,9 @@ describe('/api/round/delete', () => {
     await route.route(
       Request.withParams({
         roundId: generateId(),
-        tournamentId: generateId()
+        tournamentId: generateId(),
       }),
-      response
+      response,
     );
 
     expect(response.getStatus()).toBe(404);
@@ -55,15 +55,15 @@ describe('/api/round/delete', () => {
   test('If user does not own the tournament, status 401 is returned', async () => {
     await tournamentRepository.create({
       ...createTournament(),
-      creatorId: generateId()
+      creatorId: generateId(),
     });
 
     await route.route(
       Request.withParams({
         roundId,
-        tournamentId
+        tournamentId,
       }),
-      response
+      response,
     );
 
     expect(response.getStatus()).toBe(401);
@@ -72,15 +72,15 @@ describe('/api/round/delete', () => {
   test('If a round is started, status 401 is returned', async () => {
     await tournamentRepository.create({
       ...createTournament(),
-      rounds: [{ ...round, active: true }]
+      rounds: [{ ...round, active: true }],
     });
 
     await route.route(
       Request.withParams({
         roundId,
-        tournamentId
+        tournamentId,
       }),
-      response
+      response,
     );
 
     expect(response.getStatus()).toBe(401);
@@ -88,7 +88,7 @@ describe('/api/round/delete', () => {
 
   test('If tournament could not get fetched, status 500 is returned', async () => {
     await tournamentRepository.create({
-      ...createTournament()
+      ...createTournament(),
     });
     tournamentRepository.get = () => {
       throw {};
@@ -97,9 +97,9 @@ describe('/api/round/delete', () => {
     await route.route(
       Request.withParams({
         roundId,
-        tournamentId
+        tournamentId,
       }),
-      response
+      response,
     );
 
     expect(response.getStatus()).toBe(500);
@@ -112,9 +112,9 @@ describe('/api/round/delete', () => {
     await route.route(
       Request.withParams({
         roundId,
-        tournamentId
+        tournamentId,
       }),
-      response
+      response,
     );
 
     expect(response.getStatus()).toBe(500);

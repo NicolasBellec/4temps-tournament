@@ -17,29 +17,29 @@ describe('Winner picker', () => {
       participantId: leaders[0],
       criterionId,
       danceId,
-      value: 20
+      value: 20,
     },
     {
       judgeId: judge.id,
       participantId: leaders[1],
       criterionId,
       danceId,
-      value: 1
+      value: 1,
     },
     {
       judgeId: judge.id,
       participantId: followers[0],
       criterionId,
       danceId,
-      value: 22
+      value: 22,
     },
     {
       judgeId: judge.id,
       participantId: followers[1],
       criterionId,
       danceId,
-      value: 2
-    }
+      value: 2,
+    },
   ];
 
   const round: Round = {
@@ -48,8 +48,8 @@ describe('Winner picker', () => {
     criteria: [
       {
         ...createCriterion(),
-        id: criterionId
-      }
+        id: criterionId,
+      },
     ],
     groups: [
       {
@@ -57,23 +57,23 @@ describe('Winner picker', () => {
         pairs: [
           {
             leader: leaders[0],
-            follower: followers[0]
+            follower: followers[0],
           },
           {
             leader: leaders[1],
-            follower: followers[1]
-          }
+            follower: followers[1],
+          },
         ],
         dances: [
           {
             id: danceId,
             finished: false,
-            active: true
-          }
-        ]
-      }
+            active: true,
+          },
+        ],
+      },
     ],
-    multipleDanceScoringRule: 'best'
+    multipleDanceScoringRule: 'best',
   };
 
   test('Picks the top dancers', () => {
@@ -81,31 +81,31 @@ describe('Winner picker', () => {
 
     expect(picker.pickWinners(notes)).toEqual({
       leaders: [leaders[0]],
-      followers: [followers[0]]
+      followers: [followers[0]],
     });
   });
 
   test('Winners are ordered', () => {
     const picker = new WinnerPicker([judge], {
       ...round,
-      passingCouplesCount: 2
+      passingCouplesCount: 2,
     });
 
     expect(picker.pickWinners(notes)).toEqual({
       leaders: [leaders[0], leaders[1]],
-      followers: [followers[0], followers[1]]
+      followers: [followers[0], followers[1]],
     });
   });
 
   test('May return less couples if not enough', () => {
     const picker = new WinnerPicker([judge], {
       ...round,
-      passingCouplesCount: 10
+      passingCouplesCount: 10,
     });
 
     expect(picker.pickWinners(notes)).toEqual({
       leaders: [leaders[0], leaders[1]],
-      followers: [followers[0], followers[1]]
+      followers: [followers[0], followers[1]],
     });
   });
 });

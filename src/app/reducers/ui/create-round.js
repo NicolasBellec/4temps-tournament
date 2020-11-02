@@ -3,24 +3,24 @@ import { handle } from 'redux-pack';
 
 function createRound(
   state: UiCreateRoundReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ) {
   const { type, payload } = action;
 
   switch (type) {
   case 'CREATE_ROUND':
     return handle(state, action, {
-      start: prevState => ({
+      start: (prevState) => ({
         ...prevState,
         isLoading: true,
-        createdSuccessfully: false
+        createdSuccessfully: false,
       }),
       success: () => ({ ...getInitialState(), createdSuccessfully: true }),
       failure: () => ({
         isLoading: false,
         createdSuccessfully: false,
-        validation: payload
-      })
+        validation: payload,
+      }),
     });
   default:
     return state;
@@ -53,10 +53,10 @@ export function getInitialState(): UiCreateRoundReduxState {
           isValidMaxValue: true,
           isValidValueCombination: true,
           isValidType: true,
-          isValidDescription: true
-        }
-      ]
-    }
+          isValidDescription: true,
+        },
+      ],
+    },
   };
 }
 

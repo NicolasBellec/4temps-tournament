@@ -7,7 +7,7 @@ import SignUpOrLogin from './component';
 type Props = {
   history: RouterHistory,
   header: string,
-  referer: string
+  referer: string,
 };
 
 const SignUpOrLoginWithRouter = ({ history, header, referer }: Props) => (

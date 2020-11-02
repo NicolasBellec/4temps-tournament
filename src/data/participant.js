@@ -8,26 +8,26 @@ export type ParticipantDbModel = {
   name: string,
   role: ParticipantRole,
   attendanceId: number,
-  isAttending: boolean
+  isAttending: boolean,
 };
 
 export const schema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    required: true
+    required: true,
   },
   attendanceId: {
     type: Number,
-    required: false
+    required: false,
   },
   isAttending: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 });
 
 export function mapToDomainModel(participant: ParticipantDbModel): Participant {
@@ -39,6 +39,6 @@ export function mapToDbModel(participant: Participant): ParticipantDbModel {
   const { id, ...rest } = participant;
   return {
     _id: new mongoose.Types.ObjectId(id),
-    ...rest
+    ...rest,
   };
 }

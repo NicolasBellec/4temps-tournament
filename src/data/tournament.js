@@ -7,13 +7,13 @@ import type { ParticipantDbModel } from './participant';
 import {
   schema as participantSchema,
   mapToDomainModel as mapParticipantToDomainModel,
-  mapToDbModel as mapParticipantToDbModel
+  mapToDbModel as mapParticipantToDbModel,
 } from './participant';
 import type { RoundDbModel } from './round';
 import {
   schema as roundSchema,
   mapToDomainModel as mapRoundToDomainModel,
-  mapToDbModel as mapRoundToDbModel
+  mapToDbModel as mapRoundToDbModel,
 } from './round';
 
 type SimpleUser = { _id: ObjectId, name: string };
@@ -28,45 +28,45 @@ type TournamentModel = {
   assistants: Array<SimpleUser>,
   participants: Array<ParticipantDbModel>,
   rounds: Array<RoundDbModel>,
-  dancesNoted: { [judgeId: string]: Array<string> }
+  dancesNoted: { [judgeId: string]: Array<string> },
 };
 
 const judgeSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  judgeType: { type: String, required: true }
+  judgeType: { type: String, required: true },
 });
 
 const assistantSchema = new mongoose.Schema({
-  name: { type: String, required: true }
+  name: { type: String, required: true },
 });
 
 const schema = new mongoose.Schema({
   creatorId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   date: {
     type: Date,
-    required: true
+    required: true,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   prevAttendanceId: {
     type: Number,
     required: true,
-    default: 0
+    default: 0,
   },
   judges: [judgeSchema],
   assistants: [assistantSchema],
   participants: [participantSchema],
   rounds: [roundSchema],
-  dancesNoted: mongoose.Schema.Types.Mixed
+  dancesNoted: mongoose.Schema.Types.Mixed,
 });
 
 const Model = mongoose.model('tournament', schema);
@@ -107,24 +107,25 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   async create(tournament: Tournament) {
     await Model.create(mapToDbModel(tournament));
   }
+
   async get(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return null;
     }
     return mapToDomainModel((await Model.findOne({ _id: id })).toObject());
   }
+
   async getAll() {
     try {
-      return (await Model.find()).map(o => mapToDomainModel(o.toObject()));
+      return (await Model.find()).map((o) => mapToDomainModel(o.toObject()));
     } catch (e) {
       return [];
     }
   }
+
   async getForUser(userId: string) {
     try {
-      return (await Model.find({ creatorId: userId })).map(o =>
-        mapToDomainModel(o.toObject())
-      );
+      return (await Model.find({ creatorId: userId })).map((o) => mapToDomainModel(o.toObject()));
     } catch (e) {
       return [];
     }
@@ -133,9 +134,11 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   async getForJudge(judgeId: string) {
     try {
       return mapToDomainModel(
-        (await Model.findOne({
-          judges: { $elemMatch: { _id: judgeId } }
-        })).toObject()
+        (
+          await Model.findOne({
+            judges: { $elemMatch: { _id: judgeId } },
+          })
+        ).toObject(),
       );
     } catch (e) {
       return null;
@@ -145,9 +148,11 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   async getForAssistant(assistantId: string) {
     try {
       return mapToDomainModel(
-        (await Model.findOne({
-          assistants: { $elemMatch: { _id: assistantId } }
-        })).toObject()
+        (
+          await Model.findOne({
+            assistants: { $elemMatch: { _id: assistantId } },
+          })
+        ).toObject(),
       );
     } catch (e) {
       return null;
@@ -160,46 +165,49 @@ export class TournamentRepositoryImpl implements TournamentRepository {
     await Model.update(
       { _id: tournament.id },
       {
-        $set: { name, date }
-      }
+        $set: { name, date },
+      },
     );
 
     pushTournamentUpdate(tournament);
   }
+
   async createParticipant(tournamentId: string, participant: Participant) {
     const tournament = await Model.findOneAndUpdate(
       { _id: tournamentId },
       {
         $push: {
-          participants: mapParticipantToDbModel(participant)
-        }
+          participants: mapParticipantToDbModel(participant),
+        },
       },
-      { new: true }
+      { new: true },
     );
 
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
   }
+
   async createRound(tournamentId: string, round: Round) {
     const tournament = await Model.findOneAndUpdate(
       { _id: tournamentId },
       {
         $push: {
-          rounds: mapRoundToDbModel(round)
-        }
+          rounds: mapRoundToDbModel(round),
+        },
       },
-      { new: true }
+      { new: true },
     );
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
   }
+
   async deleteRound(tournamentId: string, roundId: string) {
     const tournament = await Model.findOneAndUpdate(
       { _id: tournamentId },
       {
         $pull: {
-          rounds: { _id: roundId }
-        }
+          rounds: { _id: roundId },
+        },
       },
-      { new: true }
+      { new: true },
     );
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
   }
@@ -222,38 +230,42 @@ export class TournamentRepositoryImpl implements TournamentRepository {
     const db = {
       _id: new mongoose.Types.ObjectId(judge.id),
       name: judge.name,
-      judgeType: judge.judgeType
+      judgeType: judge.judgeType,
     };
     const tournament = await Model.findOneAndUpdate(
       { _id: tournamentId },
       {
         $push: {
-          judges: db
-        }
+          judges: db,
+        },
       },
-      { new: true }
+      { new: true },
     );
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
   }
 
   async updateParticipantAttendance(
     participantId: string,
-    isAttending: boolean
+    isAttending: boolean,
   ) {
-    const participant = (await Model.findOne(
-      {
-        participants: { $elemMatch: { _id: participantId } }
-      },
-      { 'participants.$': 1 }
-    )).participants[0];
+    const participant = (
+      await Model.findOne(
+        {
+          participants: { $elemMatch: { _id: participantId } },
+        },
+        { 'participants.$': 1 },
+      )
+    ).participants[0];
 
     let attendanceId: ?number;
     if (isAttending && !participant.attendanceId) {
-      attendanceId = (await Model.findOneAndUpdate(
-        { participants: { $elemMatch: { _id: participantId } } },
-        { $inc: { prevAttendanceId: 1 } },
-        { new: true }
-      )).prevAttendanceId;
+      attendanceId = (
+        await Model.findOneAndUpdate(
+          { participants: { $elemMatch: { _id: participantId } } },
+          { $inc: { prevAttendanceId: 1 } },
+          { new: true },
+        )
+      ).prevAttendanceId;
     } else {
       attendanceId = participant.attendanceId;
     }
@@ -263,10 +275,10 @@ export class TournamentRepositoryImpl implements TournamentRepository {
       {
         $set: {
           'participants.$.isAttending': isAttending,
-          'participants.$.attendanceId': attendanceId
-        }
+          'participants.$.attendanceId': attendanceId,
+        },
       },
-      { new: true }
+      { new: true },
     );
 
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
@@ -280,16 +292,16 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   async markDanceAsNoted(
     tournamentId: string,
     judgeId: string,
-    danceId: string
+    danceId: string,
   ) {
     const tournament = await Model.findOneAndUpdate(
       { _id: tournamentId },
       {
         $push: {
-          [`dancesNoted.${judgeId}`]: danceId
-        }
+          [`dancesNoted.${judgeId}`]: danceId,
+        },
       },
-      { new: true }
+      { new: true },
     );
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
   }
@@ -297,16 +309,16 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   async addAssistant(tournamentId: string, assistant: Assistant) {
     const db = {
       _id: new mongoose.Types.ObjectId(assistant.id),
-      name: assistant.name
+      name: assistant.name,
     };
     const tournament = await Model.findOneAndUpdate(
       { _id: tournamentId },
       {
         $push: {
-          assistants: db
-        }
+          assistants: db,
+        },
       },
-      { new: true }
+      { new: true },
     );
     pushTournamentUpdate(mapToDomainModel(tournament.toObject()));
   }
@@ -332,12 +344,12 @@ function mapToDbModel(tournament: Tournament): TournamentModel {
     rounds: rounds.map(mapRoundToDbModel),
     judges: judges.map(({ id, ...same }) => ({
       _id: new mongoose.Types.ObjectId(id),
-      ...same
+      ...same,
     })),
-    assistants: assistants.map(a => ({
+    assistants: assistants.map((a) => ({
       name: a.name,
-      _id: new mongoose.Types.ObjectId(a.id)
-    }))
+      _id: new mongoose.Types.ObjectId(a.id),
+    })),
   };
 }
 
@@ -361,12 +373,12 @@ function mapToDomainModel(tournament: TournamentModel): Tournament {
     rounds: rounds.map(mapRoundToDomainModel),
     judges: judges.map(({ _id, ...same }) => ({
       id: _id.toString(),
-      ...same
+      ...same,
     })),
-    assistants: assistants.map(a => ({
+    assistants: assistants.map((a) => ({
       name: a.name,
-      id: a._id.toString()
-    }))
+      id: a._id.toString(),
+    })),
   };
 }
 

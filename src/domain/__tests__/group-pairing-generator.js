@@ -7,7 +7,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 2
+      maxPairCountPerGroup: 2,
     };
     const generator = new GroupGeneratorImpl(round, []);
     expect(generator.generateGroups()).toEqual([]);
@@ -17,7 +17,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 0,
-      maxPairCountPerGroup: 0
+      maxPairCountPerGroup: 0,
     };
     const generator = new GroupGeneratorImpl(round, []);
     expect(generator.generateGroups()).toEqual([]);
@@ -27,13 +27,13 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
     const participants = createParticipants(2);
     const generator = new GroupGeneratorImpl(round, participants);
 
     expect(generator.generateGroups()).toEqual([
-      [{ leader: participants[0].id, follower: participants[1].id }]
+      [{ leader: participants[0].id, follower: participants[1].id }],
     ]);
   });
 
@@ -41,16 +41,16 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
     const participants = [
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'leaderAndFollower' }
+      { ...createParticipant(), role: 'leaderAndFollower' },
     ];
     const generator = new GroupGeneratorImpl(round, participants);
 
     expect(generator.generateGroups()).toEqual([
-      [{ leader: participants[0].id, follower: participants[1].id }]
+      [{ leader: participants[0].id, follower: participants[1].id }],
     ]);
   });
 
@@ -58,16 +58,16 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
     const participants = [
       { ...createParticipant(), role: 'leaderAndFollower' },
-      { ...createParticipant(), role: 'follower' }
+      { ...createParticipant(), role: 'follower' },
     ];
     const generator = new GroupGeneratorImpl(round, participants);
 
     expect(generator.generateGroups()).toEqual([
-      [{ leader: participants[0].id, follower: participants[1].id }]
+      [{ leader: participants[0].id, follower: participants[1].id }],
     ]);
   });
 
@@ -75,17 +75,17 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
     const participants = [
       { ...createParticipant(), role: 'leaderAndFollower' },
-      { ...createParticipant(), role: 'leaderAndFollower' }
+      { ...createParticipant(), role: 'leaderAndFollower' },
     ];
     const generator = new GroupGeneratorImpl(round, participants);
     stubRandom(generator);
 
     expect(generator.generateGroups()).toEqual([
-      [{ leader: participants[0].id, follower: participants[1].id }]
+      [{ leader: participants[0].id, follower: participants[1].id }],
     ]);
   });
 
@@ -93,7 +93,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
     const participants = createParticipants(4);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -101,7 +101,7 @@ describe('GroupGenerator', () => {
 
     expect(generator.generateGroups()).toEqual([
       [{ leader: participants[0].id, follower: participants[1].id }],
-      [{ leader: participants[2].id, follower: participants[3].id }]
+      [{ leader: participants[2].id, follower: participants[3].id }],
     ]);
   });
 
@@ -109,7 +109,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 2
+      maxPairCountPerGroup: 2,
     };
     const participants = createParticipants(4);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -118,8 +118,8 @@ describe('GroupGenerator', () => {
     expect(generator.generateGroups()).toEqual([
       [
         { leader: participants[0].id, follower: participants[1].id },
-        { leader: participants[2].id, follower: participants[3].id }
-      ]
+        { leader: participants[2].id, follower: participants[3].id },
+      ],
     ]);
   });
 
@@ -127,7 +127,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 2
+      maxPairCountPerGroup: 2,
     };
     const participants = createParticipants(6);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -136,9 +136,9 @@ describe('GroupGenerator', () => {
     expect(generator.generateGroups()).toEqual([
       [
         { leader: participants[0].id, follower: participants[1].id },
-        { leader: participants[2].id, follower: participants[3].id }
+        { leader: participants[2].id, follower: participants[3].id },
       ],
-      [{ leader: participants[4].id, follower: participants[5].id }]
+      [{ leader: participants[4].id, follower: participants[5].id }],
     ]);
   });
 
@@ -146,7 +146,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 2,
-      maxPairCountPerGroup: 3
+      maxPairCountPerGroup: 3,
     };
     const participants = createParticipants(8);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -155,12 +155,12 @@ describe('GroupGenerator', () => {
     expect(generator.generateGroups()).toEqual([
       [
         { leader: participants[0].id, follower: participants[1].id },
-        { leader: participants[2].id, follower: participants[3].id }
+        { leader: participants[2].id, follower: participants[3].id },
       ],
       [
         { leader: participants[6].id, follower: participants[7].id },
-        { leader: participants[4].id, follower: participants[5].id }
-      ]
+        { leader: participants[4].id, follower: participants[5].id },
+      ],
     ]);
   });
 
@@ -168,7 +168,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 3,
-      maxPairCountPerGroup: 4
+      maxPairCountPerGroup: 4,
     };
     const participants = createParticipants(18);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -178,18 +178,18 @@ describe('GroupGenerator', () => {
       [
         { leader: participants[0].id, follower: participants[1].id },
         { leader: participants[2].id, follower: participants[3].id },
-        { leader: participants[4].id, follower: participants[5].id }
+        { leader: participants[4].id, follower: participants[5].id },
       ],
       [
         { leader: participants[8].id, follower: participants[9].id },
         { leader: participants[10].id, follower: participants[11].id },
-        { leader: participants[12].id, follower: participants[13].id }
+        { leader: participants[12].id, follower: participants[13].id },
       ],
       [
         { leader: participants[16].id, follower: participants[17].id },
         { leader: participants[14].id, follower: participants[15].id },
-        { leader: participants[6].id, follower: participants[7].id }
-      ]
+        { leader: participants[6].id, follower: participants[7].id },
+      ],
     ]);
   });
 
@@ -197,7 +197,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 4,
-      maxPairCountPerGroup: 4
+      maxPairCountPerGroup: 4,
     };
     const participants = createParticipants(18);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -207,18 +207,18 @@ describe('GroupGenerator', () => {
       [
         { leader: participants[0].id, follower: participants[1].id },
         { leader: participants[2].id, follower: participants[3].id },
-        { leader: participants[4].id, follower: participants[5].id }
+        { leader: participants[4].id, follower: participants[5].id },
       ],
       [
         { leader: participants[8].id, follower: participants[9].id },
         { leader: participants[10].id, follower: participants[11].id },
-        { leader: participants[12].id, follower: participants[13].id }
+        { leader: participants[12].id, follower: participants[13].id },
       ],
       [
         { leader: participants[16].id, follower: participants[17].id },
         { leader: participants[14].id, follower: participants[15].id },
-        { leader: participants[6].id, follower: participants[7].id }
-      ]
+        { leader: participants[6].id, follower: participants[7].id },
+      ],
     ]);
   });
 
@@ -226,14 +226,14 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 4,
-      maxPairCountPerGroup: 4
+      maxPairCountPerGroup: 4,
     };
     const participants = createParticipants(2);
     const generator = new GroupGeneratorImpl(round, participants);
     stubRandom(generator);
 
     expect(generator.generateGroups()).toEqual([
-      [{ leader: participants[0].id, follower: participants[1].id }]
+      [{ leader: participants[0].id, follower: participants[1].id }],
     ]);
   });
 
@@ -241,7 +241,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
     const participants = createParticipants(3);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -249,7 +249,7 @@ describe('GroupGenerator', () => {
 
     expect(generator.generateGroups()).toEqual([
       [{ leader: participants[0].id, follower: participants[1].id }],
-      [{ leader: participants[2].id, follower: null }]
+      [{ leader: participants[2].id, follower: null }],
     ]);
   });
 
@@ -257,7 +257,7 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 4
+      maxPairCountPerGroup: 4,
     };
     const participants = createParticipants(3);
     const generator = new GroupGeneratorImpl(round, participants);
@@ -266,8 +266,8 @@ describe('GroupGenerator', () => {
     expect(generator.generateGroups()).toEqual([
       [
         { leader: participants[0].id, follower: participants[1].id },
-        { leader: participants[2].id, follower: null }
-      ]
+        { leader: participants[2].id, follower: null },
+      ],
     ]);
   });
 
@@ -275,13 +275,13 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 4
+      maxPairCountPerGroup: 4,
     };
     const participants = [
       { ...createParticipant(), role: 'leader' },
       { ...createParticipant(), role: 'leaderAndFollower' },
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'leaderAndFollower' }
+      { ...createParticipant(), role: 'leaderAndFollower' },
     ];
     const generator = new GroupGeneratorImpl(round, participants);
     stubRandom(generator);
@@ -289,8 +289,8 @@ describe('GroupGenerator', () => {
     expect(generator.generateGroups()).toEqual([
       [
         { leader: participants[0].id, follower: participants[1].id },
-        { leader: participants[2].id, follower: participants[3].id }
-      ]
+        { leader: participants[2].id, follower: participants[3].id },
+      ],
     ]);
   });
 
@@ -298,11 +298,11 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 4
+      maxPairCountPerGroup: 4,
     };
     const participants = [
       { ...createParticipant(), role: 'leader' },
-      { ...createParticipant(), role: 'leader' }
+      { ...createParticipant(), role: 'leader' },
     ];
     const generator = new GroupGeneratorImpl(round, participants);
     stubRandom(generator);
@@ -310,8 +310,8 @@ describe('GroupGenerator', () => {
     expect(generator.generateGroups()).toEqual([
       [
         { leader: participants[0].id, follower: null },
-        { leader: participants[1].id, follower: null }
-      ]
+        { leader: participants[1].id, follower: null },
+      ],
     ]);
   });
 
@@ -319,18 +319,18 @@ describe('GroupGenerator', () => {
     const round = {
       ...createRound(),
       minPairCountPerGroup: 1,
-      maxPairCountPerGroup: 1
+      maxPairCountPerGroup: 1,
     };
 
     const participants = [
       { ...createParticipant(), role: 'leader', isAttending: true },
-      { ...createParticipant(), role: 'follower', isAttending: false }
+      { ...createParticipant(), role: 'follower', isAttending: false },
     ];
 
     const generator = new GroupGeneratorImpl(round, participants);
 
     expect(generator.generateGroups()).toEqual([
-      [{ leader: participants[0].id, follower: null }]
+      [{ leader: participants[0].id, follower: null }],
     ]);
   });
 });
@@ -342,13 +342,13 @@ function createParticipants(count: number) {
       participants.push({
         ...createParticipant(),
         role: 'leader',
-        isAttending: true
+        isAttending: true,
       });
     } else {
       participants.push({
         ...createParticipant(),
         role: 'follower',
-        isAttending: true
+        isAttending: true,
       });
     }
   }
@@ -356,8 +356,7 @@ function createParticipants(count: number) {
 }
 
 function stubRandom(generator: GroupGeneratorImpl) {
-  generator._randomIndex = () => {
+  generator._randomIndex = () =>
     // just pop from front
-    return 0;
-  };
+    0;
 }

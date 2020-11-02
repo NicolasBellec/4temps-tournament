@@ -23,13 +23,13 @@ class CreateTournamentRoute {
     const requestBody: any = req.body;
     const tournament = {
       ...parseTournament(requestBody),
-      creatorId: userId
+      creatorId: userId,
     };
 
     const { status, body } = await createTournamentRoute(
       userId,
       tournament,
-      this._repository
+      this._repository,
     );
 
     res.status(status);
@@ -40,7 +40,7 @@ class CreateTournamentRoute {
 export async function createTournamentRoute(
   userId: string,
   tournament: Tournament,
-  repository: TournamentRepository
+  repository: TournamentRepository,
 ): RouteResult<?Tournament> {
   const { isValidTournament } = validateTournament(tournament);
   let status: number = 200;

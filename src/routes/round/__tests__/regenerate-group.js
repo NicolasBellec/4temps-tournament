@@ -6,7 +6,7 @@ import {
   createRound,
   TournamentRepositoryImpl,
   NoteRepositoryImpl,
-  createParticipant
+  createParticipant,
 } from '../../../test-utils';
 
 import route from '../regenerate-group';
@@ -26,7 +26,7 @@ describe('Regenerate group route', () => {
     const req = Request.withParams({
       tournamentId: 'tournament1',
       roundId: 'round1',
-      groupId: 'anotherGroupId'
+      groupId: 'anotherGroupId',
     });
     const res = new Response();
 
@@ -40,7 +40,7 @@ describe('Regenerate group route', () => {
     const req = Request.withParams({
       tournamentId: 'tournament1',
       roundId: 'round1',
-      groupId: 'group1'
+      groupId: 'group1',
     });
     const res = new Response();
 
@@ -56,7 +56,7 @@ describe('Regenerate group route', () => {
     const req = Request.withParams({
       tournamentId: 'tournament1',
       roundId: 'round1',
-      groupId: 'group1'
+      groupId: 'group1',
     });
     const res = new Response();
 
@@ -65,7 +65,7 @@ describe('Regenerate group route', () => {
     expect(res.getStatus()).toBe(200);
     expect(tournament.rounds[0].groups[0]).not.toEqual(createTestGroup());
     expect(tournament.rounds[0].groups[0].pairs[0]).toMatchObject({
-      leader: 'leader2'
+      leader: 'leader2',
     });
   });
 
@@ -75,7 +75,7 @@ describe('Regenerate group route', () => {
     const req = Request.withParams({
       tournamentId: 'tournament1',
       roundId: 'round1',
-      groupId: 'group1'
+      groupId: 'group1',
     });
     const res = new Response();
 
@@ -92,7 +92,7 @@ describe('Regenerate group route', () => {
     const req = Request.withParams({
       tournamentId: 'tournament1',
       roundId: 'round1',
-      groupId: 'group2'
+      groupId: 'group2',
     });
     const res = new Response();
 
@@ -117,7 +117,7 @@ describe('Regenerate group route', () => {
       const req = Request.withParams({
         tournamentId: 'tournament1',
         roundId: 'round1',
-        groupId: 'group2'
+        groupId: 'group2',
       });
       const res = new Response();
 
@@ -133,7 +133,7 @@ describe('Regenerate group route', () => {
       const req = Request.withParams({
         tournamentId: 'tournament1',
         roundId: 'round1',
-        groupId: 'group3'
+        groupId: 'group3',
       });
       const res = new Response();
 
@@ -152,7 +152,7 @@ function createTestTournament(): Tournament {
     ...createTournament(),
     id: 'tournament1',
     participants: createTestParticipants(),
-    rounds: [createTestRound()]
+    rounds: [createTestRound()],
   };
 }
 
@@ -162,7 +162,7 @@ function createTestRound(): Round {
     id: 'round1',
     active: true,
     finished: false,
-    groups: [createTestGroup()]
+    groups: [createTestGroup()],
   };
 }
 
@@ -173,10 +173,10 @@ function createTestGroup(): DanceGroup {
       {
         id: 'dance1',
         active: false,
-        finished: false
-      }
+        finished: false,
+      },
     ],
-    pairs: [{ leader: 'leader1', follower: 'follower1' }]
+    pairs: [{ leader: 'leader1', follower: 'follower1' }],
   };
 }
 
@@ -186,25 +186,25 @@ function createTestParticipants(): Array<Participant> {
       ...createParticipant(),
       role: 'leader',
       id: 'leader1',
-      isAttending: true
+      isAttending: true,
     },
     {
       ...createParticipant(),
       role: 'leader',
       id: 'leader2',
-      isAttending: true
+      isAttending: true,
     },
     {
       ...createParticipant(),
       role: 'follower',
       id: 'follower1',
-      isAttending: true
+      isAttending: true,
     },
     {
       ...createParticipant(),
       role: 'follower',
       id: 'follower2',
-      isAttending: true
-    }
+      isAttending: true,
+    },
   ];
 }

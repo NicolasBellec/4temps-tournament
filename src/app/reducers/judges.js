@@ -4,7 +4,7 @@ import { handle } from 'redux-pack';
 
 export default function reducer(
   state: JudgesReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): JudgesReduxState {
   switch (action.type) {
   case 'GET_ALL_TOURNAMENTS':
@@ -25,92 +25,92 @@ export default function reducer(
 export function getInitialState(): JudgesReduxState {
   return {
     byId: {},
-    forTournament: {}
+    forTournament: {},
   };
 }
 
 function getTournaments(
   state: JudgesReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): JudgesReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         ...payload.result.reduce((acc, id) => {
           acc[id] = payload.entities.tournaments[id].judges;
           return acc;
-        }, {})
+        }, {}),
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.judges
-      }
-    })
+        ...payload.entities.judges,
+      },
+    }),
   });
 }
 
 function createJudge(
   state: JudgesReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): JudgesReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.byId,
         [payload.tournamentId]: Array.from(
           new Set([
             ...(prevState.forTournament[payload.tournamentId] || []),
-            payload.judge.id
-          ]).values()
-        )
+            payload.judge.id,
+          ]).values(),
+        ),
       },
       byId: {
         ...prevState.byId,
-        [payload.judge.id]: payload.judge
-      }
-    })
+        [payload.judge.id]: payload.judge,
+      },
+    }),
   });
 }
 
 function getSingleTournament(
   state: JudgesReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): JudgesReduxState {
   const { payload } = action;
   return handle(state, action, {
-    success: prevState => ({
+    success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
-        [payload.result]: payload.entities.tournaments[payload.result].judges
+        [payload.result]: payload.entities.tournaments[payload.result].judges,
       },
       byId: {
         ...prevState.byId,
-        ...payload.entities.judges
-      }
-    })
+        ...payload.entities.judges,
+      },
+    }),
   });
 }
 
 function tournamentUpdated(
   state: JudgesReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): JudgesReduxState {
   const { payload } = action;
   return {
     ...state,
     forTournament: {
       ...state.forTournament,
-      [payload.result]: payload.entities.tournaments[payload.result].judges
+      [payload.result]: payload.entities.tournaments[payload.result].judges,
     },
     byId: {
       ...state.byId,
-      ...payload.entities.judges
-    }
+      ...payload.entities.judges,
+    },
   };
 }

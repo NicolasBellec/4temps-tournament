@@ -4,7 +4,7 @@ import { handle } from 'redux-pack';
 
 function participants(
   state: UiCreateParticipantsReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiCreateParticipantsReduxState {
   const { type } = action;
 
@@ -23,28 +23,28 @@ export function getInitialState(): UiCreateParticipantsReduxState {
     validation: {
       isValidParticipant: true,
       isValidName: true,
-      isValidRole: true
-    }
+      isValidRole: true,
+    },
   };
 }
 
 function createParticipant(
   state: UiCreateParticipantsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiCreateParticipantsReduxState {
   const { payload } = action;
 
   return handle(state, action, {
-    start: prevState => ({ ...prevState, isLoading: true }),
+    start: (prevState) => ({ ...prevState, isLoading: true }),
     success: () => ({
       ...getInitialState(),
-      createdSuccessfully: true
+      createdSuccessfully: true,
     }),
     failure: () => ({
       isLoading: false,
       createdSuccessfully: false,
-      validation: payload
-    })
+      validation: payload,
+    }),
   });
 }
 

@@ -3,7 +3,7 @@ import { handle } from 'redux-pack';
 
 function reducer(
   state: UiEditTournamentsReduxState = getInitialState(),
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiEditTournamentsReduxState {
   const { type } = action;
   switch (type) {
@@ -17,13 +17,13 @@ function reducer(
 export function getInitialState(): UiEditTournamentsReduxState {
   return {
     isValidName: true,
-    isValidDate: true
+    isValidDate: true,
   };
 }
 
 function editTournament(
   state: UiEditTournamentsReduxState,
-  action: ReduxPackAction
+  action: ReduxPackAction,
 ): UiEditTournamentsReduxState {
   const { payload } = action;
 
@@ -31,8 +31,8 @@ function editTournament(
     success: () => getInitialState(),
     failure: () => ({
       isValidName: payload.isValidName,
-      isValidDate: payload.isValidDate
-    })
+      isValidDate: payload.isValidDate,
+    }),
   });
 }
 

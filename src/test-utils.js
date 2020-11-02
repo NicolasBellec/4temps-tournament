@@ -12,19 +12,22 @@ export const TOURNAMENT_ID = generateId();
 
 type Body = mixed;
 type Query = {
-  [name: string]: string
+  [name: string]: string,
 };
 type Params = Query;
 
 export class Request implements ServerApiRequest {
   body: Body = {};
+
   session: {
     user: ?{
       id: string,
-      role: PermissionRole
-    }
+      role: PermissionRole,
+    },
   };
+
   query: Query = {};
+
   params: Params = {};
 
   constructor(admin: ?AdminModel) {
@@ -34,8 +37,8 @@ export class Request implements ServerApiRequest {
           ? null
           : {
             id: admin._id.toString(),
-            role: 'admin'
-          }
+            role: 'admin',
+          },
     };
   }
 
@@ -79,8 +82,8 @@ export class Request implements ServerApiRequest {
     req.session = {
       user: {
         id: judge.id,
-        role: 'judge'
-      }
+        role: 'judge',
+      },
     };
     req.params = params;
     return req;
@@ -89,6 +92,7 @@ export class Request implements ServerApiRequest {
 
 export class Response implements ServerApiResponse {
   _status: number;
+
   _body: ?mixed;
 
   getStatus() {
@@ -120,28 +124,21 @@ export class Response implements ServerApiResponse {
 
 export class TournamentRepositoryImpl implements TournamentRepository {
   _tournaments: {
-    [string]: Tournament
+    [string]: Tournament,
   } = {};
 
-  get = async (id: string) => {
-    return this._tournaments[id] || null;
-  };
+  get = async (id: string) => this._tournaments[id] || null;
 
-  getAll = async () => {
-    return Object.keys(this._tournaments).map(key => this._tournaments[key]);
-  };
+  getAll = async () => Object.keys(this._tournaments).map((key) => this._tournaments[key]);
 
-  getForUser = async (userId: string) => {
-    return (await this.getAll()).filter(
-      ({ creatorId }) => creatorId === userId
-    );
-  };
+  getForUser = async (userId: string) => (await this.getAll()).filter(
+    ({ creatorId }) => creatorId === userId,
+  );
 
   getForJudge = async (userId: string) => {
     const tournaments = await this.getAll();
     for (const tournament of tournaments) {
-      if (tournament.judges.filter(judge => judge.id === userId).length > 0)
-        return tournament;
+      if (tournament.judges.filter((judge) => judge.id === userId).length > 0) return tournament;
     }
   };
 
@@ -149,7 +146,7 @@ export class TournamentRepositoryImpl implements TournamentRepository {
     const tournaments = await this.getAll();
     for (const tournament of tournaments) {
       if (
-        tournament.assistants.filter(assistant => assistant.id === userId)
+        tournament.assistants.filter((assistant) => assistant.id === userId)
           .length > 0
       ) {
         return tournament;
@@ -167,14 +164,14 @@ export class TournamentRepositoryImpl implements TournamentRepository {
 
   createParticipant = async (
     tournamentId: string,
-    participant: Participant
+    participant: Participant,
   ) => {
     this._tournaments[tournamentId].participants.push(participant);
   };
 
   updateParticipantAttendance = async (
     participantId: string,
-    isAttending: boolean
+    isAttending: boolean,
   ) => {
     for (const key in this._tournaments) {
       for (const participant of this._tournaments[key].participants) {
@@ -212,11 +209,11 @@ export class TournamentRepositoryImpl implements TournamentRepository {
   markDanceAsNoted = async (
     tournamentId: string,
     judgeId: string,
-    danceId: string
+    danceId: string,
   ) => {
     this._tournaments[tournamentId].dancesNoted[judgeId] = [
       ...(this._tournaments[tournamentId].dancesNoted[judgeId] || []),
-      danceId
+      danceId,
     ];
   };
 
@@ -235,15 +232,15 @@ export class AccessKeyRepositoryImpl implements AccessKeyRepository {
   async createForTournamentAndUserWithRole(
     tournamentId: string,
     userId: string,
-    role: 'judge' | 'assistant'
+    role: 'judge' | 'assistant',
   ) {
     this._keys.push({
       userId,
       tournamentId,
       key: String(
-        Math.max(0, ...this._keys.map(({ key }) => parseInt(key))) + 1
+        Math.max(0, ...this._keys.map(({ key }) => parseInt(key))) + 1,
       ),
-      role
+      role,
     });
   }
 
@@ -257,7 +254,7 @@ export class AccessKeyRepositoryImpl implements AccessKeyRepository {
   }
 
   async getForTournament(tournamentId: string) {
-    return this._keys.filter(k => k.tournamentId === tournamentId);
+    return this._keys.filter((k) => k.tournamentId === tournamentId);
   }
 }
 
@@ -268,11 +265,10 @@ export class NoteRepositoryImpl implements NoteRepository {
 
   createOrUpdate = async (note: JudgeNote) => {
     const index = this._notes.findIndex(
-      arrNote =>
-        arrNote.judgeId === note.judgeId &&
-        arrNote.participantId === note.judgeId &&
-        arrNote.criterionId === note.criterionId &&
-        arrNote.danceId === note.danceId
+      (arrNote) => arrNote.judgeId === note.judgeId
+        && arrNote.participantId === note.judgeId
+        && arrNote.criterionId === note.criterionId
+        && arrNote.danceId === note.danceId,
     );
 
     if (index != -1) {
@@ -282,19 +278,16 @@ export class NoteRepositoryImpl implements NoteRepository {
     }
   };
 
-  getForDance = async (danceId: string) => {
-    return this._notes.filter(note => note.danceId === danceId);
-  };
+  getForDance = async (danceId: string) => this._notes.filter((note) => note.danceId === danceId);
 
   delete = async (note: JudgeNote) => {
     this._notes = this._notes.filter(
-      arrNote =>
-        !(
-          arrNote.judgeId === note.judgeId &&
-          arrNote.participantId === note.judgeId &&
-          arrNote.criterionId === note.criterionId &&
-          arrNote.danceId === note.danceId
-        )
+      (arrNote) => !(
+        arrNote.judgeId === note.judgeId
+          && arrNote.participantId === note.judgeId
+          && arrNote.criterionId === note.criterionId
+          && arrNote.danceId === note.danceId
+      ),
     );
   };
 }
@@ -305,7 +298,7 @@ export function createAdmin(): AdminModel {
     email: 'test@gmail.com',
     firstName: 'john',
     lastName: 'smith',
-    password: 'password'
+    password: 'password',
   };
 }
 
@@ -332,8 +325,8 @@ export function createRound(): Round {
         maxValue: 10,
         description: 'style...',
         type: 'one',
-        forJudgeType: 'normal'
-      }
+        forJudgeType: 'normal',
+      },
     ],
     groups: [],
     active: false,
@@ -343,9 +336,9 @@ export function createRound(): Round {
     roundScores: [],
     winners: {
       leaders: [],
-      followers: []
+      followers: [],
     },
-    tieBreakerJudge: null
+    tieBreakerJudge: null,
   };
 }
 
@@ -360,7 +353,7 @@ export function createTournament(): Tournament {
     assistants: [],
     participants: [],
     rounds: [],
-    dancesNoted: {}
+    dancesNoted: {},
   };
 }
 
@@ -370,7 +363,7 @@ export function createParticipant(): Participant {
     name: 'John Smith',
     role: 'leaderAndFollower',
     isAttending: true,
-    attendanceId: 1
+    attendanceId: 1,
   };
 }
 
@@ -378,7 +371,7 @@ export function createLeader(): Participant {
   return {
     ...createParticipant(),
     name: 'John Smith L',
-    role: 'leader'
+    role: 'leader',
   };
 }
 
@@ -386,7 +379,7 @@ export function createFollower(): Participant {
   return {
     ...createParticipant(),
     name: 'John Smith F',
-    role: 'follower'
+    role: 'follower',
   };
 }
 
@@ -394,14 +387,14 @@ export function createJudge(): Judge {
   return {
     id: generateId(),
     name: 'Jane Smith',
-    judgeType: 'normal'
+    judgeType: 'normal',
   };
 }
 
 export function createAssistant(): Assistant {
   return {
     id: generateId(),
-    name: 'Assistant Name'
+    name: 'Assistant Name',
   };
 }
 
@@ -413,7 +406,7 @@ export function createCriterion(): RoundCriterion {
     maxValue: 1,
     description: 'this is a criterion',
     type: 'both',
-    forJudgeType: 'normal'
+    forJudgeType: 'normal',
   };
 }
 
@@ -421,6 +414,6 @@ export function createDance(): Dance {
   return {
     id: generateId(),
     active: false,
-    finished: false
+    finished: false,
   };
 }
