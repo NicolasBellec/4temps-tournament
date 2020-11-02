@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import type { RouterHistory } from 'react-router-dom';
 import PreloadContainer from '../../../PreloadContainer';
 import List from './component';
-import { deleteRound, startRound } from '../../../../api/round';
-import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
+import { getAdminTournamentsAction, } from '../../../../action-creators/tournament';
+import {
+  getDeleteRoundAction,
+  getStartRoundAction
+} from '../../../../action-creators/round';
 
 type Props = {
   tournamentId: string,
@@ -33,18 +36,11 @@ function mapDispatchToProps(
   { tournamentId, history }: Props,
 ) {
   return {
-    deleteRound: (deleteId: string) => dispatch({
     load: () => dispatch(getAdminTournamentsAction()),
-      type: 'DELETE_ROUND',
-      promise: deleteRound(tournamentId, deleteId),
-    }),
-    startRound: (roundId: string) => dispatch({
-      type: 'START_ROUND',
-      promise: startRound(tournamentId, roundId),
-      meta: {
-        onSuccess: () => history.push(`/tournament/${tournamentId}/round/${roundId}`),
-      },
-    }),
+    deleteRound: (deleteId: string) =>
+      dispatch(getDeleteRoundAction(tournamentId, deleteId)),
+    startRound: (roundId: string) =>
+      dispatch(getStartRoundAction(tournamentId, roundId, history)),
     onClick: (roundId: string) => history.push(`/tournament/${tournamentId}/round/${roundId}`),
   };
 }

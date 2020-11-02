@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { apiPostRequest, apiDeleteRequest } from '../util';
 
@@ -66,6 +66,6 @@ export async function regenerateGroup(
 export async function settleDraw(
   tournamentId: string,
   roundScores: Array<Score>,
-) {
+): Promise<mixed> {
   return apiPostRequest(`/api/round/${tournamentId}/settle-draw`, roundScores);
 }

@@ -32,3 +32,5 @@ export const CHANGE_ATTENDANCE = 'CHANGE_ATTENDANCE';
 
 // Round related action type
 export const CREATE_ROUND = 'CREATE_ROUND';
+export const DELETE_ROUND = 'DELETE_ROUND';
+export const START_ROUND = 'START_ROUND';

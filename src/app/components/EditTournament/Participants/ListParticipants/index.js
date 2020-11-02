@@ -7,7 +7,7 @@ import {
   getAdminTournamentsAction,
   getSingleTournamentAction,
 } from '../../../../action-creators/tournament';
-import { getChangeAttendanceAction } from '../../../../action-reactors/participant';
+import { getChangeAttendanceAction } from '../../../../action-creators/participant';
 
 type Props = {
   tournamentId: string,
@@ -40,7 +40,6 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
     },
     onChangeAttending: (id, isAttending) =>
       dispatch(getChangeAttendanceAction(tournamentId, id, isAttending))
-    ),
   };
 }
 

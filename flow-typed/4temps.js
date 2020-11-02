@@ -563,7 +563,7 @@ declare type GetJudgeTournament = {
 
 declare type GetSingleTournament = {
   type: 'GET_SINGLE_TOURNAMENT',
-  promise: mixed
+  promise: Promise<mixed>
 };
 
 declare type GenerateGroupsAction = {
