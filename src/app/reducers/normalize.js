@@ -13,10 +13,11 @@ const tournamentSchema = new schema.Entity('tournaments', {
   rounds: [roundSchema]
 });
 
-export function normalizeTournament(tournament: Tournament) {
+// TODO: Update the type of these functions
+export function normalizeTournament(tournament: Tournament): mixed {
   return normalize(tournament, tournamentSchema);
 }
 
-export function normalizeTournamentArray(tournaments: Array<Tournament>) {
+export function normalizeTournamentArray(tournaments: Array<Tournament>): mixed {
   return normalize(tournaments, [tournamentSchema]);
 }

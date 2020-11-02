@@ -1,10 +1,10 @@
-// no-flow
+// @flow
 import { handle } from 'redux-pack';
 
 function tournaments(
   state: TournamentsReduxState = getInitialState(),
   action: ReduxPackAction
-) {
+): TournamentsReduxState {
   const { type } = action;
 
   switch (type) {
