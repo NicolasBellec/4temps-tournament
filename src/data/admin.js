@@ -1,17 +1,17 @@
-// no-flow
+// @flow
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 12;
 
-export type AdminModel = {
+export type AdminModel = {|
   _id: ObjectId,
   email: string,
   firstName: string,
   lastName: string,
   password: string,
-};
+|};
 
 const schema = new mongoose.Schema({
   email: {
