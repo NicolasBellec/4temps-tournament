@@ -10,7 +10,7 @@ import {
   normalizeTournament
 } from '../../reducers/normalize';
 
-export const createTournament = async (
+export const createTournamentApi = async (
   tournament: Tournament
 ): Promise<Tournament> => {
   let validation = validateTournament(tournament);
