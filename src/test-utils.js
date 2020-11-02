@@ -131,9 +131,7 @@ export class TournamentRepositoryImpl implements TournamentRepository {
 
   getAll = async () => Object.keys(this._tournaments).map((key) => this._tournaments[key]);
 
-  getForUser = async (userId: string) => (await this.getAll()).filter(
-    ({ creatorId }) => creatorId === userId,
-  );
+  getForUser = async (userId: string) => (await this.getAll()).filter(({ creatorId }) => creatorId === userId);
 
   getForJudge = async (userId: string) => {
     const tournaments = await this.getAll();

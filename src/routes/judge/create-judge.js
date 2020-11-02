@@ -64,7 +64,8 @@ function parseJudge(body: mixed): { name: string, judgeType: string } {
 function statusFromError(e: mixed) {
   if (e instanceof ParseError) {
     return 400;
-  } if (e instanceof HasPresidentError) {
+  }
+  if (e instanceof HasPresidentError) {
     return 409;
   }
   return 500;

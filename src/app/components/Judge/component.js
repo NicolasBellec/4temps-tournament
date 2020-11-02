@@ -34,7 +34,8 @@ export default function Judge({
         judgeId={judgeId}
       />
     );
-  } if (activeRound != null && activeDanceId != null) {
+  }
+  if (activeRound != null && activeDanceId != null) {
     return (
       <ActiveDance
         tournamentId={tournamentId}

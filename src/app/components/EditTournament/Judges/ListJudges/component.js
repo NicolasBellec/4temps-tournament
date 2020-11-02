@@ -40,9 +40,11 @@ function ListJudges({ judges }: { judges: Array<JudgeViewModel> }) {
 function typeToDisplayName(judgeType: JudgeType): string {
   if (judgeType === 'normal') {
     return 'Normal';
-  } if (judgeType === 'sanctioner') {
+  }
+  if (judgeType === 'sanctioner') {
     return 'Sanctioner';
-  } if (judgeType === 'president') {
+  }
+  if (judgeType === 'president') {
     return 'President';
   }
   return 'Unknown';

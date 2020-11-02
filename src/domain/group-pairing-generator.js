@@ -87,7 +87,8 @@ export default class GroupGeneratorImpl implements GroupGenerator {
   _getFirstParticipant = () => {
     if (this._leaderCount > this._followerCount) {
       return this._randomUntilParticipantRole('leader');
-    } if (this._leaderCount < this._followerCount) {
+    }
+    if (this._leaderCount < this._followerCount) {
       return this._randomUntilParticipantRole('follower');
     }
     return this._randomParticipant();
@@ -177,12 +178,14 @@ export default class GroupGeneratorImpl implements GroupGenerator {
         return { follower: null, leader: p2.id };
       }
       return { follower: p2.id, leader: null };
-    } if (p2 == null && p1 != null) {
+    }
+    if (p2 == null && p1 != null) {
       if (p1.role === 'leader' || p1.role === 'leaderAndFollower') {
         return { follower: null, leader: p1.id };
       }
       return { follower: p1.id, leader: null };
-    } if (p1 != null && p2 != null) {
+    }
+    if (p1 != null && p2 != null) {
       if (p1.role === 'leader' || p1.role === 'leaderAndFollower') {
         return { leader: p1.id, follower: p2.id };
       }

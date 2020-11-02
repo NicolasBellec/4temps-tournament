@@ -66,11 +66,9 @@ class RoundList extends Component<Props, State> {
 
   _getActiveRound = (): Round => this.props.rounds.filter((r) => r.active)[0];
 
-  _hasActiveDance = (round: Round) => (
-    round.groups
-      .reduce((acc, g) => [...acc, ...g.dances], [])
-      .filter((d) => d.active).length > 0
-  );
+  _hasActiveDance = (round: Round) => round.groups
+    .reduce((acc, g) => [...acc, ...g.dances], [])
+    .filter((d) => d.active).length > 0;
 
   _getFinishedDances = (activeRound: Round) => activeRound.groups
     .reduce((acc, g) => [...acc, ...g.dances], [])

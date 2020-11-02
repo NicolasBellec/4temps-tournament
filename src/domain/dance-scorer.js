@@ -115,10 +115,8 @@ class DanceScorer {
     );
   };
 
-  _isPositiveJudgeType = (judgeType: JudgeType): boolean => (
-    judgeType === 'normal'
-      || (this._countPresident === true && judgeType === 'president')
-  );
+  _isPositiveJudgeType = (judgeType: JudgeType): boolean => judgeType === 'normal'
+    || (this._countPresident === true && judgeType === 'president');
 
   _malusFromValueAndMaxScore = (value: number, maxScore: number) => {
     const score = maxScore * (1 - (100 - value) / 100);

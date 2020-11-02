@@ -150,12 +150,14 @@ function notDanced(group) {
 
 function getNextDance(groups) {
   let nextDance = 1;
-  const relevantGroups = groups.filter((group) => !group.dances
-    .map((d) => d.finished)
-    .reduce((ack, r) => ack && r, true));
+  const relevantGroups = groups.filter(
+    (group) => !group.dances.map((d) => d.finished).reduce((ack, r) => ack && r, true),
+  );
   if (relevantGroups.length != 0) {
     const { dances } = relevantGroups[0];
-    const nonStartedDances = [...Array(dances.length).keys()].filter((i) => !(dances[i].finished || dances[i].active));
+    const nonStartedDances = [...Array(dances.length).keys()].filter(
+      (i) => !(dances[i].finished || dances[i].active),
+    );
     if (nonStartedDances.length > 0) {
       nextDance = nonStartedDances[0] + 1;
     }

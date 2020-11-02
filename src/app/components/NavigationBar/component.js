@@ -57,7 +57,8 @@ class NavigationBar extends PureComponent<Props, State> {
     if (this.props.isAuthenticated) {
       if (this.props.role == 'admin') {
         return this._renderAuthenticatedAdmin();
-      } if (this.props.role == 'judge') {
+      }
+      if (this.props.role == 'judge') {
         return this._renderAuthenticatedJudge();
       }
       // Undefined role, for now do nothing
@@ -92,12 +93,12 @@ class NavigationBar extends PureComponent<Props, State> {
     ];
   };
 
-  _renderAuthenticatedJudge = () =>
+  _renderAuthenticatedJudge = () => (
     // Judge specific navigation goes here
     // For now we dont want the judge to be able to navigate anywhere
     // Therefore, return empty menu item
     <Menu.Item />
-  ;
+  );
 
   _renderDesktopView = () => (
     <Menu secondary styleName="nav">
@@ -111,20 +112,18 @@ class NavigationBar extends PureComponent<Props, State> {
     </Menu>
   );
 
-  _renderTabletView = () =>
+  _renderTabletView = () => (
     // Collapse navbar into a dropdown
-    (
-      <Menu secondary>
-        <MenuItem as={Link} to="/" name="header" header>
-          4 Temps Tournaments
-        </MenuItem>
-        <Menu.Item position="right">
-          <Button icon="sidebar" onClick={this.toggleSideBar} />
-          {this._renderSideBar()}
-        </Menu.Item>
-      </Menu>
-    )
-  ;
+    <Menu secondary>
+      <MenuItem as={Link} to="/" name="header" header>
+        4 Temps Tournaments
+      </MenuItem>
+      <Menu.Item position="right">
+        <Button icon="sidebar" onClick={this.toggleSideBar} />
+        {this._renderSideBar()}
+      </Menu.Item>
+    </Menu>
+  );
 
   _renderSideBar = () => {
     const { visible } = this.state;

@@ -35,13 +35,16 @@ function getNotes(
       isLoading: false,
       didLoad: true,
       byParticipant: {
-        ...payload.reduce((acc, note) => ({
-          ...acc,
-          [note.participantId]: {
-            ...acc[note.participantId],
-            [note.criterionId]: note,
-          },
-        }), {}),
+        ...payload.reduce(
+          (acc, note) => ({
+            ...acc,
+            [note.participantId]: {
+              ...acc[note.participantId],
+              [note.criterionId]: note,
+            },
+          }),
+          {},
+        ),
       },
     }),
     failure: (prevState) => ({

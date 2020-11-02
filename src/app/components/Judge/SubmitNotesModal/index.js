@@ -36,13 +36,19 @@ function getNotesForActiveDance(
   activeDanceId: string,
 ): Array<JudgeNote> {
   return Object.keys(state.notes.byParticipant)
-    .reduce((notes, participantId) => [
-      ...notes,
-      ...Object.keys(state.notes.byParticipant[participantId]).reduce(
-        (acc, critId) => [...acc, state.notes.byParticipant[participantId][critId]],
-        [],
-      ),
-    ], [])
+    .reduce(
+      (notes, participantId) => [
+        ...notes,
+        ...Object.keys(state.notes.byParticipant[participantId]).reduce(
+          (acc, critId) => [
+            ...acc,
+            state.notes.byParticipant[participantId][critId],
+          ],
+          [],
+        ),
+      ],
+      [],
+    )
     .filter(({ danceId }) => danceId === activeDanceId);
 }
 

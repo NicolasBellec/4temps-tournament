@@ -268,7 +268,8 @@ export default class RPSSRoundScorer {
     const rankReachMajority: number = row.reduce((acc, nbVote, index) => {
       if (acc != -1) {
         return acc;
-      } if (nbVote >= judgeMajority) {
+      }
+      if (nbVote >= judgeMajority) {
         // We keep the index instead of the rank that is index + 1 as
         // this is used to access the row table
         return index;

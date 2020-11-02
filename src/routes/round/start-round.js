@@ -32,10 +32,8 @@ export default class StartRoundRoute {
       || e instanceof TournamentNotFoundError
     ) {
       return 404;
-    } if (
-      e instanceof AlreadyStartedError
-      || e instanceof AlreadyFinishedError
-    ) {
+    }
+    if (e instanceof AlreadyStartedError || e instanceof AlreadyFinishedError) {
       return 400;
     }
     return 500;

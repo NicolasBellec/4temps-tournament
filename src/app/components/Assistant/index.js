@@ -76,7 +76,8 @@ function TabContent({
 }) {
   if (activeTab === 'groups') {
     return <GroupsContainer tournamentId={tournamentId} />;
-  } if (activeTab === 'participants') {
+  }
+  if (activeTab === 'participants') {
     return <Participants tournamentId={tournamentId} />;
   }
   return 'Invalid tab';

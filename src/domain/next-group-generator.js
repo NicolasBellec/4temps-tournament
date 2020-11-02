@@ -233,13 +233,9 @@ export default class NextGroupGenerator {
     },
   );
 
-  _getFollowerWithWorstLeader = (
-    excluding: Array<Participant>,
-  ): Participant => this._getParticipantWithWorstCounterpart('follower', excluding);
+  _getFollowerWithWorstLeader = (excluding: Array<Participant>): Participant => this._getParticipantWithWorstCounterpart('follower', excluding);
 
-  _getLeaderWithWorstFollower = (
-    excluding: Array<Participant>,
-  ): Participant => this._getParticipantWithWorstCounterpart('leader', excluding);
+  _getLeaderWithWorstFollower = (excluding: Array<Participant>): Participant => this._getParticipantWithWorstCounterpart('leader', excluding);
 
   _getParticipantWithWorstCounterpart = (
     role: Role,
@@ -268,7 +264,9 @@ export default class NextGroupGenerator {
 
   _getCounterPartOf = (participantId: string): string => {
     for (const group of this._round.groups) {
-      const pair = group.pairs.find((pair) => pair.follower === participantId || pair.leader === participantId);
+      const pair = group.pairs.find(
+        (pair) => pair.follower === participantId || pair.leader === participantId,
+      );
       if (pair != null) {
         if (pair.leader === participantId) {
           // $FlowFixMe
@@ -342,7 +340,7 @@ export default class NextGroupGenerator {
     }
     return (
       followers[participantId]
-        > Math.min(...Object.keys(followers).map((id) => followers[id]))
+      > Math.min(...Object.keys(followers).map((id) => followers[id]))
     );
   };
 

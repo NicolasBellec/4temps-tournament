@@ -74,9 +74,7 @@ class CreateRoundRouteHandler {
 
   _userOwnsTournament = (tournament: Tournament): boolean => tournament.creatorId == this._userId;
 
-  _tournamentHasSanctioner = (tournament: Tournament): boolean => tournament.judges.some(
-    ({ judgeType }) => judgeType === 'sanctioner',
-  );
+  _tournamentHasSanctioner = (tournament: Tournament): boolean => tournament.judges.some(({ judgeType }) => judgeType === 'sanctioner');
 
   _addMalusCriterion = () => {
     this._round.criteria.push(createMalusCriterion());

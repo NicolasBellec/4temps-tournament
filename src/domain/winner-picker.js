@@ -32,7 +32,8 @@ class WinnerPicker {
     if (this._round.notationSystem == 'rpss') {
       const scorer = new RPSSRoundScorer(this._judges, this._round);
       return scorer.scoreRound(notes);
-    } if (this._round.notationSystem == 'sum') {
+    }
+    if (this._round.notationSystem == 'sum') {
       const scorer = new RoundScorer(this._judges, this._round);
       return scorer.scoreRound(notes);
     }

@@ -20,10 +20,8 @@ export default class NoteChecker {
     danceId: string,
     notes: Array<JudgeNote>,
     judgeId: string,
-  ) => (
-    this._isAllLeadersNotedInDanceByJudge(notes, danceId, judgeId)
-      && this._isAllFollowersNotedInDanceByJudge(notes, danceId, judgeId)
-  );
+  ) => this._isAllLeadersNotedInDanceByJudge(notes, danceId, judgeId)
+    && this._isAllFollowersNotedInDanceByJudge(notes, danceId, judgeId);
 
   _getLeadersInDance = (danceId: string): Array<string> => this._getRoleInDance(danceId, 'leader');
 
@@ -108,7 +106,10 @@ export default class NoteChecker {
     for (const participantId of participants) {
       for (const criterionId of criteria) {
         const supposedNote = {
-          judgeId, danceId, participantId, criterionId,
+          judgeId,
+          danceId,
+          participantId,
+          criterionId,
         };
         if (!noteSet.has(hashNote(supposedNote))) {
           return false;

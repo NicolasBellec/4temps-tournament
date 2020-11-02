@@ -32,7 +32,8 @@ export default class GenerateGroupsRoute {
       || e instanceof TournamentNotFoundError
     ) {
       return 404;
-    } if (
+    }
+    if (
       e instanceof DanceStartedError
       || e instanceof NotStartedError
       || e instanceof AlreadyFinishedError

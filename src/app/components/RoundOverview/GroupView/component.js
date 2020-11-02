@@ -104,7 +104,8 @@ class RoundOverview extends Component<Props> {
           </TableBody>
         </Table>
       );
-    } if (round.finished) {
+    }
+    if (round.finished) {
       return 'Finished';
     }
     return 'Not started';
@@ -136,7 +137,8 @@ class RoundOverview extends Component<Props> {
     const { active, groups } = this.props.round;
     if (active && groups.length === 0) {
       return <div>No groups generated / no participants in tournament</div>;
-    } if (groups.length === 0) {
+    }
+    if (groups.length === 0) {
       return (
         <div>You have to start the round before you can create groups</div>
       );

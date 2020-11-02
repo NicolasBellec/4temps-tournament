@@ -37,7 +37,7 @@ describe('/api/tournament/update', () => {
     });
   });
 
-  test('Tournament that doesn\'t exist returns 404', async () => {
+  test("Tournament that doesn't exist returns 404", async () => {
     const otherId = generateId();
     expect(
       await updateTournamentRoute(
@@ -51,7 +51,7 @@ describe('/api/tournament/update', () => {
     });
   });
 
-  test('When tournament can\'t be updated 500 is returned', async () => {
+  test("When tournament can't be updated 500 is returned", async () => {
     repository.update = () => {
       throw 0;
     };

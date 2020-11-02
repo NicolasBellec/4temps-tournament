@@ -92,7 +92,8 @@ class TournamentList extends Component<Props, State> {
   _typeToName = (type: TournamentType): string => {
     if (type === 'jj') {
       return "Jack n' Jill";
-    } if (type === 'classic') {
+    }
+    if (type === 'classic') {
       return 'Classic';
     }
     return 'Unknown';

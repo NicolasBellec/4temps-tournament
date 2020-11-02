@@ -79,7 +79,9 @@ class Server {
         if (req.originalUrl === '/health-check' || forwardedProto === 'https') {
           next();
         } else {
-          const redirectUrl = `https://${String(req.header('Host'))}${req.originalUrl}`;
+          const redirectUrl = `https://${String(req.header('Host'))}${
+            req.originalUrl
+          }`;
           res.redirect(301, redirectUrl);
         }
       });
@@ -183,7 +185,7 @@ class Server {
   _enableHealthCheckRouting = () => {
     this._app.use('/health-check', (req: $Request, res: $Response) => {
       res.status(200);
-      res.send('I\'m all healthy!');
+      res.send("I'm all healthy!");
     });
   };
 

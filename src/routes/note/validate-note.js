@@ -78,7 +78,8 @@ function isValidCriterionForParticipant(
     return (
       participant.role === 'leader' || participant.role === 'leaderAndFollower'
     );
-  } if (criterion.type === 'follower') {
+  }
+  if (criterion.type === 'follower') {
     return (
       participant.role === 'follower'
       || participant.role === 'leaderAndFollower'

@@ -78,12 +78,14 @@ class ListParticipants extends Component<Props, State> {
         return 'Pair';
       }
       return 'Leader';
-    } if (role === 'follower') {
+    }
+    if (role === 'follower') {
       if (isClassic) {
         return 'Dummy';
       }
       return 'Follower';
-    } if (role === 'leaderAndFollower') {
+    }
+    if (role === 'leaderAndFollower') {
       return 'Both';
     }
     return 'Invalid role';
@@ -111,10 +113,7 @@ class ListParticipants extends Component<Props, State> {
           <b>
             {this.state.unAttendParticipant == null
               ? 'someone'
-              : `${this.state.unAttendParticipant.name
-              } (${
-                this.state.unAttendParticipant.attendanceId
-              })`}
+              : `${this.state.unAttendParticipant.name} (${this.state.unAttendParticipant.attendanceId})`}
             {' '}
           </b>
           as not-present

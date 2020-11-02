@@ -13,7 +13,8 @@ async function parseResponse<T>(response: Response): Promise<T> {
   }
   if (status === 200 && isCorrectContentType) {
     return await response.json();
-  } if (status !== 200 && isCorrectContentType) {
+  }
+  if (status !== 200 && isCorrectContentType) {
     throw await response.json();
   } else if (status !== 200) {
     throw 'API Failure';

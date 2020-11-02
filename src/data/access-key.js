@@ -56,7 +56,10 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
      * inserts, and let's believe in the randomness for now
      */
     await Model.create({
-      tournamentId, userId, key, role,
+      tournamentId,
+      userId,
+      key,
+      role,
     });
   }
 

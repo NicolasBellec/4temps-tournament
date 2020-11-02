@@ -5,9 +5,7 @@ import { loginAdminRoute } from '../login-admin';
 
 import type { AdminModel } from '../../../data/admin';
 
-const setSessionUser = () => {
-
-};
+const setSessionUser = () => {};
 
 test('If credentials are valid, the session is set', (done) => {
   const credentials: AdminCredentials = {
