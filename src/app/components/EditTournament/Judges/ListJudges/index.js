@@ -6,6 +6,7 @@ import Component from './component';
 
 import { getAccessKeysForTournament } from '../../../../api/access-key';
 import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
+import { getAccessKeysAction } from '../../../../action-creators/access-key';
 
 type Props = {
   tournamentId: string,
@@ -35,13 +36,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
     load: () => {
       dispatch(getAdminTournamentsAction());
-      dispatch(
-        // TODO: Move
-        {
-          type: 'GET_ACCESS_KEYS',
-          promise: getAccessKeysForTournament(tournamentId),
-        },
-      );
+      dispatch(getAccessKeysAction(tournamentId));
     },
   };
 }

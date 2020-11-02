@@ -22,3 +22,6 @@ export const CREATE_ASSISTANT = 'CREATE_ASSISTANT';
 
 // Leaderboard related action type
 export const GET_LEADERBOARD = 'GET_LEADERBOARD';
+
+// Judge related action type
+export const CREATE_JUDGE = 'CREATE_JUDGE';
