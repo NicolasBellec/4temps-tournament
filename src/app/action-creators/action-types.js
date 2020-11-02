@@ -25,3 +25,6 @@ export const GET_LEADERBOARD = 'GET_LEADERBOARD';
 
 // Judge related action type
 export const CREATE_JUDGE = 'CREATE_JUDGE';
+
+// Participant related action type
+export const CREATE_PARTICIPANT = 'CREATE_PARTICIPANT';

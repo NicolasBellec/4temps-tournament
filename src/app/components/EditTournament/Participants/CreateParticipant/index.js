@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import CreateParticipant from './component';
 import type { State as ComponentState } from './component';
-import { createParticipant } from '../../../../api/participant';
+import { getCreateParticipantAction } from '../../../../action-creators/participant';
 
 type Props = {
   tournamentId: string,
@@ -23,16 +23,8 @@ function mapStateToProps(
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    onSubmit: ({ name, role }: ComponentState) => dispatch({
-      type: 'CREATE_PARTICIPANT',
-      promise: createParticipant(tournamentId, {
-        id: '',
-        name,
-        role,
-        attendanceId: 0, // generate on server side
-        isAttending: false,
-      }),
-    }),
+    onSubmit: ({ name, role }: ComponentState) =>
+    dispatch(getCreateParticipantAction(tournamentId, name, role))
   };
 }
 

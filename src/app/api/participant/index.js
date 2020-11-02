@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { apiPostRequest } from '../util';
 
@@ -26,7 +26,7 @@ export async function changeAttendance(
   tournamentId: string,
   participantId: string,
   isAttending: boolean,
-) {
+): Promise<Response> {
   return apiPostRequest(`/api/participant/${tournamentId}/attendance`, {
     participantId,
     isAttending,
