@@ -1,8 +1,8 @@
 // no-flow
 
 import { connect } from 'react-redux';
-import { createRound } from '../../../../api/round';
 import Component from './component';
+import { getCreateRoundAction } from '../../../../action-creators/round';
 
 type Props = {
   tournamentId: string,
@@ -14,10 +14,8 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   return {
-    onSubmit: (round: Round) => dispatch({
-      type: 'CREATE_ROUND',
-      promise: createRound(tournamentId, round),
-    }),
+    onSubmit: (round: Round) =>
+      dispatch(getCreateRoundAction(tournamentId, round)),
   };
 }
 
