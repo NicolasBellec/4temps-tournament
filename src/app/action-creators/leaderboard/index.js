@@ -1,8 +1,8 @@
-// no-flow
+// @flow
 
 import { GET_LEADERBOARD } from '../action-types';
 
-export function getLeaderboardAction(leaderboard) {
+export default function getLeaderboardAction(leaderboard: Leaderboard): GetLeaderboardAction {
   return {
     type: GET_LEADERBOARD,
     promise: Promise.resolve(leaderboard),

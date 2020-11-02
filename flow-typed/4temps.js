@@ -17,7 +17,7 @@ import type {
 
 declare type TournamentType = 'none' | 'jj' | 'classic';
 
-declare type Tournament = {
+declare type Tournament = {|
   id: string,
   creatorId: string,
   name: string,
@@ -30,7 +30,7 @@ declare type Tournament = {
   assistants: Array < Assistant > ,
   participants: Array < Participant > ,
   rounds: Array < Round >
-};
+|};
 
 declare type ParticipantRole =
   | 'none'
@@ -439,8 +439,8 @@ declare type ReduxAction =
   | StartNextDanceAction
   | EndDanceAction
   | ChangeAttendanceAction
-  | GetJudgeTournament
-  | GetSingleTournament
+  | GetJudgeTournamentAction
+  | GetSingleTournamentAction
   | GenerateGroupsAction
   | GetNotesAction
   | SetNoteAction
@@ -557,12 +557,12 @@ declare type ChangeAttendanceAction = {
   promise: Promise<mixed>
 };
 
-declare type GetJudgeTournament = {
+declare type GetJudgeTournamentAction = {
   type: 'GET_JUDGE_TOURNAMENT',
   promise: mixed
 };
 
-declare type GetSingleTournament = {
+declare type GetSingleTournamentAction = {
   type: 'GET_SINGLE_TOURNAMENT',
   promise: Promise<mixed>
 };

@@ -3,7 +3,7 @@
 import { createJudge } from '../../api/judge';
 import { CREATE_JUDGE } from '../action-types';
 
-export function getCreateJudgeAction(
+export default function getCreateJudgeAction(
   tournamentId: string,
   name: string,
   judgeType: JudgeType,

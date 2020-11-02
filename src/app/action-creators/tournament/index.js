@@ -5,6 +5,7 @@ import {
   getTournamentForJudge,
   getTournament,
   createTournamentApi,
+  updateTournament
 } from '../../api/tournament';
 import {
   GET_ADMIN_TOURNAMENTS,
@@ -14,9 +15,12 @@ import {
   TOURNAMENT_UPDATED,
   EDIT_TOURNAMENT,
 } from '../action-types';
+import type { RouterHistory } from 'react-router-dom';
+import type Moment from 'moment';
+import ObjectId from 'bson-objectid';
 import { subscribeToUpdatesForTournaments } from '../../api/realtime';
 
-export function getAdminTournamentsAction(): getAdminTournamentsAction {
+export function getAdminTournamentsAction(): GetAdminTournamentsAction {
   return {
     type: GET_ADMIN_TOURNAMENTS,
     promise: getTournamentsForUser(),
@@ -26,7 +30,7 @@ export function getAdminTournamentsAction(): getAdminTournamentsAction {
   };
 }
 
-export function getJudgeTournamentAction(): getJudgeTournamentAction {
+export function getJudgeTournamentAction(): GetJudgeTournamentAction {
   return {
     type: GET_JUDGE_TOURNAMENT,
     promise: getTournamentForJudge(),
@@ -38,7 +42,7 @@ export function getJudgeTournamentAction(): getJudgeTournamentAction {
 
 export function getSingleTournamentAction(
   tournamentId: string,
-): SingleTournamentAction {
+): GetSingleTournamentAction {
   return {
     type: GET_SINGLE_TOURNAMENT,
     promise: getTournament(tournamentId),
@@ -48,7 +52,7 @@ export function getSingleTournamentAction(
   };
 }
 
-export function createTournamentAction(
+export function getCreateTournamentAction(
   name: string,
   date: Moment,
   type: TournamentType,
@@ -75,7 +79,7 @@ export function createTournamentAction(
 }
 
 export function getTournamentUpdatedAction(
-  normalized: normalizedTournament,
+  normalized: mixed,
 ): TournamentUpdatedAction {
   return {
     type: TOURNAMENT_UPDATED,

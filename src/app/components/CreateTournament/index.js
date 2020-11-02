@@ -5,7 +5,7 @@ import type { RouterHistory } from 'react-router-dom';
 import ObjectId from 'bson-objectid';
 import CreateTournament from './component';
 import type { State as ComponentState } from './component';
-import { createTournamentAction } from '../../action-creators/tournament';
+import { getCreateTournamentAction } from '../../action-creators/tournament';
 
 type Props = {
   history: RouterHistory,
@@ -17,7 +17,7 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { history }: Props) {
   return {
-    onSubmit: ({ name, date, type }: ComponentState) => dispatch(createTournamentAction(name, date, type, history)),
+    onSubmit: ({ name, date, type }: ComponentState) => dispatch(getCreateTournamentAction(name, date, type, history)),
   };
 }
 
