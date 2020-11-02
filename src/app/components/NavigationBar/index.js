@@ -2,8 +2,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import type { Location, RouterHistory } from 'react-router-dom';
-import { logoutAdmin } from '../../api/admin';
-
+import { getLogoutUserAction } from '../../../action-creators/admin';
 import NavigationBar from './component';
 
 type Props = {
@@ -33,13 +32,8 @@ function mapDispatchToProps(
   { history }: { history: RouterHistory },
 ) {
   return {
-    onClickLogout: () => dispatch({
-      type: 'LOGOUT_USER',
-      promise: logoutAdmin(),
-      meta: {
-        onSuccess: () => history.push('/'),
-      },
-    }),
+    onClickLogout: () =>
+      dispatch(getLogoutUserAction(history))
   };
 }
 

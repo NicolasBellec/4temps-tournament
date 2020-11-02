@@ -1,8 +1,8 @@
 // no-flow
 import { connect } from 'react-redux';
 import type { RouterHistory } from 'react-router-dom';
-import { loginWithAccessKey } from '../../../api/access-key';
 import LoginComponent from './component';
+import { getLoginWithAccessKey } from '../../../action-creators/access-key';
 
 type Props = {
   history: RouterHistory,
@@ -14,13 +14,7 @@ function mapStateToProps({ ui }: ReduxState) {
 
 function mapDispatchToProps(dispatch: ReduxDispatch, { history }: Props) {
   return {
-    onSubmit: (accessKey: string) => dispatch({
-      type: 'LOGIN_WITH_ACCESS_KEY',
-      promise: loginWithAccessKey(accessKey),
-      meta: {
-        onSuccess: () => history.push('/'),
-      },
-    }),
+    onSubmit: (accessKey: string) => dispatch(getLoginWithAccessKey(accessKey))
   };
 }
 

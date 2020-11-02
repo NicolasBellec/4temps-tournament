@@ -16,6 +16,7 @@ export const LOGIN_USER = 'LOGIN_USER';
 
 // Access-key related action type
 export const GET_ACCESS_KEYS = 'GET_ACCESS_KEYS';
+export const LOGIN_WITH_ACCESS_KEY = 'LOGIN_WITH_ACCESS_KEY';
 
 // Assistant related action type
 export const CREATE_ASSISTANT = 'CREATE_ASSISTANT';
