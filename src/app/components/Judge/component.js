@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import { Header, Container, Divider } from 'semantic-ui-react';
 
 import React from 'react';
@@ -74,19 +74,6 @@ function NoActiveDance() {
   );
 }
 
-type ActiveDanceProps = TakeNotesProps & {
-  notesSubmitted: boolean,
-};
-function ActiveDance(props: ActiveDanceProps) {
-  return (
-    <Container>
-      <RoundInformation />
-      <Divider />
-      {props.notesSubmitted ? <ShowNotes /> : <TakeNotes {...props} />}
-    </Container>
-  );
-}
-
 type TakeNotesProps = {
   roundId: string,
   danceId: string,
@@ -101,6 +88,19 @@ function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {
       <NoteTaker danceId={danceId} tournamentId={tournamentId} />
       <Divider />
       <SubmitNotesModal />
+    </Container>
+  );
+}
+
+type ActiveDanceProps = TakeNotesProps & {
+  notesSubmitted: boolean,
+};
+function ActiveDance(props: ActiveDanceProps) {
+  return (
+    <Container>
+      <RoundInformation />
+      <Divider />
+      {props.notesSubmitted ? <ShowNotes /> : <TakeNotes {...props} />}
     </Container>
   );
 }

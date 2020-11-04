@@ -17,7 +17,7 @@ import type {
 
 declare type TournamentType = 'none' | 'jj' | 'classic';
 
-declare type Tournament = {|
+declare type Tournament = {
   id: string,
   creatorId: string,
   name: string,
@@ -30,7 +30,7 @@ declare type Tournament = {|
   assistants: Array < Assistant > ,
   participants: Array < Participant > ,
   rounds: Array < Round >
-|};
+};
 
 declare type ParticipantRole =
   | 'none'
@@ -52,7 +52,7 @@ declare type RoundCriterion = {
   minValue: number,
   maxValue: number,
   description: string,
-  forJudgeType: JudgeType
+  forJudgeType: JudgeType,
 };
 
 declare type MultipleDanceScoringRule = 'none' | 'average' | 'best';
@@ -74,7 +74,12 @@ declare type Round = {
   draw: boolean,
   groups: Array < DanceGroup > ,
   roundScores: Array < Score > ,
-  tieBreakerJudge: ? string
+  tieBreakerJudge: ? string,
+  tieRule: string,
+  winners: {
+    leaders: Array<{ score: number, participant: Participant }>,
+    followers: Array<{ score: number, participant: Participant }>,
+  }
 };
 
 declare type Score = {
@@ -123,6 +128,7 @@ declare type JudgeNote = {
 };
 
 declare type Admin = {
+  id: string,
   firstName: string,
   lastName: string,
   email: string
@@ -221,7 +227,8 @@ declare type RoundValidationSummary = {
     isValidMinValue: boolean,
     isValidMaxValue: boolean,
     isValidValueCombination: boolean,
-    isValidDescription: boolean
+    isValidDescription: boolean,
+    isValidForJudgeType: boolean
   } >
 };
 
@@ -535,11 +542,17 @@ declare type CreateAssistantAction = {
 
 declare type StartRoundAction = {
   type: 'START_ROUND',
-  promise: Promise < mixed >
+  promise: Promise < mixed >,
+  meta: {
+    onSuccess: () => void
+  }
 };
 declare type LoginWithAccessKeyAction = {
   type: 'LOGIN_WITH_ACCESS_KEY',
-  promise: mixed
+  promise: Promise < mixed >,
+  meta: {
+    onSuccess: () => void
+  }
 };
 
 declare type GetAccessKeysAction = {
@@ -584,7 +597,8 @@ declare type GetNotesAction = {
 
 declare type SetNoteAction = {
   type: 'SET_NOTE',
-  promise: mixed
+  promise: Promise< mixed >,
+  payload: mixed
 };
 
 declare type SelectPairAction = {

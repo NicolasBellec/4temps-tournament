@@ -8,5 +8,7 @@
 all=error
 
 [options]
+exact_by_default=true
+types_first=false
 
 [strict]

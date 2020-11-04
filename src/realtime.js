@@ -1,7 +1,8 @@
-// no-flow
+// @flow
 import IO from 'socket.io';
 import type { SocketIO } from 'socket.io';
 
+// $FlowFixMe[value-as-type]
 let io: SocketIO;
 
 export function setup(server: mixed) {
@@ -9,6 +10,7 @@ export function setup(server: mixed) {
   io.on('connection', onConnection);
 }
 
+// $FlowFixMe[value-as-type]
 function onConnection(socket: SocketIO) {
   socket.on('subscribe', (room) => {
     socket.join(room);

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 // load environment variables
 import dotenv from 'dotenv';

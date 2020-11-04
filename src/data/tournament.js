@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
 import moment from 'moment';
@@ -24,7 +24,11 @@ type TournamentModel = {
   name: string,
   date: Date,
   type: TournamentType,
-  judges: Array<SimpleUser & { judgeType: JudgeType }>,
+  judges: Array<{
+    _id: ObjectId,
+    name: string,
+    judgeType: JudgeType,
+  }>,
   assistants: Array<SimpleUser>,
   participants: Array<ParticipantDbModel>,
   rounds: Array<RoundDbModel>,
@@ -343,8 +347,8 @@ function mapToDbModel(tournament: Tournament): TournamentModel {
     participants: participants.map(mapParticipantToDbModel),
     rounds: rounds.map(mapRoundToDbModel),
     judges: judges.map(({ id, ...same }) => ({
-      _id: new mongoose.Types.ObjectId(id),
       ...same,
+      _id: new mongoose.Types.ObjectId(id),
     })),
     assistants: assistants.map((a) => ({
       name: a.name,
@@ -372,8 +376,8 @@ function mapToDomainModel(tournament: TournamentModel): Tournament {
     participants: participants.map(mapParticipantToDomainModel),
     rounds: rounds.map(mapRoundToDomainModel),
     judges: judges.map(({ _id, ...same }) => ({
-      id: _id.toString(),
       ...same,
+      id: _id.toString(),
     })),
     assistants: assistants.map((a) => ({
       name: a.name,

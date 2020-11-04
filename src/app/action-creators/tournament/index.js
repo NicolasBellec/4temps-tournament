@@ -1,23 +1,22 @@
 // no-flow
 
+import type { RouterHistory } from 'react-router-dom';
+import type Moment from 'moment';
+import ObjectId from 'bson-objectid';
 import {
   getTournamentsForUser,
   getTournamentForJudge,
   getTournament,
   createTournamentApi,
-  updateTournament
+  updateTournament,
 } from '../../api/tournament';
 import {
   GET_ADMIN_TOURNAMENTS,
   GET_JUDGE_TOURNAMENT,
   GET_SINGLE_TOURNAMENT,
   CREATE_TOURNAMENT,
-  TOURNAMENT_UPDATED,
   EDIT_TOURNAMENT,
 } from '../action-types';
-import type { RouterHistory } from 'react-router-dom';
-import type Moment from 'moment';
-import ObjectId from 'bson-objectid';
 import { subscribeToUpdatesForTournaments } from '../../api/realtime';
 
 export function getAdminTournamentsAction(): GetAdminTournamentsAction {
@@ -75,15 +74,6 @@ export function getCreateTournamentAction(
     meta: {
       onSuccess: ({ id }: Tournament): void => history.push(`/tournament/edit/${id}`),
     },
-  };
-}
-
-export function getTournamentUpdatedAction(
-  normalized: mixed,
-): TournamentUpdatedAction {
-  return {
-    type: TOURNAMENT_UPDATED,
-    payload: normalized,
   };
 }
 

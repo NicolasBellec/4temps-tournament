@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import mongoose from 'mongoose';
 
 const OPTIONS = {
@@ -13,4 +13,4 @@ export function disconnect() {
   mongoose.disconnect();
 }
 
-export default () => mongoose.connection;
+export default (): Mongoose$Connection => mongoose.connection;

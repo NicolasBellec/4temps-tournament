@@ -2,12 +2,14 @@
 
 // Tournament related action type
 export const CREATE_TOURNAMENT = 'CREATE_TOURNAMENT';
-export const TOURNAMENT_UPDATED = 'TOURNAMENT_UPDATED';
 export const EDIT_TOURNAMENT = 'EDIT_TOURNAMENT';
 export const GET_ADMIN_TOURNAMENTS = 'GET_ADMIN_TOURNAMENTS';
 export const GET_JUDGE_TOURNAMENT = 'GET_JUDGE_TOURNAMENT';
 export const GET_SINGLE_TOURNAMENT = 'GET_SINGLE_TOURNAMENT';
 export const GET_ALL_TOURNAMENTS = 'GET_ALL_TOURNAMENTS';
+
+// Real-time rlatedaction types
+export const TOURNAMENT_UPDATED = 'TOURNAMENT_UPDATED';
 
 // Login related action type
 export const LOGOUT_USER = 'LOGOUT_USER';

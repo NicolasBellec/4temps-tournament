@@ -1,8 +1,12 @@
-// no-flow
+// @flow
 
 /* eslint-disable max-len */
 
-export default (html: string, preloadedState: ReduxState, cspNonce: string) => `
+export default (
+  html: string,
+  preloadedState: ReduxState,
+  cspNonce: string,
+): string => `
     <!doctype html>
     <html>
       <head>

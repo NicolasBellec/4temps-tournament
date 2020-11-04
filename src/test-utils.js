@@ -43,7 +43,6 @@ export class Request implements ServerApiRequest {
   }
 
   static empty() {
-    // $FlowFixMe
     return new Request(null);
   }
 
@@ -129,9 +128,9 @@ export class TournamentRepositoryImpl implements TournamentRepository {
 
   get = async (id: string) => this._tournaments[id] || null;
 
-  getAll = async () => Object.keys(this._tournaments).map((key) => this._tournaments[key]);
+  getAll = async (): Promise<Array<Tournament>> => Object.keys(this._tournaments).map((key) => this._tournaments[key]);
 
-  getForUser = async (userId: string) => (await this.getAll()).filter(({ creatorId }) => creatorId === userId);
+  getForUser = async (userId: string): Promise<Array<Tournament>> => (await this.getAll()).filter(({ creatorId }) => creatorId === userId);
 
   getForJudge = async (userId: string) => {
     const tournaments = await this.getAll();
@@ -251,7 +250,7 @@ export class AccessKeyRepositoryImpl implements AccessKeyRepository {
     return null;
   }
 
-  async getForTournament(tournamentId: string) {
+  async getForTournament(tournamentId: string): Promise<Array<AccessKey>> {
     return this._keys.filter((k) => k.tournamentId === tournamentId);
   }
 }
@@ -276,7 +275,7 @@ export class NoteRepositoryImpl implements NoteRepository {
     }
   };
 
-  getForDance = async (danceId: string) => this._notes.filter((note) => note.danceId === danceId);
+  getForDance = async (danceId: string): Promise<Array<JudgeNote>> => this._notes.filter((note) => note.danceId === danceId);
 
   delete = async (note: JudgeNote) => {
     this._notes = this._notes.filter(

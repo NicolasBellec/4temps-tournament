@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import type { Socket } from 'socket.io-client';
 import { normalizeTournament } from '../reducers/normalize';
 import { deserializeTournament } from './tournament';
-import { getTournamentUpdatedAction } from '../action-creators/tournament';
+import { getTournamentUpdatedAction } from '../action-creators/realtime';
 import getLeaderboardAction from '../action-creators/leaderboard';
 
 let socket: Socket;

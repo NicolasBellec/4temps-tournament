@@ -17,6 +17,8 @@ export function normalizeTournament(tournament: Tournament): mixed {
   return normalize(tournament, tournamentSchema);
 }
 
-export function normalizeTournamentArray(tournaments: Array<Tournament>): Array<mixed> {
+export function normalizeTournamentArray(
+  tournaments: Array<Tournament>,
+): Array<mixed> {
   return normalize(tournaments, [tournamentSchema]);
 }

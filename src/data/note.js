@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
@@ -49,11 +49,11 @@ export class TemporaryNoteRepository implements NoteRepository {
     await TempModel.update({ ...ids }, { ...note }, { upsert: true });
   }
 
-  async getForDance(danceId: string) {
+  async getForDance(danceId: string): Promise<Array<JudgeNote>> {
     return (await TempModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()));
   }
 
-  async delete(note: JudgeNote) {
+  async delete(note: JudgeNote): Promise<void> {
     const { value, ...ids } = note;
     return await TempModel.deleteOne(ids);
   }
@@ -65,11 +65,11 @@ export class SubmittedNoteRepository implements NoteRepository {
     await SubmittedModel.update({ ...ids }, note, { upsert: true });
   }
 
-  async getForDance(danceId: string) {
+  async getForDance(danceId: string): Promise<Array<JudgeNote>> {
     return (await SubmittedModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()));
   }
 
-  async delete(note: JudgeNote) {
+  async delete(note: JudgeNote): Promise<void> {
     const { value, ...ids } = note;
     return await TempModel.deleteOne(ids);
   }

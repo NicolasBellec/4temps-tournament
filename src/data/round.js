@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
@@ -29,6 +29,11 @@ export type RoundDbModel = {
   errorOnSameScore: boolean,
   roundScores: Array<{ participantId: ObjectId, score: number }>,
   tieBreakerJudge: ?string,
+  tieRule: string,
+  winners: {
+    leaders: Array<{ score: number, participant: Participant }>,
+    followers: Array<{ score: number, participant: Participant }>,
+  },
 };
 
 type DanceGroupDbModel = {
@@ -64,7 +69,7 @@ const groupSchema = new mongoose.Schema({
   dances: [danceSchema],
 });
 
-export const schema = new mongoose.Schema({
+export const schema: Mongoose$Schema<mixed> = new mongoose.Schema({
   name: { type: String, required: true },
   danceCount: {
     type: Number,
@@ -131,10 +136,11 @@ export function mapToDomainModel(round: RoundDbModel): Round {
   } = round;
 
   return {
+    ...same,
     id: _id.toString(),
     criteria: criteria.map(({ _id, ...sameCrit }) => ({
-      id: _id.toString(),
       ...sameCrit,
+      id: _id.toString(),
     })),
     groups: groups.map((g) => ({
       id: g._id.toString(),
@@ -152,7 +158,6 @@ export function mapToDomainModel(round: RoundDbModel): Round {
       participantId: entry.participantId.toString(),
       score: entry.score,
     })),
-    ...same,
   };
 }
 
@@ -162,10 +167,11 @@ export function mapToDbModel(round: Round): RoundDbModel {
   } = round;
 
   return {
+    ...same,
     _id: new mongoose.Types.ObjectId(id),
     criteria: criteria.map(({ id, ...sameCrit }) => ({
-      _id: new mongoose.Types.ObjectId(id),
       ...sameCrit,
+      _id: new mongoose.Types.ObjectId(id),
     })),
     groups: groups.map((g) => ({
       _id: new mongoose.Types.ObjectId(g.id),
@@ -184,6 +190,5 @@ export function mapToDbModel(round: Round): RoundDbModel {
       participantId: new mongoose.Types.ObjectId(entry.participantId),
       score: entry.score,
     })),
-    ...same,
   };
 }

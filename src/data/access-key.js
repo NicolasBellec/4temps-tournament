@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
@@ -63,7 +63,7 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
     });
   }
 
-  async _generateUniqueKey() {
+  async _generateUniqueKey(): Promise<string> {
     let key = this._generateKey();
     while ((await this.getForKey(key)) != null) {
       key = this._generateKey();
@@ -71,11 +71,11 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
     return key;
   }
 
-  _generateKey() {
+  _generateKey(): string {
     return crypto.randomBytes(5).toString('hex');
   }
 
-  async getForKey(key: string) {
+  async getForKey(key: string): Promise<?AccessKey> {
     return this.mapToDomainModel(await Model.findOne({ key }));
   }
 
@@ -95,7 +95,7 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
     };
   }
 
-  async getForTournament(tournamentId: string) {
+  async getForTournament(tournamentId: string): Promise<Array<AccessKey>> {
     const found = await Model.find({ tournamentId });
     if (found) {
       return found.map((o) => this.mapToDomainModel(o.toObject()));

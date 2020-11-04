@@ -1,5 +1,6 @@
-// no-flow
+// @flow
 
+import ObjectId from 'bson-objectid';
 import validateAdmin from '../validate-admin';
 
 test('Valid object is valid', async () => {
@@ -99,8 +100,7 @@ test('Email requires valid format', async () => {
 test('Email in use is invalid', async () => {
   const getAdmins = () => new Promise((resolve) => resolve([
     {
-      // $FlowFixMe
-      _id: 'asdasd',
+      _id: ObjectId.generate(),
       firstName: 'Other',
       lastName: 'Other',
       email: 'test@test.com',
@@ -114,7 +114,6 @@ test('Email in use is invalid', async () => {
     email: 'test@test.com',
     password: 'Password123',
   };
-
   const result = await validateAdmin(admin, getAdmins);
   expect(result.isValid).toBe(false);
   expect(result.isEmailNotUsed).toBe(false);

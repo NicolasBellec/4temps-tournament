@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 import Component from './component';
-import { createAssistantAction } from '../../../../action-creators/assistant';
+import createAssistantAction from '../../../../action-creators/assistant';
 
 type Props = {
   tournamentId: string,

@@ -258,7 +258,7 @@ describe('Round route test helpers', () => {
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge',
+        'judge'
       );
 
       expect(repo.getAll()).toHaveLength(1);
@@ -270,12 +270,12 @@ describe('Round route test helpers', () => {
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge',
+        'judge'
       );
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge',
+        'judge'
       );
 
       const keys = repo.getAll();
@@ -287,12 +287,12 @@ describe('Round route test helpers', () => {
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         userId,
-        'judge',
+        'judge'
       );
       await repo.createForTournamentAndUserWithRole(
         tournamentId,
         generateId(),
-        'judge',
+        'judge'
       );
 
       const expected = repo.getAll()[0];

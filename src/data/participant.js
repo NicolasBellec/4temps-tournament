@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
@@ -11,7 +11,7 @@ export type ParticipantDbModel = {
   isAttending: boolean,
 };
 
-export const schema = new mongoose.Schema({
+export const schema: Mongoose$Schema<mixed> = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -32,13 +32,13 @@ export const schema = new mongoose.Schema({
 
 export function mapToDomainModel(participant: ParticipantDbModel): Participant {
   const { _id, ...rest } = participant;
-  return { id: _id.toString(), ...rest };
+  return { ...rest, id: _id.toString() };
 }
 
 export function mapToDbModel(participant: Participant): ParticipantDbModel {
   const { id, ...rest } = participant;
   return {
-    _id: new mongoose.Types.ObjectId(id),
     ...rest,
+    _id: new mongoose.Types.ObjectId(id),
   };
 }
