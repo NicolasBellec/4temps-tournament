@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React, { Component } from 'react';
 import {
   Container,
@@ -12,15 +12,7 @@ import DatePicker from 'react-datepicker';
 import type Moment from 'moment';
 import moment from 'moment';
 
-type Props = {
-  tournament: Tournament,
-
-  isValidName: boolean,
-  isValidDate: boolean,
-
-  onSubmit: (tournament: Tournament) => Promise<void>,
-  onClickLeaderboard: () => void,
-};
+import type { Props } from "./types";
 
 type State = {
   name: string,
@@ -28,60 +20,81 @@ type State = {
 };
 
 class EditTournamentGeneral extends Component<Props, State> {
-  state = {
-    name: this.props.tournament ? this.props.tournament.name : '',
-    date: this.props.tournament ? this.props.tournament.date : moment(),
-  };
+
+  constructor(props: Props) {
+    const { tournament } = props;
+    const { data } = tournament;
+    super(props);
+    this.state = {
+      name: data ? data.name : '',
+      date: data ? data.date : moment(),
+    };
+  }
 
   componentWillReceiveProps({ tournament }: Props) {
-    const { name, date } = tournament;
-    if (
-      !this.props.tournament
-      || this.props.tournament.name !== name
-      || this.props.tournament.date !== date
-    ) {
-      this.setState({ name, date });
+    const { data } = tournament;
+    if ( data ) {
+      const { name, date } = data;
+
+      if (
+        !this.props.tournament.data
+        || this.props.tournament.data.name !== name
+        || this.props.tournament.data.date !== date
+      ) {
+        this.setState({ name, date });
+      }
     }
   }
 
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value });
   };
 
-  _onChangeDate = (date: ?Moment) => {
+  onChangeDate = (date: ?Moment) => {
     if (date != null) {
       this.setState({ date });
     }
   };
 
-  _onSubmit = () => {
+  onSubmit = () => {
     const { name, date } = this.state;
-    this.props.onSubmit({ ...this.props.tournament, name, date });
+    const { tournament } = this.props;
+    const { data } = tournament;
+    if ( data ) {
+      this.props.onSubmit({ ...data, name, date });
+    }
   };
 
   render() {
+    const {
+      onClickLeaderboard,
+      isValidName,
+      isValidDate
+    } = this.props;
+    const { name, date } = this.state;
+
     return (
       <Container>
-        <Button onClick={this.props.onClickLeaderboard}>
+        <Button onClick={onClickLeaderboard}>
           Go to leaderboard
         </Button>
-        <Form error={!this.props.isValidName || !this.props.isValidDate}>
+        <Form error={!isValidName || !isValidDate}>
           <FormInput
             label="Name"
             placeholder="4Temps World Championship"
-            value={this.state.name}
-            onChange={this._onChangeName}
+            value={name}
+            onChange={this.onChangeName}
           />
-          {!this.props.isValidName && <Message error content="Invalid name" />}
+          {!isValidName && <Message error content="Invalid name" />}
           <FormInput
             label="Date"
             control={DatePicker}
             allowSameDay
-            selected={this.state.date}
-            onChange={this._onChangeDate}
+            selected={date}
+            onChange={this.onChangeDate}
           />
-          {!this.props.isValidDate && <Message error content="Invalid date" />}
-          <FormButton onClick={this._onSubmit}>Submit</FormButton>
+          {!isValidDate && <Message error content="Invalid date" />}
+          <FormButton onClick={this.onSubmit}>Submit</FormButton>
         </Form>
       </Container>
     );

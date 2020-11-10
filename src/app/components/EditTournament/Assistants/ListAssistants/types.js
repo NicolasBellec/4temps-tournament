@@ -25,4 +25,4 @@ export type Props = {
   ...OwnProps,
   ...StateProps,
   ...DispatchProps,
-}
+};

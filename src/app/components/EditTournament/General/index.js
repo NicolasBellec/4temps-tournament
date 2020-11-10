@@ -1,32 +1,36 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
-import type { RouterHistory } from 'react-router-dom';
-
+// $FlowFixMe
 import { updateTournament } from '../../../api/tournament';
 
 import {
+  // $FlowFixMe
   getAdminTournamentsAction,
+  // $FlowFixMe
   getEditTournamentAction,
 } from '../../../action-creators/tournament';
 
 import EditTournamentGeneral from './component';
 import PreloadContainer from '../../PreloadContainer';
 
-type ConnectedProps = {
-  tournamentId: string,
-  history: RouterHistory,
-};
+import type {
+  Props,
+  StateProps,
+  DispatchProps,
+  OwnProps,
+  TournamentRepresentation
+} from "./types";
 
 function mapStateToProps(
   {
     tournaments, rounds, judges, participants, ui,
   }: ReduxState,
-  { tournamentId }: ConnectedProps,
-) {
+  { tournamentId }: OwnProps,
+): StateProps {
   return {
     ...ui.editTournament,
     tournament: {
-      ...tournaments.byId[tournamentId],
+      data: tournaments.byId[tournamentId],
       rounds: (rounds.forTournament[tournamentId] || []).map(
         (id) => rounds.byId[id],
       ),
@@ -45,18 +49,25 @@ function mapStateToProps(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId, history }: ConnectedProps,
-) {
+  { tournamentId, history }: OwnProps,
+): DispatchProps {
   return {
-    onSubmit: (tournament: Tournament) => dispatch(getEditTournamentAction(tournamentId, tournament)),
-    onClickLeaderboard: () => history.push(`/leaderboard/${tournamentId}`),
-    load: () => dispatch(getAdminTournamentsAction()),
+    onSubmit: (tournament: TournamentRepresentation) => {
+      dispatch(getEditTournamentAction(tournamentId, tournament))
+    },
+    onClickLeaderboard: () => {
+      history.push(`/leaderboard/${tournamentId}`)
+    },
+    load: () => {
+      dispatch(getAdminTournamentsAction())
+    },
   };
 }
 
-const EditTournamentGeneralConnectedContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+const EditTournamentGeneralConnectedContainer =
+  connect<Props, OwnProps, StateProps, _,_,_>(
+    mapStateToProps,
+    mapDispatchToProps,
 )(PreloadContainer);
 
 export default EditTournamentGeneralConnectedContainer;
