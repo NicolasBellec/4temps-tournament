@@ -52,7 +52,7 @@ function createViewModelsForRound(
 ): RoundViewModel {
   const round: Round = rounds.byId[roundId];
 
-  const { groups: DanceGroup[], ...rest } = (round: Round);
+  const { groups, ...rest } = (round: Round);
   let activeDanceId: ?string;
   let activeDance: ?number;
   const activeGroup: ?number = getActiveGroup(groups);

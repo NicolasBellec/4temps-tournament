@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import {
@@ -15,38 +15,41 @@ import type Moment from 'moment';
 
 import './styles.css';
 
-type Props = {
-  isLoading: boolean,
-  tournaments: Array<Tournament>,
-  onClick: ?(tournamentId: string) => void,
-};
+import type {
+  Props,
+  State,
+} from './types';
 
-type State = {
-  previousTournaments: Array<Tournament>,
-  futureTournaments: Array<Tournament>,
-};
+function sortTournaments(tournaments: Array<Tournament>) {
+  // sort by latest date first
+  return tournaments.sort(
+    (a: Tournament, b: Tournament) => (a.date.isSameOrBefore(b.date) ? 1 : -1),
+  );
+}
 
 function getPreviousTournaments(tournaments: Array<Tournament>) {
   const now = moment();
-  return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrBefore(now));
+  return sortTournaments(tournaments)
+    .filter((tour) => tour.date.isSameOrBefore(now));
 }
 
 function getFutureTournaments(tournaments: Array<Tournament>) {
   const now = moment();
-  return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrAfter(now));
-}
-
-function sortTournaments(tournaments: Array<Tournament>) {
-  // sort by latest date first
-  return tournaments.sort((a: Tournament, b: Tournament) => (a.date.isSameOrBefore(b.date) ? 1 : -1));
+  return sortTournaments(tournaments)
+    .filter((tour) => tour.date.isSameOrAfter(now));
 }
 
 class TournamentList extends Component<Props, State> {
-  state = {
-    previousTournaments: getPreviousTournaments(this.props.tournaments),
-    futureTournaments: getFutureTournaments(this.props.tournaments),
-  };
+  constructor(props: Props) {
+    super(props);
+    const { tournaments } = this.props;
+    this.state = {
+      previousTournaments: getPreviousTournaments(tournaments),
+      futureTournaments: getFutureTournaments(tournaments),
+    };
+  }
 
+  // TODO: Change this partern as this is deprecated
   componentWillReceiveProps(nextProps: Props) {
     const previousTournaments = getPreviousTournaments(nextProps.tournaments);
     const futureTournaments = getFutureTournaments(nextProps.tournaments);
@@ -54,42 +57,44 @@ class TournamentList extends Component<Props, State> {
     this.setState({ previousTournaments, futureTournaments });
   }
 
-  _renderHeaderAndTournaments = (
+  renderHeaderAndTournaments = (
     header: string,
-    tournaments: Array<Tournament>,
+    tournaments: Tournament[],
   ) => {
-    if (this._shouldRenderTable(tournaments)) {
+    if (this.shouldRenderTable(tournaments)) {
       return (
         <div styleName="wrapper">
           <Header as="h2">{header}</Header>
-          {this._renderTable(tournaments)}
+          {this.renderTable(tournaments)}
         </div>
       );
     }
+
+    return (null);
   };
 
-  _renderTable = (tournaments: Array<Tournament>) => (
+  renderTable = (tournaments: Tournament[]) => (
     <Table selectable textAlign="center" fixed>
-      <TableBody>{tournaments.map(this._renderRow)}</TableBody>
+      <TableBody>{tournaments.map(this.renderRow)}</TableBody>
     </Table>
   );
 
-  _shouldRenderTable = (tournaments: Array<Tournament>) => tournaments.length > 0;
+  shouldRenderTable = (tournaments: Tournament[]) => tournaments.length > 0;
 
-  _renderRow = ({
+  renderRow = ({
     id, name, date, type,
   }: Tournament) => {
     const { onClick } = this.props;
     return (
       <TableRow key={id} onClick={onClick != null ? () => onClick(id) : null}>
         <TableCell>{name}</TableCell>
-        <TableCell>{this._typeToName(type)}</TableCell>
-        <TableCell>{this._formatDate(date)}</TableCell>
+        <TableCell>{this.typeToName(type)}</TableCell>
+        <TableCell>{this.formatDate(date)}</TableCell>
       </TableRow>
     );
   };
 
-  _typeToName = (type: TournamentType): string => {
+  typeToName = (type: TournamentType): string => {
     if (type === 'jj') {
       return "Jack n' Jill";
     }
@@ -99,19 +104,21 @@ class TournamentList extends Component<Props, State> {
     return 'Unknown';
   };
 
-  _formatDate = (moment: Moment) => moment.format('LL');
+  formatDate = (singleMoment: Moment) => singleMoment.format('LL');
 
   render() {
+    const { isLoading } = this.props;
+    const { futureTournaments, previousTournaments } = this.state;
     return (
       <Container text>
-        {this.props.isLoading && <Loader active={this.props.isLoading} />}
-        {this._renderHeaderAndTournaments(
+        {isLoading && <Loader active={isLoading} />}
+        {this.renderHeaderAndTournaments(
           'Upcoming',
-          this.state.futureTournaments,
+          futureTournaments,
         )}
-        {this._renderHeaderAndTournaments(
+        {this.renderHeaderAndTournaments(
           'Past',
-          this.state.previousTournaments,
+          previousTournaments,
         )}
       </Container>
     );
