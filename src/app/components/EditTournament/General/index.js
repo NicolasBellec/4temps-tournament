@@ -39,7 +39,7 @@ function mapStateToProps(
     },
 
     shouldLoad: !tournaments.byId[tournamentId],
-    Child: EditTournamentGeneral,
+    child: EditTournamentGeneral,
   };
 }
 

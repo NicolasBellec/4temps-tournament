@@ -1,21 +1,25 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
 import PreloadContainer from '../../../PreloadContainer';
 import Component from './component';
 
 import { getAccessKeysForTournament } from '../../../../api/access-key';
+// $FlowFixMe
 import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
 import { getAccessKeysAction } from '../../../../action-creators/access-key';
 
-type Props = {
-  tournamentId: string,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  Props
+} from "./types";
 
 function mapStateToProps(
   { assistants, accessKeys }: ReduxState,
-  { tournamentId }: Props,
-) {
+  { tournamentId }: OwnProps,
+) : StateProps {
   const hasTournament = assistants.forTournament[tournamentId] != null;
   const hasKeys = hasTournament
     && assistants.forTournament[tournamentId].reduce(
@@ -23,7 +27,7 @@ function mapStateToProps(
       true,
     );
   return {
-    Child: Component,
+    child: Component,
     shouldLoad: !hasKeys,
     assistants: (assistants.forTournament[tournamentId] || []).map((id) => ({
       ...assistants.byId[id],
@@ -32,7 +36,10 @@ function mapStateToProps(
   };
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
+function mapDispatchToProps(
+  dispatch: ReduxDispatch,
+  { tournamentId }: OwnProps
+): DispatchProps {
   return {
     load: () => {
       dispatch(getAdminTournamentsAction());
@@ -41,9 +48,10 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
   };
 }
 
-const ListAssistantsContainer = connect(
+const connector = connect<Props, OwnProps, StateProps,_,_,_>(
   mapStateToProps,
   mapDispatchToProps,
-)(PreloadContainer);
+);
 
+const ListAssistantsContainer = connector(PreloadContainer);
 export default ListAssistantsContainer;

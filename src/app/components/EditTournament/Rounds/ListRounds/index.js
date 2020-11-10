@@ -24,7 +24,7 @@ function mapStateToProps({ rounds }: ReduxState, { tournamentId }: Props) {
 
   return {
     tournamentId,
-    Child: List,
+    child: List,
     shouldLoad: !rounds.forTournament[tournamentId],
     rounds: tournamentRounds,
     nextRound: nextRound ? nextRound.id : null,

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React from 'react';
 import {
@@ -10,15 +10,11 @@ import {
   TableRow,
 } from 'semantic-ui-react';
 
-type AssistantViewModel = Assistant & {
-  accessKey: string,
-};
+import type { Props } from "./types";
 
 function ListAssistants({
   assistants,
-}: {
-  assistants: Array<AssistantViewModel>,
-}) {
+}: Props) {
   return (
     <Table unstackable basic="very">
       <TableHeader>

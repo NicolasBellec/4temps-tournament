@@ -19,7 +19,7 @@ function mapStateToProps({
   const tournament = tournaments.byId[tournaments.forJudge];
   return {
     shouldLoad: !(notes.isLoading || notes.didLoad),
-    Child: Component,
+    child: Component,
     isLastRound:
       rounds.byId[tournament.rounds[tournament.rounds.length - 1]].active,
     isClassic: tournament.type === 'classic',

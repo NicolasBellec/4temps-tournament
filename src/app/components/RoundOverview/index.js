@@ -17,7 +17,7 @@ function mapStateToProps(state: ReduxState, { match }: Props) {
   const tournamentId = match.params.tournamentId || '';
   return {
     shouldLoad: !state.rounds.byId[roundId],
-    Child: Component,
+    child: Component,
     roundId,
     tournamentId,
   };

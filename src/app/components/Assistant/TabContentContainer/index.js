@@ -15,7 +15,7 @@ function mapStateToProps(
   ownProps: OwnProps,
 ): StateProps {
   return {
-    Child: TabContent,
+    child: TabContent,
     shouldLoad: tournaments.byId[ownProps.tournamentId] === undefined,
     ...ownProps,
   };

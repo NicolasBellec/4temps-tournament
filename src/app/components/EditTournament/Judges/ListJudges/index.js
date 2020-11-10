@@ -23,7 +23,7 @@ function mapStateToProps(
       true,
     );
   return {
-    Child: Component,
+    child: Component,
     shouldLoad: !hasKeys,
     judges: (judges.forTournament[tournamentId] || []).map((id) => ({
       ...judges.byId[id],

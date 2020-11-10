@@ -17,7 +17,7 @@ function mapStateToProps(state: ReduxState): JudgeComponentProps {
 
   const activeDanceId = activeRound != null ? getActiveDanceId(activeRound) : null;
   return {
-    Child: Judge,
+    child: Judge,
     shouldLoad: tournaments.forJudge === '',
     tournamentId: tournaments.forJudge,
     activeDanceId,

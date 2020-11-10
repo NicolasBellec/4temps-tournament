@@ -16,7 +16,7 @@ export type TabContentTy = (
 ) => (Component | string)
 
 export type StateProps = {
-  Child: TabContentTy,
+  child: TabContentTy,
   shouldLoad: boolean,
   ...OwnProps
 };

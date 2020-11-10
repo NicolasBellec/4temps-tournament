@@ -21,7 +21,7 @@ function mapStateToProps(
   return {
     shouldLoad: !tournaments.didLoadAdminTournaments,
     isLoading: tournaments.isLoading,
-    Child: TournamentList,
+    child: TournamentList,
     tournaments: tournaments.forAdmin.map((id) => tournaments.byId[id]),
   };
 }

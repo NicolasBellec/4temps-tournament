@@ -16,7 +16,7 @@ function mapStateToProps({ leaderboards }: ReduxState, { match }: Props) {
   const tournamentId = match.params.tournamentId || '';
   return {
     shouldLoad: leaderboards.byId[tournamentId] == null,
-    Child: Component,
+    child: Component,
     leaderboard: leaderboards.byId[tournamentId],
   };
 }

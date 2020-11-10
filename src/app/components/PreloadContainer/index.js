@@ -1,17 +1,18 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import type { ElementType } from 'react';
 import { Loader } from 'semantic-ui-react';
 
-type Props = {
-  load: (args: mixed) => void,
+type Props<T> = {
+  load: (args?: T) => void,
   shouldLoad: boolean,
-  Child: ElementType,
-  loadArgs: mixed,
+  child: ElementType,
+  loadArgs?: T,
+  ...
 };
 
-class PreloadContainer extends Component<Props> {
+class PreloadContainer<T> extends Component< Props<T> > {
   componentDidMount() {
     const { load, shouldLoad, loadArgs } = this.props;
     if (shouldLoad) {
@@ -19,7 +20,8 @@ class PreloadContainer extends Component<Props> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  // TODO: Change the pattern
+  componentWillReceiveProps<T>(nextProps: Props<T>) {
     const { load, shouldLoad } = nextProps;
     if (shouldLoad && shouldLoad !== this.props.shouldLoad) {
       load();
@@ -27,11 +29,11 @@ class PreloadContainer extends Component<Props> {
   }
 
   render() {
-    const { shouldLoad, Child, ...rest } = this.props;
+    const { shouldLoad, child, ...rest } = this.props;
     if (shouldLoad) {
       return <Loader active />;
     }
-    return <Child {...rest} />;
+    return <child {...rest} />;
   }
 }
 
