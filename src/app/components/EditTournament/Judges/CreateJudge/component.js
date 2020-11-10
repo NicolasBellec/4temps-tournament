@@ -10,35 +10,35 @@ import {
   Button,
 } from 'semantic-ui-react';
 
-type OnSubmitParams = { name: string, judgeType: JudgeType };
-
-type Props = {
-  onSubmit: (OnSubmitParams) => void,
-  isValid: boolean,
-  isLoading: boolean,
-  createdSuccessfully: boolean,
-};
+import type {
+  Props,
+  OnSubmitParams
+} from "./types";
 
 type State = OnSubmitParams;
 
 class CreateJudge extends Component<Props, State> {
-  state = {
-    name: '',
-    judgeType: 'normal',
-  };
 
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      name: '',
+      judgeType: 'normal',
+    };
+  }
+
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value });
   };
 
-  _onChangeJugeType = (
+  onChangeJugeType = (
     event: SyntheticInputEvent<HTMLInputElement>,
     { value }: { value: JudgeType },
   ) => {
     this.setState({ judgeType: value });
   };
 
-  _onSubmit = () => {
+  onSubmit = () => {
     this.props.onSubmit(this.state);
   };
 
@@ -48,29 +48,29 @@ class CreateJudge extends Component<Props, State> {
     return (
       <Form loading={isLoading} error={!isValid} success={createdSuccessfully}>
         {createdSuccessfully && <Message success content="Success!" />}
-        <FormInput label="Name" value={name} onChange={this._onChangeName} />
+        <FormInput label="Name" value={name} onChange={this.onChangeName} />
         {!isValid && <Message error content="Name must not be empty" />}
         <FormGroup>
           <FormRadio
             label="Normal"
             value="normal"
-            onChange={this._onChangeJugeType}
+            onChange={this.onChangeJugeType}
             checked={this.state.judgeType === 'normal'}
           />
           <FormRadio
             label="Sanctioner"
             value="sanctioner"
-            onChange={this._onChangeJugeType}
+            onChange={this.onChangeJugeType}
             checked={this.state.judgeType === 'sanctioner'}
           />
           <FormRadio
             label="President"
             value="president"
-            onChange={this._onChangeJugeType}
+            onChange={this.onChangeJugeType}
             checked={this.state.judgeType === 'president'}
           />
         </FormGroup>
-        <Button onClick={this._onSubmit}>Add judge</Button>
+        <Button onClick={this.onSubmit}>Add judge</Button>
       </Form>
     );
   }
