@@ -1,21 +1,15 @@
-// no-flow
+// @flow
 
 import React, { PureComponent } from 'react';
 import {
   Button, Form, FormInput, Header, Message,
 } from 'semantic-ui-react';
 
-import './styles.css';
+import type {
+  Props
+} from "./types";
 
-type Props = {
-  onSubmit: (admin: AdminCredentials) => Promise<void>,
-  headerTitle: string,
-  isValidInput: boolean,
-  isValidEmail: boolean,
-  isValidPassword: boolean,
-  doesAdminExist: boolean,
-  isLoading: boolean,
-};
+import './styles.css';
 
 type State = AdminCredentials;
 
@@ -24,52 +18,70 @@ class Login extends PureComponent<Props, State> {
     headerTitle: 'Log in',
   };
 
-  state = {
-    email: '',
-    password: '',
-  };
+  constructor(props: Props) {
+    super(props);
 
-  _onEmailChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
+
+  onEmailChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ email: event.target.value });
   };
 
-  _onPasswordChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onPasswordChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ password: event.target.value });
   };
 
-  _onSubmit = () => {
+  onSubmit = () => {
     this.props.onSubmit(this.state);
   };
 
   render() {
+    const {
+      headerTitle,
+      isLoading,
+      isValid,
+      isValidEmail,
+      isValidPassword,
+      doesAdminExist
+    } = this.props;
+
+    const {
+      email,
+      password
+    } = this.state;
+
     return (
       <div styleName="center">
         <div styleName="width">
-          <Header as="h1">{this.props.headerTitle}</Header>
-          <Form loading={this.props.isLoading} error={!this.props.isValidInput}>
+          <Header as="h1">{headerTitle}</Header>
+          <Form loading={isLoading} error={!isValid}>
             <FormInput
               label="Email"
               placeholder="john@gmail.com"
-              value={this.state.email}
-              onChange={this._onEmailChange}
+              value={email}
+              onChange={this.onEmailChange}
             />
-            {!this.props.isValidEmail && (
+            {!isValidEmail && (
               <Message error content="Invalid email address" />
             )}
             <FormInput
               type="password"
               label="Password"
               placeholder="P4ssw0rd"
-              value={this.state.password}
-              onChange={this._onPasswordChange}
+              value={password}
+              onChange={this.onPasswordChange}
             />
-            {!this.props.isValidPassword && (
+            {!isValidPassword && (
               <Message error content="Invalid password" />
             )}
-            <Button type="submit" onClick={this._onSubmit}>
+            <Button type="submit" onClick={this.onSubmit}>
               Submit
             </Button>
-            {!this.props.doesAdminExist && (
+            {!doesAdminExist && (
               <Message error content="Invalid email or password" />
             )}
           </Form>

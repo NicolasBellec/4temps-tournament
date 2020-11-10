@@ -1,19 +1,15 @@
-// no-flow
+// @flow
 
 import React, { PureComponent } from 'react';
 import {
   Button, Form, FormInput, Header, Message,
 } from 'semantic-ui-react';
 
-import './styles.css';
+import type {
+  Props
+} from "./types";
 
-type Props = {
-  onSubmit: (key: string) => void,
-  headerTitle: string,
-  isValidAccessKey: boolean,
-  isLoading: boolean,
-  doesAccessKeyExist: boolean,
-};
+import './styles.css';
 
 type State = {
   accessKey: string,
@@ -24,42 +20,53 @@ class Login extends PureComponent<Props, State> {
     headerTitle: 'Log in',
   };
 
-  state = {
-    accessKey: '',
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      accessKey: '',
+    };
+  }
 
-  _onAccessKeyChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onAccessKeyChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ accessKey: event.target.value });
   };
 
-  _onSubmit = () => {
+  onSubmit = () => {
     this.props.onSubmit(this.state.accessKey);
   };
 
   render() {
+    const {
+      headerTitle,
+      isLoading,
+      isValidAccessKey,
+      doesAccessKeyExist
+    } = this.props;
+    const { accessKey } = this.state;
+
     return (
       <div styleName="center">
         <div styleName="width">
-          <Header as="h1">{this.props.headerTitle}</Header>
+          <Header as="h1">{headerTitle}</Header>
           <Form
-            loading={this.props.isLoading}
+            loading={isLoading}
             error={
-              !this.props.isValidAccessKey || !this.props.doesAccessKeyExist
+              !isValidAccessKey || !doesAccessKeyExist
             }
           >
             <FormInput
               label="Access Key"
               placeholder="exd618d5f1"
-              value={this.state.accessKey}
-              onChange={this._onAccessKeyChange}
+              value={accessKey}
+              onChange={this.onAccessKeyChange}
             />
-            {!this.props.isValidAccessKey && (
+            {!isValidAccessKey && (
               <Message error content="Access keys are 10 characters long" />
             )}
-            <Button type="submit" onClick={this._onSubmit}>
+            <Button type="submit" onClick={this.onSubmit}>
               Submit
             </Button>
-            {!this.props.doesAccessKeyExist && (
+            {!doesAccessKeyExist && (
               <Message error content="Access key does not exist!" />
             )}
           </Form>

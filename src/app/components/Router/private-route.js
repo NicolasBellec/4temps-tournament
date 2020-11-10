@@ -1,32 +1,29 @@
-// no-flow
+// @flow
 
 import React from 'react';
-import type { ComponentType } from 'react';
 import { withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import SignUpOrLogin from '../SignUpOrLogin';
-
-type Props = {
-  referer: string,
-  path: string,
-  component: ComponentType<*>,
-  isAuthenticated: boolean,
-};
+import SignUpOrLoginWithRouter from '../SignUpOrLogin';
+import type {
+  Props,
+  OwnProps,
+  StateProps,
+} from "./types";
 
 const PrivateRoute = ({
   component: Component,
   isAuthenticated,
   referer,
-  ...rest
+  history,
+  location
 }: Props) => (
   <Route
-    {...rest}
     render={(props) => (isAuthenticated === true ? (
       <Component {...props} />
     ) : (
-      <SignUpOrLogin
-        {...props}
+      <SignUpOrLoginWithRouter
+        history={history}
         header="Please log in or sign up"
         referer={referer}
       />
@@ -36,16 +33,19 @@ const PrivateRoute = ({
 
 function mapStateToProps(
   { user }: ReduxState,
-  { location }: { location: Location },
-) {
+  { location }: OwnProps,
+): StateProps {
   return {
     isAuthenticated: user.id !== '',
     referer: location.pathname,
   };
 }
 
-const PrivateRouteContainer =
-  // $FlowFixMe
-  withRouter(connect(mapStateToProps)(PrivateRoute));
+const connector = connect<Props, OwnProps, StateProps, _,_,_>(
+  mapStateToProps
+);
+const PrivateRouteConnected = connector(PrivateRoute);
+
+const PrivateRouteContainer = withRouter(PrivateRouteConnected);
 
 export default PrivateRouteContainer;

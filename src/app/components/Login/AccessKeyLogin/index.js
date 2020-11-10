@@ -1,24 +1,34 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
-import type { RouterHistory } from 'react-router-dom';
 import LoginComponent from './component';
 import { getLoginWithAccessKey } from '../../../action-creators/access-key';
 
-type Props = {
-  history: RouterHistory,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  Props
+} from "./types";
 
-function mapStateToProps({ ui }: ReduxState) {
+function mapStateToProps(
+  { ui }: ReduxState,
+  props: OwnProps
+): StateProps {
   return ui.judgeLogin;
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch, { history }: Props) {
+function mapDispatchToProps(
+  dispatch: ReduxDispatch,
+  { history }: OwnProps
+): DispatchProps {
   return {
-    onSubmit: (accessKey: string) => dispatch(getLoginWithAccessKey(accessKey, history)),
+    onSubmit: (accessKey: string) => {
+      dispatch(getLoginWithAccessKey(accessKey, history))
+    },
   };
 }
 
-const LoginContainer = connect(
+const LoginContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(LoginComponent);

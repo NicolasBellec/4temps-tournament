@@ -1,30 +1,33 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
-import type { RouterHistory, Location } from 'react-router-dom';
 import LoginComponent from './component';
 import { getLoginUserAction } from '../../../action-creators/admin';
 
-type Props = {
-  location: Location,
-  history: RouterHistory,
-};
+import type {
+  Props,
+  StateProps,
+  OwnProps,
+  DispatchProps
+} from "./types";
 
-function mapStateToProps({ ui }: ReduxState) {
+function mapStateToProps({ ui }: ReduxState): StateProps {
   return ui.login;
 }
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { location, history }: Props,
-) {
+  { location, history }: OwnProps,
+): DispatchProps {
   const referer = location.search.replace(/\?referer=/, '');
   return {
-    onSubmit: (credentials: AdminCredentials) => dispatch(getLoginUserAction(credential, history, referer)),
+    onSubmit: (credentials: AdminCredentials) => {
+      dispatch(getLoginUserAction(credentials, history, referer))
+    },
   };
 }
 
-const LoginContainer = connect(
+const LoginContainer = connect<Props, OwnProps, StateProps,_,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(LoginComponent);
