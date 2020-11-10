@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React from 'react';
 import { Container, Divider, Header } from 'semantic-ui-react';
@@ -9,14 +9,14 @@ type Props = {
   tournamentId: string,
 };
 
-function Assistants(props: Props) {
+function Assistants({ tournamentId }: Props) {
   return (
     <Container>
       <Header as="h1">Assistants</Header>
-      <ListAssistants {...props} />
+      <ListAssistants tournamentId={tournamentId} />
       <Divider />
       <Header as="h2">Add Assistant</Header>
-      <CreateAssistant {...props} />
+      <CreateAssistant tournamentId={tournamentId} />
     </Container>
   );
 }

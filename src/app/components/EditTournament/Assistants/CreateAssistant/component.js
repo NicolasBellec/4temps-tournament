@@ -1,31 +1,30 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import {
   Form, FormInput, Message, Button,
 } from 'semantic-ui-react';
 
-type Props = {
-  onSubmit: (name: string) => void,
-  isValid: boolean,
-  isLoading: boolean,
-  createdSuccessfully: boolean,
-};
+import type { Props } from "./types";
 
 type State = {
   name: string,
 };
 
 class CreateAssistant extends Component<Props, State> {
-  state = {
-    name: '',
-  };
 
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      name: '',
+    };
+  }
+
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value });
   };
 
-  _onSubmit = () => {
+  onSubmit = () => {
     this.props.onSubmit(this.state.name);
   };
 
@@ -35,9 +34,9 @@ class CreateAssistant extends Component<Props, State> {
     return (
       <Form loading={isLoading} error={!isValid} success={createdSuccessfully}>
         {createdSuccessfully && <Message success content="Success!" />}
-        <FormInput label="Name" value={name} onChange={this._onChangeName} />
+        <FormInput label="Name" value={name} onChange={this.onChangeName} />
         {!isValid && <Message error content="Name must not be empty" />}
-        <Button onClick={this._onSubmit}>Add assistant</Button>
+        <Button onClick={this.onSubmit}>Add assistant</Button>
       </Form>
     );
   }
