@@ -4,14 +4,12 @@ import type {
   AdminLoginValidationSummary
 } from '../src/validators/validate-admin-login';
 import type {
-  TournamentValidationSummary
-} from '../src/validators/validate-tournament';
-import type {
   ParticipantValidationSummary
 } from '../src/validators/validate-participant';
 import type {
   AdminCreateValidationSummary
 } from '../src/validators/validate-admin';
+import { Dispatch } from 'redux';
 
 // Base types
 
@@ -230,6 +228,13 @@ declare type RoundValidationSummary = {
     isValidDescription: boolean,
     isValidForJudgeType: boolean
   } >
+};
+
+declare type TournamentValidationSummary = {
+  isValidTournament: boolean,
+  isValidName: boolean,
+  isValidDate: boolean,
+  isValidType: boolean,
 };
 
 // Redux
