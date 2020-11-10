@@ -5,7 +5,7 @@ import {
   CREATE_PARTICIPANT,
   CHANGE_ATTENDANCE,
   SELECT_PAIR,
-} from '../action-types';
+} from '../../action-types';
 
 export function getCreateParticipantAction(
   tournamentId: string,

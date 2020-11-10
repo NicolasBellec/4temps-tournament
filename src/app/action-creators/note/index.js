@@ -1,6 +1,6 @@
 // @flow
 
-import { SET_NOTE, GET_NOTES, SUBMIT_NOTES } from '../action-types';
+import { SET_NOTE, GET_NOTES, SUBMIT_NOTES } from '../../action-types';
 import {
   setTemporaryNote,
   getTemporaryNotesForDance,

@@ -2,7 +2,7 @@
 
 import type { RouterHistory, Location } from 'react-router-dom';
 import { loginAdmin, logoutAdmin, createAdmin } from '../../api/admin';
-import { LOGIN_USER, LOGOUT_USER, SIGNUP } from '../action-types';
+import { LOGIN_USER, LOGOUT_USER, SIGNUP } from '../../action-types';
 
 export function getLoginUserAction(
   credentials: AdminCredentials,

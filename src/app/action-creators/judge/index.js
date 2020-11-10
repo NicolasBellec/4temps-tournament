@@ -1,7 +1,7 @@
 // @flow
 
 import { createJudge } from '../../api/judge';
-import { CREATE_JUDGE } from '../action-types';
+import { CREATE_JUDGE } from '../../action-types';
 
 export default function getCreateJudgeAction(
   tournamentId: string,

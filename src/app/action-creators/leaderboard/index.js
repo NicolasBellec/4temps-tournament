@@ -1,6 +1,6 @@
 // @flow
 
-import { GET_LEADERBOARD } from '../action-types';
+import { GET_LEADERBOARD } from '../../action-types';
 
 export default function getLeaderboardAction(
   leaderboard: Leaderboard,

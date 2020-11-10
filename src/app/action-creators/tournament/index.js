@@ -16,7 +16,7 @@ import {
   GET_SINGLE_TOURNAMENT,
   CREATE_TOURNAMENT,
   EDIT_TOURNAMENT,
-} from '../action-types';
+} from '../../action-types';
 import { subscribeToUpdatesForTournaments } from '../../api/realtime';
 
 export function getAdminTournamentsAction(): GetAdminTournamentsAction {

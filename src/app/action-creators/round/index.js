@@ -18,7 +18,7 @@ import {
   START_NEXT_DANCE,
   GENERATE_GROUPS,
   END_DANCE,
-} from '../action-types';
+} from '../../action-types';
 
 export function getCreateRoundAction(
   tournamentId: string,
