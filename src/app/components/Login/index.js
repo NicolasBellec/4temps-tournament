@@ -1,19 +1,36 @@
-// no-flow
-import React, { PureComponent } from 'react';
+// @flow
+import React, { Component } from 'react';
+import type { Location, RouterHistory } from 'react-router-dom';
 
 import AdminLogin from './AdminLogin';
 import AccessKeyLogin from './AccessKeyLogin';
 
-class Login extends PureComponent<{}> {
-  static credentialHeader = 'Admin Login';
+type Props = {
+  location: Location,
+  history: RouterHistory
+};
+// type InternalState = {};
 
+class Login extends Component<Props> {
+  static credentialHeader = 'Admin Login';
   static accessKeyHeader = 'Staff Login';
 
   render() {
+    const {
+      location,
+      history
+    } = this.props;
     return (
       <div>
-        <AccessKeyLogin headerTitle={Login.accessKeyHeader} {...this.props} />
-        <AdminLogin headerTitle={Login.credentialHeader} {...this.props} />
+        <AccessKeyLogin
+          headerTitle={Login.accessKeyHeader}
+          history={history}
+        />
+        <AdminLogin
+          headerTitle={Login.credentialHeader}
+          location={location}
+          history={history}
+        />
       </div>
     );
   }
