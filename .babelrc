@@ -1,7 +1,9 @@
 {
   "presets": [
-    "@babel/flow",
-    "@babel/react"
+    ["@babel/preset-flow", {
+      "all": true
+      }],
+    "@babel/preset-react"
   ],
   "plugins": [
     // enable class properties
