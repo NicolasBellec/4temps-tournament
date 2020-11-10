@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React from 'react';
 import {
   Button, Grid, GridRow, Header,
