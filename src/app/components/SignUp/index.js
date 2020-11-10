@@ -8,8 +8,7 @@ import type {
   StateProps,
   OwnProps,
   DispatchProps,
-} from "./types";
-
+} from './types';
 
 function mapStateToProps({ ui }: ReduxState): StateProps {
   return ui.signUp;
@@ -28,7 +27,7 @@ function mapDispatchToProps(
 
 const SignUpContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignUp);
 
 export default SignUpContainer;

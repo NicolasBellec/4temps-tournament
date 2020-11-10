@@ -6,13 +6,12 @@ import {
 
 import type {
   Props,
-  InternalState
-} from "./types";
+  InternalState,
+} from './types';
 
 import './styles.css';
 
 class SignUp extends Component<Props, InternalState> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -51,13 +50,13 @@ class SignUp extends Component<Props, InternalState> {
       isValidLastName,
       isValidEmail,
       isEmailNotUsed,
-      isValidPassword
-     } = validation;
+      isValidPassword,
+    } = validation;
     const {
       firstName,
       lastName,
       email,
-      password
+      password,
     } = this.state;
     return (
       <div styleName="center">
