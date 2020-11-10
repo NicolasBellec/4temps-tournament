@@ -1,11 +1,5 @@
 // @flow
 
-export type ParticipantValidationSummary = {
-  isValidParticipant: boolean,
-  isValidName: boolean,
-  isValidRole: boolean,
-};
-
 export const validateParticipant = (
   participant: Participant,
 ): ParticipantValidationSummary => {

@@ -2,13 +2,6 @@
 import validateEmail from './validate-email';
 import type { AdminModel } from '../data/admin';
 
-export type AdminLoginValidationSummary = {
-  isValid: boolean,
-  isValidEmail: boolean,
-  isValidPassword: boolean,
-  doesAdminExist: boolean,
-};
-
 const validateAdminLogin = async (
   admin: AdminCredentials,
   getAdmin: ?(AdminCredentials) => Promise<?AdminModel>,

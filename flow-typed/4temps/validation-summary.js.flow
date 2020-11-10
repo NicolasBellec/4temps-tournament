@@ -1,0 +1,54 @@
+// @flow
+
+declare type RoundValidationSummary = {
+  isValidRound: boolean,
+  isValidName: boolean,
+  isValidDanceCount: boolean,
+  isValidMinPairCount: boolean,
+  isValidMaxPairCount: boolean,
+  isValidPassingCouplesCount: boolean,
+  isMaxPairGreaterOrEqualToMinPair: boolean,
+  isValidMultipleDanceScoringRule: boolean,
+  isValidAmountOfCriteria: boolean,
+  isValidCriteria: boolean,
+  isValidErrorOnSameScore: boolean,
+  isValidNotationSystem: boolean,
+  criteriaValidation: Array < {
+    isValidCriterion: boolean,
+    isValidName: boolean,
+    isValidMinValue: boolean,
+    isValidMaxValue: boolean,
+    isValidValueCombination: boolean,
+    isValidDescription: boolean,
+    isValidForJudgeType: boolean
+  } >
+};
+
+declare type TournamentValidationSummary = {
+  isValidTournament: boolean,
+  isValidName: boolean,
+  isValidDate: boolean,
+  isValidType: boolean,
+};
+
+declare type ParticipantValidationSummary = {
+  isValidParticipant: boolean,
+  isValidName: boolean,
+  isValidRole: boolean,
+};
+
+declare type AdminCreateValidationSummary = {
+  isValid: boolean,
+  isValidEmail: boolean,
+  isEmailNotUsed: boolean,
+  isValidFirstName: boolean,
+  isValidLastName: boolean,
+  isValidPassword: boolean,
+};
+
+declare type AdminLoginValidationSummary = {
+  isValid: boolean,
+  isValidEmail: boolean,
+  isValidPassword: boolean,
+  doesAdminExist: boolean,
+};

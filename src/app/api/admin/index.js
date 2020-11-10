@@ -3,8 +3,6 @@ import { apiPostRequest } from '../util';
 
 import validateAdmin from '../../../validators/validate-admin';
 import validateAdminLogin from '../../../validators/validate-admin-login';
-import type { AdminLoginValidationSummary } from '../../../validators/validate-admin-login';
-import type { AdminCreateValidationSummary } from '../../../validators/validate-admin';
 
 export const createAdmin = async (
   admin: AdminWithPassword,

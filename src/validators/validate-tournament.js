@@ -1,12 +1,5 @@
 // @flow
 
-export type TournamentValidationSummary = {
-  isValidTournament: boolean,
-  isValidName: boolean,
-  isValidDate: boolean,
-  isValidType: boolean,
-};
-
 const validateTournament = (
   tournament: Tournament,
 ): TournamentValidationSummary => {
