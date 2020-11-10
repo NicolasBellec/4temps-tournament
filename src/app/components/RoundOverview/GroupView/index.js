@@ -1,39 +1,31 @@
-/* eslint-disable flowtype/no-types-missing-file-annotation */
+// no-flow
 
 import { connect } from 'react-redux';
 
 import Component from './component';
-import type { RoundViewModel, DanceNotes } from './component';
 import { regenerateGroup } from '../../../api/round';
 import {
   getStartNextDanceAction,
   getGenerateGroupsAction,
   getEndDanceAction,
 } from '../../../action-creators/round';
-
-type Props = {
-  tournamentId: string,
-  roundId: string,
-};
-
-function mapStateToProps(state: ReduxState, { roundId, tournamentId }: Props) {
-  const viewModel = createViewModelsForRound(state, roundId, tournamentId);
-
-  return {
-    round: viewModel,
-    areAllGroupsGenerated: areAllGroupsGenerated(
-      viewModel,
-      (state.participants.forTournament[tournamentId]
-        && state.participants.forTournament[tournamentId].length)
-        || 0,
-    ),
-  };
-}
+import type {
+  OwnProps,
+  DispatchProps,
+  StateProps,
+  Props,
+  RoundViewModel,
+  DanceNotes
+} from './types';
 
 function areAllGroupsGenerated(
-  viewModel: RoundViewModel,
+  viewModel: ?RoundViewModel,
   participantCount: number,
-) {
+): boolean {
+  if (!viewModel) {
+    return true;
+  }
+  (viewModel: RoundViewModel);
   const participants = viewModel.groups
     .reduce(
       (participants, group) => [
@@ -57,13 +49,10 @@ function createViewModelsForRound(
   }: ReduxState,
   roundId: string,
   tournamentId: string,
-): ?RoundViewModel {
-  const round = rounds.byId[roundId];
-  if (!round) {
-    return null;
-  }
+): RoundViewModel {
+  const round: Round = rounds.byId[roundId];
 
-  const { groups, ...rest } = round;
+  const { groups: DanceGroup[], ...rest } = (round: Round);
   let activeDanceId: ?string;
   let activeDance: ?number;
   const activeGroup: ?number = getActiveGroup(groups);
@@ -82,7 +71,7 @@ function createViewModelsForRound(
     : { judgesNoted: [], judgesNotNoted: [] };
 
   const viewModel: RoundViewModel = {
-    ...rest,
+    ...(rest: $Rest<Round, {| groups: Array < DanceGroup > |}>),
     activeDance,
     activeGroup,
     nextDance,
@@ -173,10 +162,25 @@ function createParticipantViewModel(participant: ?Participant) {
   return { name: '', number: '' };
 }
 
+function mapStateToProps(state: ReduxState, { roundId, tournamentId }: OwnProps): StateProps {
+  const viewModel = createViewModelsForRound(state, roundId, tournamentId);
+
+  return {
+    round: viewModel,
+    areAllGroupsGenerated: areAllGroupsGenerated(
+      viewModel,
+      (state.participants.forTournament[tournamentId]
+        && state.participants.forTournament[tournamentId].length)
+        || 0,
+    ),
+  };
+}
+
+
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { roundId, tournamentId }: Props,
-) {
+  { roundId, tournamentId }: OwnProps,
+): DispatchProps {
   return {
     startDance: () => dispatch(getStartNextDanceAction(tournamentId)),
     generateGroups: () => {
@@ -189,9 +193,11 @@ function mapDispatchToProps(
   };
 }
 
-const RoundGroupContainer = connect(
+const connector = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
-)(Component);
+);
+
+const RoundGroupContainer = connector(Component);
 
 export default RoundGroupContainer;

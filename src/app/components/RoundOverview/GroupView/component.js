@@ -13,45 +13,10 @@ import {
   Container,
   Grid,
 } from 'semantic-ui-react';
-
-type GroupViewModel = {
-  id: string,
-  pairs: Array<{
-    id: string,
-    follower: { name: string, number: string },
-    leader: { name: string, number: string },
-  }>,
-  isStarted: boolean,
-};
-
-export type RoundViewModel = {
-  id: string,
-  name: string,
-  danceCount: number,
-  active: boolean,
-  finished: boolean,
-  draw: boolean,
-  activeGroup: ?number,
-  activeDance: ?number,
-  nextGroup: ?number,
-  nextDance: ?number,
-  groups: Array<GroupViewModel>,
-  notes: DanceNotes,
-};
-
-export type DanceNotes = {
-  judgesNoted: Array<Judge>,
-  judgesNotNoted: Array<Judge>,
-};
-
-export type Props = {
-  areAllGroupsGenerated: boolean,
-  round: RoundViewModel,
-  startDance: () => void,
-  endDance: () => void,
-  generateGroups: () => void,
-  regenerateGroup: (groupId: string) => void,
-};
+import type {
+  Props,
+  GroupViewModel
+} from './types';
 
 function DanceActions({
   activeDance,

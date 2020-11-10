@@ -1,16 +1,13 @@
-// no-flow
-import { connect } from 'react-redux';
-import type { Props as ComponentProps } from './component';
-import Component from './component';
+// @flow
 
-type Props = {
-  roundId: string,
-};
+import { connect } from 'react-redux';
+import type { StateProps, Props, OwnProps }from './types';
+import Component from './component';
 
 function mapStateToProps(
   { rounds, participants }: ReduxState,
-  { roundId }: Props,
-): ComponentProps {
+  { roundId }: OwnProps,
+): StateProps {
   const round = rounds.byId[roundId];
   const roundScores = hydrateScores(round.roundScores, participants);
 
@@ -64,6 +61,10 @@ function getFollowers(pairs: Array<Pair>): Array<string> {
   );
 }
 
-const ScoreViewContainer = connect(mapStateToProps)(Component);
+const connector = connect<Props, OwnProps, StateProps, _, _, _>(
+  mapStateToProps
+);
+
+const ScoreViewContainer = connector(Component);
 
 export default ScoreViewContainer;

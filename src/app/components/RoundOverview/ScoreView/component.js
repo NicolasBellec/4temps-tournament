@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React from 'react';
 import {
@@ -15,33 +15,35 @@ import {
   TableCell,
   TableBody,
 } from 'semantic-ui-react';
-
-export type Props = {
-  isFinished: boolean,
-  winningLeaderScores: Array<ScoreViewModel>,
-  winningFollowerScores: Array<ScoreViewModel>,
-  losingLeaderScores: Array<ScoreViewModel>,
-  losingFollowerScores: Array<ScoreViewModel>,
-};
-
-type ScoreViewTableProps = {
-  winningLeaderScores: Array<ScoreViewModel>,
-  winningFollowerScores: Array<ScoreViewModel>,
-  losingLeaderScores: Array<ScoreViewModel>,
-  losingFollowerScores: Array<ScoreViewModel>,
-};
-
-export type ScoreViewModel = {
-  participant: Participant,
-  position: number,
-  score: number,
-};
+import type {
+  StateProps,
+  Props,
+  OwnProps,
+  ScoreViewTableProps,
+  ScoreViewModel
+} from './types';
 
 export default function ScoreView({ isFinished, ...rest }: Props) {
-  return isFinished ? <ScoreTables {...rest} /> : <NotFinished />;
+  if (!isFinished) {
+    return <NotFinished />;
+  }
+
+  return (
+    <ScoreTables
+      winningLeaderScores={rest.winningLeaderScores}
+      winningFollowerScores={rest.winningFollowerScores}
+      losingLeaderScores={rest.losingLeaderScores}
+      losingFollowerScores={rest.losingFollowerScores}
+    />
+  );
 }
 
-function ScoreTables(props: ScoreViewTableProps) {
+function ScoreTables({
+  winningLeaderScores,
+  winningFollowerScores,
+  losingLeaderScores,
+  losingFollowerScores,
+}: ScoreViewTableProps) {
   return (
     <Grid stackable>
       <GridRow>
@@ -50,11 +52,11 @@ function ScoreTables(props: ScoreViewTableProps) {
       <GridRow columns="2">
         <GridColumn>
           <Header as="h3">Leaders</Header>
-          <ScoreTable scores={props.winningLeaderScores} />
+          <ScoreTable scores={winningLeaderScores} />
         </GridColumn>
         <GridColumn>
           <Header as="h3">Followers</Header>
-          <ScoreTable scores={props.winningFollowerScores} />
+          <ScoreTable scores={winningFollowerScores} />
         </GridColumn>
       </GridRow>
       <GridRow>
@@ -64,14 +66,25 @@ function ScoreTables(props: ScoreViewTableProps) {
       <GridRow columns="2">
         <GridColumn>
           <Header as="h3">Leaders</Header>
-          <ScoreTable scores={props.losingLeaderScores} />
+          <ScoreTable scores={losingLeaderScores} />
         </GridColumn>
         <GridColumn>
           <Header as="h3">Followers</Header>
-          <ScoreTable scores={props.losingFollowerScores} />
+          <ScoreTable scores={losingFollowerScores} />
         </GridColumn>
       </GridRow>
     </Grid>
+  );
+}
+
+function ScoreTableRow(score: ScoreViewModel) {
+  return (
+    <TableRow key={score.participant.id}>
+      <TableCell>{score.position}</TableCell>
+      <TableCell>{score.score}</TableCell>
+      <TableCell>{score.participant.attendanceId}</TableCell>
+      <TableCell>{score.participant.name}</TableCell>
+    </TableRow>
   );
 }
 
@@ -88,17 +101,6 @@ function ScoreTable({ scores }: { scores: Array<ScoreViewModel> }) {
       </TableHeader>
       <TableBody>{scores.map(ScoreTableRow)}</TableBody>
     </Table>
-  );
-}
-
-function ScoreTableRow(score: ScoreViewModel) {
-  return (
-    <TableRow key={score.participant.id}>
-      <TableCell>{score.position}</TableCell>
-      <TableCell>{score.score}</TableCell>
-      <TableCell>{score.participant.attendanceId}</TableCell>
-      <TableCell>{score.participant.name}</TableCell>
-    </TableRow>
   );
 }
 

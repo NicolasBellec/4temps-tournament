@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React, { Component } from 'react';
 import {
   Container,
@@ -13,34 +13,28 @@ import {
 import moment from 'moment';
 import type Moment from 'moment';
 import DatePicker from 'react-datepicker';
-
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-import type { TournamentValidationSummary } from '../../../validators/validate-tournament';
+import type {
+  Props,
+  ComponentState,
+} from "./types";
 
-type Props = {
-  onSubmit: (state: State) => void,
-  isLoading: boolean,
-  validation: TournamentValidationSummary,
-};
+class CreateTournament extends Component<Props, ComponentState> {
 
-export type State = {
-  name: string,
-  date: Moment,
-  type: TournamentType,
-};
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      name: '',
+      date: moment(),
+      type: 'none',
+    };
+  }
 
-class CreateTournament extends Component<Props, State> {
-  state = {
-    name: '',
-    date: moment(),
-    type: 'none',
-  };
-
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>): void => {
     this.setState({ name: event.target.value });
   };
 
-  _onChangeDate = (date: ?Moment) => {
+  _onChangeDate = (date: ?Moment): void => {
     if (date != null) {
       this.setState({ date });
     }
@@ -49,7 +43,7 @@ class CreateTournament extends Component<Props, State> {
   _onChangeRadio = (
     event: SyntheticInputEvent<HTMLInputElement>,
     { value }: { value: TournamentType },
-  ) => {
+  ): void => {
     this.setState({ type: value });
   };
 

@@ -1,27 +1,33 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
-import type { RouterHistory } from 'react-router-dom';
 import ObjectId from 'bson-objectid';
 import CreateTournament from './component';
-import type { State as ComponentState } from './component';
+// $FlowFixMe
 import { getCreateTournamentAction } from '../../action-creators/tournament';
 
-type Props = {
-  history: RouterHistory,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  ComponentState,
+  Props
+} from './types';
 
-function mapStateToProps({ ui }: ReduxState) {
+function mapStateToProps({ ui }: ReduxState): StateProps {
   return ui.createTournament;
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch, { history }: Props) {
+function mapDispatchToProps(
+  dispatch: ReduxDispatch,
+  { history }: OwnProps
+) : DispatchProps {
   return {
-    onSubmit: ({ name, date, type }: ComponentState) => dispatch(getCreateTournamentAction(name, date, type, history)),
+    onSubmit: ({ name, date, type }: ComponentState) => { dispatch(getCreateTournamentAction(name, date, type, history)) },
   };
 }
 
-const CreateTournamentContainer = connect(
+const CreateTournamentContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(CreateTournament);
