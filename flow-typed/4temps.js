@@ -195,7 +195,3 @@ declare interface ServerApiResponse {
   sendStatus(statusCode: number): ServerApiResponse;
   json(body ? : mixed): ServerApiResponse;
 }
-
-// Validation types
-
-// Redux
