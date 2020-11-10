@@ -1,83 +1,100 @@
-// no-flow
+// @flow
 import React, { Component } from 'react';
 import {
   Header, Form, FormInput, Button, Message,
 } from 'semantic-ui-react';
-import type { AdminCreateValidationSummary } from '../../../validators/validate-admin';
+
+import type {
+  Props,
+  InternalState
+} from "./types";
 
 import './styles.css';
 
-type Props = {
-  onSubmit: (admin: AdminWithPassword) => Promise<void>,
-  validation: AdminCreateValidationSummary,
-  isLoading: boolean,
-};
+class SignUp extends Component<Props, InternalState> {
 
-class SignUp extends Component<Props, AdminWithPassword> {
-  state = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    };
+  }
 
-  _onChangeFirstName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangeFirstName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ firstName: event.target.value });
   };
 
-  _onChangeLastName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangeLastName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ lastName: event.target.value });
   };
 
-  _onChangeEmail = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangeEmail = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ email: event.target.value });
   };
 
-  _onChangePassword = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangePassword = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ password: event.target.value });
   };
 
-  _onSubmit = () => {
+  onSubmit = () => {
     this.props.onSubmit(this.state);
   };
 
   render() {
+    const { isLoading, validation } = this.props;
+    const {
+      isValid,
+      isValidFirstName,
+      isValidLastName,
+      isValidEmail,
+      isEmailNotUsed,
+      isValidPassword
+     } = validation;
+    const {
+      firstName,
+      lastName,
+      email,
+      password
+    } = this.state;
     return (
       <div styleName="center">
         <div styleName="width">
           <Header as="h1">Sign up</Header>
           <Form
-            loading={this.props.isLoading}
-            error={!this.props.validation.isValid}
+            loading={isLoading}
+            error={!isValid}
           >
             <FormInput
               label="First name"
               placeholder="John"
-              value={this.state.firstName}
-              onChange={this._onChangeFirstName}
+              value={firstName}
+              onChange={this.onChangeFirstName}
             />
-            {!this.props.validation.isValidFirstName && (
+            {!isValidFirstName && (
               <Message error content="Invalid first name" />
             )}
             <FormInput
               label="Last name"
               placeholder="Smith"
-              value={this.state.lastName}
-              onChange={this._onChangeLastName}
+              value={lastName}
+              onChange={this.onChangeLastName}
             />
-            {!this.props.validation.isValidLastName && (
+            {!isValidLastName && (
               <Message error content="Invalid last name" />
             )}
             <FormInput
               label="Email"
               placeholder="john@gmail.com"
-              value={this.state.email}
-              onChange={this._onChangeEmail}
+              value={email}
+              onChange={this.onChangeEmail}
             />
-            {!this.props.validation.isValidEmail && (
+            {!isValidEmail && (
               <Message error content="Invalid email" />
             )}
-            {!this.props.validation.isEmailNotUsed && (
+            {!isEmailNotUsed && (
               <Message
                 error
                 content="An account already exists with this email"
@@ -86,14 +103,14 @@ class SignUp extends Component<Props, AdminWithPassword> {
             <FormInput
               label="Password"
               type="password"
-              value={this.state.password}
+              value={password}
               placeholder="P4ssw0rd"
-              onChange={this._onChangePassword}
+              onChange={this.onChangePassword}
             />
-            {!this.props.validation.isValidPassword && (
+            {!isValidPassword && (
               <Message error content="A password is at least 8 characters" />
             )}
-            <Button onClick={this._onSubmit} type="submit">
+            <Button onClick={this.onSubmit} type="submit">
               Submit
             </Button>
           </Form>
