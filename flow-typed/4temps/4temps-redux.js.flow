@@ -38,6 +38,20 @@ declare type UserReduxState = {
   tournamentId: string // only set for judge and assistant
 };
 
+declare type TournamentViewModel = {
+  id: string,
+  creatorId: string,
+  name: string,
+  date: Moment,
+  type: TournamentType,
+  judges: Array < string > ,
+  participants: Array < string > ,
+  rounds: Array < string > ,
+  dancesNoted: {
+    [judgeId: string]: Array < string >
+  }
+};
+
 declare type TournamentsReduxState = {
   isLoading: boolean,
   isInvalidated: boolean,
@@ -47,19 +61,7 @@ declare type TournamentsReduxState = {
   allIds: Array < string > ,
   forJudge: string,
   byId: {
-    [id: string]: {
-      id: string,
-      creatorId: string,
-      name: string,
-      date: Moment,
-      type: TournamentType,
-      judges: Array < string > ,
-      participants: Array < string > ,
-      rounds: Array < string > ,
-      dancesNoted: {
-        [judgeId: string]: Array < string >
-      }
-    }
+    [id: string]: TournamentViewModel
   }
 };
 

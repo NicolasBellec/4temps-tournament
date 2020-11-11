@@ -1,16 +1,23 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
-import type { RouterHistory } from 'react-router-dom';
 
 import PreloadContainer from '../PreloadContainer';
 import TournamentList from '../TournamentList';
+// $FlowFixMe
 import { getAdminTournamentsAction } from '../../action-creators/tournament';
+
+import type {
+  Props,
+  StateProps,
+  DispatchProps,
+  OwnProps
+} from "./types";
 
 function mapStateToProps(
   { tournaments }: ReduxState,
-  { history }: { history: RouterHistory },
-) {
+  { history }: OwnProps,
+): StateProps {
   if (
     tournaments.didLoadAdminTournaments
     && tournaments.forAdmin.length === 0
@@ -28,15 +35,17 @@ function mapStateToProps(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { history }: { history: RouterHistory },
-) {
+  { history }: OwnProps,
+): DispatchProps {
   return {
-    load: () => dispatch(getAdminTournamentsAction()),
+    load: () => {
+      dispatch(getAdminTournamentsAction())
+    },
     onClick: (id: string) => history.push(`/tournament/edit/${id}`),
   };
 }
 
-const EditTournamentListContainer = connect(
+const EditTournamentListContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);
