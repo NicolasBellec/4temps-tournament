@@ -9,7 +9,6 @@ type Props = {
   location: Location,
   history: RouterHistory
 };
-// type InternalState = {};
 
 class Login extends Component<Props> {
   static credentialHeader = 'Admin Login';

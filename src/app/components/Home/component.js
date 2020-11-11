@@ -1,35 +1,37 @@
-// no-flow
+// @flow
 import React, { PureComponent } from 'react';
-import type { Location, RouterHistory } from 'react-router-dom';
 
 import LoginContainer from '../Login';
+// $FlowFixMe
 import Judge from '../Judge';
 import EditTournamentList from '../EditTournamentList';
 import Assistant from '../Assistant';
 
-type Props = {
-  isAuthenticated: boolean,
-  role: string,
-  location: Location,
-  history: RouterHistory,
-};
+import type {
+  Props
+} from "./types";
 
 class Home extends PureComponent<Props> {
-  _renderForRole() {
-    if (this.props.role == 'admin') {
-      return <EditTournamentList history={this.props.history} />;
+  renderForRole() {
+    const { role, history, location } = this.props;
+    if (role == 'admin') {
+      return <EditTournamentList history={history} />;
     }
-    if (this.props.role == 'judge') {
+    if (role == 'judge') {
       return <Judge />;
     }
-    if (this.props.role == 'assistant') {
+    if (role == 'assistant') {
       return <Assistant />;
     }
-    return <LoginContainer {...this.props} />;
+    return (
+      <LoginContainer
+        location={location}
+        history={history}
+      />);
   }
 
   render() {
-    return this._renderForRole();
+    return this.renderForRole();
   }
 }
 

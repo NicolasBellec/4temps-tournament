@@ -1,18 +1,24 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
 
 import HomeComponent from './component';
 
-function mapStateToProps({ user }: ReduxState) {
+import type {
+  Props,
+  OwnProps,
+  StateProps
+} from "./types";
+
+function mapStateToProps({ user }: ReduxState): StateProps {
   return {
     isAuthenticated: user.id !== '',
     role: user.role,
   };
 }
 
-const HomeContainer =
-  // $FlowFixMe
-  connect(mapStateToProps)(HomeComponent);
+const HomeContainer = connect<Props, OwnProps, StateProps, _, _, _>(
+  mapStateToProps
+)(HomeComponent);
 
 export default HomeContainer;
