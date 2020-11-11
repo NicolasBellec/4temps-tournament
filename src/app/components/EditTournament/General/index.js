@@ -18,19 +18,18 @@ import type {
   StateProps,
   DispatchProps,
   OwnProps,
-  TournamentRepresentation
 } from "./types";
 
 function mapStateToProps(
   {
-    tournaments, rounds, judges, participants, ui,
+    tournaments, rounds, judges, participants, assistants, ui,
   }: ReduxState,
   { tournamentId }: OwnProps,
 ): StateProps {
   return {
     ...ui.editTournament,
     tournament: {
-      data: tournaments.byId[tournamentId],
+      ...tournaments.byId[tournamentId],
       rounds: (rounds.forTournament[tournamentId] || []).map(
         (id) => rounds.byId[id],
       ),
@@ -39,6 +38,9 @@ function mapStateToProps(
       ),
       participants: (participants.forTournament[tournamentId] || []).map(
         (id) => participants.byId[id],
+      ),
+      assistants: (assistants.forTournament[tournamentId] || []).map(
+        (id) => assistants.byId[id],
       ),
     },
 
@@ -52,7 +54,7 @@ function mapDispatchToProps(
   { tournamentId, history }: OwnProps,
 ): DispatchProps {
   return {
-    onSubmit: (tournament: TournamentRepresentation) => {
+    onSubmit: (tournament: Tournament) => {
       dispatch(getEditTournamentAction(tournamentId, tournament))
     },
     onClickLeaderboard: () => {

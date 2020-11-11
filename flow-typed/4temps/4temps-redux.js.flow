@@ -1,6 +1,6 @@
 // @flow
 
-declare type ReduxDispatch = (action: ReduxAction) => mixed;
+declare type ReduxDispatch = Dispatch<ReduxAction> => mixed;
 declare type ReduxState = {
   user: UserReduxState,
   tournaments: TournamentsReduxState,
@@ -46,12 +46,13 @@ declare type TournamentViewModel = {
   name: string,
   date: Moment,
   type: TournamentType,
-  judges: Array < string > ,
-  participants: Array < string > ,
-  rounds: Array < string > ,
   dancesNoted: {
     [judgeId: string]: Array < string >
-  }
+  },
+  judges: Array < string > ,
+  assistants: Array < string >,
+  participants: Array < string > ,
+  rounds: Array < string > ,
 };
 
 declare type TournamentsReduxState = {

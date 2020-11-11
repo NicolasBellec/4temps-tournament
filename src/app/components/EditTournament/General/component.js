@@ -23,23 +23,21 @@ class EditTournamentGeneral extends Component<Props, State> {
 
   constructor(props: Props) {
     const { tournament } = props;
-    const { data } = tournament;
     super(props);
     this.state = {
-      name: data ? data.name : '',
-      date: data ? data.date : moment(),
+      name: tournament ? tournament.name : '',
+      date: tournament ? tournament.date : moment(),
     };
   }
 
   componentWillReceiveProps({ tournament }: Props) {
-    const { data } = tournament;
-    if ( data ) {
-      const { name, date } = data;
+    if ( tournament ) {
+      const { name, date } = tournament;
 
       if (
-        !this.props.tournament.data
-        || this.props.tournament.data.name !== name
-        || this.props.tournament.data.date !== date
+        !this.props.tournament
+        || this.props.tournament.name !== name
+        || this.props.tournament.date !== date
       ) {
         this.setState({ name, date });
       }
@@ -59,9 +57,8 @@ class EditTournamentGeneral extends Component<Props, State> {
   onSubmit = () => {
     const { name, date } = this.state;
     const { tournament } = this.props;
-    const { data } = tournament;
-    if ( data ) {
-      this.props.onSubmit({ ...data, name, date });
+    if ( tournament ) {
+      this.props.onSubmit({ ...tournament, name, date });
     }
   };
 

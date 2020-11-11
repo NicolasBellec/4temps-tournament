@@ -9,34 +9,15 @@ export type OwnProps = {
   history: RouterHistory,
 };
 
-export type TournamentRepresentation = {
-  id: string,
-  creatorId: string,
-  name: string,
-  date: Moment,
-  type: TournamentType,
-  judges: Array < string > ,
-  participants: Array < string > ,
-  rounds: Array < string > ,
-  dancesNoted: {
-    [judgeId: string]: Array < string >
-  }
-};
-
 export type StateProps = {
   ...UiEditTournamentsReduxState,
-  tournament: {
-    data: ?TournamentRepresentation,
-    rounds: Round[],
-    judges: Judge[],
-    participants: Participant[],
-  },
+  tournament: ?Tournament,
   shouldLoad: boolean,
   child: ElementType,
 };
 
 export type DispatchProps = {
-  onSubmit: (tournament: TournamentRepresentation) => void,
+  onSubmit: (tournament: Tournament) => void,
   onClickLeaderboard: () => void,
   load: () => void,
 };

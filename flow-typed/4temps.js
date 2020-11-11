@@ -1,6 +1,5 @@
 // @flow
 import type Moment from 'moment';
-import { Dispatch } from 'redux';
 
 // Base types
 
@@ -18,7 +17,7 @@ declare type Tournament = {
   judges: Array < Judge > ,
   assistants: Array < Assistant > ,
   participants: Array < Participant > ,
-  rounds: Array < Round >
+  rounds: Array < Round > ,
 };
 
 declare type ParticipantRole =
