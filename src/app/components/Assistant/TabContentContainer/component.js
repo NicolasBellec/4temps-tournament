@@ -1,19 +1,16 @@
-// no-flow
+// @flow
 
 import React from 'react';
 import GroupsContainer from '../GroupsContainer';
 import Participants from '../../EditTournament/Participants';
-import {
-  Tabs,
-} from '../types';
+import type {
+  Props,
+} from './types';
 
 export default function TabContent({
   activeTab,
   tournamentId,
-}: {
-  activeTab: Tabs,
-  tournamentId: string,
-}) {
+}: Props) {
   if (activeTab === 'groups') {
     return <GroupsContainer tournamentId={tournamentId} />;
   }

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Fragment } from 'react';
 

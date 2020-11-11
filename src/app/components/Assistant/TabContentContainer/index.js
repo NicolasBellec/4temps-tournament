@@ -1,23 +1,24 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
+// $FlowFixMe
 import { getSingleTournamentAction } from '../../../action-creators/tournament';
 import type {
   OwnProps,
   StateProps,
   DispatchProps,
-} from '../types';
+  Props
+} from './types';
 import PreloadContainer from '../../PreloadContainer';
 import TabContent from './component';
 
 function mapStateToProps(
   { tournaments }: ReduxState,
-  ownProps: OwnProps,
+  { tournamentId }: OwnProps
 ): StateProps {
   return {
     child: TabContent,
-    shouldLoad: tournaments.byId[ownProps.tournamentId] === undefined,
-    ...ownProps,
+    shouldLoad: tournaments.byId[tournamentId] === undefined,
   };
 }
 
@@ -26,11 +27,13 @@ function mapDispatchToProps(
   { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
-    load: () => dispatch(getSingleTournamentAction(tournamentId)),
+    load: () => {
+      dispatch(getSingleTournamentAction(tournamentId))
+    },
   };
 }
 
-const TabContentContainer = connect(
+const TabContentContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

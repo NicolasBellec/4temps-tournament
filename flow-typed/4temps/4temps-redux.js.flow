@@ -32,9 +32,11 @@ declare type ReduxState = {
   }
 };
 
+declare type UserRoleReduxState = '' | 'admin' | 'judge' | 'assistant';
+
 declare type UserReduxState = {
   id: string,
-  role: '' | 'admin' | 'judge' | 'assistant',
+  role: UserRoleReduxState,
   tournamentId: string // only set for judge and assistant
 };
 

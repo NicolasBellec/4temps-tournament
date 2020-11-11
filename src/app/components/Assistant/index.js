@@ -1,9 +1,10 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
 
 import AssistantView from './component';
-import {
+import type {
   StateProps,
+  Props
 } from './types';
 
 function mapStateToProps({ user }: ReduxState): StateProps {
@@ -12,4 +13,6 @@ function mapStateToProps({ user }: ReduxState): StateProps {
   };
 }
 
-export default connect(mapStateToProps)(AssistantView);
+export default connect<Props, {}, StateProps, _,_,_>(
+  mapStateToProps
+)(AssistantView);

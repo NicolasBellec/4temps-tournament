@@ -1,28 +1,24 @@
-// no-flow
+// @flow
 
+import type { ElementType } from 'react';
 import type { Tabs } from "../types";
 
 export type OwnProps = {
-  tournamentId: string
+  tournamentId: string,
+  activeTab: Tabs
 };
 
 export type DispatchProps = {
   load: () => void
 };
 
-export type TabContentTy = (
-  activeTab: Tabs,
-  tournamentId: string
-) => (Component | string)
-
 export type StateProps = {
-  child: TabContentTy,
-  shouldLoad: boolean,
-  ...OwnProps
+  child: ElementType,
+  shouldLoad: boolean
 };
 
 export type Props = {
   ...StateProps,
   ...DispatchProps,
   ...OwnProps
-}
+};

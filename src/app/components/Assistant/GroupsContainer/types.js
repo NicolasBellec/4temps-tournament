@@ -10,7 +10,12 @@ export type StateProps = {
   groups: Array<{ number: number, pairs: Array<string> }>,
 };
 
+export type DispatchProps = {
+  dispatch: ReduxDispatch
+}
+
 export type Props = {
   ...StateProps,
-  ...OwnProps
+  ...OwnProps,
+  ...DispatchProps
 };

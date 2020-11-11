@@ -1,9 +1,10 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
 import type {
   StateProps,
   OwnProps,
+  Props
 } from './types';
 
 import Groups from './component';
@@ -46,5 +47,8 @@ function mapStateToProps(
   return { hasActiveRound: true, roundName, groups };
 }
 
-const GroupsContainer = connect(mapStateToProps)(Groups);
+const GroupsContainer = connect<Props, OwnProps, StateProps,_,_,_>(
+  mapStateToProps
+)(Groups);
+
 export default GroupsContainer;

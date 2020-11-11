@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import {
@@ -9,6 +9,7 @@ import {
 import type {
   Props,
   State,
+  Tabs
 } from './types';
 import TabContentContainer from './TabContentContainer';
 
