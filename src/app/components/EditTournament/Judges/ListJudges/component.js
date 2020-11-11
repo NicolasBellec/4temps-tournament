@@ -10,11 +10,11 @@ import {
   TableRow,
 } from 'semantic-ui-react';
 
-type JudgeViewModel = Judge & {
-  accessKey: string,
-};
+import type {
+  Props
+} from "./types";
 
-function ListJudges({ judges }: { judges: Array<JudgeViewModel> }) {
+function ListJudges({ judges }: Props) {
   return (
     <Table unstackable basic="very">
       <TableHeader>
@@ -25,13 +25,17 @@ function ListJudges({ judges }: { judges: Array<JudgeViewModel> }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {judges.map((j) => (
-          <TableRow key={j.id}>
-            <TableCell>{j.name}</TableCell>
-            <TableCell>{typeToDisplayName(j.judgeType)}</TableCell>
-            <TableCell>{j.accessKey}</TableCell>
-          </TableRow>
-        ))}
+        {judges.map((j) => {
+          if ( j.data && j.accessKey ) {
+            return (
+              <TableRow key={j.data.id}>
+                <TableCell>{j.data.name}</TableCell>
+                <TableCell>{typeToDisplayName(j.data.judgeType)}</TableCell>
+                <TableCell>{j.accessKey}</TableCell>
+              </TableRow>
+            )
+          }
+        })}
       </TableBody>
     </Table>
   );

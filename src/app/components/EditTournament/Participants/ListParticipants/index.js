@@ -1,22 +1,27 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
 
 import ListParticipants from './component';
 import PreloadContainer from '../../../PreloadContainer';
 import {
+  // $FlowFixMe
   getAdminTournamentsAction,
+  // $FlowFixMe
   getSingleTournamentAction,
 } from '../../../../action-creators/tournament';
 import { getChangeAttendanceAction } from '../../../../action-creators/participant';
 
-type Props = {
-  tournamentId: string,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  Props
+} from "./types";
 
 function mapStateToProps(
   { user, tournaments, participants }: ReduxState,
-  { tournamentId }: Props,
-) {
+  { tournamentId }: OwnProps,
+): StateProps {
   const shouldLoad = !participants.forTournament[tournamentId];
   return {
     child: ListParticipants,
@@ -29,20 +34,25 @@ function mapStateToProps(
   };
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
+function mapDispatchToProps(
+  dispatch: ReduxDispatch,
+  { tournamentId }: OwnProps
+): DispatchProps {
   return {
-    load: (tournamentId) => {
-      if (tournamentId) {
-        dispatch(getSingleTournamentAction(tournamentId));
+    load: (args = null) => {
+      if (args !== null && args !== undefined) {
+        dispatch(getSingleTournamentAction(args));
       } else {
         dispatch(getAdminTournamentsAction());
       }
     },
-    onChangeAttending: (id, isAttending) => dispatch(getChangeAttendanceAction(tournamentId, id, isAttending)),
+    onChangeAttending: (id, isAttending) => {
+      dispatch(getChangeAttendanceAction(tournamentId, id, isAttending))
+    },
   };
 }
 
-const ListParticipantsContainer = connect(
+const ListParticipantsContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

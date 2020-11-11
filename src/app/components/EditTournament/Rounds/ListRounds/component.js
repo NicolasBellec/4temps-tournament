@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import {
@@ -18,32 +18,31 @@ import {
 import './styles.css';
 import CreateRound from '../CreateRound';
 
+import type {
+  Props
+} from "./types";
+
 type State = {
   activeIndex: number,
 };
 
-type Props = {
-  tournamentId: string,
-  rounds: Array<Round>,
-  deleteRound: (id: string) => void,
-  startRound: (id: string) => void,
-  onClick: (id: string) => void,
-  nextRound: ?string,
-};
-
 class RoundList extends Component<Props, State> {
-  state = {
-    activeIndex: -1,
-  };
 
-  handleClick = (e: SyntheticEvent, titleProps: { index: number }) => {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      activeIndex: -1,
+    };
+  }
+
+  handleClick = (e: SyntheticEvent<HTMLInputElement>, titleProps: { index: number }) => {
     const { index } = titleProps;
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
     this.setState({ activeIndex: newIndex });
   };
 
-  _renderItem = (round: Round) => (
+  renderItem = (round: Round) => (
     <TableRow key={round.id}>
       <TableCell selectable onClick={() => this.props.onClick(round.id)}>
         {round.name}
@@ -62,31 +61,31 @@ class RoundList extends Component<Props, State> {
     </TableRow>
   );
 
-  _hasActiveRound = () => this.props.rounds.filter((r) => r.active).length > 0;
+  hasActiveRound = () => this.props.rounds.filter((r) => r.active).length > 0;
 
-  _getActiveRound = (): Round => this.props.rounds.filter((r) => r.active)[0];
+  getActiveRound = (): Round => this.props.rounds.filter((r) => r.active)[0];
 
-  _hasActiveDance = (round: Round) => round.groups
+  hasActiveDance = (round: Round): boolean => round.groups
     .reduce((acc, g) => [...acc, ...g.dances], [])
     .filter((d) => d.active).length > 0;
 
-  _getFinishedDances = (activeRound: Round) => activeRound.groups
+  getFinishedDances = (activeRound: Round) => activeRound.groups
     .reduce((acc, g) => [...acc, ...g.dances], [])
     .filter((d) => d.finished).length;
 
-  _getUnfinishedDances = (activeRound: Round) => activeRound.groups
+  getUnfinishedDances = (activeRound: Round) => activeRound.groups
     .reduce((acc, g) => [...acc, ...g.dances], [])
     .filter((d) => !d.finished).length;
 
-  _getPastRounds = () => this.props.rounds.filter((r) => r.finished);
+  getPastRounds = (): Round[] => this.props.rounds.filter((r) => r.finished);
 
-  _getUpcomingRounds = () => this.props.rounds.filter(
+  getUpcomingRounds = (): Round[] => this.props.rounds.filter(
     (r) => !(r.active || r.finished) && r.id != this.props.nextRound,
   );
 
-  _renderActiveRound = () => {
-    const activeRound = this._getActiveRound();
-    const finishedDances = this._getFinishedDances(activeRound);
+  renderActiveRound = () => {
+    const activeRound = this.getActiveRound();
+    const finishedDances = this.getFinishedDances(activeRound);
     const total = activeRound.danceCount * activeRound.groups.length;
     const percent = (finishedDances / total) * 100 || 0;
     return (
@@ -97,7 +96,7 @@ class RoundList extends Component<Props, State> {
             <Card.Header>{activeRound.name}</Card.Header>
           </Card.Content>
           <Card.Content extra>
-            {this._hasActiveDance(activeRound) ? (
+            {this.hasActiveDance(activeRound) ? (
               <Progress percent={percent} success>
                 {finishedDances}
                 /
@@ -120,27 +119,27 @@ class RoundList extends Component<Props, State> {
     );
   };
 
-  _renderUpcomingRounds = () => {
-    const upcomingRounds = this._getUpcomingRounds();
+  renderUpcomingRounds = () => {
+    const upcomingRounds = this.getUpcomingRounds();
     return (
       <Table fixed unstackable basic="very" size="large">
         <Table.Body>
-          {upcomingRounds.map((r) => this._renderItem(r))}
+          {upcomingRounds.map((r) => this.renderItem(r))}
         </Table.Body>
       </Table>
     );
   };
 
-  _renderPastRounds = () => {
-    const pastRounds = this._getPastRounds();
+  renderPastRounds = () => {
+    const pastRounds = this.getPastRounds();
     return (
       <Table fixed unstackable basic="very">
-        <Table.Body>{pastRounds.map((r) => this._renderItem(r))}</Table.Body>
+        <Table.Body>{pastRounds.map((r) => this.renderItem(r))}</Table.Body>
       </Table>
     );
   };
 
-  _renderRounds = () => (
+  renderRounds = () => (
     <Container styleName="pad">
       <Accordion styled>
         <Accordion.Title
@@ -152,7 +151,7 @@ class RoundList extends Component<Props, State> {
           Upcoming Rounds
         </Accordion.Title>
         <Accordion.Content active={this.state.activeIndex === 0}>
-          {this._renderUpcomingRounds()}
+          {this.renderUpcomingRounds()}
         </Accordion.Content>
         <Accordion.Title
           active={this.state.activeIndex === 1}
@@ -163,13 +162,13 @@ class RoundList extends Component<Props, State> {
           Past Rounds
         </Accordion.Title>
         <Accordion.Content active={this.state.activeIndex === 1}>
-          {this._renderPastRounds()}
+          {this.renderPastRounds()}
         </Accordion.Content>
       </Accordion>
     </Container>
   );
 
-  _renderCreateRound = () => (
+  renderCreateRound = () => (
     <Container styleName="pad">
       <Modal defaultOpen={false} trigger={<Button>Add round</Button>}>
         <Modal.Header>Add round</Modal.Header>
@@ -180,12 +179,12 @@ class RoundList extends Component<Props, State> {
     </Container>
   );
 
-  _hasNextRound = () => this.props.nextRound != null;
+  hasNextRound = () => this.props.nextRound != null;
 
-  _getNextRound = () => this.props.rounds.find((r) => r.id === this.props.nextRound);
+  getNextRound = () => this.props.rounds.find((r) => r.id === this.props.nextRound);
 
-  _renderNextRound = () => {
-    const nextRound = this._getNextRound();
+  renderNextRound = () => {
+    const nextRound = this.getNextRound();
     return (
       <Container styleName="pad">
         <Header as="h2">Next Round</Header>
@@ -221,12 +220,12 @@ class RoundList extends Component<Props, State> {
   render() {
     return (
       <Container>
-        {this._hasActiveRound() && this._renderActiveRound()}
-        {this._hasNextRound()
-          && !this._hasActiveRound()
-          && this._renderNextRound()}
-        {this._renderCreateRound()}
-        {this._renderRounds()}
+        {this.hasActiveRound() && this.renderActiveRound()}
+        {this.hasNextRound()
+          && !this.hasActiveRound()
+          && this.renderNextRound()}
+        {this.renderCreateRound()}
+        {this.renderRounds()}
       </Container>
     );
   }

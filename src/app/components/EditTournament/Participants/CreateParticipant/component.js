@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React, { Component } from 'react';
 import {
   Form,
@@ -8,37 +8,31 @@ import {
   FormInput,
   Message,
 } from 'semantic-ui-react';
-import type { ParticipantValidationSummary } from '../../../../../validators/validate-participant';
 
-type Props = {
-  isLoading: boolean,
-  isClassic: boolean,
+import type {
+  ComponentState,
+  Props
+} from "./types";
 
-  createdSuccessfully: boolean,
+class CreateParticipant extends Component<Props, ComponentState> {
 
-  validation: ParticipantValidationSummary,
-  onSubmit: (state: State) => void,
-};
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      name: '',
+      role: 'none',
+    };
+  }
 
-export type State = {
-  name: string,
-  role: ParticipantRole,
-};
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) =>
+    this.setState({ name: event.target.value });
 
-class CreateParticipant extends Component<Props, State> {
-  state = {
-    name: '',
-    role: 'none',
-  };
-
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => this.setState({ name: event.target.value });
-
-  _onChangeRadio = (
+  onChangeRadio = (
     event: SyntheticInputEvent<HTMLInputElement>,
     { value }: { value: ParticipantRole },
   ) => this.setState({ role: value });
 
-  _onSubmit = async () => {
+  onSubmit = async () => {
     this.props.onSubmit(this.state);
   };
 
@@ -51,33 +45,33 @@ class CreateParticipant extends Component<Props, State> {
         {this.props.createdSuccessfully && (
           <Message positive content="Success!" />
         )}
-        <FormInput label="Name" value={name} onChange={this._onChangeName} />
+        <FormInput label="Name" value={name} onChange={this.onChangeName} />
         {!isValidName && <Message error content="Invalid name" />}
         <FormGroup id="role-radio" inline>
           <label htmlFor="role-radio">Role</label>
           <FormRadio
             label={isClassic ? 'Pair' : 'Leader'}
             value="leader"
-            onChange={this._onChangeRadio}
+            onChange={this.onChangeRadio}
             checked={role === 'leader'}
           />
           <FormRadio
             label={isClassic ? 'Dummy' : 'Follower'}
             value="follower"
-            onChange={this._onChangeRadio}
+            onChange={this.onChangeRadio}
             checked={role === 'follower'}
           />
           {!isClassic && (
             <FormRadio
               label="Both leader and follower"
               value="leaderAndFollower"
-              onChange={this._onChangeRadio}
+              onChange={this.onChangeRadio}
               checked={role === 'leaderAndFollower'}
             />
           )}
         </FormGroup>
         {!isValidRole && <Message error content="Must select a role" />}
-        <FormButton type="submit" onClick={this._onSubmit}>
+        <FormButton type="submit" onClick={this.onSubmit}>
           Add participant
         </FormButton>
       </Form>

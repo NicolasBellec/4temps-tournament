@@ -1,18 +1,21 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
 
 import CreateParticipant from './component';
-import type { State as ComponentState } from './component';
 import { getCreateParticipantAction } from '../../../../action-creators/participant';
 
-type Props = {
-  tournamentId: string,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  Props,
+  ComponentState
+} from "./types";
 
 function mapStateToProps(
   { tournaments, ui }: ReduxState,
-  { tournamentId }: Props,
-) {
+  { tournamentId }: OwnProps,
+): StateProps {
   return {
     ...ui.createParticipant,
     isClassic:
@@ -21,13 +24,18 @@ function mapStateToProps(
   };
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch, { tournamentId }: Props) {
+function mapDispatchToProps(
+  dispatch: ReduxDispatch,
+  { tournamentId }: OwnProps
+): DispatchProps {
   return {
-    onSubmit: ({ name, role }: ComponentState) => dispatch(getCreateParticipantAction(tournamentId, name, role)),
+    onSubmit: ({ name, role }: ComponentState) => {
+      dispatch(getCreateParticipantAction(tournamentId, name, role))
+    },
   };
 }
 
-const CreateParticipantContainer = connect(
+const CreateParticipantContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(CreateParticipant);

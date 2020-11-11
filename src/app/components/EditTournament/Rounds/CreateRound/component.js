@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import {
@@ -15,106 +15,90 @@ import {
   SyntheticEvent,
 } from 'semantic-ui-react';
 
-type Props = {
-  onSubmit: (round: RoundViewModel) => void,
+import type { Element } from 'react';
+import type {
+  Props,
+  RoundViewModel,
+  CriterionViewModel
+} from "./types";
 
-  isLoading: boolean,
-  createdSuccessfully: boolean,
-  validation: RoundValidationSummary,
-};
-
-type CriterionViewModel = {
-  name: string,
-  minValue: ?number,
-  maxValue: ?number,
-  description: string,
-};
-
-export type RoundViewModel = {
-  name: string,
-  danceCount: ?number,
-  minPairCountPerGroup: ?number,
-  maxPairCountPerGroup: ?number,
-  passingCouplesCount: ?number,
-  multipleDanceScoringRule: MultipleDanceScoringRule,
-  notationSystem: NotationSystem,
-  criteria: Array<CriterionViewModel>,
-  errorOnSameScore: boolean,
-};
 type State = RoundViewModel;
 
 class EditTournamentRounds extends Component<Props, State> {
-  state = {
-    name: '',
-    danceCount: null,
-    minPairCountPerGroup: null,
-    maxPairCountPerGroup: null,
-    passingCouplesCount: null,
-    multipleDanceScoringRule: 'average',
-    criteria: [
-      {
-        name: '',
-        description: '',
-        minValue: null,
-        maxValue: null,
-        type: 'none',
-        forJudgeType: 'normal',
-      },
-    ],
-    errorOnSameScore: false,
-    notationSystem: 'none',
-  };
 
-  _handleErrorOnSameScoreChange = (
-    e: SyntheticEvent,
-    data: { checked: boolean },
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      name: '',
+      danceCount: null,
+      minPairCountPerGroup: null,
+      maxPairCountPerGroup: null,
+      passingCouplesCount: null,
+      multipleDanceScoringRule: 'average',
+      criteria: [
+        {
+          name: '',
+          description: '',
+          minValue: null,
+          maxValue: null,
+          type: 'none',
+          forJudgeType: 'normal',
+        },
+      ],
+      errorOnSameScore: false,
+      notationSystem: 'none',
+    };
+  }
+
+  handleErrorOnSameScoreChange = (
+    e: SyntheticEvent<HTMLInputElement>,
+    { checked }: { checked: boolean },
   ) => {
-    const { checked } = data;
     this.setState({ errorOnSameScore: checked });
   };
 
-  _onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value });
   };
 
-  _onChangeDanceCount = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ danceCount: this._parseCount(event) });
+  onChangeDanceCount = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ danceCount: this.parseCount(event) });
   };
 
-  _onChangeMinPairCountPerGroup = (
+  onChangeMinPairCountPerGroup = (
     event: SyntheticInputEvent<HTMLInputElement>,
   ) => {
-    this.setState({ minPairCountPerGroup: this._parseCount(event) });
+    this.setState({ minPairCountPerGroup: this.parseCount(event) });
   };
 
-  _onChangeMaxPairCountPerGroup = (
+  onChangeMaxPairCountPerGroup = (
     event: SyntheticInputEvent<HTMLInputElement>,
   ) => {
-    this.setState({ maxPairCountPerGroup: this._parseCount(event) });
+    this.setState({ maxPairCountPerGroup: this.parseCount(event) });
   };
 
-  _onChangePassingCouplesCount = (
+  onChangePassingCouplesCount = (
     event: SyntheticInputEvent<HTMLInputElement>,
-  ) => this.setState({ passingCouplesCount: this._parseCount(event) });
+  ) => this.setState({ passingCouplesCount: this.parseCount(event) });
 
-  _parseCount = (event: SyntheticInputEvent<HTMLInputElement>): ?number => {
+  parseCount = (event: SyntheticInputEvent<HTMLInputElement>): ?number => {
     const count = parseInt(event.target.value);
     return isNaN(count) ? null : count;
   };
 
-  _onChangeMultipleDanceScoringRule = (
+  onChangeMultipleDanceScoringRule = (
     event: SyntheticInputEvent<HTMLInputElement>,
     { value }: { value: MultipleDanceScoringRule },
   ) => this.setState({ multipleDanceScoringRule: value });
 
-  _onChangeNotationSystem = (
+  onChangeNotationSystem = (
     event: SyntheticInputEvent<HTMLInputElement>,
     { value }: { value: NotationSystem },
   ) => this.setState({ notationSystem: value });
 
-  _countOrEmptyString = (count: ?number): string | number => (count != null ? count : '');
+  countOrEmptyString = (count: ?number): string | number => (count != null ? count : '');
 
-  _renderDanceRule = () => {
+  renderDanceRule = () => {
     const { danceCount, multipleDanceScoringRule } = this.state;
     const { validation } = this.props;
     if (danceCount != null && danceCount > 1) {
@@ -129,13 +113,13 @@ class EditTournamentRounds extends Component<Props, State> {
             <FormRadio
               label="Average of all dances"
               value="average"
-              onChange={this._onChangeMultipleDanceScoringRule}
+              onChange={this.onChangeMultipleDanceScoringRule}
               checked={multipleDanceScoringRule === 'average'}
             />
             <FormRadio
               label="Only the best dance"
               value="best"
-              onChange={this._onChangeMultipleDanceScoringRule}
+              onChange={this.onChangeMultipleDanceScoringRule}
               checked={multipleDanceScoringRule === 'best'}
             />
           </FormGroup>
@@ -147,10 +131,10 @@ class EditTournamentRounds extends Component<Props, State> {
     }
   };
 
-  _renderCriteria = () => this.state.criteria.map(this._renderCriterion);
+  renderCriteria = (): Element<"div">[]  => this.state.criteria.map(this.renderCriterion);
 
-  _renderCriterion = (criterion: CriterionViewModel, index: number) => {
-    const onChangeString = (key: string) => (event) => this._onChangeCriterion(
+  renderCriterion = (criterion: CriterionViewModel, index: number) => {
+    const onChangeString = (key: string) => (event) => this.onChangeCriterion(
       {
         ...criterion,
         [key]: event.target.value,
@@ -158,10 +142,10 @@ class EditTournamentRounds extends Component<Props, State> {
       index,
     );
     const onChangeInt = (key: string) => (event) => {
-      this._onChangeCriterion(
+      this.onChangeCriterion(
         {
           ...criterion,
-          [key]: this._parseCount(event),
+          [key]: this.parseCount(event),
         },
         index,
       );
@@ -203,7 +187,7 @@ class EditTournamentRounds extends Component<Props, State> {
             label="Minimum value"
             placeholder="0"
             type="number"
-            value={this._countOrEmptyString(criterion.minValue)}
+            value={this.countOrEmptyString(criterion.minValue)}
             onChange={onChangeInt('minValue')}
             error={
               !criterionValidation.isValidMinValue
@@ -214,7 +198,7 @@ class EditTournamentRounds extends Component<Props, State> {
             label="Maximum value"
             placeholder="2"
             type="number"
-            value={this._countOrEmptyString(criterion.maxValue)}
+            value={this.countOrEmptyString(criterion.maxValue)}
             onChange={onChangeInt('maxValue')}
             error={
               !criterionValidation.isValidMaxValue
@@ -227,13 +211,13 @@ class EditTournamentRounds extends Component<Props, State> {
     );
   };
 
-  _onChangeCriterion = (criterion: CriterionViewModel, index: number) => {
+  onChangeCriterion = (criterion: CriterionViewModel, index: number) => {
     const criteria = [...this.state.criteria];
     criteria[index] = criterion;
     this.setState({ criteria });
   };
 
-  _addCriterion = () => this.setState({
+  addCriterion = () => this.setState({
     criteria: [
       ...this.state.criteria,
       {
@@ -242,11 +226,13 @@ class EditTournamentRounds extends Component<Props, State> {
         minValue: null,
         maxValue: null,
         forJudgeType: 'normal',
+        type: 'none'
       },
     ],
   });
 
-  _onSubmit = () => {
+  onSubmit = () => {
+    // $FlowFixMe
     this.props.onSubmit(this.state);
   };
 
@@ -262,7 +248,7 @@ class EditTournamentRounds extends Component<Props, State> {
             label="Name"
             placeholder="First round"
             value={this.state.name}
-            onChange={this._onChangeName}
+            onChange={this.onChangeName}
             error={!validation.isValidName}
           />
           <FormField error={!validation.isValidPassingCouplesCount}>
@@ -276,8 +262,8 @@ class EditTournamentRounds extends Component<Props, State> {
             <input
               id="couple-pass-count"
               placeholder="25"
-              value={this._countOrEmptyString(this.state.passingCouplesCount)}
-              onChange={this._onChangePassingCouplesCount}
+              value={this.countOrEmptyString(this.state.passingCouplesCount)}
+              onChange={this.onChangePassingCouplesCount}
             />
           </FormField>
         </FormGroup>
@@ -286,16 +272,16 @@ class EditTournamentRounds extends Component<Props, State> {
             label="Amount of dances"
             placeholder="1"
             type="number"
-            value={this._countOrEmptyString(this.state.danceCount)}
-            onChange={this._onChangeDanceCount}
+            value={this.countOrEmptyString(this.state.danceCount)}
+            onChange={this.onChangeDanceCount}
             error={!validation.isValidDanceCount}
           />
           <FormInput
             label="Minimum amount of couples per group"
             placeholder="3"
             type="number"
-            value={this._countOrEmptyString(this.state.minPairCountPerGroup)}
-            onChange={this._onChangeMinPairCountPerGroup}
+            value={this.countOrEmptyString(this.state.minPairCountPerGroup)}
+            onChange={this.onChangeMinPairCountPerGroup}
             error={
               !validation.isValidMinPairCount
               || !validation.isMaxPairGreaterOrEqualToMinPair
@@ -305,8 +291,8 @@ class EditTournamentRounds extends Component<Props, State> {
             label="Maximum amount of couples per group"
             placeholder="5"
             type="number"
-            value={this._countOrEmptyString(this.state.maxPairCountPerGroup)}
-            onChange={this._onChangeMaxPairCountPerGroup}
+            value={this.countOrEmptyString(this.state.maxPairCountPerGroup)}
+            onChange={this.onChangeMaxPairCountPerGroup}
             error={
               !validation.isValidMaxPairCount
               || !validation.isMaxPairGreaterOrEqualToMinPair
@@ -323,13 +309,13 @@ class EditTournamentRounds extends Component<Props, State> {
             <FormRadio
               label="Score sum"
               value="sum"
-              onChange={this._onChangeNotationSystem}
+              onChange={this.onChangeNotationSystem}
               checked={this.state.notationSystem === 'sum'}
             />
             <FormRadio
               label="RPSS"
               value="rpss"
-              onChange={this._onChangeNotationSystem}
+              onChange={this.onChangeNotationSystem}
               checked={this.state.notationSystem === 'rpss'}
             />
           </FormGroup>
@@ -342,10 +328,10 @@ class EditTournamentRounds extends Component<Props, State> {
             toggle
             label={{ children: 'Treat equal score as error' }}
             checked={this.state.errorOnSameScore}
-            onChange={this._handleErrorOnSameScoreChange}
+            onChange={this.handleErrorOnSameScoreChange}
           />
         </FormGroup>
-        {this._renderDanceRule()}
+        {this.renderDanceRule()}
         <Divider />
         <Header as="h2">
           Criteria
@@ -353,11 +339,11 @@ class EditTournamentRounds extends Component<Props, State> {
             attached
             floated="right"
             content="Add another criterion"
-            onClick={this._addCriterion}
+            onClick={this.addCriterion}
           />
         </Header>
-        {this._renderCriteria()}
-        <Button type="submit" onClick={this._onSubmit}>
+        {this.renderCriteria()}
+        <Button type="submit" onClick={this.onSubmit}>
           Submit
         </Button>
       </Form>

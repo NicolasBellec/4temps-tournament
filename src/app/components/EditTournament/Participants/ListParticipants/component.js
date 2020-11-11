@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React, { Component } from 'react';
 import {
   Container,
@@ -19,11 +19,9 @@ import {
   SyntheticEvent,
 } from 'semantic-ui-react';
 
-type Props = {
-  isClassic: boolean,
-  participants: Array<Participant>,
-  onChangeAttending: (id: string, isAttending: boolean) => void,
-};
+import type {
+  Props
+} from "./types";
 
 type State = {
   isSearchLoading: boolean,
@@ -34,15 +32,19 @@ type State = {
 };
 
 class ListParticipants extends Component<Props, State> {
-  state = {
-    isSearchLoading: false,
-    searchValue: '',
-    filterPresent: false,
-    didClickUnAttend: false,
-    unAttendParticipant: null,
-  };
 
-  _renderItem = (participant: Participant) => {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isSearchLoading: false,
+      searchValue: '',
+      filterPresent: false,
+      didClickUnAttend: false,
+      unAttendParticipant: null,
+    };
+  }
+
+  renderItem = (participant: Participant) => {
     const {
       id, name, role, isAttending, attendanceId,
     } = participant;
@@ -66,12 +68,12 @@ class ListParticipants extends Component<Props, State> {
         </Table.Cell>
         <TableCell>{attendanceId == null ? 'X' : attendanceId}</TableCell>
         <TableCell>{name}</TableCell>
-        <TableCell>{this._roleToString(role)}</TableCell>
+        <TableCell>{this.roleToString(role)}</TableCell>
       </TableRow>
     );
   };
 
-  _roleToString(role: ParticipantRole) {
+  roleToString(role: ParticipantRole) {
     const { isClassic } = this.props;
     if (role === 'leader') {
       if (isClassic) {
@@ -91,20 +93,20 @@ class ListParticipants extends Component<Props, State> {
     return 'Invalid role';
   }
 
-  _hideModal = () => {
+  hideModal = () => {
     this.setState({
       didClickUnAttend: false,
       unAttendParticipant: null,
     });
   };
 
-  _handleFilterChange = (e: SyntheticEvent, data: { checked: boolean }) => {
+  handleFilterChange = (e: SyntheticEvent<HTMLInputElement>, data: { checked: boolean }) => {
     const { checked } = data;
     this.setState({ filterPresent: checked });
   };
 
-  _renderUnattendModal = () => (
-    <Modal open={this.state.didClickUnAttend} onClose={this._hideModal}>
+  renderUnattendModal = () => (
+    <Modal open={this.state.didClickUnAttend} onClose={this.hideModal}>
       <Header content="Un-attending participant" />
       <ModalContent>
         <p>
@@ -124,19 +126,20 @@ class ListParticipants extends Component<Props, State> {
           color="green"
           inverted
           onClick={() => {
-            this.props.onChangeAttending(
-              // $FlowFixMe
-              this.state.unAttendParticipant.id,
-              false,
-            );
-            this._hideModal();
+            if (this.state.unAttendParticipant) {
+              this.props.onChangeAttending(
+                this.state.unAttendParticipant.id,
+                false,
+              );
+            }
+            this.hideModal();
           }}
         >
           <Icon name="checkmark" />
           {' '}
           OK
         </Button>
-        <Button color="red" onClick={this._hideModal}>
+        <Button color="red" onClick={this.hideModal}>
           <Icon name="remove" />
           {' '}
           No
@@ -145,27 +148,29 @@ class ListParticipants extends Component<Props, State> {
     </Modal>
   );
 
-  handleSearchChange = (e: SyntheticEvent, { value }: { value: string }) => {
+  handleSearchChange = (e: SyntheticEvent<HTMLInputElement>, { value }: { value: string }) => {
     this.setState({ isSearchLoading: true, searchValue: value });
     this.setState({ isSearchLoading: false });
   };
 
-  _getNotPresent = () => this.props.participants.filter((p) => !p.isAttending);
+  getNotPresent = (): Participant[] => this.props.participants.filter((p) => !p.isAttending);
 
-  _searchParticipants = (participants: Array<Participant>) => participants.filter((p) => {
-    const name = p.name.toLowerCase();
-    const search = this.state.searchValue.toLowerCase();
-    return name.indexOf(search) !== -1;
-  });
+  searchParticipants =
+    (participants: Array<Participant>): Participant[] => participants.filter(
+      (p) => {
+        const name = p.name.toLowerCase();
+        const search = this.state.searchValue.toLowerCase();
+        return name.indexOf(search) !== -1;
+      });
 
   render() {
     let participants = this.state.filterPresent
-      ? this._getNotPresent()
+      ? this.getNotPresent()
       : this.props.participants;
-    participants = this._searchParticipants(participants);
+    participants = this.searchParticipants(participants);
     return (
       <Container>
-        {this._renderUnattendModal()}
+        {this.renderUnattendModal()}
         <Table basic="very">
           <TableBody>
             <TableRow>
@@ -181,7 +186,7 @@ class ListParticipants extends Component<Props, State> {
                 <Checkbox
                   toggle
                   checked={this.state.filterPresent}
-                  onChange={this._handleFilterChange}
+                  onChange={this.handleFilterChange}
                 />
               </TableCell>
               <TableCell textAlign="left">
@@ -199,7 +204,7 @@ class ListParticipants extends Component<Props, State> {
               <TableHeaderCell>Role</TableHeaderCell>
             </TableRow>
           </TableHeader>
-          <TableBody>{participants.map(this._renderItem)}</TableBody>
+          <TableBody>{participants.map(this.renderItem)}</TableBody>
         </Table>
       </Container>
     );

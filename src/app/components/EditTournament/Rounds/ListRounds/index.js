@@ -1,21 +1,26 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
-import type { RouterHistory } from 'react-router-dom';
 import PreloadContainer from '../../../PreloadContainer';
 import List from './component';
+// $FlowFixMe
 import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
 import {
   getDeleteRoundAction,
   getStartRoundAction,
 } from '../../../../action-creators/round';
 
-type Props = {
-  tournamentId: string,
-  history: RouterHistory,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  Props,
+} from "./types";
 
-function mapStateToProps({ rounds }: ReduxState, { tournamentId }: Props) {
+function mapStateToProps(
+  { rounds }: ReduxState,
+  { tournamentId }: OwnProps
+): StateProps {
   const tournamentRounds = (rounds.forTournament[tournamentId] || []).map(
     (id) => rounds.byId[id],
   );
@@ -33,17 +38,23 @@ function mapStateToProps({ rounds }: ReduxState, { tournamentId }: Props) {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId, history }: Props,
-) {
+  { tournamentId, history }: OwnProps,
+): DispatchProps {
   return {
-    load: () => dispatch(getAdminTournamentsAction()),
-    deleteRound: (deleteId: string) => dispatch(getDeleteRoundAction(tournamentId, deleteId)),
-    startRound: (roundId: string) => dispatch(getStartRoundAction(tournamentId, roundId, history)),
-    onClick: (roundId: string) => history.push(`/tournament/${tournamentId}/round/${roundId}`),
+    load: () => {
+      dispatch(getAdminTournamentsAction())
+    },
+    deleteRound: (id: string) => {
+      dispatch(getDeleteRoundAction(tournamentId, id))
+    },
+    startRound: (id: string) => {
+      dispatch(getStartRoundAction(tournamentId, id, history))
+    },
+    onClick: (id: string) => history.push(`/tournament/${tournamentId}/round/${id}`),
   };
 }
 
-const ListRoundContainer = connect(
+const ListRoundContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);
