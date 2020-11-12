@@ -22,10 +22,38 @@
     "rules": {
         "prettier/prettier": [
           "error",
-          {},
           {
             "usePrettierc": true
           }
-        ]
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        // don't error on react router4 Link component
+        "jsx-a11y/anchor-is-valid": [
+            "error",
+            {
+                "components": [
+                    "Link"
+                ],
+                "specialLink": [
+                    "to"
+                ],
+                "aspects": [
+                    "noHref"
+                ]
+            }
+        ],
+        "jsx-a11y/label-has-for": [ 2, {
+            "required": {
+                "some": [ "nesting", "id" ]
+            }
+        }]
     }
 }
