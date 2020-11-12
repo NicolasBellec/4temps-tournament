@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 type Role = 'leader' | 'follower';
 
@@ -31,10 +31,13 @@ export default class NoteChecker {
     for (const round of this._tournament.rounds) {
       for (const group of round.groups) {
         if (group.dances.findIndex(({ id }) => id == danceId) != -1) {
-          // $FlowFixMe
-          return group.pairs
-            .map((pair) => pair[role])
-            .filter((id) => id != null);
+          return group.pairs.reduce(
+            (acc: string[], pair) => {
+              const val: ?string = pair[role];
+              return typeof val === 'string' ? [ ...acc, val ] : [ ...acc ];
+            },
+            []
+          );
         }
       }
     }
@@ -130,6 +133,7 @@ function hashNote({
   danceId: string,
   participantId: string,
   criterionId: string,
+  ...
 }) {
   return `${judgeId}:${danceId}:${participantId}:${criterionId}`;
 }

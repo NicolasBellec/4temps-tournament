@@ -7,7 +7,6 @@ import type {
   Props
 } from './types';
 import Component from './component';
-// $FlowFixMe
 import NoteChecker from '../../../../domain/note-checker';
 import { getSubmitNotesAction } from '../../../action-creators/note';
 

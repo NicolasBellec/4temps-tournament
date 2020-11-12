@@ -1,6 +1,5 @@
 // @flow
 
-// $FlowFixMe
 import NoteChecker from '../../domain/note-checker';
 import RoundScorer from '../../domain/round-scorer';
 import RPSSRoundScorer from '../../domain/rpss-round-scorer';

@@ -11,7 +11,6 @@ import validateNoteForTournamentAndUser, {
   WrongJudgeType,
 } from './validate-note';
 import { parseNotes, InvalidBodyError } from './parse-note';
-// $FlowFixMe
 import NoteChecker from '../../domain/note-checker';
 
 export default function submitNotesRoute(
