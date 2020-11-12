@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React from 'react';
 import {
   Input,
@@ -31,7 +31,10 @@ export type DispatchProps = {
   onClick: (value: ?number) => void,
 };
 
-type Props = StateProps & DispatchProps;
+type Props = {
+  ...StateProps,
+  ...DispatchProps
+};
 
 function NoteCriterion({ notedEntity, criterion, onClick }: Props) {
   return (
@@ -94,10 +97,7 @@ function NormalInput({ notedEntity, criterion, onClick }: Props) {
 function SanctionerInput({
   criterion,
   onClick,
-}: {
-  criterion: CriterionViewModel,
-  onClick: (val: ?number) => void,
-}) {
+}: Props) {
   return (
     <GridRow>
       <Input
