@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
 import Component from './component';
@@ -6,7 +6,8 @@ import type {
   CriterionViewModel,
   StateProps,
   DispatchProps,
-} from './component';
+  Props
+} from './types';
 import { getSetNoteAction } from '../../../../action-creators/note';
 
 function mapStateToProps(state: ReduxState): StateProps {
@@ -65,14 +66,10 @@ function getFirstPair(round: Round): Pair {
 
 function getRound(state: ReduxState): Round {
   const tournament = state.tournaments.byId[state.tournaments.forJudge];
-  // $FlowFixMe
-  return tournament.rounds.reduce((res, roundId) => {
-    const round = state.rounds.byId[roundId];
-    if (round.active) {
-      return round;
-    }
-    return res;
-  }, null);
+  const activeRoundId = tournament.rounds.filter(
+    (roundId) => state.rounds.byId[roundId].active)[0];
+
+  return state.rounds.byId[activeRoundId];
 }
 
 function getCriteriaForJudgeType(
@@ -130,7 +127,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const PairNoteTakerContainer = connect(
+const PairNoteTakerContainer = connect<Props, {}, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);
