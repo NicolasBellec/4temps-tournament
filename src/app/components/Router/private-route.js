@@ -8,7 +8,7 @@ import SignUpOrLoginWithRouter from '../SignUpOrLogin'
 import type { Props, OwnProps, StateProps } from './types'
 
 const PrivateRoute = ({
-  component: Component,
+  component,
   isAuthenticated,
   referer,
   history,
@@ -17,7 +17,7 @@ const PrivateRoute = ({
   <Route
     render={(props) =>
       isAuthenticated === true ? (
-        <Component {...props} />
+        <component {...props} />
       ) : (
         <SignUpOrLoginWithRouter
           history={history}
