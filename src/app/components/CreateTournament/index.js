@@ -3,7 +3,6 @@
 import { connect } from 'react-redux';
 import ObjectId from 'bson-objectid';
 import CreateTournament from './component';
-// $FlowFixMe
 import { getCreateTournamentAction } from '../../action-creators/tournament';
 
 import type {

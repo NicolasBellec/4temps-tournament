@@ -1,12 +1,9 @@
 // @flow
 import { connect } from 'react-redux';
-// $FlowFixMe
 import { updateTournament } from '../../../api/tournament';
 
 import {
-  // $FlowFixMe
   getAdminTournamentsAction,
-  // $FlowFixMe
   getEditTournamentAction,
 } from '../../../action-creators/tournament';
 

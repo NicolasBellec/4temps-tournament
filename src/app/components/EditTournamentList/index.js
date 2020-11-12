@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import PreloadContainer from '../PreloadContainer';
 import TournamentList from '../TournamentList';
-// $FlowFixMe
 import { getAdminTournamentsAction } from '../../action-creators/tournament';
 
 import type {

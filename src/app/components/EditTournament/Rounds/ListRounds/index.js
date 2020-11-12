@@ -3,7 +3,6 @@
 import { connect } from 'react-redux';
 import PreloadContainer from '../../../PreloadContainer';
 import List from './component';
-// $FlowFixMe
 import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
 import {
   getDeleteRoundAction,

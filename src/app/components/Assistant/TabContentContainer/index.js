@@ -1,7 +1,6 @@
 // @flow
 
 import { connect } from 'react-redux';
-// $FlowFixMe
 import { getSingleTournamentAction } from '../../../action-creators/tournament';
 import type {
   OwnProps,

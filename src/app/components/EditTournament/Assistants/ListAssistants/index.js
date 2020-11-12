@@ -5,7 +5,6 @@ import PreloadContainer from '../../../PreloadContainer';
 import Component from './component';
 
 import { getAccessKeysForTournament } from '../../../../api/access-key';
-// $FlowFixMe
 import { getAdminTournamentsAction } from '../../../../action-creators/tournament';
 import { getAccessKeysAction } from '../../../../action-creators/access-key';
 
