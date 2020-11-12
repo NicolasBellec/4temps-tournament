@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 export default function validateNoteForTournamentAndUser(
   note: JudgeNote,
@@ -74,17 +74,17 @@ function isValidCriterionForParticipant(
   criterion: RoundCriterion,
   participant: Participant,
 ): boolean {
-  if (criterion.type === 'leader') {
-    return (
-      participant.role === 'leader' || participant.role === 'leaderAndFollower'
-    );
-  }
-  if (criterion.type === 'follower') {
-    return (
-      participant.role === 'follower'
-      || participant.role === 'leaderAndFollower'
-    );
-  }
+  // if (criterion.type === 'leader') {
+  //   return (
+  //     participant.role === 'leader' || participant.role === 'leaderAndFollower'
+  //   );
+  // }
+  // if (criterion.type === 'follower') {
+  //   return (
+  //     participant.role === 'follower'
+  //     || participant.role === 'leaderAndFollower'
+  //   );
+  // }
 
   return true;
 }

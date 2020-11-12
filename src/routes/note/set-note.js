@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type { TournamentRepository } from '../../data/tournament';
 import type { NoteRepository } from '../../data/note';
 import validateNoteForTournamentAndUser, {

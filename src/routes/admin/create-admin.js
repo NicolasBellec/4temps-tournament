@@ -1,9 +1,8 @@
-// no-flow
+// @flow
 import type { $Request, $Response } from 'express';
 
 import validateAdmin from '../../validators/validate-admin';
 import type { RouteResult } from '../util';
-import type { AdminCreateValidationSummary } from '../../validators/validate-admin';
 import { createAdmin, getAdmins } from '../../data/admin';
 import type { AdminModel } from '../../data/admin';
 

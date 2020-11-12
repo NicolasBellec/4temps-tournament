@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 function parseRound(bodyRound: mixed): Round {
   const round: Round = {
@@ -8,7 +8,6 @@ function parseRound(bodyRound: mixed): Round {
     minPairCountPerGroup: -1,
     maxPairCountPerGroup: -1,
     passingCouplesCount: -1,
-    roundScoringRule: 'none',
     multipleDanceScoringRule: 'none',
     notationSystem: 'none',
     criteria: [],

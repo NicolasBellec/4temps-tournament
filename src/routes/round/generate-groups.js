@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import ObjectId from 'bson-objectid';
 import type { TournamentRepository } from '../../data/tournament';
 import NextGroupGenerator from '../../domain/next-group-generator';

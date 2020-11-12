@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type { TournamentRepository } from '../../data/tournament';
 import type { NoteRepository } from '../../data/note';
 import validateNoteForTournamentAndUser, {
@@ -11,6 +11,7 @@ import validateNoteForTournamentAndUser, {
   WrongJudgeType,
 } from './validate-note';
 import { parseNotes, InvalidBodyError } from './parse-note';
+// $FlowFixMe
 import NoteChecker from '../../domain/note-checker';
 
 export default function submitNotesRoute(

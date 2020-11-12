@@ -135,7 +135,8 @@ declare type AdminCredentials = {
 
 declare type User = {
   id: string,
-  role: PermissionRole
+  role: PermissionRole,
+  tournamentId?: string,
 };
 
 declare type PermissionRole =

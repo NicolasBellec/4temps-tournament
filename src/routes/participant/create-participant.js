@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { ObjectID } from 'mongodb';
 import type { TournamentRepository } from '../../data/tournament';

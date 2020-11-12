@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type { NextFunction } from 'express';
 import type { TournamentRepository } from '../data/tournament';
 import { TournamentRepositoryImpl } from '../data/tournament';
@@ -20,7 +20,7 @@ class AuthorizationChecker {
 
   _next: NextFunction;
 
-  _user: ?{ id: string, role: PermissionRole };
+  _user: ?{ id: string, role: PermissionRole, tournamentId?: string };
 
   _tournamentId: string;
 

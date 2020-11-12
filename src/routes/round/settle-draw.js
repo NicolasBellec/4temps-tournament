@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type { TournamentRepository } from '../../data/tournament';
 
 export default class SettleDrawRoute {

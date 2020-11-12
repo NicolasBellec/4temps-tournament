@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type { NoteRepository } from '../../data/note';
 
 export default function getNotesRouteForDanceRoute(repository: NoteRepository) {
