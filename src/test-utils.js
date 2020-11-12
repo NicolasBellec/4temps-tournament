@@ -311,7 +311,6 @@ export function createRound(): Round {
     minPairCountPerGroup: 1,
     maxPairCountPerGroup: 4,
     passingCouplesCount: 5,
-    tieRule: 'random',
     multipleDanceScoringRule: 'best',
     notationSystem: 'sum',
     criteria: [

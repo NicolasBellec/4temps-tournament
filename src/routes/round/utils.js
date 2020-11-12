@@ -8,7 +8,6 @@ function parseRound(bodyRound: mixed): Round {
     minPairCountPerGroup: -1,
     maxPairCountPerGroup: -1,
     passingCouplesCount: -1,
-    tieRule: 'none',
     roundScoringRule: 'none',
     multipleDanceScoringRule: 'none',
     notationSystem: 'none',

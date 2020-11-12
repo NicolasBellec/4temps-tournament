@@ -27,7 +27,7 @@ function getNotes(
   const {
     payload,
     ...other
-  }: { type: string, payload: Array<JudgeNote> } = action;
+  } = action;
   return handle(state, action, {
     start: (prevState) => ({
       ...prevState,

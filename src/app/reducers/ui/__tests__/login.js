@@ -1,9 +1,8 @@
-// no-flow
+// @flow
 import { LIFECYCLE } from 'redux-pack';
 
 import reducer, { getInitialState } from '../login';
 import makePackAction from '../../test-utils';
-import type { AdminLoginValidationSummary } from '../../../../validators/validate-admin-login';
 
 test('Default value is that all fields are valid and not loading', () => {
   expect(reducer(undefined, makePackAction(LIFECYCLE.FAILURE, ''))).toEqual({

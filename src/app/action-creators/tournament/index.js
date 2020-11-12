@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import type { RouterHistory } from 'react-router-dom';
 import type Moment from 'moment';

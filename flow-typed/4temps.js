@@ -63,7 +63,6 @@ declare type Round = {
   groups: Array < DanceGroup > ,
   roundScores: Array < Score > ,
   tieBreakerJudge: ? string,
-  tieRule: string,
   winners: {
     leaders: Array<{ score: number, participant: Participant }>,
     followers: Array<{ score: number, participant: Participant }>,

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import { handle } from 'redux-pack';
 
 function createRound(
@@ -8,22 +8,22 @@ function createRound(
   const { type, payload } = action;
 
   switch (type) {
-  case 'CREATE_ROUND':
-    return handle(state, action, {
-      start: (prevState) => ({
-        ...prevState,
-        isLoading: true,
-        createdSuccessfully: false,
-      }),
-      success: () => ({ ...getInitialState(), createdSuccessfully: true }),
-      failure: () => ({
-        isLoading: false,
-        createdSuccessfully: false,
-        validation: payload,
-      }),
-    });
-  default:
-    return state;
+    case 'CREATE_ROUND':
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          isLoading: true,
+          createdSuccessfully: false,
+        }),
+        success: () => ({ ...getInitialState(), createdSuccessfully: true }),
+        failure: () => ({
+          isLoading: false,
+          createdSuccessfully: false,
+          validation: payload,
+        }),
+      });
+    default:
+      return state;
   }
 }
 
@@ -39,7 +39,6 @@ export function getInitialState(): UiCreateRoundReduxState {
       isValidMinPairCount: true,
       isValidMaxPairCount: true,
       isMaxPairGreaterOrEqualToMinPair: true,
-      isValidTieRule: true,
       isValidMultipleDanceScoringRule: true,
       isValidAmountOfCriteria: true,
       isValidCriteria: true,
@@ -52,8 +51,8 @@ export function getInitialState(): UiCreateRoundReduxState {
           isValidMinValue: true,
           isValidMaxValue: true,
           isValidValueCombination: true,
-          isValidType: true,
           isValidDescription: true,
+          isValidForJudgeType: true,
         },
       ],
     },

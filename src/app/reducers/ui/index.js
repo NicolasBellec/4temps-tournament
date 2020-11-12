@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { combineReducers } from 'redux';
 import login from './login';
@@ -13,7 +13,7 @@ import createAssistant from './create-assistant';
 import notes from './notes';
 import settleDraw from './settle-draw';
 
-export default combineReducers({
+export default combineReducers<_, ReduxAction>({
   login,
   judgeLogin,
   signUp,

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import { handle } from 'redux-pack';
 
 export default function reducer(

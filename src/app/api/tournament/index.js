@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import moment from 'moment';
 
@@ -9,6 +9,10 @@ import {
   normalizeTournamentArray,
   normalizeTournament,
 } from '../../reducers/normalize';
+
+
+type normalizedTourArray = $Call<typeof normalizeTournamentArray, Tournament[]>;
+type normalizedTour = $Call<typeof normalizeTournament, Tournament>;
 
 export const createTournamentApi = async (
   tournament: Tournament,
@@ -30,13 +34,30 @@ export const deserializeTournament = (tour: Tournament): Tournament => {
   return { date: moment(date), ...rest };
 };
 
-export const getTournamentsForUser = (): Promise<Array<mixed>> => apiGetRequest('/api/tournament/get', (tours) => normalizeTournamentArray(tours.map(deserializeTournament)));
+export async function getTournamentsForUser(): Promise<normalizedTourArray> {
+  const tournaments: Tournament[] = await apiGetRequest(
+    '/api/tournament/get',
+    (tours) => tours.map(deserializeTournament));
+  return normalizeTournamentArray(tournaments);
+}
 
-export const getTournament = (id: string): Promise<mixed> => apiGetRequest(`/api/tournament/get/${id}`, normalizeTournament);
+export async function getTournament(id: string): Promise<normalizedTour> {
+  const tournament: Tournament = await apiGetRequest(`/api/tournament/get/${id}`);
+  return normalizeTournament(tournament);
+}
 
-export const getTournamentForJudge = (): Promise<mixed> => apiGetRequest('/api/tournament/get/judge', normalizeTournament);
 
-export const getAllTournaments = (): Promise<mixed> => apiGetRequest('/api/tournament/get/all', (tours) => normalizeTournamentArray(tours.map(deserializeTournament)));
+export async function getTournamentForJudge(): Promise<normalizedTour> {
+  const tournament: Tournament = await apiGetRequest('/api/tournament/get/judge');
+  return normalizeTournament(tournament);
+}
+
+export async function getAllTournaments(): Promise<normalizedTourArray>{
+  const tournaments: Tournament[] = await apiGetRequest(
+    '/api/tournament/get/all',
+    (tours) => tours.map(deserializeTournament));
+  return normalizeTournamentArray(tournaments);
+}
 
 export const updateTournament = async (
   tournamentId: string,

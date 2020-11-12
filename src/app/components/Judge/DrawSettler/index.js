@@ -1,28 +1,49 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
 import DrawSettler from './component';
-import type {
-  Props as ComponentProps,
-  ActionProps as ComponentActionProps,
-} from './component';
 import { getSettleDrawAction } from '../../../action-creators/round';
 
 type HydratedScore = { score: number, participant: Participant };
+import type {
+  OwnProps,
+  Props,
+  StateProps,
+  DispatchProps
+} from "./types";
 
 function mapStateToProps({
   participants,
   tournaments,
   rounds,
   ui,
-}: ReduxState): ComponentProps {
+}: ReduxState): StateProps {
   const tournament = tournaments.byId[tournaments.forJudge];
 
   // Normal, its a ?Round, we have to get ride of the option possibility
-  // $FlowFixMe
-  const activeRound: Round = tournament.rounds
+  const activeRound: ?Round = tournament.rounds
     .map((roundId) => rounds.byId[roundId])
     .find((round) => round.active);
+
+  if (!activeRound) {
+    // Should never happen but allows to remove the option off activeRound
+    return {
+      roundName: '',
+      isPairRound: false,
+      passingCouplesCount: 0,
+      leaders: {
+        winners: [],
+        losers: [],
+        draw: []
+      },
+      followers: {
+        winners: [],
+        losers: [],
+        draw: []
+      },
+      ...ui.settleDraw
+    };
+  }
 
   const participantsOfRound = getParticipants(
     participants,
@@ -150,8 +171,8 @@ function hydrateScores(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: { tournamentId: string },
-): ComponentActionProps {
+  { tournamentId }: OwnProps,
+): DispatchProps {
   return {
     submitRoundScores: (roundScores: Array<Score>) => {
       dispatch(getSettleDrawAction(tournamentId, roundScores));
@@ -159,4 +180,7 @@ function mapDispatchToProps(
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawSettler);
+export default connect<Props, OwnProps, StateProps, _,_,_>(
+  mapStateToProps,
+  mapDispatchToProps
+)(DrawSettler);

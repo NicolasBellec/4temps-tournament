@@ -29,7 +29,6 @@ export type RoundDbModel = {
   errorOnSameScore: boolean,
   roundScores: Array<{ participantId: ObjectId, score: number }>,
   tieBreakerJudge: ?string,
-  tieRule: string,
   winners: {
     leaders: Array<{ score: number, participant: Participant }>,
     followers: Array<{ score: number, participant: Participant }>,

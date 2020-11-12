@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Fragment } from 'react';
 import {
@@ -11,43 +11,32 @@ import {
   Loader,
   Message,
 } from 'semantic-ui-react';
+import type {
+  Props,
+  ScoreViewModel
+} from "./types";
 
 import './styles.css';
 
-type ScoreViewModel = { score: number, participant: Participant };
+type State = {
+  checkedLeaders: Array<string>,
+  checkedFollowers: Array<string>
+}
 
-export type Props = {
-  roundName: string,
-  isPairRound: boolean,
-  passingCouplesCount: number,
-  leaders: {
-    winners: Array<ScoreViewModel>,
-    losers: Array<ScoreViewModel>,
-    draw: Array<ScoreViewModel>,
-  },
-  followers: {
-    winners: Array<ScoreViewModel>,
-    losers: Array<ScoreViewModel>,
-    draw: Array<ScoreViewModel>,
-  },
-  isLoading: boolean,
-  didSubmit: boolean,
-  successfulSubmit: boolean,
-  errorMessage: string,
-};
+type ScoreViewModelWithChecked = {
+  ...ScoreViewModel,
+  checked: boolean
+}
 
-export type ActionProps = {
-  submitRoundScores: (roundScores: Array<Score>) => void,
-};
+class DrawSettler extends React.Component<Props, State> {
 
-class DrawSettler extends React.Component<
-  Props & ActionProps,
-  { checkedLeaders: Array<string>, checkedFollowers: Array<string> }
-> {
-  state = {
-    checkedLeaders: [],
-    checkedFollowers: [],
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      checkedLeaders: [],
+      checkedFollowers: [],
+    };
+  }
 
   addLeader = (participant: Participant) => {
     this.setState({
@@ -77,10 +66,14 @@ class DrawSettler extends React.Component<
     });
   };
 
-  drawWithCheck = (scores: Array<ScoreViewModel>, checked: Array<string>) => scores.map((score) => ({
-    ...score,
-    checked: checked.includes(score.participant.id),
-  }));
+  drawWithCheck = (
+    scores: Array<ScoreViewModel>,
+    checked: Array<string>
+  ): Array<ScoreViewModelWithChecked> => scores.map(
+    (score) => ({
+      ...score,
+      checked: checked.includes(score.participant.id),
+    }));
 
   submitRoundScores = () => {
     const { leaders, followers } = this.props;
@@ -100,7 +93,7 @@ class DrawSettler extends React.Component<
 
   concatScores = (
     winners: Array<ScoreViewModel>,
-    draw: Array<ScoreViewModel & { checked: boolean }>,
+    draw: Array<ScoreViewModelWithChecked>,
     losers: Array<ScoreViewModel>,
   ): Array<Score> => winners
     .concat(draw.filter((score) => score.checked))
@@ -209,7 +202,7 @@ function DrawSettlerTable({
   header: string,
   winners: Array<ScoreViewModel>,
   losers: Array<ScoreViewModel>,
-  draw: Array<ScoreViewModel & { checked: boolean }>,
+  draw: Array<ScoreViewModelWithChecked>,
   addWinner: (participant: Participant) => void,
   removeWinner: (participant: Participant) => void,
   currentCouplesCount: number,
