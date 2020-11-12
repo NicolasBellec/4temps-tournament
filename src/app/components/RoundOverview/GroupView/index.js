@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux'
 
@@ -45,29 +45,29 @@ function createViewModelsForRound(
   roundId: string,
   tournamentId: string
 ): RoundViewModel {
-  const round: Round = rounds.byId[roundId]
+  const round: Round = rounds.byId[roundId];
 
-  const { groups, ...rest } = (round: Round)
-  let activeDanceId: ?string
-  let activeDance: ?number
-  const activeGroup: ?number = getActiveGroup(groups)
-  const nextDance: ?number = getNextDance(groups)
-  const nextGroup: ?number = getNextGroup(groups)
+  const { groups, ...rest } = round;
+  let activeDanceId: ?string;
+  let activeDance: ?number;
+  const activeGroup: ?number = getActiveGroup(groups);
+  const nextDance: ?number = getNextDance(groups);
+  const nextGroup: ?number = getNextGroup(groups);
   for (let i = 0; i < groups.length; ++i) {
     for (let j = 0; j < groups[i].dances.length; ++j) {
       if (groups[i].dances[j].active) {
-        activeDance = j + 1
-        activeDanceId = groups[i].dances[j].id
+        activeDance = j + 1;
+        activeDanceId = groups[i].dances[j].id;
       }
     }
   }
   const notes: DanceNotes =
     activeDance != null
       ? getNotes(activeDanceId, tournaments.byId[tournamentId], judges)
-      : { judgesNoted: [], judgesNotNoted: [] }
+      : { judgesNoted: [], judgesNotNoted: [] };
 
   const viewModel: RoundViewModel = {
-    ...(rest: $Rest<Round, {| groups: Array<DanceGroup> |}>),
+    ...rest,
     activeDance,
     activeGroup,
     nextDance,
@@ -85,9 +85,9 @@ function createViewModelsForRound(
         false
       ),
     })),
-  }
+  };
 
-  return viewModel
+  return viewModel;
 }
 
 function getNotes(danceId, tournament, judges) {

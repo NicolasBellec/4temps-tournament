@@ -1,14 +1,15 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import type { Location, RouterHistory } from 'react-router-dom'
 import { getLogoutUserAction } from '../../action-creators/admin'
 import NavigationBar from './component'
 
-type Props = {
-  location: Location,
-  history: RouterHistory,
-}
+import type {
+  OwnProps,
+  Props,
+  DispatchProps,
+  StateProps
+} from "./types";
 
 function getActivePath(location: string): string {
   const matches = location.match(/\/(.+)\/?\??.*/)
@@ -19,7 +20,10 @@ function getActivePath(location: string): string {
   return activeName
 }
 
-function mapStateToProps({ user }: ReduxState, { location }: Props) {
+function mapStateToProps(
+  { user }: ReduxState,
+  { location }: OwnProps
+) : StateProps {
   return {
     activePath: getActivePath(location.pathname),
     isAuthenticated: user.id !== '',
@@ -27,14 +31,20 @@ function mapStateToProps({ user }: ReduxState, { location }: Props) {
   }
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch, { history }: { history: RouterHistory }) {
+function mapDispatchToProps(
+  dispatch: ReduxDispatch,
+  { history }: OwnProps
+) : DispatchProps {
   return {
     onClickLogout: () => dispatch(getLogoutUserAction(history)),
   }
 }
 
 const NavigationBarContainer = withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
+  connect<Props, OwnProps, StateProps, _,_,_>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NavigationBar)
 )
 
 export default NavigationBarContainer

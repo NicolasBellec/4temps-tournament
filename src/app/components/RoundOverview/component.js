@@ -3,7 +3,6 @@
 import React, { Component } from 'react'
 import { Container, Menu, MenuItem } from 'semantic-ui-react'
 
-// $FlowFixMe
 import GroupView from './GroupView'
 import ScoreView from './ScoreView'
 

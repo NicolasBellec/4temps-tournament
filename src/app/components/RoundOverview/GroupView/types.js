@@ -8,27 +8,22 @@ export type GroupViewModel = {
     leader: { name: string, number: string },
   }>,
   isStarted: boolean,
-}
+};
 
 export type DanceNotes = {
   judgesNoted: Array<Judge>,
   judgesNotNoted: Array<Judge>,
-}
+};
 
 export type RoundViewModel = {
-  id: string,
-  name: string,
-  danceCount: number,
-  active: boolean,
-  finished: boolean,
-  draw: boolean,
+  ...Round,
   activeGroup: ?number,
   activeDance: ?number,
   nextGroup: ?number,
   nextDance: ?number,
   groups: Array<GroupViewModel>,
   notes: DanceNotes,
-}
+};
 
 export type OwnProps = {
   tournamentId: string,
@@ -36,15 +31,14 @@ export type OwnProps = {
 }
 
 export type DispatchProps = {
-  // dispatch: Dispatch<ReduxAction>,
-  startDance: () => Promise<mixed>,
+  startDance: () => void,
   generateGroups: () => void,
-  endDance: () => Promise<mixed>,
+  endDance: () => void,
   regenerateGroup: (groupId: string) => void,
 }
 
 export type StateProps = {
-  round: ?RoundViewModel,
+  round: RoundViewModel,
   areAllGroupsGenerated: boolean,
 }
 

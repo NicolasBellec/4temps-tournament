@@ -1,16 +1,13 @@
-// no-flow
+// @flow
 import React, { PureComponent } from 'react'
 import { Button, Menu, MenuItem, MenuMenu, Icon, Sidebar } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-import './styles.css'
+import type {
+  Props
+} from "./types";
 
-type Props = {
-  activeItem: string,
-  isAuthenticated: boolean,
-  role: string,
-  onClickLogout: () => Promise<void>,
-}
+import './styles.css';
 
 type State = {
   visible: boolean,
@@ -57,13 +54,13 @@ class NavigationBar extends PureComponent<Props, State> {
   }
 
   _renderAuthenticatedAdmin = () => {
-    const { activeItem } = this.props
+    const { activePath } = this.props
     return [
       <Menu.Item
         key="create"
         as={Link}
         to="/tournament/create"
-        active={activeItem === 'tournament/create'}
+        active={activePath === 'tournament/create'}
         onClick={this.toggleSideBar}>
         <Icon name="plus" />
         Create Tournament
@@ -72,7 +69,7 @@ class NavigationBar extends PureComponent<Props, State> {
         as={Link}
         key="edit"
         to="/tournament/edit"
-        active={activeItem === 'tournament/edit'}
+        active={activePath === 'tournament/edit'}
         onClick={this.toggleSideBar}>
         <Icon name="edit" />
         Edit Tournament
@@ -113,7 +110,7 @@ class NavigationBar extends PureComponent<Props, State> {
   _renderSideBar = () => {
     const { visible } = this.state
 
-    const { activeItem } = this.props
+    const { activePath } = this.props
     return (
       <Menu secondary>
         <Sidebar
@@ -125,7 +122,7 @@ class NavigationBar extends PureComponent<Props, State> {
           icon="labeled"
           vertical
           inverted>
-          <Menu.Item as={Link} to="/" active={activeItem === '/'} onClick={this.toggleSideBar}>
+          <Menu.Item as={Link} to="/" active={activePath === '/'} onClick={this.toggleSideBar}>
             <Icon name="home" />
             Home
           </Menu.Item>
