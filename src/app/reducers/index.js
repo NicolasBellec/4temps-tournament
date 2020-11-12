@@ -31,7 +31,6 @@ const reducer: Reducer<ReduxState, ReduxPackAction> = combineReducers({
 
 export function getInitialState(): ReduxState {
   return reducer(
-    // $FlowFixMe
     undefined,
     makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
   );

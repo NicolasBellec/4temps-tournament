@@ -1,35 +1,13 @@
-// no-flow
+// @flow
 import React from 'react';
 import {
   Grid, GridColumn, GridRow, Header,
 } from 'semantic-ui-react';
 import NoteCriterion from '../NoteCriterion';
 
-export type StateProps = {
-  tournamentId: string,
-  judgeId: string,
-  danceId: string,
-  leaderId: string,
-  followerId: string,
-  leaderCriteria: Array<CriterionViewModel>,
-  followerCriteria: Array<CriterionViewModel>,
-};
-
-export type CriterionViewModel = {
-  id: string,
-  name: string,
-  minValue: number,
-  maxValue: number,
-  description: string,
-  value: ?number,
-  forJudgeType: JudgeType,
-};
-
-export type DispatchProps = {
-  onClick: (tournamentId: string, note: JudgeNote) => void,
-};
-
-type Props = StateProps & DispatchProps;
+import type {
+  Props
+} from './types';
 
 function PairNoteTaker({
   leaderId,
@@ -57,7 +35,6 @@ function PairNoteTaker({
                 judgeId,
                 participantId: leaderId,
                 criterionId: criterion.id,
-                // $FlowFixMe
                 value,
               })}
               criterion={criterion}
@@ -79,7 +56,6 @@ function PairNoteTaker({
                 judgeId,
                 participantId: followerId,
                 criterionId: criterion.id,
-                // $FlowFixMe
                 value,
               })}
               criterion={criterion}

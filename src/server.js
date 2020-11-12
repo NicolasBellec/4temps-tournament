@@ -1,7 +1,8 @@
-// no-flow
+// @flow
 
 import Express from 'express';
 import HTTP from 'http';
+import type { Server as ServerTy } from 'http';
 import Session from 'express-session';
 import ConnectMongo from 'connect-mongo';
 import Helmet from 'helmet';
@@ -22,15 +23,14 @@ import ApiRoute from './routes';
 import getDbConnection from './data/setup';
 
 import renderHtmlTemplate from './ssr-template';
+// $FlowFixMe
 import { appWithPreloadedState, getReduxState } from './app/components/App';
 import { setup as setupRealTime } from './realtime';
 
 class Server {
-  _app: ExpressApplication;
+  _app: ExpressApplication<ServerApiRequest, ServerApiResponse>;
 
-  // This is the nodejs http server, but I can't seem to import the type
-  // $FlowFixMe
-  _server: any;
+  _server: ServerTy;
 
   constructor() {
     this._app = Express();

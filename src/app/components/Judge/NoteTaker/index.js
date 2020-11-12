@@ -1,15 +1,16 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
 import PreloadContainer from '../../PreloadContainer';
 import Component from './component';
-import type { StateProps } from './component';
 import { getGetNotesAction } from '../../../action-creators/note';
 
-type Props = {
-  tournamentId: string,
-  danceId: string,
-};
+import type {
+  Props,
+  StateProps,
+  OwnProps,
+  DispatchProps
+} from "./types"
 
 function mapStateToProps({
   tournaments,
@@ -28,14 +29,16 @@ function mapStateToProps({
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId, danceId }: Props,
-) {
+  { tournamentId, danceId }: OwnProps,
+): DispatchProps {
   return {
-    load: () => dispatch(getGetNotesAction(tournamentId, danceId)),
+    load: () => {
+      dispatch(getGetNotesAction(tournamentId, danceId))
+    },
   };
 }
 
-const NoteTakerContainer = connect(
+const NoteTakerContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

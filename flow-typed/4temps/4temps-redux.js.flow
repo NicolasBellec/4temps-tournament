@@ -1,6 +1,6 @@
 // @flow
 
-declare type ReduxDispatch = Dispatch<ReduxAction> => mixed;
+declare type ReduxDispatch = Dispatch<ReduxPackAction>;
 declare type ReduxState = {
   user: UserReduxState,
   tournaments: TournamentsReduxState,
@@ -193,6 +193,21 @@ declare type UiSettleDrawReduxState = {
   successfulSubmit: boolean,
   errorMessage: string
 };
+
+// type ExtractPromiseType = <T>(Promise<T>) => T;
+//
+// declare type BetterReduxPackAction<action> = {
+//   type: $PropertyType<action, 'type'>,
+//   payload: $PropertyType<action, 'payload'>,
+//   meta: {
+//     onSuccess: (
+//       result: ?$Call<ExtractPromiseType, $PropertyType<action,'payload'>>,
+//       getState: ReduxState
+//     ) => mixed
+//   }
+// };
+//
+// declare type ReduxPackAction = BetterReduxPackAction<ReduxAction>;
 
 declare type ReduxPackAction = {
   type: string,

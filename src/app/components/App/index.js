@@ -1,11 +1,13 @@
-// no-flow
+// @flow
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { middleware as reduxPackMiddleware } from 'redux-pack';
 import type { Store } from 'redux';
 
+// $FlowFixMe
 import Router from '../Router';
+// $FlowFixMe
 import NavigationBar from '../NavigationBar';
 import reducer, { getInitialState } from '../../reducers';
 
@@ -37,7 +39,10 @@ export function appWithPreloadedState(preloadedState: mixed) {
 
 export function initializeStore(preloadedState: mixed) {
   const state: ReduxState = { ...getInitialState(), ...preloadedState };
-  return createStore(reducer, state, applyMiddleware(reduxPackMiddleware));
+  return createStore<ReduxState, ReduxPackAction, ReduxDispatch>(
+    reducer,
+    state,
+    applyMiddleware(reduxPackMiddleware));
 }
 
 function App() {

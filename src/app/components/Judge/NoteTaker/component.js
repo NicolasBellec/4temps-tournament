@@ -1,16 +1,16 @@
-// no-flow
+// @flow
 
 import React from 'react';
 
 import PairNoteTaker from './PairNoteTaker';
 import SeparateNoteTaker from './SeparateNoteTaker';
 
-export type StateProps = {
-  isClassic: boolean,
-  isLastRound: boolean,
-};
+import type {
+  Props
+} from "./types";
 
-function NoteTaker({ isLastRound, isClassic }: StateProps) {
+// TODO: Here is the change for removing classic last round
+function NoteTaker({ isLastRound, isClassic }: Props) {
   return isLastRound || isClassic ? <PairNoteTaker /> : <SeparateNoteTaker />;
 }
 
