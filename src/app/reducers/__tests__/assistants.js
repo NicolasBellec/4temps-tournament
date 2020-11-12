@@ -13,7 +13,7 @@ import { normalizeTournamentArray } from '../normalize';
 describe('Assistants reducer', () => {
   test('Undefined results in initial', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID')),
+      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID'))
     ).toEqual(getInitialState());
   });
 
@@ -52,16 +52,16 @@ describe('Assistants reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
+        )
       ).toEqual(expected);
     });
     test('GET_ADMIN_TOURNAMENTS success sets assistants', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
+        )
       ).toEqual(expected);
     });
   });
@@ -84,8 +84,8 @@ describe('Assistants reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ASSISTANT', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ASSISTANT', payload)
+        )
       ).toEqual(expected);
     });
   });

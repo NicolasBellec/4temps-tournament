@@ -7,20 +7,20 @@ export type OwnProps = {
   location: Location,
   path: string,
   component: ComponentType<mixed>,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 export type StateProps = {
-    isAuthenticated: boolean,
-    referer: string,
-}
+  isAuthenticated: boolean,
+  referer: string,
+};
 
 export type DispatchProps = {
-  dispatch: ReduxDispatch
-}
+  dispatch: ReduxDispatch,
+};
 
 export type Props = {
   ...StateProps,
   ...OwnProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

@@ -7,24 +7,19 @@ import AccessKeyLogin from './AccessKeyLogin';
 
 type Props = {
   location: Location,
-  history: RouterHistory
+  history: RouterHistory,
 };
 
 class Login extends Component<Props> {
   static credentialHeader = 'Admin Login';
+
   static accessKeyHeader = 'Staff Login';
 
   render() {
-    const {
-      location,
-      history
-    } = this.props;
+    const { location, history } = this.props;
     return (
       <div>
-        <AccessKeyLogin
-          headerTitle={Login.accessKeyHeader}
-          history={history}
-        />
+        <AccessKeyLogin headerTitle={Login.accessKeyHeader} history={history} />
         <AdminLogin
           headerTitle={Login.credentialHeader}
           location={location}

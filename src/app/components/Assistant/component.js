@@ -1,16 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import {
-  Container,
-  Menu,
-  MenuItem,
-} from 'semantic-ui-react';
-import type {
-  Props,
-  State,
-  Tabs
-} from './types';
+import { Container, Menu, MenuItem } from 'semantic-ui-react';
+import type { Props, State, Tabs } from './types';
 import TabContentContainer from './TabContentContainer';
 
 function TabMenu({

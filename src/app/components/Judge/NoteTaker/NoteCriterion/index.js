@@ -33,7 +33,7 @@ export type DispatchProps = {
 
 type Props = {
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };
 
 function NoteCriterion({ notedEntity, criterion, onClick }: Props) {
@@ -94,10 +94,7 @@ function NormalInput({ notedEntity, criterion, onClick }: Props) {
   );
 }
 
-function SanctionerInput({
-  criterion,
-  onClick,
-}: Props) {
+function SanctionerInput({ criterion, onClick }: Props) {
   return (
     <GridRow>
       <Input

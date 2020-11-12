@@ -9,16 +9,13 @@ import { getAdminTournamentsAction } from '../../../../action-creators/tournamen
 import { getAccessKeysAction } from '../../../../action-creators/access-key';
 
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props
-} from "./types";
+  OwnProps, StateProps, DispatchProps, Props,
+} from './types';
 
 function mapStateToProps(
   { assistants, accessKeys }: ReduxState,
   { tournamentId }: OwnProps,
-) : StateProps {
+): StateProps {
   const hasTournament = assistants.forTournament[tournamentId] != null;
   const hasKeys = hasTournament
     && assistants.forTournament[tournamentId].reduce(
@@ -37,7 +34,7 @@ function mapStateToProps(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
     load: () => {
@@ -47,7 +44,7 @@ function mapDispatchToProps(
   };
 }
 
-const connector = connect<Props, OwnProps, StateProps,_,_,_>(
+const connector = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 );

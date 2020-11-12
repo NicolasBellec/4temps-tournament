@@ -9,8 +9,8 @@ import type {
   StateProps,
   DispatchProps,
   Props,
-  RoundViewModel
-} from "./types";
+  RoundViewModel,
+} from './types';
 
 function mapStateToProps({ ui }: ReduxState): StateProps {
   return ui.createRound;
@@ -18,16 +18,23 @@ function mapStateToProps({ ui }: ReduxState): StateProps {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
     onSubmit: (round: Round) => {
-      dispatch(getCreateRoundAction(tournamentId, round))
+      dispatch(getCreateRoundAction(tournamentId, round));
     },
   };
 }
 
-const EditTournamentRoundsContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const EditTournamentRoundsContainer = connect<
+  Props,
+  OwnProps,
+  StateProps,
+  _,
+  _,
+  _
+>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

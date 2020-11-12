@@ -7,9 +7,7 @@ import { Container, Menu, MenuItem } from 'semantic-ui-react';
 import GroupView from './GroupView';
 import ScoreView from './ScoreView';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 export type TabName = 'groups' | 'scores';
 

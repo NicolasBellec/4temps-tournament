@@ -7,15 +7,12 @@ import Component from './component';
 import { subscribeToLeaderboardForTournament } from '../../api/realtime';
 
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props
-} from "./types";
+  OwnProps, StateProps, DispatchProps, Props,
+} from './types';
 
 function mapStateToProps(
   { leaderboards }: ReduxState,
-  { match }: OwnProps
+  { match }: OwnProps,
 ): StateProps {
   const tournamentId = match.params.tournamentId || '';
   return {
@@ -54,7 +51,7 @@ function mapDispatchToProps(
   };
 }
 
-const LeaderboardContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const LeaderboardContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

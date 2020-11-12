@@ -3,17 +3,14 @@
 import { connect } from 'react-redux';
 import { getSingleTournamentAction } from '../../../action-creators/tournament';
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props
+  OwnProps, StateProps, DispatchProps, Props,
 } from './types';
 import PreloadContainer from '../../../containers/PreloadContainer';
 import TabContent from './component';
 
 function mapStateToProps(
   { tournaments }: ReduxState,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): StateProps {
   return {
     child: TabContent,
@@ -27,12 +24,12 @@ function mapDispatchToProps(
 ): DispatchProps {
   return {
     load: () => {
-      dispatch(getSingleTournamentAction(tournamentId))
+      dispatch(getSingleTournamentAction(tournamentId));
     },
   };
 }
 
-const TabContentContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const TabContentContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

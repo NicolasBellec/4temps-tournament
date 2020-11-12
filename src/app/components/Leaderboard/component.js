@@ -7,9 +7,7 @@ import './styles.css';
 import RoundTables from './RoundTables';
 import RemainingParticipants from './RemainingParticipants';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 export default function LeaderboardComponent({ leaderboard }: Props) {
   if (!leaderboard) {

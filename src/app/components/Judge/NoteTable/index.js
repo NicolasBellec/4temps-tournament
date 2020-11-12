@@ -6,11 +6,8 @@ import DanceScorer from '../../../../domain/dance-scorer';
 import Component from './component';
 
 import type {
-  Props,
-  OwnProps,
-  StateProps,
-  ColumnViewModel
-} from "./types";
+  Props, OwnProps, StateProps, ColumnViewModel,
+} from './types';
 
 function mapStateToProps(state: ReduxState): StateProps {
   const tournament = getTournament(state);
@@ -39,7 +36,9 @@ function getTournament(state: ReduxState): Tournament {
     rounds: tournament.rounds.map((id) => state.rounds.byId[id]),
     judges: tournament.judges.map((id) => state.judges.byId[id]),
     assistants: tournament.assistants.map((id) => state.assistants.byId[id]),
-    participants: tournament.participants.map((id) => state.participants.byId[id]),
+    participants: tournament.participants.map(
+      (id) => state.participants.byId[id],
+    ),
   };
 }
 
@@ -125,13 +124,11 @@ function getPairColumn(
   pairs: Array<Pair>,
 ): ColumnViewModel {
   const scoreViewModels = pairs
-    .map((pair) => {
-      return {
-        name: getPairName(state, pair),
-        value:
+    .map((pair) => ({
+      name: getPairName(state, pair),
+      value:
           danceScores[pair.leader] != null ? danceScores[pair.leader].score : 0,
-      };
-    })
+    }))
     .sort((a, b) => b.value - a.value);
   return { title: 'Couples', danceScores: scoreViewModels };
 }
@@ -166,8 +163,8 @@ function getSeparateColumns(
   ];
 }
 
-const NoteTableContainer = connect<Props, OwnProps, StateProps, _,_,_,>(
-  mapStateToProps
+const NoteTableContainer = connect<Props, OwnProps, StateProps, _, _, _>(
+  mapStateToProps,
 )(Component);
 
 export default NoteTableContainer;

@@ -15,28 +15,21 @@ import type Moment from 'moment';
 
 import './styles.css';
 
-import type {
-  Props,
-  State,
-} from './types';
+import type { Props, State } from './types';
 
 function sortTournaments(tournaments: Array<Tournament>) {
   // sort by latest date first
-  return tournaments.sort(
-    (a: Tournament, b: Tournament) => (a.date.isSameOrBefore(b.date) ? 1 : -1),
-  );
+  return tournaments.sort((a: Tournament, b: Tournament) => (a.date.isSameOrBefore(b.date) ? 1 : -1));
 }
 
 function getPreviousTournaments(tournaments: Array<Tournament>) {
   const now = moment();
-  return sortTournaments(tournaments)
-    .filter((tour) => tour.date.isSameOrBefore(now));
+  return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrBefore(now));
 }
 
 function getFutureTournaments(tournaments: Array<Tournament>) {
   const now = moment();
-  return sortTournaments(tournaments)
-    .filter((tour) => tour.date.isSameOrAfter(now));
+  return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrAfter(now));
 }
 
 class TournamentList extends Component<Props, State> {
@@ -57,10 +50,7 @@ class TournamentList extends Component<Props, State> {
     this.setState({ previousTournaments, futureTournaments });
   }
 
-  renderHeaderAndTournaments = (
-    header: string,
-    tournaments: Tournament[],
-  ) => {
+  renderHeaderAndTournaments = (header: string, tournaments: Tournament[]) => {
     if (this.shouldRenderTable(tournaments)) {
       return (
         <div styleName="wrapper">
@@ -70,7 +60,7 @@ class TournamentList extends Component<Props, State> {
       );
     }
 
-    return (null);
+    return null;
   };
 
   renderTable = (tournaments: Tournament[]) => (
@@ -112,14 +102,8 @@ class TournamentList extends Component<Props, State> {
     return (
       <Container text>
         {isLoading && <Loader active={isLoading} />}
-        {this.renderHeaderAndTournaments(
-          'Upcoming',
-          futureTournaments,
-        )}
-        {this.renderHeaderAndTournaments(
-          'Past',
-          previousTournaments,
-        )}
+        {this.renderHeaderAndTournaments('Upcoming', futureTournaments)}
+        {this.renderHeaderAndTournaments('Past', previousTournaments)}
       </Container>
     );
   }

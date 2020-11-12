@@ -10,9 +10,7 @@ export type ScoreViewModel = {
   value: number,
 };
 
-export type OwnProps = {
-
-};
+export type OwnProps = {};
 
 export type StateProps = {
   columns: Array<ColumnViewModel>,
@@ -20,11 +18,11 @@ export type StateProps = {
 };
 
 export type DispatchProps = {
-  dispatch: ReduxDispatch
+  dispatch: ReduxDispatch,
 };
 
 export type Props = {
   ...OwnProps,
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

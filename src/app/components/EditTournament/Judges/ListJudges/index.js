@@ -9,11 +9,8 @@ import { getAdminTournamentsAction } from '../../../../action-creators/tournamen
 import { getAccessKeysAction } from '../../../../action-creators/access-key';
 
 import type {
-  Props,
-  StateProps,
-  DispatchProps,
-  OwnProps,
-} from "./types";
+  Props, StateProps, DispatchProps, OwnProps,
+} from './types';
 
 function mapStateToProps(
   { judges, accessKeys }: ReduxState,
@@ -37,7 +34,7 @@ function mapStateToProps(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
     load: () => {
@@ -47,7 +44,7 @@ function mapDispatchToProps(
   };
 }
 
-const ListJudgesContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const ListJudgesContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

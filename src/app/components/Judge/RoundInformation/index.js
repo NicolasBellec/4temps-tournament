@@ -2,10 +2,7 @@
 import { connect } from 'react-redux';
 import RoundInformation from './component';
 
-import type {
-  Props,
-  StateProps,
-} from "./types"
+import type { Props, StateProps } from './types';
 
 function mapStateToProps({ tournaments, rounds }: ReduxState): StateProps {
   const tournamentRounds: Array<Round> = tournaments.byId[
@@ -50,7 +47,7 @@ function getActiveDanceInformation(
   group: DanceGroup,
 ): {
   danceNumber: number,
-  numberOfDances: number
+  numberOfDances: number,
 } {
   const numberOfDances = group.dances.length;
   for (let i = 0; i < numberOfDances; i++) {
@@ -59,7 +56,7 @@ function getActiveDanceInformation(
   throw new Error('There is not active dance!');
 }
 
-const RoundInformationContainer = connect<Props, {}, StateProps,_,_,_>(
-  mapStateToProps
+const RoundInformationContainer = connect<Props, {}, StateProps, _, _, _>(
+  mapStateToProps,
 )(RoundInformation);
 export default RoundInformationContainer;

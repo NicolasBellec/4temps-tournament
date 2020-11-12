@@ -13,15 +13,15 @@ export type StateProps = {
   isValid: boolean,
   isValidEmail: boolean,
   isValidPassword: boolean,
-  doesAdminExist: boolean
+  doesAdminExist: boolean,
 };
 
 export type DispatchProps = {
-  onSubmit: (credentials: AdminCredentials) => void
+  onSubmit: (credentials: AdminCredentials) => void,
 };
 
 export type Props = {
   ...OwnProps,
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

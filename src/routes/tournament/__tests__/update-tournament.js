@@ -17,7 +17,7 @@ describe('/api/tournament/update', () => {
 
   test('Valid tournament with correct user returns new tournament with status 200', async () => {
     expect(
-      await updateTournamentRoute(tournament.creatorId, tournament, repository),
+      await updateTournamentRoute(tournament.creatorId, tournament, repository)
     ).toEqual({
       status: 200,
       body: tournament,
@@ -29,8 +29,8 @@ describe('/api/tournament/update', () => {
       await updateTournamentRoute(
         tournament.creatorId,
         { ...tournament, name: '' },
-        repository,
-      ),
+        repository
+      )
     ).toEqual({
       status: 400,
       body: null,
@@ -43,8 +43,8 @@ describe('/api/tournament/update', () => {
       await updateTournamentRoute(
         tournament.creatorId,
         { ...tournament, id: otherId },
-        repository,
-      ),
+        repository
+      )
     ).toEqual({
       status: 404,
       body: null,
@@ -56,7 +56,7 @@ describe('/api/tournament/update', () => {
       throw 0;
     };
     expect(
-      await updateTournamentRoute(tournament.creatorId, tournament, repository),
+      await updateTournamentRoute(tournament.creatorId, tournament, repository)
     ).toEqual({
       status: 500,
       body: null,
@@ -66,7 +66,7 @@ describe('/api/tournament/update', () => {
   test('When tournament is owned by other user be updated 401 is returned', async () => {
     const otherId = generateId();
     expect(
-      await updateTournamentRoute(otherId, tournament, repository),
+      await updateTournamentRoute(otherId, tournament, repository)
     ).toEqual({
       status: 401,
       body: null,

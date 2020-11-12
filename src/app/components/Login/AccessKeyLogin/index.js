@@ -4,31 +4,25 @@ import LoginComponent from './component';
 import { getLoginWithAccessKey } from '../../../action-creators/access-key';
 
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props
-} from "./types";
+  OwnProps, StateProps, DispatchProps, Props,
+} from './types';
 
-function mapStateToProps(
-  { ui }: ReduxState,
-  props: OwnProps
-): StateProps {
+function mapStateToProps({ ui }: ReduxState, props: OwnProps): StateProps {
   return ui.judgeLogin;
 }
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { history }: OwnProps
+  { history }: OwnProps,
 ): DispatchProps {
   return {
     onSubmit: (accessKey: string) => {
-      dispatch(getLoginWithAccessKey(accessKey, history))
+      dispatch(getLoginWithAccessKey(accessKey, history));
     },
   };
 }
 
-const LoginContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const LoginContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(LoginComponent);

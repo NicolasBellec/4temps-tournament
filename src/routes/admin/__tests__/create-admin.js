@@ -38,7 +38,7 @@ test('Used email returns 409 status', async () => {
     new Promise((resolve) => resolve([{ email: 'test@gmail.com' }]));
 
   expect((await createAdminRoute(admin, createAdmin, getAdmins)).status).toBe(
-    409,
+    409
   );
 });
 
@@ -54,7 +54,7 @@ test('A valid admin that could not be created returns status 500', async () => {
   const getAdmins = () => new Promise((resolve) => resolve([]));
 
   expect((await createAdminRoute(admin, createAdmin, getAdmins)).status).toBe(
-    500,
+    500
   );
 });
 
@@ -70,6 +70,6 @@ test('Invalid admin with unused email returns status 400', async () => {
   const getAdmins = () => new Promise((resolve) => resolve([]));
 
   expect((await createAdminRoute(admin, createAdmin, getAdmins)).status).toBe(
-    400,
+    400
   );
 });

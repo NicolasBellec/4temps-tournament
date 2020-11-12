@@ -22,7 +22,7 @@ export type CriterionViewModel = {
 
 export type JudgeNoteOptionalValue = {
   ...JudgeNote,
-  value: ?number
+  value: ?number,
 };
 
 export type DispatchProps = {

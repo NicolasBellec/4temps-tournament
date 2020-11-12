@@ -67,7 +67,7 @@ describe('Next group generator', () => {
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(round.id),
+        new NextGroupGenerator(tournament, []).generateForRound(round.id)
       ).toBeNull();
     });
 
@@ -79,7 +79,7 @@ describe('Next group generator', () => {
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(round.id),
+        new NextGroupGenerator(tournament, []).generateForRound(round.id)
       ).toMatchObject({
         pairs: [{ leader: leaders[1].id, follower: followers[1].id }],
         dances: [
@@ -120,7 +120,7 @@ describe('Next group generator', () => {
       ];
 
       expect(
-        new NextGroupGenerator(tournament, notes).generateForRound(round.id),
+        new NextGroupGenerator(tournament, notes).generateForRound(round.id)
       ).toMatchObject({
         pairs: [{ leader: leaders[1].id, follower: followers[0].id }],
         dances: [
@@ -213,7 +213,7 @@ describe('Next group generator', () => {
       ];
 
       expect(
-        new NextGroupGenerator(tournament, notes).generateForRound(round.id),
+        new NextGroupGenerator(tournament, notes).generateForRound(round.id)
       ).toMatchObject({
         pairs: [{ leader: 'leader3', follower: followers[0].id }],
         dances: [
@@ -317,12 +317,12 @@ describe('Next group generator', () => {
       // $FlowFixMe
       const resultGroup: DanceGroup = new NextGroupGenerator(
         tournament,
-        notes,
+        notes
       ).generateForRound(round.id);
 
       const resultingLeaders = resultGroup.pairs.map(({ leader }) => leader);
       const resultingFollowers = resultGroup.pairs.map(
-        ({ follower }) => follower,
+        ({ follower }) => follower
       );
 
       expect(resultingLeaders).toContainEqual('leader3');
@@ -340,7 +340,7 @@ describe('Next group generator', () => {
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(newRound.id),
+        new NextGroupGenerator(tournament, []).generateForRound(newRound.id)
       ).toBeNull();
     });
 
@@ -407,7 +407,7 @@ describe('Next group generator', () => {
       };
 
       expect(
-        new NextGroupGenerator(tournament, []).generateForRound(roundTwo.id),
+        new NextGroupGenerator(tournament, []).generateForRound(roundTwo.id)
       ).toMatchObject({
         pairs: [{ leader: leaders[0].id, follower: followers[0].id }],
         dances: [
@@ -433,7 +433,7 @@ describe('Next group generator', () => {
           id: `F${i + 1}`,
           role: 'follower',
           isAttending: true,
-        }),
+        })
       );
 
       // in this round, L1 has danced twice as it had the worst follower
@@ -537,7 +537,7 @@ describe('Next group generator', () => {
       ];
 
       expect(
-        new NextGroupGenerator(tournament, notes).generateForRound(round.id),
+        new NextGroupGenerator(tournament, notes).generateForRound(round.id)
       ).toMatchObject({
         // L1 already danced twice, L2's turn
         pairs: [{ leader: 'L2', follower: 'F4' }],

@@ -9,16 +9,18 @@ import { normalizeTournamentArray } from '../normalize';
 describe('Rounds reducer', () => {
   test('Undefined state sets initial state', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.start, 'INVALID_ACTION')),
+      reducer(undefined, makePackAction(LIFECYCLE.start, 'INVALID_ACTION'))
     ).toEqual(getInitialState());
   });
 
   test('Invalid action does not change state', () => {
     const state = getInitialState();
 
-    [LIFECYCLE.START, LIFECYCLE.SUCCESS, LIFECYCLE.FAILURE].map((lifecycle) => expect(
-      reducer(state, makePackAction(lifecycle, 'INVALID_ACTION')),
-    ).toEqual(state));
+    [LIFECYCLE.START, LIFECYCLE.SUCCESS, LIFECYCLE.FAILURE].map((lifecycle) =>
+      expect(
+        reducer(state, makePackAction(lifecycle, 'INVALID_ACTION'))
+      ).toEqual(state)
+    );
   });
 
   describe('CREATE_ROUND', () => {
@@ -39,8 +41,8 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ROUND', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ROUND', payload)
+        )
       ).toMatchObject(expectedState);
     });
   });
@@ -50,8 +52,8 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.START, 'DELETE_ROUND'),
-        ),
+          makePackAction(LIFECYCLE.START, 'DELETE_ROUND')
+        )
       ).toMatchObject({ ...getInitialState(), isLoading: true });
     });
 
@@ -77,8 +79,8 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'DELETE_ROUND', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'DELETE_ROUND', payload)
+        )
       ).toMatchObject(expected);
     });
 
@@ -86,8 +88,8 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.FAILURE, 'DELETE_ROUND'),
-        ),
+          makePackAction(LIFECYCLE.FAILURE, 'DELETE_ROUND')
+        )
       ).toMatchObject({ ...getInitialState(), isLoading: false });
     });
   });
@@ -126,16 +128,16 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', norm),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', norm)
+        )
       ).toEqual(expected);
     });
     test('GET_ADMIN_TOURNAMENTS success sets rounds', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', norm),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', norm)
+        )
       ).toEqual(expected);
     });
   });
@@ -177,8 +179,8 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           initial,
-          makePackAction(LIFECYCLE.SUCCESS, 'START_ROUND', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'START_ROUND', payload)
+        )
       ).toEqual(expected);
     });
   });
@@ -227,8 +229,8 @@ describe('Rounds reducer', () => {
       expect(
         reducer(
           initial,
-          makePackAction(LIFECYCLE.SUCCESS, 'START_NEXT_DANCE', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'START_NEXT_DANCE', payload)
+        )
       ).toEqual(expected);
     });
   });

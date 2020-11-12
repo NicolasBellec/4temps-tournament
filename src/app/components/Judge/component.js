@@ -10,9 +10,7 @@ import SubmitNotesModal from './SubmitNotesModal';
 import NoteTable from './NoteTable';
 import DrawSettler from './DrawSettler';
 
-import type {
-  JudgeProps
-} from "./types";
+import type { JudgeProps } from './types';
 
 export default function Judge({
   tournamentId,
@@ -73,7 +71,7 @@ type TakeNotesProps = {
   roundId: string,
   danceId: string,
   tournamentId: string,
-  notesSubmitted: boolean
+  notesSubmitted: boolean,
 };
 
 function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {

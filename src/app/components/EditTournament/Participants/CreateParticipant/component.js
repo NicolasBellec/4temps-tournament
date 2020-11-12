@@ -9,13 +9,9 @@ import {
   Message,
 } from 'semantic-ui-react';
 
-import type {
-  ComponentState,
-  Props
-} from "./types";
+import type { ComponentState, Props } from './types';
 
 class CreateParticipant extends Component<Props, ComponentState> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -24,8 +20,7 @@ class CreateParticipant extends Component<Props, ComponentState> {
     };
   }
 
-  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) =>
-    this.setState({ name: event.target.value });
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => this.setState({ name: event.target.value });
 
   onChangeRadio = (
     event: SyntheticInputEvent<HTMLInputElement>,

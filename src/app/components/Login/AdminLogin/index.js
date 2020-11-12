@@ -5,11 +5,8 @@ import LoginComponent from './component';
 import { getLoginUserAction } from '../../../action-creators/admin';
 
 import type {
-  Props,
-  StateProps,
-  OwnProps,
-  DispatchProps
-} from "./types";
+  Props, StateProps, OwnProps, DispatchProps,
+} from './types';
 
 function mapStateToProps({ ui }: ReduxState): StateProps {
   return ui.login;
@@ -22,12 +19,12 @@ function mapDispatchToProps(
   const referer = location.search.replace(/\?referer=/, '');
   return {
     onSubmit: (credentials: AdminCredentials) => {
-      dispatch(getLoginUserAction(credentials, history, referer))
+      dispatch(getLoginUserAction(credentials, history, referer));
     },
   };
 }
 
-const LoginContainer = connect<Props, OwnProps, StateProps,_,_,_>(
+const LoginContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(LoginComponent);

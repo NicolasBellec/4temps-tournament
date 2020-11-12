@@ -455,7 +455,7 @@ describe('RPSS Round scorer', () => {
   test('[INTERNAL] _getRoleParticipant', () => {
     const scorer = new RPSSRoundScorer(judges, round2_2_2);
     const resultFollower: Array<string> = scorer._getRoleParticipant(
-      'follower',
+      'follower'
     );
     const resultLeader: Array<string> = scorer._getRoleParticipant('leader');
     const expectedFollower: Array<mixed> = followers.map((f) => f.id);
@@ -479,10 +479,10 @@ describe('RPSS Round scorer', () => {
 
     expect(scorerWithoutPresident._isPositiveJudgeType('normal')).toBeTruthy();
     expect(
-      scorerWithoutPresident._isPositiveJudgeType('president'),
+      scorerWithoutPresident._isPositiveJudgeType('president')
     ).toBeFalsy();
     expect(
-      scorerWithoutPresident._isPositiveJudgeType('sanctioner'),
+      scorerWithoutPresident._isPositiveJudgeType('sanctioner')
     ).toBeFalsy();
 
     expect(scorerWithPresident._isPositiveJudgeType('normal')).toBeTruthy();
@@ -600,7 +600,7 @@ describe('RPSS Round scorer', () => {
 
     const result: Array<JudgeWeightedNote> = scorer._aggregateJudgeNote(
       scores,
-      leaders[0].id,
+      leaders[0].id
     );
     const expected: Array<mixed> = [
       genJudgeWeightedNote(judges[0], leaders[0], 5),
@@ -647,7 +647,7 @@ describe('RPSS Round scorer', () => {
     const result: Array<JudgeScore> = scorer._aggregateDanceNotes(
       scores,
       leaders[0].id,
-      dances[0].id,
+      dances[0].id
     );
 
     const expected: Array<mixed> = [
@@ -695,7 +695,7 @@ describe('RPSS Round scorer', () => {
     const result: Array<JudgeScore> = scorer._aggregateDanceNotes(
       scores,
       leaders[0].id,
-      dances[1].id,
+      dances[1].id
     );
     const expected: Array<mixed> = [];
 
@@ -747,7 +747,7 @@ describe('RPSS Round scorer', () => {
     const result: Array<JudgeScore> = scorer._aggregateDanceNotes(
       scores,
       leaders[0].id,
-      dances[0].id,
+      dances[0].id
     );
     const expected: Array<mixed> = [
       genJudgeScore(judges[0], leaders[0], dances[0], 12),
@@ -785,7 +785,7 @@ describe('RPSS Round scorer', () => {
     const result: Array<JudgeScore> = scorer._aggregateDanceNotes(
       scores,
       leaders[0].id,
-      dances[0].id,
+      dances[0].id
     );
 
     const penalty: number = scorer._computePenalty(3, 40);
@@ -834,7 +834,7 @@ describe('RPSS Round scorer', () => {
     const result: Array<JudgeScore> = scorer._aggregateDanceNotes(
       scores,
       leaders[0].id,
-      dances[0].id,
+      dances[0].id
     );
 
     const penalty: number = scorer._computePenalty(3, 40);
@@ -858,7 +858,7 @@ describe('RPSS Round scorer', () => {
     const scorer = new RPSSRoundScorer(judgesWithSanctionner, round);
 
     const result: Array<JudgeWeightedNote> = scorer._computeJudgeWeightedNotes(
-      fullScaleScores,
+      fullScaleScores
     );
 
     const expected: Array<JudgeWeightedNote> = [
@@ -899,10 +899,10 @@ describe('RPSS Round scorer', () => {
     judges.forEach((judge) => {
       participants.forEach((participant) => {
         const r = result.filter(
-          (n) => n.judgeId === judge.id && n.participantId === participant.id,
+          (n) => n.judgeId === judge.id && n.participantId === participant.id
         );
         const e = expected.filter(
-          (ex) => ex.judgeId === judge.id && ex.participantId === participant.id,
+          (ex) => ex.judgeId === judge.id && ex.participantId === participant.id
         );
 
         expect(r).toEqual(e);
@@ -1046,7 +1046,7 @@ describe('RPSS Round scorer', () => {
       leaders[0].id,
       4,
       2,
-      judgeRanks,
+      judgeRanks
     );
 
     const expected: RankMatrixRow = genRow(
@@ -1054,7 +1054,7 @@ describe('RPSS Round scorer', () => {
       judgeRanks,
       [0, 1, 3, 4],
       2,
-      [0, 2, 8, 12],
+      [0, 2, 8, 12]
     );
 
     expect(result).toEqual(expected);
@@ -1088,7 +1088,7 @@ describe('RPSS Round scorer', () => {
       leaders[0].id,
       4,
       2,
-      judgeRanks,
+      judgeRanks
     );
 
     const expected: RankMatrixRow = genRow(
@@ -1096,7 +1096,7 @@ describe('RPSS Round scorer', () => {
       judgeRanks,
       [0, 0, 0, 4],
       3,
-      [0, 0, 0, 16],
+      [0, 0, 0, 16]
     );
 
     expect(result).toEqual(expected);
@@ -1115,7 +1115,7 @@ describe('RPSS Round scorer', () => {
     const result: RankMatrix = scorer._genRankMatrix(
       leaders.map((participant) => participant.id),
       judgeRanks,
-      2,
+      2
     );
 
     const expected: Array<mixed> = [
@@ -1142,7 +1142,7 @@ describe('RPSS Round scorer', () => {
     const result: RankMatrix = scorer._genRankMatrix(
       followers.map((participant) => participant.id),
       judgeRanks,
-      2,
+      2
     );
 
     const expected: Array<mixed> = [
@@ -1412,12 +1412,12 @@ describe('RPSS Round scorer', () => {
 
     const resultLeader: Array<Score> = scorer._genRPSSRanking(
       judgeRanks,
-      'leader',
+      'leader'
     );
 
     const resultFollower: Array<Score> = scorer._genRPSSRanking(
       judgeRanks,
-      'follower',
+      'follower'
     );
 
     const expectedLeader: Array<mixed> = [
@@ -1491,7 +1491,7 @@ describe('RPSS Round scorer', () => {
         countPresident: false,
         allowNegative: false,
       },
-      false,
+      false
     );
     const scores = [
       // J1
@@ -1571,7 +1571,7 @@ function genPair(
   leaders: Array<Participant>,
   followers: Array<Participant>,
   idLeader: number,
-  idFollow: number,
+  idFollow: number
 ): Pair {
   return {
     leader: leaders[idLeader].id,
@@ -1583,7 +1583,7 @@ function genJudgeScore(
   judge: Judge,
   participant: Participant,
   dance: Dance,
-  score: number,
+  score: number
 ) {
   return {
     judgeId: judge.id,
@@ -1598,7 +1598,7 @@ function genFullDanceJudgeNote(
   participant: Participant,
   dance: Dance,
   criteria: Array<RoundCriterion>,
-  scores: Array<number>,
+  scores: Array<number>
 ): Array<JudgeNote> {
   // Checks
   if (criteria.length != scores.length) {
@@ -1619,7 +1619,7 @@ function genJudgeNote(
   participant: Participant,
   dance: Dance,
   criterion: RoundCriterion,
-  score: number,
+  score: number
 ): JudgeNote {
   return {
     judgeId: judge.id,
@@ -1634,7 +1634,7 @@ function genJudgeRank(
   judge: Judge,
   participant: Participant,
   score: number,
-  rank: number,
+  rank: number
 ): JudgeRank {
   return {
     judgeId: judge.id,
@@ -1647,7 +1647,7 @@ function genJudgeRank(
 function genJudgeWeightedNote(
   judge: Judge,
   participant: Participant,
-  score: number,
+  score: number
 ) {
   return {
     judgeId: judge.id,
@@ -1659,7 +1659,7 @@ function genJudgeWeightedNote(
 function genCriteria(
   min: number,
   max: number,
-  forJudgeType: JudgeType,
+  forJudgeType: JudgeType
 ): RoundCriterion {
   return {
     id: generateId(),
@@ -1684,7 +1684,7 @@ function genRow(
   judgeRanks: Array<JudgeRank>,
   rows: Array<number>,
   rankReachMajority: number,
-  sumRanks: Array<number>,
+  sumRanks: Array<number>
 ): RankMatrixRow {
   return {
     participantId: participant.id,

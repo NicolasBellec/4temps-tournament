@@ -17,7 +17,7 @@ describe('Create tournament UI reducer', () => {
     };
 
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID')),
+      reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID'))
     ).toEqual(state);
     expect(getInitialState()).toEqual(state);
   });
@@ -26,27 +26,27 @@ describe('Create tournament UI reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.START, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
   });
 
   test('CREATE_TOURNAMENT start sets isLoading to true', () => {
     const state = getInitialState();
     expect(
-      reducer(state, makePackAction(LIFECYCLE.START, 'CREATE_TOURNAMENT')),
+      reducer(state, makePackAction(LIFECYCLE.START, 'CREATE_TOURNAMENT'))
     ).toEqual({
       ...state,
       isLoading: true,
@@ -65,7 +65,7 @@ describe('Create tournament UI reducer', () => {
     };
 
     expect(
-      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT')),
+      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT'))
     ).toEqual(getInitialState());
   });
 
@@ -82,8 +82,8 @@ describe('Create tournament UI reducer', () => {
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.FAILURE, 'CREATE_TOURNAMENT', payload),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'CREATE_TOURNAMENT', payload)
+      )
     ).toEqual({
       isLoading: false,
       validation: payload,

@@ -20,7 +20,7 @@ import type {
   Props,
   OwnProps,
   ScoreViewTableProps,
-  ScoreViewModel
+  ScoreViewModel,
 } from './types';
 
 export default function ScoreView({ isFinished, ...rest }: Props) {

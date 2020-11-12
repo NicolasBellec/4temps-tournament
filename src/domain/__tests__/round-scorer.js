@@ -254,7 +254,7 @@ describe('Round scorer', () => {
 
     const scoresWithoutPresident = new RoundScorer(
       [president],
-      round,
+      round
     ).scoreRound(notes);
     expect(scoresWithoutPresident).toContainEqual({
       participantId: 'l1',

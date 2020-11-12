@@ -1,6 +1,6 @@
 // @flow
 
-import type { ElementType } from "react";
+import type { ElementType } from 'react';
 
 export type OwnProps = {
   tournamentId: string,
@@ -16,7 +16,7 @@ export type StateProps = {
 
 export type DispatchProps = {
   load: (args: ?string) => void,
-  onChangeAttending: (id: string, isAttending: boolean) => void
+  onChangeAttending: (id: string, isAttending: boolean) => void,
 };
 
 export type Props = {

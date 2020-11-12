@@ -12,7 +12,7 @@ import DatePicker from 'react-datepicker';
 import type Moment from 'moment';
 import moment from 'moment';
 
-import type { Props } from "./types";
+import type { Props } from './types';
 
 type State = {
   name: string,
@@ -20,7 +20,6 @@ type State = {
 };
 
 class EditTournamentGeneral extends Component<Props, State> {
-
   constructor(props: Props) {
     const { tournament } = props;
     super(props);
@@ -31,7 +30,7 @@ class EditTournamentGeneral extends Component<Props, State> {
   }
 
   componentWillReceiveProps({ tournament }: Props) {
-    if ( tournament ) {
+    if (tournament) {
       const { name, date } = tournament;
 
       if (
@@ -57,24 +56,18 @@ class EditTournamentGeneral extends Component<Props, State> {
   onSubmit = () => {
     const { name, date } = this.state;
     const { tournament } = this.props;
-    if ( tournament ) {
+    if (tournament) {
       this.props.onSubmit({ ...tournament, name, date });
     }
   };
 
   render() {
-    const {
-      onClickLeaderboard,
-      isValidName,
-      isValidDate
-    } = this.props;
+    const { onClickLeaderboard, isValidName, isValidDate } = this.props;
     const { name, date } = this.state;
 
     return (
       <Container>
-        <Button onClick={onClickLeaderboard}>
-          Go to leaderboard
-        </Button>
+        <Button onClick={onClickLeaderboard}>Go to leaderboard</Button>
         <Form error={!isValidName || !isValidDate}>
           <FormInput
             label="Name"

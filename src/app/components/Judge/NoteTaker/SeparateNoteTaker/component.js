@@ -5,9 +5,7 @@ import {
 } from 'semantic-ui-react';
 import NoteCriterion from '../NoteCriterion';
 
-import type {
-  Props
-} from './types';
+import type { Props } from './types';
 
 function PairNoteTaker({
   leaderId,

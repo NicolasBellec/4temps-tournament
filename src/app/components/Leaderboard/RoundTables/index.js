@@ -23,7 +23,10 @@ export default class RoundTables extends Component<Props, State> {
     activeIndex: -1,
   };
 
-  handleClick = (e: SyntheticEvent<MouseEvent>, titleProps: { index: number }) => {
+  handleClick = (
+    e: SyntheticEvent<MouseEvent>,
+    titleProps: { index: number },
+  ) => {
     const { index } = titleProps;
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;

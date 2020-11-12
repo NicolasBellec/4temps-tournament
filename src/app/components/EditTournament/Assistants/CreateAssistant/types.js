@@ -7,11 +7,11 @@ export type OwnProps = {
 export type StateProps = UiCreateAssistantReduxState;
 
 export type DispatchProps = {
-  onSubmit: (name: string) => void
+  onSubmit: (name: string) => void,
 };
 
 export type Props = {
   ...OwnProps,
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

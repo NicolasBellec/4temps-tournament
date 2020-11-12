@@ -14,7 +14,7 @@ const tournamentSchema = new schema.Entity('tournaments', {
 });
 
 export function normalizeTournament(
-  tournament: Tournament
+  tournament: Tournament,
 ): normalizedTournament {
   return normalize(tournament, tournamentSchema);
 }

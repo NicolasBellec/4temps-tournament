@@ -91,7 +91,7 @@ describe('/api/judge/create', () => {
 
     expect(
       tournamentRepo._tournaments[tournament.id].rounds[0].criteria[0]
-        .forJudgeType,
+        .forJudgeType
     ).toBe('sanctioner');
   });
 });

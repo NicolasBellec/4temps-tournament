@@ -13,5 +13,5 @@ export type DispatchProps = {
 export type Props = {
   ...OwnProps,
   ...DispatchProps,
-  ...UiCreateJudgeReduxState
+  ...UiCreateJudgeReduxState,
 };

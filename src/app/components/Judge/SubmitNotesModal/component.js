@@ -15,9 +15,7 @@ import {
 // $FlowFixMe
 import NoteTable from '../NoteTable';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 class SubmitNotesModal extends PureComponent<Props> {
   _onSubmit = () => {

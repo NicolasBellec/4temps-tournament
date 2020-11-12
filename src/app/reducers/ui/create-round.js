@@ -8,22 +8,22 @@ function createRound(
   const { type, payload } = action;
 
   switch (type) {
-    case 'CREATE_ROUND':
-      return handle(state, action, {
-        start: (prevState) => ({
-          ...prevState,
-          isLoading: true,
-          createdSuccessfully: false,
-        }),
-        success: () => ({ ...getInitialState(), createdSuccessfully: true }),
-        failure: () => ({
-          isLoading: false,
-          createdSuccessfully: false,
-          validation: payload,
-        }),
-      });
-    default:
-      return state;
+  case 'CREATE_ROUND':
+    return handle(state, action, {
+      start: (prevState) => ({
+        ...prevState,
+        isLoading: true,
+        createdSuccessfully: false,
+      }),
+      success: () => ({ ...getInitialState(), createdSuccessfully: true }),
+      failure: () => ({
+        isLoading: false,
+        createdSuccessfully: false,
+        validation: payload,
+      }),
+    });
+  default:
+    return state;
   }
 }
 

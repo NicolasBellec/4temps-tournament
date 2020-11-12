@@ -10,11 +10,8 @@ import {
 import { getChangeAttendanceAction } from '../../../../action-creators/participant';
 
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props
-} from "./types";
+  OwnProps, StateProps, DispatchProps, Props,
+} from './types';
 
 function mapStateToProps(
   { user, tournaments, participants }: ReduxState,
@@ -34,7 +31,7 @@ function mapStateToProps(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
     load: (args = null) => {
@@ -45,12 +42,12 @@ function mapDispatchToProps(
       }
     },
     onChangeAttending: (id, isAttending) => {
-      dispatch(getChangeAttendanceAction(tournamentId, id, isAttending))
+      dispatch(getChangeAttendanceAction(tournamentId, id, isAttending));
     },
   };
 }
 
-const ListParticipantsContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const ListParticipantsContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

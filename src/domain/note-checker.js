@@ -31,13 +31,10 @@ export default class NoteChecker {
     for (const round of this._tournament.rounds) {
       for (const group of round.groups) {
         if (group.dances.findIndex(({ id }) => id == danceId) != -1) {
-          return group.pairs.reduce(
-            (acc: string[], pair) => {
-              const val: ?string = pair[role];
-              return typeof val === 'string' ? [ ...acc, val ] : [ ...acc ];
-            },
-            []
-          );
+          return group.pairs.reduce((acc: string[], pair) => {
+            const val: ?string = pair[role];
+            return typeof val === 'string' ? [...acc, val] : [...acc];
+          }, []);
         }
       }
     }

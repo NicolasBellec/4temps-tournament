@@ -1,7 +1,7 @@
 // @flow
 
 export type OwnProps = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 export type StateProps = {
@@ -11,11 +11,11 @@ export type StateProps = {
 };
 
 export type DispatchProps = {
-  dispatch: ReduxDispatch
-}
+  dispatch: ReduxDispatch,
+};
 
 export type Props = {
   ...StateProps,
   ...OwnProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

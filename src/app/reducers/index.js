@@ -30,10 +30,7 @@ const reducer: Reducer<ReduxState, ReduxPackAction> = combineReducers({
 });
 
 export function getInitialState(): ReduxState {
-  return reducer(
-    undefined,
-    makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
-  );
+  return reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID_ACTION'));
 }
 
 export default reducer;

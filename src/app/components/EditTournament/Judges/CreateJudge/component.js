@@ -10,15 +10,11 @@ import {
   Button,
 } from 'semantic-ui-react';
 
-import type {
-  Props,
-  OnSubmitParams
-} from "./types";
+import type { Props, OnSubmitParams } from './types';
 
 type State = OnSubmitParams;
 
 class CreateJudge extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {

@@ -17,7 +17,7 @@ export type ScoreViewTableProps = {
 
 export type StateProps = {
   isFinished: boolean,
-  ...ScoreViewTableProps
+  ...ScoreViewTableProps,
 };
 
 export type OwnProps = {
@@ -26,10 +26,10 @@ export type OwnProps = {
 
 export type DispatchProps = {
   dispatch: Dispatch<ReduxAction>,
-}
+};
 
 export type Props = {
   ...StateProps,
   ...OwnProps,
   ...DispatchProps,
-}
+};

@@ -14,7 +14,7 @@ describe('Edit tournament UI reducer', () => {
 
     expect(getInitialState()).toEqual(defaults);
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
+      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
     ).toEqual(getInitialState());
   });
 
@@ -22,20 +22,20 @@ describe('Edit tournament UI reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.START, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
   });
 
@@ -43,8 +43,8 @@ describe('Edit tournament UI reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'EDIT_TOURNAMENT'),
-      ),
+        makePackAction(LIFECYCLE.START, 'EDIT_TOURNAMENT')
+      )
     ).toEqual(getInitialState());
   });
 
@@ -55,7 +55,7 @@ describe('Edit tournament UI reducer', () => {
     };
 
     expect(
-      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'EDIT_TOURNAMENT')),
+      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'EDIT_TOURNAMENT'))
     ).toMatchObject({
       isValidName: true,
       isValidDate: true,
@@ -75,8 +75,8 @@ describe('Edit tournament UI reducer', () => {
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.FAILURE, 'EDIT_TOURNAMENT', payload),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'EDIT_TOURNAMENT', payload)
+      )
     ).toEqual({
       isValidName: payload.isValidName,
       isValidDate: payload.isValidDate,

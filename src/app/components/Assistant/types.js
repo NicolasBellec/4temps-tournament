@@ -3,15 +3,15 @@
 export type Tabs = 'groups' | 'participants';
 
 export type StateProps = {
-  tournamentId: string
+  tournamentId: string,
 };
 
 export type DispatchProps = {
-  dispatch: ReduxDispatch
-}
+  dispatch: ReduxDispatch,
+};
 
 export type Props = {
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };
 export type State = { activeTab: Tabs };

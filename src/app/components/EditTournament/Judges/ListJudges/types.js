@@ -1,6 +1,6 @@
 // @flow
 
-import type { ElementType } from "react";
+import type { ElementType } from 'react';
 
 export type OwnProps = {
   tournamentId: string,
@@ -24,5 +24,5 @@ export type DispatchProps = {
 export type Props = {
   ...OwnProps,
   ...DispatchProps,
-  ...StateProps
+  ...StateProps,
 };

@@ -13,10 +13,7 @@ import {
   Container,
   Grid,
 } from 'semantic-ui-react';
-import type {
-  Props,
-  GroupViewModel
-} from './types';
+import type { Props, GroupViewModel } from './types';
 
 function DanceActions({
   activeDance,

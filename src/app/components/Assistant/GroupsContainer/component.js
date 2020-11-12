@@ -3,14 +3,9 @@
 import React, { Fragment } from 'react';
 
 import {
-  Grid,
-  GridRow,
-  GridColumn,
-  Header,
+  Grid, GridRow, GridColumn, Header,
 } from 'semantic-ui-react';
-import type {
-  Props,
-} from './types';
+import type { Props } from './types';
 
 import './styles.css';
 

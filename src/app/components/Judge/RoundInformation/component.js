@@ -2,9 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Header, HeaderSubheader, Container } from 'semantic-ui-react';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 class RoundInformation extends PureComponent<Props> {
   render() {

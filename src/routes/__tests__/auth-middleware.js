@@ -49,7 +49,7 @@ describe('Authentication middleware', () => {
           // $FlowFixMe
           Request.withUserAndParams(null, {}),
           res,
-          done,
+          done
         );
       });
     });
@@ -97,7 +97,7 @@ describe('Authentication middleware', () => {
             ...admin,
             _id: generateId(),
           },
-          { tournamentId },
+          { tournamentId }
         );
 
         await allow('admin')(req, res, () => {

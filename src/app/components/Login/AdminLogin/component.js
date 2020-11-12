@@ -5,9 +5,7 @@ import {
   Button, Form, FormInput, Header, Message,
 } from 'semantic-ui-react';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 import './styles.css';
 
@@ -46,13 +44,10 @@ class Login extends PureComponent<Props, State> {
       isValid,
       isValidEmail,
       isValidPassword,
-      doesAdminExist
+      doesAdminExist,
     } = this.props;
 
-    const {
-      email,
-      password
-    } = this.state;
+    const { email, password } = this.state;
 
     return (
       <div styleName="center">
@@ -65,9 +60,7 @@ class Login extends PureComponent<Props, State> {
               value={email}
               onChange={this.onEmailChange}
             />
-            {!isValidEmail && (
-              <Message error content="Invalid email address" />
-            )}
+            {!isValidEmail && <Message error content="Invalid email address" />}
             <FormInput
               type="password"
               label="Password"
@@ -75,9 +68,7 @@ class Login extends PureComponent<Props, State> {
               value={password}
               onChange={this.onPasswordChange}
             />
-            {!isValidPassword && (
-              <Message error content="Invalid password" />
-            )}
+            {!isValidPassword && <Message error content="Invalid password" />}
             <Button type="submit" onClick={this.onSubmit}>
               Submit
             </Button>

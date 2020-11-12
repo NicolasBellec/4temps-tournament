@@ -5,14 +5,13 @@ import {
   Form, FormInput, Message, Button,
 } from 'semantic-ui-react';
 
-import type { Props } from "./types";
+import type { Props } from './types';
 
 type State = {
   name: string,
 };
 
 class CreateAssistant extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {

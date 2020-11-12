@@ -24,10 +24,7 @@ function getNotes(
   state: NotesReduxState = getInitialState(),
   action: ReduxPackAction,
 ): NotesReduxState {
-  const {
-    payload,
-    ...other
-  } = action;
+  const { payload, ...other } = action;
   return handle(state, action, {
     start: (prevState) => ({
       ...prevState,

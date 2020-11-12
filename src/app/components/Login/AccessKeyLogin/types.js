@@ -10,15 +10,15 @@ export type OwnProps = {
 export type StateProps = {
   isLoading: boolean,
   isValidAccessKey: boolean,
-  doesAccessKeyExist: boolean
+  doesAccessKeyExist: boolean,
 };
 
 export type DispatchProps = {
-  onSubmit: (accessKey: string) => void
-}
+  onSubmit: (accessKey: string) => void,
+};
 
 export type Props = {
   ...OwnProps,
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

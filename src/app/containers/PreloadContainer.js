@@ -12,7 +12,7 @@ type Props<T> = {
   ...
 };
 
-class PreloadContainer<T> extends Component< Props<T> > {
+class PreloadContainer<T> extends Component<Props<T>> {
   componentDidMount() {
     const { load, shouldLoad, loadArgs } = this.props;
     if (shouldLoad) {

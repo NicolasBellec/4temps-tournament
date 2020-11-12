@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 
 import HomeComponent from './component';
 
-import type {
-  Props,
-  OwnProps,
-  StateProps
-} from "./types";
+import type { Props, OwnProps, StateProps } from './types';
 
 function mapStateToProps({ user }: ReduxState): StateProps {
   return {
@@ -18,7 +14,7 @@ function mapStateToProps({ user }: ReduxState): StateProps {
 }
 
 const HomeContainer = connect<Props, OwnProps, StateProps, _, _, _>(
-  mapStateToProps
+  mapStateToProps,
 )(HomeComponent);
 
 export default HomeContainer;

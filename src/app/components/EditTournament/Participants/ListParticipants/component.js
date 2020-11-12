@@ -19,9 +19,7 @@ import {
   SyntheticEvent,
 } from 'semantic-ui-react';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 type State = {
   isSearchLoading: boolean,
@@ -32,7 +30,6 @@ type State = {
 };
 
 class ListParticipants extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -100,7 +97,10 @@ class ListParticipants extends Component<Props, State> {
     });
   };
 
-  handleFilterChange = (e: SyntheticEvent<HTMLInputElement>, data: { checked: boolean }) => {
+  handleFilterChange = (
+    e: SyntheticEvent<HTMLInputElement>,
+    data: { checked: boolean },
+  ) => {
     const { checked } = data;
     this.setState({ filterPresent: checked });
   };
@@ -148,20 +148,21 @@ class ListParticipants extends Component<Props, State> {
     </Modal>
   );
 
-  handleSearchChange = (e: SyntheticEvent<HTMLInputElement>, { value }: { value: string }) => {
+  handleSearchChange = (
+    e: SyntheticEvent<HTMLInputElement>,
+    { value }: { value: string },
+  ) => {
     this.setState({ isSearchLoading: true, searchValue: value });
     this.setState({ isSearchLoading: false });
   };
 
   getNotPresent = (): Participant[] => this.props.participants.filter((p) => !p.isAttending);
 
-  searchParticipants =
-    (participants: Array<Participant>): Participant[] => participants.filter(
-      (p) => {
-        const name = p.name.toLowerCase();
-        const search = this.state.searchValue.toLowerCase();
-        return name.indexOf(search) !== -1;
-      });
+  searchParticipants = (participants: Array<Participant>): Participant[] => participants.filter((p) => {
+    const name = p.name.toLowerCase();
+    const search = this.state.searchValue.toLowerCase();
+    return name.indexOf(search) !== -1;
+  });
 
   render() {
     let participants = this.state.filterPresent

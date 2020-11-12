@@ -9,8 +9,8 @@ import type {
   StateProps,
   DispatchProps,
   Props,
-  ComponentState
-} from "./types";
+  ComponentState,
+} from './types';
 
 function mapStateToProps(
   { tournaments, ui }: ReduxState,
@@ -26,16 +26,23 @@ function mapStateToProps(
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
     onSubmit: ({ name, role }: ComponentState) => {
-      dispatch(getCreateParticipantAction(tournamentId, name, role))
+      dispatch(getCreateParticipantAction(tournamentId, name, role));
     },
   };
 }
 
-const CreateParticipantContainer = connect<Props, OwnProps, StateProps, _, _, _>(
+const CreateParticipantContainer = connect<
+  Props,
+  OwnProps,
+  StateProps,
+  _,
+  _,
+  _
+>(
   mapStateToProps,
   mapDispatchToProps,
 )(CreateParticipant);

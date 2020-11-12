@@ -6,7 +6,7 @@ export type OwnProps = {
 
 export type StateProps = {
   ...UiCreateParticipantsReduxState,
-  isClassic: boolean
+  isClassic: boolean,
 };
 
 export type ComponentState = {
@@ -15,7 +15,7 @@ export type ComponentState = {
 };
 
 export type DispatchProps = {
-  onSubmit: (ComponentState) => void
+  onSubmit: (ComponentState) => void,
 };
 
 export type Props = {

@@ -2,10 +2,7 @@
 import { connect } from 'react-redux';
 
 import AssistantView from './component';
-import type {
-  StateProps,
-  Props
-} from './types';
+import type { StateProps, Props } from './types';
 
 function mapStateToProps({ user }: ReduxState): StateProps {
   return {
@@ -13,6 +10,6 @@ function mapStateToProps({ user }: ReduxState): StateProps {
   };
 }
 
-export default connect<Props, {}, StateProps, _,_,_>(
-  mapStateToProps
-)(AssistantView);
+export default connect<Props, {}, StateProps, _, _, _>(mapStateToProps)(
+  AssistantView,
+);

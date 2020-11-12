@@ -10,9 +10,7 @@ import {
   TableRow,
 } from 'semantic-ui-react';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 function ListJudges({ judges }: Props) {
   return (
@@ -26,14 +24,14 @@ function ListJudges({ judges }: Props) {
       </TableHeader>
       <TableBody>
         {judges.map((j) => {
-          if ( j.data && j.accessKey ) {
+          if (j.data && j.accessKey) {
             return (
               <TableRow key={j.data.id}>
                 <TableCell>{j.data.name}</TableCell>
                 <TableCell>{typeToDisplayName(j.data.judgeType)}</TableCell>
                 <TableCell>{j.accessKey}</TableCell>
               </TableRow>
-            )
+            );
           }
         })}
       </TableBody>

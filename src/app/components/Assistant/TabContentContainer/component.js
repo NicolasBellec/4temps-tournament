@@ -3,14 +3,9 @@
 import React from 'react';
 import GroupsContainer from '../GroupsContainer';
 import Participants from '../../EditTournament/Participants';
-import type {
-  Props,
-} from './types';
+import type { Props } from './types';
 
-export default function TabContent({
-  activeTab,
-  tournamentId,
-}: Props) {
+export default function TabContent({ activeTab, tournamentId }: Props) {
   if (activeTab === 'groups') {
     return <GroupsContainer tournamentId={tournamentId} />;
   }

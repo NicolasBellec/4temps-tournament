@@ -5,7 +5,7 @@ import type {
   StateProps,
   DispatchProps,
   Props,
-  OwnProps
+  OwnProps,
 } from './types';
 import Component from './component';
 import { getSelectPairAction } from '../../../action-creators/participant';
@@ -109,7 +109,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const SelectPairGridContainer = connect<Props, OwnProps, StateProps,_,_,_>(
+const SelectPairGridContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

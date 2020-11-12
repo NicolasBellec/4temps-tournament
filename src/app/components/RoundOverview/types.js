@@ -16,11 +16,11 @@ export type StateProps = {
 };
 
 export type DispatchProps = {
-  load: () => void
+  load: () => void,
 };
 
 export type Props = {
   ...OwnProps,
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

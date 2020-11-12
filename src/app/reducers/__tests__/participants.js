@@ -18,20 +18,20 @@ describe('Participant reducer', () => {
     };
 
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
+      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
     ).toEqual(state);
     expect(getInitialState()).toEqual(state);
   });
 
   test('Invalid action does not change state', () => {
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.START, 'INVALID_ACTION')),
+      reducer(initialState, makePackAction(LIFECYCLE.START, 'INVALID_ACTION'))
     ).toEqual(initialState);
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')),
+      reducer(initialState, makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'))
     ).toEqual(initialState);
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
+      reducer(initialState, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
     ).toEqual(initialState);
   });
 
@@ -49,8 +49,8 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           state,
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload)
+        )
       ).toEqual({
         ...state,
         forTournament,
@@ -85,8 +85,8 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           state,
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_PARTICIPANT', payload)
+        )
       ).toEqual({
         ...state,
         forTournament,
@@ -102,8 +102,8 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', tournament),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', tournament)
+        )
       ).toEqual({
         ...initialState,
         forTournament: {
@@ -148,8 +148,8 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
+        )
       ).toEqual(expected);
     });
 
@@ -157,8 +157,8 @@ describe('Participant reducer', () => {
       expect(
         reducer(
           initialState,
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
+        )
       ).toEqual(expected);
     });
   });

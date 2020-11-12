@@ -1,7 +1,7 @@
 // @flow
 
 // $FlowFixMe
-import Judge from "./component";
+import Judge from './component';
 
 export type JudgeProps = {
   tournamentId: string,
@@ -14,12 +14,12 @@ export type JudgeProps = {
 export type StateProps = {
   child: typeof Judge,
   shouldLoad: boolean,
-  ...JudgeProps
-}
+  ...JudgeProps,
+};
 
 export type DispatchProps = {
   load: () => void,
-}
+};
 
 export type Props = {
   ...StateProps,

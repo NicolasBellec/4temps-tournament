@@ -119,10 +119,10 @@ describe('Dance scorer', () => {
 
     const malus = parseFloat(
       (
-        (maxValueCrit1 + maxValueCrit2)
-        * positiveJudgeCount
-        * (1 - (100 - malusPercentage) / 100)
-      ).toFixed(2),
+        (maxValueCrit1 + maxValueCrit2) *
+        positiveJudgeCount *
+        (1 - (100 - malusPercentage) / 100)
+      ).toFixed(2)
     );
 
     const scoreValue = 2;
@@ -166,7 +166,7 @@ describe('Dance scorer', () => {
           value: scoreValue,
         })),
       ],
-      [],
+      []
     );
 
     notes.push({
@@ -180,7 +180,7 @@ describe('Dance scorer', () => {
     const scorer = new DanceScorer(
       [normalJudge1, normalJudge2, sanctioner],
       [normalCriterion1, normalCriterion2, malusCriterion],
-      notes,
+      notes
     );
     expect(scorer.scoreDance(danceId)).toEqual([
       { participantId: participant.id, score: expectedScore },
@@ -226,7 +226,7 @@ describe('Dance scorer', () => {
     const scorer = new DanceScorer(
       [normalJudge, sanctioner],
       [normalCriterion, malusCriterion],
-      notes,
+      notes
     );
     expect(scorer.scoreDance(danceId)).toEqual([
       { participantId: participant.id, score: 0 },
@@ -273,7 +273,7 @@ describe('Dance scorer', () => {
       [normalJudge, sanctioner],
       [normalCriterion, malusCriterion],
       notes,
-      { allowNegative: true, countPresident: false },
+      { allowNegative: true, countPresident: false }
     );
     expect(scorer.scoreDance(danceId)).toEqual([
       { participantId: participant.id, score: -2 },
@@ -390,7 +390,7 @@ describe('Dance scorer', () => {
       {
         allowNegative: false,
         countPresident: true,
-      },
+      }
     );
     expect(scorer.scoreDance(danceId)).toEqual([
       { participantId: participant.id, score: 5 },

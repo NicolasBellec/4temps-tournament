@@ -1,11 +1,7 @@
 // @flow
 
 import { connect } from 'react-redux';
-import type {
-  StateProps,
-  DispatchProps,
-  Props
-} from './types';
+import type { StateProps, DispatchProps, Props } from './types';
 import Component from './component';
 import NoteChecker from '../../../../domain/note-checker';
 import { getSubmitNotesAction } from '../../../action-creators/note';
@@ -77,7 +73,9 @@ function getTournament(state: ReduxState): Tournament {
     rounds: tournament.rounds.map((id) => state.rounds.byId[id]),
     judges: tournament.judges.map((id) => state.judges.byId[id]),
     assistants: tournament.assistants.map((id) => state.assistants.byId[id]),
-    participants: tournament.participants.map((id) => state.participants.byId[id]),
+    participants: tournament.participants.map(
+      (id) => state.participants.byId[id],
+    ),
   };
 }
 
@@ -89,7 +87,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const SubmitNotesModalContainer = connect<Props, {}, StateProps, _,_,_>(
+const SubmitNotesModalContainer = connect<Props, {}, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

@@ -98,15 +98,18 @@ test('Email requires valid format', async () => {
 });
 
 test('Email in use is invalid', async () => {
-  const getAdmins = () => new Promise((resolve) => resolve([
-    {
-      _id: ObjectId.generate(),
-      firstName: 'Other',
-      lastName: 'Other',
-      email: 'test@test.com',
-      password: 'asasdasdasd',
-    },
-  ]));
+  const getAdmins = () =>
+    new Promise((resolve) =>
+      resolve([
+        {
+          _id: ObjectId.generate(),
+          firstName: 'Other',
+          lastName: 'Other',
+          email: 'test@test.com',
+          password: 'asasdasdasd',
+        },
+      ])
+    );
 
   const admin: AdminWithPassword = {
     firstName: 'Simon',

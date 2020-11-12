@@ -7,9 +7,7 @@ import Judge from '../Judge';
 import EditTournamentList from '../EditTournamentList';
 import Assistant from '../Assistant';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 class Home extends PureComponent<Props> {
   renderForRole() {
@@ -23,11 +21,7 @@ class Home extends PureComponent<Props> {
     if (role == 'assistant') {
       return <Assistant />;
     }
-    return (
-      <LoginContainer
-        location={location}
-        history={history}
-      />);
+    return <LoginContainer location={location} history={history} />;
   }
 
   render() {

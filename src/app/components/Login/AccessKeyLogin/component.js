@@ -5,9 +5,7 @@ import {
   Button, Form, FormInput, Header, Message,
 } from 'semantic-ui-react';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 import './styles.css';
 
@@ -40,7 +38,7 @@ class Login extends PureComponent<Props, State> {
       headerTitle,
       isLoading,
       isValidAccessKey,
-      doesAccessKeyExist
+      doesAccessKeyExist,
     } = this.props;
     const { accessKey } = this.state;
 
@@ -50,9 +48,7 @@ class Login extends PureComponent<Props, State> {
           <Header as="h1">{headerTitle}</Header>
           <Form
             loading={isLoading}
-            error={
-              !isValidAccessKey || !doesAccessKeyExist
-            }
+            error={!isValidAccessKey || !doesAccessKeyExist}
           >
             <FormInput
               label="Access Key"

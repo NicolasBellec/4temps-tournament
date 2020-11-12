@@ -15,7 +15,7 @@ describe('/api/tournament/create', () => {
 
   test('Valid tournament returns 200 and the new tournamentid', async () => {
     expect(
-      await createTournamentRoute(tournament.creatorId, tournament, repository),
+      await createTournamentRoute(tournament.creatorId, tournament, repository)
     ).toEqual({
       status: 200,
       body: tournament,
@@ -33,8 +33,8 @@ describe('/api/tournament/create', () => {
       await createTournamentRoute(
         tournament.creatorId,
         invalidTournament,
-        repository,
-      ),
+        repository
+      )
     ).toEqual({
       status: 400,
       body: null,
@@ -45,7 +45,7 @@ describe('/api/tournament/create', () => {
     // $FlowFixMe
     repository.create = () => new Promise((resolve, reject) => reject());
     expect(
-      await createTournamentRoute(tournament.creatorId, tournament, repository),
+      await createTournamentRoute(tournament.creatorId, tournament, repository)
     ).toEqual({
       status: 500,
       body: null,

@@ -1,6 +1,6 @@
 // @flow
 
-import NoteTaker from "./component";
+import NoteTaker from './component';
 
 export type OwnProps = {
   tournamentId: string,
@@ -21,5 +21,5 @@ export type DispatchProps = {
 export type Props = {
   ...StateProps,
   ...DispatchProps,
-  ...OwnProps
+  ...OwnProps,
 };

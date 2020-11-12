@@ -46,7 +46,7 @@ describe('/api/round/delete', () => {
         roundId: generateId(),
         tournamentId: generateId(),
       }),
-      response,
+      response
     );
 
     expect(response.getStatus()).toBe(404);
@@ -63,7 +63,7 @@ describe('/api/round/delete', () => {
         roundId,
         tournamentId,
       }),
-      response,
+      response
     );
 
     expect(response.getStatus()).toBe(401);
@@ -80,7 +80,7 @@ describe('/api/round/delete', () => {
         roundId,
         tournamentId,
       }),
-      response,
+      response
     );
 
     expect(response.getStatus()).toBe(401);
@@ -99,7 +99,7 @@ describe('/api/round/delete', () => {
         roundId,
         tournamentId,
       }),
-      response,
+      response
     );
 
     expect(response.getStatus()).toBe(500);
@@ -114,7 +114,7 @@ describe('/api/round/delete', () => {
         roundId,
         tournamentId,
       }),
-      response,
+      response
     );
 
     expect(response.getStatus()).toBe(500);

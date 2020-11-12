@@ -10,11 +10,9 @@ import {
   TableRow,
 } from 'semantic-ui-react';
 
-import type { Props } from "./types";
+import type { Props } from './types';
 
-function ListAssistants({
-  assistants,
-}: Props) {
+function ListAssistants({ assistants }: Props) {
   return (
     <Table unstackable basic="very">
       <TableHeader>

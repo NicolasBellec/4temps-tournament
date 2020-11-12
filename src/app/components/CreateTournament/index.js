@@ -10,7 +10,7 @@ import type {
   StateProps,
   DispatchProps,
   ComponentState,
-  Props
+  Props,
 } from './types';
 
 function mapStateToProps({ ui }: ReduxState): StateProps {
@@ -19,10 +19,12 @@ function mapStateToProps({ ui }: ReduxState): StateProps {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { history }: OwnProps
-) : DispatchProps {
+  { history }: OwnProps,
+): DispatchProps {
   return {
-    onSubmit: ({ name, date, type }: ComponentState) => { dispatch(getCreateTournamentAction(name, date, type, history)) },
+    onSubmit: ({ name, date, type }: ComponentState) => {
+      dispatch(getCreateTournamentAction(name, date, type, history));
+    },
   };
 }
 

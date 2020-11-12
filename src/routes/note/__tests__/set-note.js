@@ -59,7 +59,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(
       new TournamentRepositoryImpl(),
-      new NoteRepositoryImpl(),
+      new NoteRepositoryImpl()
     )(req, res);
 
     expect(res.getStatus()).toBe(404);
@@ -80,7 +80,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(401);
@@ -99,7 +99,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -119,7 +119,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -138,7 +138,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -157,7 +157,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(400);
@@ -178,7 +178,7 @@ describe('Create note route', () => {
 
     await setNoteRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(200);

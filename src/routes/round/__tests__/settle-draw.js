@@ -236,6 +236,6 @@ it('Returns 200 and ends round with updated score', async () => {
   expect(res.getStatus()).toBe(200);
   expect(res.getBody()).toEqual(expectedRound);
   expect((await tournamentRepository.get(tournament.id)).rounds[0]).toEqual(
-    expectedRound,
+    expectedRound
   );
 });

@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 import Component from './component';
 import getCreateJudgeAction from '../../../../action-creators/judge';
 
-import type {
-  OwnProps,
-  DispatchProps,
-  Props
-} from "./types";
+import type { OwnProps, DispatchProps, Props } from './types';
 
 function mapStateToProps({ ui }: ReduxState): UiCreateJudgeReduxState {
   return ui.createJudge;
@@ -16,8 +12,8 @@ function mapStateToProps({ ui }: ReduxState): UiCreateJudgeReduxState {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
-) : DispatchProps {
+  { tournamentId }: OwnProps,
+): DispatchProps {
   return {
     onSubmit: ({ name, judgeType }) => {
       dispatch(getCreateJudgeAction(tournamentId, name, judgeType));

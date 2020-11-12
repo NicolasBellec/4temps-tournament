@@ -74,7 +74,7 @@ describe('Start round route', () => {
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
     expect((await repo.get(tournament.id)).rounds[0]).toMatchObject(
-      expectedRound,
+      expectedRound
     );
   });
 
@@ -126,7 +126,7 @@ describe('Start round route', () => {
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
     expect((await repo.get(tournament.id)).rounds[0]).toMatchObject(
-      expectedRound,
+      expectedRound
     );
   });
 

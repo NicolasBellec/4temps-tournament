@@ -4,8 +4,8 @@ import type { RouterHistory } from 'react-router-dom';
 import type { ElementType } from 'react';
 
 export type OwnProps = {
-    tournamentId: string,
-    history: RouterHistory,
+  tournamentId: string,
+  history: RouterHistory,
 };
 
 export type StateProps = {

@@ -41,7 +41,7 @@ export type DispatchProps = {
   generateGroups: () => void,
   endDance: () => Promise<mixed>,
   regenerateGroup: (groupId: string) => void,
-}
+};
 
 export type StateProps = {
   round: ?RoundViewModel,
@@ -52,4 +52,4 @@ export type Props = {
   ...StateProps,
   ...DispatchProps,
   ...OwnProps,
-}
+};

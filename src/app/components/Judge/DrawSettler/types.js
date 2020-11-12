@@ -2,12 +2,12 @@
 
 export type ScoreViewModel = {
   score: number,
-  participant: Participant
+  participant: Participant,
 };
 
 export type OwnProps = {
   tournamentId: string,
-  activeRound: ?Round
+  activeRound: ?Round,
 };
 
 type ParticipantResults = {
@@ -32,5 +32,5 @@ export type DispatchProps = {
 export type Props = {
   ...StateProps,
   ...DispatchProps,
-  ...OwnProps
+  ...OwnProps,
 };

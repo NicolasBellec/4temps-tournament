@@ -21,7 +21,7 @@ describe('Tournament reducer', () => {
 
     expect(getInitialState()).toEqual(defaults);
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')),
+      reducer(undefined, makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'))
     ).toEqual(getInitialState());
   });
 
@@ -29,20 +29,20 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.START, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'INVALID_ACTION')
+      )
     ).toEqual(getInitialState());
   });
 
@@ -50,8 +50,8 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'GET_ALL_TOURNAMENTS'),
-      ),
+        makePackAction(LIFECYCLE.START, 'GET_ALL_TOURNAMENTS')
+      )
     ).toEqual({ ...getInitialState(), isLoading: true });
   });
 
@@ -69,8 +69,8 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
+      )
     ).toEqual({
       ...getInitialState(),
       isLoading: false,
@@ -81,28 +81,28 @@ describe('Tournament reducer', () => {
   });
 
   test(
-    'GET_ALL_TOURNAMENTS failure sets isLoading to false and'
-      + 'isInvalidated to true',
+    'GET_ALL_TOURNAMENTS failure sets isLoading to false and' +
+      'isInvalidated to true',
     () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.FAILURE, 'GET_ALL_TOURNAMENTS'),
-        ),
+          makePackAction(LIFECYCLE.FAILURE, 'GET_ALL_TOURNAMENTS')
+        )
       ).toEqual({
         ...getInitialState(),
         isLoading: false,
         isInvalidated: false,
       });
-    },
+    }
   );
 
   test('GET_ADMIN_TOURNAMENTS start sets loading to true', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.START, 'GET_ADMIN_TOURNAMENTS'),
-      ),
+        makePackAction(LIFECYCLE.START, 'GET_ADMIN_TOURNAMENTS')
+      )
     ).toEqual({ ...getInitialState(), isLoading: true });
   });
 
@@ -121,8 +121,8 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         getInitialState(),
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
+      )
     ).toEqual({
       ...getInitialState(),
       didLoadAdminTournaments: true,
@@ -156,8 +156,8 @@ describe('Tournament reducer', () => {
       reducer(
         // $FlowFixMe
         prevState,
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
+      )
     ).toEqual({
       ...getInitialState(),
       didLoadAdminTournaments: true,
@@ -194,8 +194,8 @@ describe('Tournament reducer', () => {
       reducer(
         // $FlowFixMe
         prevState,
-        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
+      )
     ).toEqual({
       ...getInitialState(),
       didLoadAdminTournaments: true,
@@ -209,8 +209,8 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         { ...getInitialState(), isLoading: true },
-        makePackAction(LIFECYCLE.FAILURE, 'GET_ADMIN_TOURNAMENTS'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'GET_ADMIN_TOURNAMENTS')
+      )
     ).toEqual({
       ...getInitialState(),
       isLoading: false,
@@ -229,8 +229,8 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', payload),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'CREATE_TOURNAMENT', payload)
+      )
     ).toEqual({
       ...state,
       allIds,
@@ -261,8 +261,8 @@ describe('Tournament reducer', () => {
     expect(
       reducer(
         state,
-        makePackAction(LIFECYCLE.SUCCESS, 'EDIT_TOURNAMENT', payload),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'EDIT_TOURNAMENT', payload)
+      )
     ).toEqual({
       ...state,
       byId: {
@@ -279,7 +279,7 @@ describe('Tournament reducer', () => {
     };
 
     expect(
-      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGOUT_USER')),
+      reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'LOGOUT_USER'))
     ).toEqual(getInitialState());
   });
 });

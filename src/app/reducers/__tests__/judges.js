@@ -9,7 +9,7 @@ import { normalizeTournamentArray } from '../normalize';
 describe('Judges reducer', () => {
   test('Undefined results in initial', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID')),
+      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID'))
     ).toEqual(getInitialState());
   });
 
@@ -48,16 +48,16 @@ describe('Judges reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
+        )
       ).toEqual(expected);
     });
     test('GET_ADMIN_TOURNAMENTS success sets judges', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
+        )
       ).toEqual(expected);
     });
   });
@@ -80,8 +80,8 @@ describe('Judges reducer', () => {
       expect(
         reducer(
           getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_JUDGE', payload),
-        ),
+          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_JUDGE', payload)
+        )
       ).toEqual(expected);
     });
   });

@@ -1,11 +1,7 @@
 // @flow
 import { connect } from 'react-redux';
 import Judge from './component';
-import type {
-  Props,
-  StateProps,
-  DispatchProps
- } from './types';
+import type { Props, StateProps, DispatchProps } from './types';
 import PreloadContainer from '../../containers/PreloadContainer';
 import { getJudgeTournamentAction } from '../../action-creators/tournament';
 
@@ -70,7 +66,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const JudgeContainer = connect<Props, {}, StateProps,_,_,_>(
+const JudgeContainer = connect<Props, {}, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

@@ -4,10 +4,7 @@ import SignUp from './component';
 import { getSignUpAction } from '../../action-creators/admin';
 
 import type {
-  Props,
-  StateProps,
-  OwnProps,
-  DispatchProps,
+  Props, StateProps, OwnProps, DispatchProps,
 } from './types';
 
 function mapStateToProps({ ui }: ReduxState): StateProps {

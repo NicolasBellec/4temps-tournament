@@ -7,10 +7,10 @@ export type StateProps = {
 };
 
 export type DispatchProps = {
-  dispatch: ReduxDispatch
+  dispatch: ReduxDispatch,
 };
 
 export type Props = {
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

@@ -6,11 +6,8 @@ import {
 } from 'semantic-ui-react';
 
 import type {
-  Props,
-  StateProps,
-  DispatchProps,
-  PairViewModel
-} from "./types";
+  Props, StateProps, DispatchProps, PairViewModel,
+} from './types';
 
 function SelectPairGrid(props: Props) {
   return (

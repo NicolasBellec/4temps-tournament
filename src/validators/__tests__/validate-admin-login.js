@@ -67,7 +67,7 @@ test('Returns valid admin if exists', async () => {
 
   const result = await validateAdminLogin(
     admin,
-    () => new Promise((resolve) => resolve(fullAdmin)),
+    () => new Promise((resolve) => resolve(fullAdmin))
   );
 
   expect(result.isValid).toBe(true);
@@ -85,7 +85,7 @@ test('Returns null admin if not exists', async () => {
 
   const result = await validateAdminLogin(
     admin,
-    () => new Promise((resolve) => resolve(null)),
+    () => new Promise((resolve) => resolve(null))
   );
 
   expect(result.isValid).toBe(false);

@@ -3,10 +3,7 @@ import React from 'react';
 import { Grid, GridRow, Header } from 'semantic-ui-react';
 import NoteCriterion from '../NoteCriterion';
 
-import type {
-  Props,
-  CriterionViewModel
-} from "./types";
+import type { Props, CriterionViewModel } from './types';
 
 function PairNoteTaker({
   pairId,

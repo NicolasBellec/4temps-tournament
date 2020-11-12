@@ -20,8 +20,8 @@ describe('/api/tournament/get', () => {
       await getTournamentRoute(
         tournament.id,
         tournament.creatorId,
-        tournamentRepository,
-      ),
+        tournamentRepository
+      )
     ).toEqual({
       status: 200,
       body: tournament,
@@ -30,7 +30,7 @@ describe('/api/tournament/get', () => {
 
   test('Returns 404 and null tournament if tournament does not exist', async () => {
     expect(
-      await getTournamentRoute(generateId(), generateId(), tournamentRepository),
+      await getTournamentRoute(generateId(), generateId(), tournamentRepository)
     ).toEqual({
       status: 404,
       body: null,

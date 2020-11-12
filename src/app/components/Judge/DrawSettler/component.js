@@ -11,25 +11,21 @@ import {
   Loader,
   Message,
 } from 'semantic-ui-react';
-import type {
-  Props,
-  ScoreViewModel
-} from "./types";
+import type { Props, ScoreViewModel } from './types';
 
 import './styles.css';
 
 type State = {
   checkedLeaders: Array<string>,
-  checkedFollowers: Array<string>
-}
+  checkedFollowers: Array<string>,
+};
 
 type ScoreViewModelWithChecked = {
   ...ScoreViewModel,
-  checked: boolean
-}
+  checked: boolean,
+};
 
 class DrawSettler extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -68,12 +64,11 @@ class DrawSettler extends React.Component<Props, State> {
 
   drawWithCheck = (
     scores: Array<ScoreViewModel>,
-    checked: Array<string>
-  ): Array<ScoreViewModelWithChecked> => scores.map(
-    (score) => ({
-      ...score,
-      checked: checked.includes(score.participant.id),
-    }));
+    checked: Array<string>,
+  ): Array<ScoreViewModelWithChecked> => scores.map((score) => ({
+    ...score,
+    checked: checked.includes(score.participant.id),
+  }));
 
   submitRoundScores = () => {
     const { leaders, followers } = this.props;

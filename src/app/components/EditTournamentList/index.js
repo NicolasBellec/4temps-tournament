@@ -7,11 +7,8 @@ import TournamentList from '../TournamentList';
 import { getAdminTournamentsAction } from '../../action-creators/tournament';
 
 import type {
-  Props,
-  StateProps,
-  DispatchProps,
-  OwnProps
-} from "./types";
+  Props, StateProps, DispatchProps, OwnProps,
+} from './types';
 
 function mapStateToProps(
   { tournaments }: ReduxState,
@@ -38,13 +35,20 @@ function mapDispatchToProps(
 ): DispatchProps {
   return {
     load: () => {
-      dispatch(getAdminTournamentsAction())
+      dispatch(getAdminTournamentsAction());
     },
     onClick: (id: string) => history.push(`/tournament/edit/${id}`),
   };
 }
 
-const EditTournamentListContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const EditTournamentListContainer = connect<
+  Props,
+  OwnProps,
+  StateProps,
+  _,
+  _,
+  _
+>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

@@ -6,7 +6,7 @@ import type {
   CriterionViewModel,
   StateProps,
   DispatchProps,
-  Props
+  Props,
 } from './types';
 import { getSetNoteAction } from '../../../../action-creators/note';
 
@@ -67,7 +67,8 @@ function getFirstPair(round: Round): Pair {
 function getRound(state: ReduxState): Round {
   const tournament = state.tournaments.byId[state.tournaments.forJudge];
   const activeRoundId = tournament.rounds.filter(
-    (roundId) => state.rounds.byId[roundId].active)[0];
+    (roundId) => state.rounds.byId[roundId].active,
+  )[0];
 
   return state.rounds.byId[activeRoundId];
 }
@@ -127,7 +128,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const PairNoteTakerContainer = connect<Props, {}, StateProps, _,_,_>(
+const PairNoteTakerContainer = connect<Props, {}, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

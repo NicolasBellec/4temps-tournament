@@ -16,16 +16,11 @@ import {
 } from 'semantic-ui-react';
 
 import type { Element } from 'react';
-import type {
-  Props,
-  RoundViewModel,
-  CriterionViewModel
-} from "./types";
+import type { Props, RoundViewModel, CriterionViewModel } from './types';
 
 type State = RoundViewModel;
 
 class EditTournamentRounds extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -131,7 +126,7 @@ class EditTournamentRounds extends Component<Props, State> {
     }
   };
 
-  renderCriteria = (): Element<"div">[]  => this.state.criteria.map(this.renderCriterion);
+  renderCriteria = (): Element<'div'>[] => this.state.criteria.map(this.renderCriterion);
 
   renderCriterion = (criterion: CriterionViewModel, index: number) => {
     const onChangeString = (key: string) => (event) => this.onChangeCriterion(
@@ -226,7 +221,7 @@ class EditTournamentRounds extends Component<Props, State> {
         minValue: null,
         maxValue: null,
         forJudgeType: 'normal',
-        type: 'none'
+        type: 'none',
       },
     ],
   });

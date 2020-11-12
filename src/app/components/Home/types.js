@@ -13,11 +13,11 @@ export type StateProps = {
 };
 
 export type DispatchProps = {
-  dispatch: ReduxDispatch
-}
+  dispatch: ReduxDispatch,
+};
 
 export type Props = {
   ...OwnProps,
   ...StateProps,
-  ...DispatchProps
+  ...DispatchProps,
 };

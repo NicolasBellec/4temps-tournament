@@ -5,18 +5,14 @@ import { withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import SignUpOrLoginWithRouter from '../SignUpOrLogin';
-import type {
-  Props,
-  OwnProps,
-  StateProps,
-} from "./types";
+import type { Props, OwnProps, StateProps } from './types';
 
 const PrivateRoute = ({
   component: Component,
   isAuthenticated,
   referer,
   history,
-  location
+  location,
 }: Props) => (
   <Route
     render={(props) => (isAuthenticated === true ? (
@@ -41,8 +37,8 @@ function mapStateToProps(
   };
 }
 
-const connector = connect<Props, OwnProps, StateProps, _,_,_>(
-  mapStateToProps
+const connector = connect<Props, OwnProps, StateProps, _, _, _>(
+  mapStateToProps,
 );
 const PrivateRouteConnected = connector(PrivateRoute);
 

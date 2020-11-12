@@ -60,7 +60,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(
       new TournamentRepositoryImpl(),
-      new NoteRepositoryImpl(),
+      new NoteRepositoryImpl()
     )(req, res);
 
     expect(res.getStatus()).toBe(404);
@@ -80,7 +80,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(401);
@@ -99,7 +99,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -117,7 +117,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -155,7 +155,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(400);
@@ -174,7 +174,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -192,7 +192,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(404);
@@ -210,7 +210,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(400);
@@ -228,7 +228,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(400);
@@ -237,7 +237,7 @@ describe('Create note route', () => {
   test('200 and the note is returned if success', async () => {
     const tournamentRepository = new TournamentRepositoryImpl();
     await tournamentRepository.create(
-      JSON.parse(JSON.stringify(hydratedTournament)),
+      JSON.parse(JSON.stringify(hydratedTournament))
     );
 
     const req = Request.withJudgeAndParams(judge, {
@@ -248,7 +248,7 @@ describe('Create note route', () => {
 
     await submitNotesRoute(tournamentRepository, new NoteRepositoryImpl())(
       req,
-      res,
+      res
     );
 
     expect(res.getStatus()).toBe(200);
@@ -257,7 +257,7 @@ describe('Create note route', () => {
   test('Note is added to the note repository', async () => {
     const tournamentRepository = new TournamentRepositoryImpl();
     await tournamentRepository.create(
-      JSON.parse(JSON.stringify(hydratedTournament)),
+      JSON.parse(JSON.stringify(hydratedTournament))
     );
 
     const noteRepository = new NoteRepositoryImpl();
@@ -276,7 +276,7 @@ describe('Create note route', () => {
   test('400 is returned if submits multiple times', async () => {
     const tournamentRepository = new TournamentRepositoryImpl();
     await tournamentRepository.create(
-      JSON.parse(JSON.stringify(hydratedTournament)),
+      JSON.parse(JSON.stringify(hydratedTournament))
     );
 
     const noteRepository = new NoteRepositoryImpl();

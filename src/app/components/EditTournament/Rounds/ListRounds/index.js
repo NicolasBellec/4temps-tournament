@@ -10,15 +10,12 @@ import {
 } from '../../../../action-creators/round';
 
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props,
-} from "./types";
+  OwnProps, StateProps, DispatchProps, Props,
+} from './types';
 
 function mapStateToProps(
   { rounds }: ReduxState,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): StateProps {
   const tournamentRounds = (rounds.forTournament[tournamentId] || []).map(
     (id) => rounds.byId[id],
@@ -41,13 +38,13 @@ function mapDispatchToProps(
 ): DispatchProps {
   return {
     load: () => {
-      dispatch(getAdminTournamentsAction())
+      dispatch(getAdminTournamentsAction());
     },
     deleteRound: (id: string) => {
-      dispatch(getDeleteRoundAction(tournamentId, id))
+      dispatch(getDeleteRoundAction(tournamentId, id));
     },
     startRound: (id: string) => {
-      dispatch(getStartRoundAction(tournamentId, id, history))
+      dispatch(getStartRoundAction(tournamentId, id, history));
     },
     onClick: (id: string) => history.push(`/tournament/${tournamentId}/round/${id}`),
   };

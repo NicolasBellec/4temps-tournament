@@ -91,7 +91,7 @@ describe('Generate groups route', () => {
     expect(res.getStatus()).toBe(200);
     // $FlowFixMe
     expect((await repo.get(tournament.id)).rounds[0]).toMatchObject(
-      expectedRound,
+      expectedRound
     );
   });
 

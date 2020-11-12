@@ -42,7 +42,8 @@ export function initializeStore(preloadedState: mixed) {
   return createStore<ReduxState, ReduxPackAction, ReduxDispatch>(
     reducer,
     state,
-    applyMiddleware(reduxPackMiddleware));
+    applyMiddleware(reduxPackMiddleware),
+  );
 }
 
 function App() {

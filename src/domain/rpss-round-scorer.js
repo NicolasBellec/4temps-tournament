@@ -392,7 +392,7 @@ export default class RPSSRoundScorer {
         current_score = note.score;
       }
 
-      if ( typeof current_score === 'number') {
+      if (typeof current_score === 'number') {
         // Will always be the case, just for the type-system
         ranks.push({
           judgeId: note.judgeId,

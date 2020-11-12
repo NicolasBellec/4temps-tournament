@@ -6,11 +6,8 @@ import Component from './component';
 import { getGetNotesAction } from '../../../action-creators/note';
 
 import type {
-  Props,
-  StateProps,
-  OwnProps,
-  DispatchProps
-} from "./types"
+  Props, StateProps, OwnProps, DispatchProps,
+} from './types';
 
 function mapStateToProps({
   tournaments,
@@ -33,12 +30,12 @@ function mapDispatchToProps(
 ): DispatchProps {
   return {
     load: () => {
-      dispatch(getGetNotesAction(tournamentId, danceId))
+      dispatch(getGetNotesAction(tournamentId, danceId));
     },
   };
 }
 
-const NoteTakerContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const NoteTakerContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

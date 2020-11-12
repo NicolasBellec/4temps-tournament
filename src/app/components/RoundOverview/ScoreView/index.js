@@ -1,7 +1,7 @@
 // @flow
 
 import { connect } from 'react-redux';
-import type { StateProps, Props, OwnProps }from './types';
+import type { StateProps, Props, OwnProps } from './types';
 import Component from './component';
 
 function mapStateToProps(
@@ -62,7 +62,7 @@ function getFollowers(pairs: Array<Pair>): Array<string> {
 }
 
 const connector = connect<Props, OwnProps, StateProps, _, _, _>(
-  mapStateToProps
+  mapStateToProps,
 );
 
 const ScoreViewContainer = connector(Component);

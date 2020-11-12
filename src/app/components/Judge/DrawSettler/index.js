@@ -3,14 +3,11 @@
 import { connect } from 'react-redux';
 import DrawSettler from './component';
 import { getSettleDrawAction } from '../../../action-creators/round';
+import type {
+  OwnProps, Props, StateProps, DispatchProps,
+} from './types';
 
 type HydratedScore = { score: number, participant: Participant };
-import type {
-  OwnProps,
-  Props,
-  StateProps,
-  DispatchProps
-} from "./types";
 
 function mapStateToProps({
   participants,
@@ -34,14 +31,14 @@ function mapStateToProps({
       leaders: {
         winners: [],
         losers: [],
-        draw: []
+        draw: [],
       },
       followers: {
         winners: [],
         losers: [],
-        draw: []
+        draw: [],
       },
-      ...ui.settleDraw
+      ...ui.settleDraw,
     };
   }
 
@@ -180,7 +177,7 @@ function mapDispatchToProps(
   };
 }
 
-export default connect<Props, OwnProps, StateProps, _,_,_>(
+export default connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(DrawSettler);

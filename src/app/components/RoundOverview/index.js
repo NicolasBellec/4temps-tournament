@@ -7,11 +7,8 @@ import Component from './component';
 import { getAdminTournamentsAction } from '../../action-creators/tournament';
 
 import type {
-  Props,
-  OwnProps,
-  StateProps,
-  DispatchProps
-} from "./types";
+  Props, OwnProps, StateProps, DispatchProps,
+} from './types';
 
 function mapStateToProps(state: ReduxState, { match }: OwnProps): StateProps {
   const roundId = match.params.roundId || '';
@@ -30,7 +27,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const RoundOverviewContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const RoundOverviewContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

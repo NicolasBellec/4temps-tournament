@@ -8,7 +8,7 @@ import makePackAction from '../../test-utils';
 describe('Create assistant UI reducer', () => {
   test('Default value is set', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID')),
+      reducer(undefined, makePackAction(LIFECYCLE.START, 'INVALID'))
     ).toEqual(getInitialState());
   });
 
@@ -25,7 +25,7 @@ describe('Create assistant UI reducer', () => {
         createdSuccessfully: false,
       };
       expect(
-        reducer(initial, makePackAction(LIFECYCLE.START, 'CREATE_ASSISTANT')),
+        reducer(initial, makePackAction(LIFECYCLE.START, 'CREATE_ASSISTANT'))
       ).toEqual(expected);
     });
 
@@ -43,7 +43,7 @@ describe('Create assistant UI reducer', () => {
         createdSuccessfully: true,
       };
       expect(
-        reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ASSISTANT')),
+        reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ASSISTANT'))
       ).toEqual(expected);
     });
 
@@ -61,7 +61,7 @@ describe('Create assistant UI reducer', () => {
         createdSuccessfully: false,
       };
       expect(
-        reducer(initial, makePackAction(LIFECYCLE.FAILURE, 'CREATE_ASSISTANT')),
+        reducer(initial, makePackAction(LIFECYCLE.FAILURE, 'CREATE_ASSISTANT'))
       ).toEqual(expected);
     });
   });

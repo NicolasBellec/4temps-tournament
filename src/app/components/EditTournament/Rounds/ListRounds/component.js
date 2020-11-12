@@ -18,16 +18,13 @@ import {
 import './styles.css';
 import CreateRound from '../CreateRound';
 
-import type {
-  Props
-} from "./types";
+import type { Props } from './types';
 
 type State = {
   activeIndex: number,
 };
 
 class RoundList extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -35,7 +32,10 @@ class RoundList extends Component<Props, State> {
     };
   }
 
-  handleClick = (e: SyntheticEvent<HTMLInputElement>, titleProps: { index: number }) => {
+  handleClick = (
+    e: SyntheticEvent<HTMLInputElement>,
+    titleProps: { index: number },
+  ) => {
     const { index } = titleProps;
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
@@ -123,9 +123,7 @@ class RoundList extends Component<Props, State> {
     const upcomingRounds = this.getUpcomingRounds();
     return (
       <Table fixed unstackable basic="very" size="large">
-        <Table.Body>
-          {upcomingRounds.map((r) => this.renderItem(r))}
-        </Table.Body>
+        <Table.Body>{upcomingRounds.map((r) => this.renderItem(r))}</Table.Body>
       </Table>
     );
   };

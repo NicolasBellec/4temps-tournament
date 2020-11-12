@@ -8,7 +8,7 @@ import type {
   StateProps,
   DispatchProps,
   Props,
-  JudgeNoteOptionalValue
+  JudgeNoteOptionalValue,
 } from './types';
 import { setTemporaryNote } from '../../../../api/note';
 
@@ -65,7 +65,7 @@ function getFirstPair(round: Round): Pair {
 function getRound(state: ReduxState): Round {
   const tournament = state.tournaments.byId[state.tournaments.forJudge];
   const activeRoundId = tournament.rounds.filter(
-    (roundId) => state.rounds.byId[roundId].active
+    (roundId) => state.rounds.byId[roundId].active,
   )[0];
   return state.rounds.byId[activeRoundId];
 }
@@ -130,7 +130,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const SeparateNoteTakerContainer = connect<Props, {}, StateProps, _,_,_>(
+const SeparateNoteTakerContainer = connect<Props, {}, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

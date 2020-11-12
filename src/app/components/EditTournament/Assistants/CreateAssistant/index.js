@@ -5,11 +5,8 @@ import Component from './component';
 import createAssistantAction from '../../../../action-creators/assistant';
 
 import type {
-  OwnProps,
-  StateProps,
-  DispatchProps,
-  Props
-} from "./types";
+  OwnProps, StateProps, DispatchProps, Props,
+} from './types';
 
 function mapStateToProps({ ui }: ReduxState): StateProps {
   return ui.createAssistant;
@@ -17,16 +14,16 @@ function mapStateToProps({ ui }: ReduxState): StateProps {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { tournamentId }: OwnProps
+  { tournamentId }: OwnProps,
 ): DispatchProps {
   return {
     onSubmit: (name: string) => {
-      dispatch(createAssistantAction(tournamentId, name))
+      dispatch(createAssistantAction(tournamentId, name));
     },
   };
 }
 
-const CreateAssistantContainer = connect<Props, OwnProps, StateProps, _,_,_>(
+const CreateAssistantContainer = connect<Props, OwnProps, StateProps, _, _, _>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

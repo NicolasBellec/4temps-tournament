@@ -61,13 +61,13 @@ describe('Round validator', () => {
 
   test('At least one couple has to pass', () => {
     expect(
-      validateRound(createRound({ passingCouplesCount: 0 })),
+      validateRound(createRound({ passingCouplesCount: 0 }))
     ).toMatchObject({
       isValidRound: false,
       isValidPassingCouplesCount: false,
     });
     expect(
-      validateRound(createRound({ passingCouplesCount: 1 })),
+      validateRound(createRound({ passingCouplesCount: 1 }))
     ).toMatchObject({
       isValidRound: true,
       isValidPassingCouplesCount: true,
@@ -76,7 +76,7 @@ describe('Round validator', () => {
 
   test('null minPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: null })),
+      validateRound(createRound({ minPairCountPerGroup: null }))
     ).toMatchObject({
       isValidRound: false,
       isValidMinPairCount: false,
@@ -84,7 +84,7 @@ describe('Round validator', () => {
   });
   test('Zero minPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: 0 })),
+      validateRound(createRound({ minPairCountPerGroup: 0 }))
     ).toMatchObject({
       isValidRound: false,
       isValidMinPairCount: false,
@@ -92,7 +92,7 @@ describe('Round validator', () => {
   });
   test('Negative minPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: -1 })),
+      validateRound(createRound({ minPairCountPerGroup: -1 }))
     ).toMatchObject({
       isValidRound: false,
       isValidMinPairCount: false,
@@ -100,7 +100,7 @@ describe('Round validator', () => {
   });
   test('Positive minPairCountPerGroup is valid', () => {
     expect(
-      validateRound(createRound({ minPairCountPerGroup: 1 })),
+      validateRound(createRound({ minPairCountPerGroup: 1 }))
     ).toMatchObject({
       isValidRound: true,
       isValidMinPairCount: true,
@@ -109,7 +109,7 @@ describe('Round validator', () => {
 
   test('null maxPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: null })),
+      validateRound(createRound({ maxPairCountPerGroup: null }))
     ).toMatchObject({
       isValidRound: false,
       isValidMaxPairCount: false,
@@ -117,7 +117,7 @@ describe('Round validator', () => {
   });
   test('Zero maxPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: 0 })),
+      validateRound(createRound({ maxPairCountPerGroup: 0 }))
     ).toMatchObject({
       isValidRound: false,
       isValidMaxPairCount: false,
@@ -125,7 +125,7 @@ describe('Round validator', () => {
   });
   test('Negative maxPairCountPerGroup is invalid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: -1 })),
+      validateRound(createRound({ maxPairCountPerGroup: -1 }))
     ).toMatchObject({
       isValidRound: false,
       isValidMaxPairCount: false,
@@ -133,13 +133,13 @@ describe('Round validator', () => {
   });
   test('Positive maxPairCountPerGroup is valid', () => {
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: 1 })),
+      validateRound(createRound({ maxPairCountPerGroup: 1 }))
     ).toMatchObject({
       isValidRound: true,
       isValidMaxPairCount: true,
     });
     expect(
-      validateRound(createRound({ maxPairCountPerGroup: 123 })),
+      validateRound(createRound({ maxPairCountPerGroup: 123 }))
     ).toMatchObject({
       isValidRound: true,
       isValidMaxPairCount: true,
@@ -149,15 +149,15 @@ describe('Round validator', () => {
   test('Max pair count may be equal to min pair count', () => {
     expect(
       validateRound(
-        createRound({ minPairCountPerGroup: 1, maxPairCountPerGroup: 1 }),
-      ),
+        createRound({ minPairCountPerGroup: 1, maxPairCountPerGroup: 1 })
+      )
     ).toMatchObject({ isValidRound: true });
   });
   test('Max pair count may not be less than min pair count', () => {
     expect(
       validateRound(
-        createRound({ minPairCountPerGroup: 2, maxPairCountPerGroup: 1 }),
-      ),
+        createRound({ minPairCountPerGroup: 2, maxPairCountPerGroup: 1 })
+      )
     ).toMatchObject({
       isValidRound: false,
       isMaxPairGreaterOrEqualToMinPair: false,
@@ -166,7 +166,7 @@ describe('Round validator', () => {
 
   test('Notation system must be set', () => {
     expect(
-      validateRound(createRound({ notationSystem: 'none' })),
+      validateRound(createRound({ notationSystem: 'none' }))
     ).toMatchObject({ isValidRound: false });
   });
 
@@ -177,8 +177,8 @@ describe('Round validator', () => {
           createRound({
             multipleDanceScoringRule,
             danceCount: 1,
-          }),
-        ),
+          })
+        )
       ).toMatchObject({
         isValidRound: true,
         isValidMultipleDanceScoringRule: true,
@@ -192,8 +192,8 @@ describe('Round validator', () => {
         createRound({
           multipleDanceScoringRule: 'none',
           danceCount: 2,
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidMultipleDanceScoringRule: false,
@@ -205,8 +205,8 @@ describe('Round validator', () => {
           createRound({
             multipleDanceScoringRule,
             danceCount: 2,
-          }),
-        ),
+          })
+        )
       ).toMatchObject({
         isValidRound: true,
         isValidMultipleDanceScoringRule: true,
@@ -219,8 +219,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           multipleDanceScoringRule: 'bogus_value',
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidMultipleDanceScoringRule: false,
@@ -235,7 +235,7 @@ describe('Round validator', () => {
   });
   test('Having least one criteria is valid', () => {
     expect(
-      validateRound(createRound({ criteria: [createCriterion()] })),
+      validateRound(createRound({ criteria: [createCriterion()] }))
     ).toMatchObject({
       isValidRound: true,
       isValidAmountOfCriteria: true,
@@ -250,8 +250,8 @@ describe('Round validator', () => {
             createCriterion(),
             createCriterion(),
           ],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
       isValidAmountOfCriteria: true,
@@ -263,8 +263,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ name: '' })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
@@ -282,8 +282,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ name: 'style' })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
       isValidCriteria: true,
@@ -301,8 +301,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ description: '' })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
@@ -322,8 +322,8 @@ describe('Round validator', () => {
           criteria: [
             createCriterion({ description: 'They have to be beautiful' }),
           ],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
       criteriaValidation: [
@@ -339,8 +339,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ minValue: null })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
@@ -358,8 +358,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ minValue: -1 })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
     });
@@ -373,8 +373,8 @@ describe('Round validator', () => {
             createCriterion({ minValue: 0 }),
             createCriterion({ minValue: 3 }),
           ],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
     });
@@ -385,8 +385,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ maxValue: null })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
@@ -404,8 +404,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ maxValue: -1, minValue: -2 })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
     });
@@ -416,8 +416,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ maxValue: 3 })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
     });
@@ -428,8 +428,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ minValue: 1, maxValue: 1 })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
@@ -445,8 +445,8 @@ describe('Round validator', () => {
   test('A criterion must be for a valid judge type', () => {
     expect(
       validateRound(
-        createRound({ criteria: [createCriterion({ forJudgeType: '' })] }),
-      ),
+        createRound({ criteria: [createCriterion({ forJudgeType: '' })] })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,
@@ -459,8 +459,8 @@ describe('Round validator', () => {
     });
     expect(
       validateRound(
-        createRound({ criteria: [createCriterion({ forJudgeType: 'normal' })] }),
-      ),
+        createRound({ criteria: [createCriterion({ forJudgeType: 'normal' })] })
+      )
     ).toMatchObject({
       isValidRound: true,
     });
@@ -468,8 +468,8 @@ describe('Round validator', () => {
       validateRound(
         createRound({
           criteria: [createCriterion({ forJudgeType: 'sanctioner' })],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: true,
     });
@@ -485,8 +485,8 @@ describe('Round validator', () => {
             createCriterion({ maxValue: null }),
             createCriterion({ description: '' }),
           ],
-        }),
-      ),
+        })
+      )
     ).toMatchObject({
       isValidRound: false,
       isValidCriteria: false,

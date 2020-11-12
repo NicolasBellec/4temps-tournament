@@ -9,7 +9,7 @@ describe('Notes reducer', () => {
 
   test('Undefined returns initial state', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID')),
+      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID'))
     ).toEqual(getInitialState());
   });
 
@@ -17,7 +17,7 @@ describe('Notes reducer', () => {
     describe('start', () => {
       test('sets isLoading to true', () => {
         expect(
-          reducer(undefined, makePackAction(LIFECYCLE.START, 'GET_NOTES')),
+          reducer(undefined, makePackAction(LIFECYCLE.START, 'GET_NOTES'))
         ).toMatchObject({ isLoading: true });
       });
     });
@@ -26,24 +26,24 @@ describe('Notes reducer', () => {
         expect(
           reducer(
             undefined,
-            makePackAction(LIFECYCLE.SUCCESS, 'GET_NOTES', notes),
-          ),
+            makePackAction(LIFECYCLE.SUCCESS, 'GET_NOTES', notes)
+          )
         ).toMatchObject({ byParticipant: expectedNotes() });
       });
       test('sets isLoading to false', () => {
         expect(
           reducer(
             { ...getInitialState(), isLoading: true },
-            makePackAction(LIFECYCLE.SUCCESS, 'GET_NOTES', notes),
-          ),
+            makePackAction(LIFECYCLE.SUCCESS, 'GET_NOTES', notes)
+          )
         ).toMatchObject({ isLoading: false });
       });
       test('sets didLoad to true', () => {
         expect(
           reducer(
             { ...getInitialState(), didLoad: false },
-            makePackAction(LIFECYCLE.SUCCESS, 'GET_NOTES', notes),
-          ),
+            makePackAction(LIFECYCLE.SUCCESS, 'GET_NOTES', notes)
+          )
         ).toMatchObject({ didLoad: true });
       });
     });
@@ -53,16 +53,16 @@ describe('Notes reducer', () => {
         expect(
           reducer(
             { ...getInitialState(), isLoading: true },
-            makePackAction(LIFECYCLE.FAILURE, 'GET_NOTES'),
-          ),
+            makePackAction(LIFECYCLE.FAILURE, 'GET_NOTES')
+          )
         ).toMatchObject({ isLoading: false });
       });
       test('sets didLoad to false', () => {
         expect(
           reducer(
             { ...getInitialState(), didLoad: true },
-            makePackAction(LIFECYCLE.FAILURE, 'GET_NOTES', notes),
-          ),
+            makePackAction(LIFECYCLE.FAILURE, 'GET_NOTES', notes)
+          )
         ).toMatchObject({ didLoad: false });
       });
     });
@@ -89,7 +89,7 @@ describe('Notes reducer', () => {
         };
 
         expect(
-          reducer({ ...getInitialState(), isLoading: true }, action),
+          reducer({ ...getInitialState(), isLoading: true }, action)
         ).toMatchObject(expected);
       });
     });
@@ -110,8 +110,8 @@ describe('Notes reducer', () => {
         expect(
           reducer(
             { ...getInitialState(), isLoading: true },
-            makePackAction(LIFECYCLE.SUCCESS, 'SET_NOTE', payload),
-          ),
+            makePackAction(LIFECYCLE.SUCCESS, 'SET_NOTE', payload)
+          )
         ).toMatchObject(expected);
       });
     });

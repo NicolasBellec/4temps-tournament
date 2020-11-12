@@ -36,25 +36,30 @@ export const deserializeTournament = (tour: Tournament): Tournament => {
 export async function getTournamentsForUser(): promisedArray {
   const tournaments: Tournament[] = await apiGetRequest(
     '/api/tournament/get',
-    (tours) => tours.map(deserializeTournament));
+    (tours) => tours.map(deserializeTournament),
+  );
   return normalizeTournamentArray(tournaments);
 }
 
 export async function getTournament(id: string): promisedTournament {
-  const tournament: Tournament = await apiGetRequest(`/api/tournament/get/${id}`);
+  const tournament: Tournament = await apiGetRequest(
+    `/api/tournament/get/${id}`,
+  );
   return normalizeTournament(tournament);
 }
 
-
 export async function getTournamentForJudge(): promisedTournament {
-  const tournament: Tournament = await apiGetRequest('/api/tournament/get/judge');
+  const tournament: Tournament = await apiGetRequest(
+    '/api/tournament/get/judge',
+  );
   return normalizeTournament(tournament);
 }
 
 export async function getAllTournaments(): promisedArray {
   const tournaments: Tournament[] = await apiGetRequest(
     '/api/tournament/get/all',
-    (tours) => tours.map(deserializeTournament));
+    (tours) => tours.map(deserializeTournament),
+  );
   return normalizeTournamentArray(tournaments);
 }
 

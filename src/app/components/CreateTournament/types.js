@@ -19,7 +19,7 @@ export type OwnProps = {
 };
 
 export type DispatchProps = {
-  onSubmit : (state: ComponentState) => void
+  onSubmit: (state: ComponentState) => void,
 };
 
 export type Props = {

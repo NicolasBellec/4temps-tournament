@@ -36,7 +36,7 @@ describe('/api/round/create route', () => {
 
     await route.route(
       requestWithRound({ ...createRound(), name: '' }),
-      response,
+      response
     );
 
     expect(response.getStatus()).toBe(400);
@@ -130,8 +130,8 @@ describe('/api/round/create route', () => {
         .getBody()
         // $FlowFixMe
         .round.criteria.some(
-          ({ forJudgeType }) => forJudgeType === 'sanctioner',
-        ),
+          ({ forJudgeType }) => forJudgeType === 'sanctioner'
+        )
     ).toBe(true);
   });
 });

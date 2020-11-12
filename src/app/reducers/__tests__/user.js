@@ -11,7 +11,7 @@ describe('User reducer', () => {
 
   test('Default id is empty string', () => {
     expect(
-      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION')),
+      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID_ACTION'))
     ).toEqual({ id: '', role: '', tournamentId: '' });
     expect(getInitialState()).toEqual({ id: '', role: '', tournamentId: '' });
   });
@@ -22,21 +22,21 @@ describe('User reducer', () => {
     expect(
       reducer(
         initialState,
-        makePackAction(LIFECYCLE.SUCCESS, 'LOGIN_USER', payload),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'LOGIN_USER', payload)
+      )
     ).toEqual({ id, role: 'admin', tournamentId: '' });
   });
 
   test('Failed login sets userId to previous value', () => {
     expect(
-      reducer(initialState, makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER')),
+      reducer(initialState, makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER'))
     ).toEqual(initialState);
 
     expect(
       reducer(
         { id, role: 'admin', tournamentId: '' },
-        makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'LOGIN_USER')
+      )
     ).toEqual({ id, role: 'admin', tournamentId: '' });
   });
 
@@ -44,8 +44,8 @@ describe('User reducer', () => {
     expect(
       reducer(
         { id, role: 'admin', tournamentId: '' },
-        makePackAction(LIFECYCLE.SUCCESS, 'LOGOUT_USER'),
-      ),
+        makePackAction(LIFECYCLE.SUCCESS, 'LOGOUT_USER')
+      )
     ).toEqual({ id: '', role: '', tournamentId: '' });
   });
 
@@ -53,15 +53,15 @@ describe('User reducer', () => {
     expect(
       reducer(
         { id, role: 'admin', tournamentId: '' },
-        makePackAction(LIFECYCLE.FAILURE, 'LOGOUT_USER'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'LOGOUT_USER')
+      )
     ).toEqual({ id, role: 'admin', tournamentId: '' });
 
     expect(
       reducer(
         { id, role: 'admin', tournamentId: '' },
-        makePackAction(LIFECYCLE.FAILURE, 'LOGOUT_USER'),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'LOGOUT_USER')
+      )
     ).toEqual({ id, role: 'admin', tournamentId: '' });
   });
 });

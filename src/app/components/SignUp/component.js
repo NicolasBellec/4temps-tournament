@@ -4,10 +4,7 @@ import {
   Header, Form, FormInput, Button, Message,
 } from 'semantic-ui-react';
 
-import type {
-  Props,
-  InternalState,
-} from './types';
+import type { Props, InternalState } from './types';
 
 import './styles.css';
 
@@ -53,19 +50,13 @@ class SignUp extends Component<Props, InternalState> {
       isValidPassword,
     } = validation;
     const {
-      firstName,
-      lastName,
-      email,
-      password,
+      firstName, lastName, email, password,
     } = this.state;
     return (
       <div styleName="center">
         <div styleName="width">
           <Header as="h1">Sign up</Header>
-          <Form
-            loading={isLoading}
-            error={!isValid}
-          >
+          <Form loading={isLoading} error={!isValid}>
             <FormInput
               label="First name"
               placeholder="John"
@@ -81,18 +72,14 @@ class SignUp extends Component<Props, InternalState> {
               value={lastName}
               onChange={this.onChangeLastName}
             />
-            {!isValidLastName && (
-              <Message error content="Invalid last name" />
-            )}
+            {!isValidLastName && <Message error content="Invalid last name" />}
             <FormInput
               label="Email"
               placeholder="john@gmail.com"
               value={email}
               onChange={this.onChangeEmail}
             />
-            {!isValidEmail && (
-              <Message error content="Invalid email" />
-            )}
+            {!isValidEmail && <Message error content="Invalid email" />}
             {!isEmailNotUsed && (
               <Message
                 error

@@ -11,11 +11,8 @@ import EditTournamentGeneral from './component';
 import PreloadContainer from '../../../containers/PreloadContainer';
 
 import type {
-  Props,
-  StateProps,
-  DispatchProps,
-  OwnProps,
-} from "./types";
+  Props, StateProps, DispatchProps, OwnProps,
+} from './types';
 
 function mapStateToProps(
   {
@@ -52,21 +49,27 @@ function mapDispatchToProps(
 ): DispatchProps {
   return {
     onSubmit: (tournament: Tournament) => {
-      dispatch(getEditTournamentAction(tournamentId, tournament))
+      dispatch(getEditTournamentAction(tournamentId, tournament));
     },
     onClickLeaderboard: () => {
-      history.push(`/leaderboard/${tournamentId}`)
+      history.push(`/leaderboard/${tournamentId}`);
     },
     load: () => {
-      dispatch(getAdminTournamentsAction())
+      dispatch(getAdminTournamentsAction());
     },
   };
 }
 
-const EditTournamentGeneralConnectedContainer =
-  connect<Props, OwnProps, StateProps, _,_,_>(
-    mapStateToProps,
-    mapDispatchToProps,
+const EditTournamentGeneralConnectedContainer = connect<
+  Props,
+  OwnProps,
+  StateProps,
+  _,
+  _,
+  _
+>(
+  mapStateToProps,
+  mapDispatchToProps,
 )(PreloadContainer);
 
 export default EditTournamentGeneralConnectedContainer;

@@ -381,7 +381,7 @@ describe('Checker that all notes are submitted', () => {
 
     const checker = new NoteChecker(tournament);
     expect(checker.allSetForDanceByJudge(danceId, notes, judges[0].id)).toBe(
-      false,
+      false
     );
   });
 
@@ -460,7 +460,7 @@ describe('Checker that all notes are submitted', () => {
 
     const checker = new NoteChecker(tournament);
     expect(checker.allSetForDanceByJudge(danceId, notes, judges[0].id)).toBe(
-      true,
+      true
     );
   });
 
@@ -548,16 +548,16 @@ describe('Checker that all notes are submitted', () => {
     const checker = new NoteChecker(tournament);
     expect(checker.allSetForDance(danceId, normalNotes)).toBe(false);
     expect(
-      checker.allSetForDanceByJudge(danceId, normalNotes, normalJudge.id),
+      checker.allSetForDanceByJudge(danceId, normalNotes, normalJudge.id)
     ).toBe(true);
 
     expect(checker.allSetForDance(danceId, sanctionerNotes)).toBe(false);
     expect(
-      checker.allSetForDanceByJudge(danceId, sanctionerNotes, sanctioner.id),
+      checker.allSetForDanceByJudge(danceId, sanctionerNotes, sanctioner.id)
     ).toBe(true);
 
     expect(
-      checker.allSetForDance(danceId, [...normalNotes, ...sanctionerNotes]),
+      checker.allSetForDance(danceId, [...normalNotes, ...sanctionerNotes])
     ).toBe(true);
   });
 

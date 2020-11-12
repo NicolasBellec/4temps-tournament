@@ -9,17 +9,21 @@ describe('Create round UI reducer', () => {
   test('Undefined returns default state', () => {
     const state = getInitialState();
 
-    [LIFECYCLE.START, LIFECYCLE.SUCCESS, LIFECYCLE.FAILURE].map((lifecycle) => expect(
-      reducer(undefined, makePackAction(lifecycle, 'INVALID_ACTION')),
-    ).toEqual(state));
+    [LIFECYCLE.START, LIFECYCLE.SUCCESS, LIFECYCLE.FAILURE].map((lifecycle) =>
+      expect(
+        reducer(undefined, makePackAction(lifecycle, 'INVALID_ACTION'))
+      ).toEqual(state)
+    );
   });
 
   test('Invalid action does not change state', () => {
     const state = getInitialState();
 
-    [LIFECYCLE.START, LIFECYCLE.SUCCESS, LIFECYCLE.FAILURE].map((lifecycle) => expect(
-      reducer(state, makePackAction(lifecycle, 'INVALID_ACTION')),
-    ).toEqual(state));
+    [LIFECYCLE.START, LIFECYCLE.SUCCESS, LIFECYCLE.FAILURE].map((lifecycle) =>
+      expect(
+        reducer(state, makePackAction(lifecycle, 'INVALID_ACTION'))
+      ).toEqual(state)
+    );
   });
 
   test('CREATE_ROUND action start sets flags', () => {
@@ -35,7 +39,7 @@ describe('Create round UI reducer', () => {
     };
 
     expect(
-      reducer(initial, makePackAction(LIFECYCLE.START, 'CREATE_ROUND')),
+      reducer(initial, makePackAction(LIFECYCLE.START, 'CREATE_ROUND'))
     ).toEqual(expected);
   });
 
@@ -52,7 +56,7 @@ describe('Create round UI reducer', () => {
     };
 
     expect(
-      reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ROUND')),
+      reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ROUND'))
     ).toEqual(expected);
   });
 
@@ -73,7 +77,7 @@ describe('Create round UI reducer', () => {
     };
 
     expect(
-      reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ROUND')),
+      reducer(initial, makePackAction(LIFECYCLE.SUCCESS, 'CREATE_ROUND'))
     ).toEqual(expected);
   });
 
@@ -100,8 +104,8 @@ describe('Create round UI reducer', () => {
     expect(
       reducer(
         initial,
-        makePackAction(LIFECYCLE.FAILURE, 'CREATE_ROUND', payload),
-      ),
+        makePackAction(LIFECYCLE.FAILURE, 'CREATE_ROUND', payload)
+      )
     ).toEqual(expected);
   });
 });

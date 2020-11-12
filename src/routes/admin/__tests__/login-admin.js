@@ -45,7 +45,7 @@ test('If credentials are valid, returns status 200', async () => {
   const getAdmin = () => new Promise((resolve) => resolve(admin));
 
   expect(
-    (await loginAdminRoute(credentials, setSessionUser, getAdmin)).status,
+    (await loginAdminRoute(credentials, setSessionUser, getAdmin)).status
   ).toBe(200);
 });
 
@@ -58,7 +58,7 @@ test('Credentials are validated', async () => {
   const getAdmin = () => new Promise((resolve) => resolve(null));
 
   expect(
-    (await loginAdminRoute(credentials, setSessionUser, getAdmin)).body,
+    (await loginAdminRoute(credentials, setSessionUser, getAdmin)).body
   ).toEqual({
     isValid: false,
     isValidEmail: false,
@@ -73,15 +73,18 @@ test('Invalid credentials return status 400', async () => {
     password: 'password',
   };
 
-  const getAdmin = () => new Promise((resolve) => resolve({
-    _id: new Types.ObjectId(),
-    email: '',
-    firstName: '',
-    lastName: '',
-    password: '',
-  }));
+  const getAdmin = () =>
+    new Promise((resolve) =>
+      resolve({
+        _id: new Types.ObjectId(),
+        email: '',
+        firstName: '',
+        lastName: '',
+        password: '',
+      })
+    );
 
   expect(
-    (await loginAdminRoute(credentials, setSessionUser, getAdmin)).status,
+    (await loginAdminRoute(credentials, setSessionUser, getAdmin)).status
   ).toBe(400);
 });

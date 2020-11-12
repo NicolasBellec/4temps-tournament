@@ -15,7 +15,7 @@ import type {
   StateProps,
   Props,
   RoundViewModel,
-  DanceNotes
+  DanceNotes,
 } from './types';
 
 function areAllGroupsGenerated(
@@ -71,7 +71,7 @@ function createViewModelsForRound(
     : { judgesNoted: [], judgesNotNoted: [] };
 
   const viewModel: RoundViewModel = {
-    ...(rest: $Rest<Round, {| groups: Array < DanceGroup > |}>),
+    ...(rest: $Rest<Round, {| groups: Array<DanceGroup> |}>),
     activeDance,
     activeGroup,
     nextDance,
@@ -162,7 +162,10 @@ function createParticipantViewModel(participant: ?Participant) {
   return { name: '', number: '' };
 }
 
-function mapStateToProps(state: ReduxState, { roundId, tournamentId }: OwnProps): StateProps {
+function mapStateToProps(
+  state: ReduxState,
+  { roundId, tournamentId }: OwnProps,
+): StateProps {
   const viewModel = createViewModelsForRound(state, roundId, tournamentId);
 
   return {
@@ -175,7 +178,6 @@ function mapStateToProps(state: ReduxState, { roundId, tournamentId }: OwnProps)
     ),
   };
 }
-
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,

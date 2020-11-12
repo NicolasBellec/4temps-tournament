@@ -13,11 +13,7 @@ import {
   Container,
 } from 'semantic-ui-react';
 
-import type {
-  Props,
-  ColumnViewModel,
-  ScoreViewModel
-} from "./types";
+import type { Props, ColumnViewModel, ScoreViewModel } from './types';
 
 class NoteTable extends PureComponent<Props> {
   createTable = (column: ColumnViewModel) => (

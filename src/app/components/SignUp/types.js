@@ -13,7 +13,7 @@ export type StateProps = {
 };
 
 export type DispatchProps = {
-  onSubmit: (admin: AdminWithPassword) => void
+  onSubmit: (admin: AdminWithPassword) => void,
 };
 
 export type Props = {
