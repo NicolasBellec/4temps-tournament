@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type { RouteResult } from '../util';
 import type { TournamentRepository } from '../../data/tournament';
 
