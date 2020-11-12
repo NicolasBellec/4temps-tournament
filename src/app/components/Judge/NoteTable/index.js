@@ -1,11 +1,10 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux'
-// $FlowFixMe
 import DanceScorer from '../../../../domain/dance-scorer'
 import Component from './component'
 
-import type { Props, OwnProps, StateProps, ColumnViewModel } from './types'
+import type { Props, OwnProps, StateProps, ColumnViewModel, ScoreViewModel } from './types'
 
 function mapStateToProps(state: ReduxState): StateProps {
   const tournament = getTournament(state)
@@ -64,8 +63,7 @@ function getActiveDanceId(round: Round): string {
 function getActiveRound(state: ReduxState): Round {
   const tournament = state.tournaments.byId[state.tournaments.forJudge]
   const rounds = tournament.rounds.map((id) => state.rounds.byId[id])
-  // $FlowFixMe
-  return rounds.reduce((res, round) => (round.active ? round : res), null)
+  return rounds.filter((round) => round.active)[0];
 }
 
 function divideScoreIntoColumns(
@@ -78,7 +76,8 @@ function divideScoreIntoColumns(
       [score.participantId]: score,
     }),
     {}
-  )
+  );
+  // TODO: Must change here to modify the last round classic behavior
   if (isLastRound(state) || isClassicTournament(state)) {
     return [getPairColumn(state, scoreMap, getPairs(state))]
   }
@@ -111,20 +110,38 @@ function getPairColumn(
   danceScores: { [id: string]: Array<Score> },
   pairs: Array<Pair>
 ): ColumnViewModel {
-  const scoreViewModels = pairs
-    .map((pair) => ({
-      name: getPairName(state, pair),
-      value: danceScores[pair.leader] != null ? danceScores[pair.leader].score : 0,
-    }))
+  const scoreViewModels: ScoreViewModel[] = pairs
+    .map((pair) => {
+      const name = getPairName(state, pair);
+      if ( typeof pair.leader === "string" && danceScores[pair.leader] != null ) {
+        return {
+          name: name,
+          value: danceScores[pair.leader][0].score, // Strange modification
+        };
+      } else {
+        return {
+          name: name,
+          value: 0
+        };
+      }
+    })
     .sort((a, b) => b.value - a.value)
   return { title: 'Couples', danceScores: scoreViewModels }
 }
 
-function getPairName(state: ReduxState, { leader, follower }: Pair) {
-  if (isClassicTournament(state)) {
-    return state.participants.byId[leader].attendanceId
+function getPairName(state: ReduxState, { leader, follower }: Pair): string {
+  if ( typeof leader === "string" ) {
+    if (isClassicTournament(state)) {
+      return state.participants.byId[leader].attendanceId.toString()
+    }
+    if ( typeof follower === "string" ) {
+      return `L${state.participants.byId[leader].attendanceId} - F${state.participants.byId[follower].attendanceId}`
+    } else {
+      return ""
+    }
+  } else {
+    return ""
   }
-  return `L${state.participants.byId[leader].attendanceId} - F${state.participants.byId[follower].attendanceId}`
 }
 
 function getSeparateColumns(
@@ -133,16 +150,34 @@ function getSeparateColumns(
   pairs: Array<Pair>
 ): Array<ColumnViewModel> {
   const leaderViewModels = pairs
-    .map(({ leader }) => ({
-      name: `L${state.participants.byId[leader].attendanceId}`,
-      value: danceScores[leader] != null ? danceScores[leader].score : 0,
-    }))
+    .map(({ leader }) => {
+      if ( typeof leader === "string" ) {
+        return {
+          name: `L${state.participants.byId[leader].attendanceId}`,
+          value: danceScores[leader] != null ? danceScores[leader][0].score : 0, // Same strange
+        };
+      } else {
+        return {
+          name: "",
+          value: 0,
+        };
+      }
+    })
     .sort((a, b) => b.value - a.value)
   const followerViewModels = pairs
-    .map(({ follower }) => ({
-      name: `L${state.participants.byId[follower].attendanceId}`,
-      value: danceScores[follower] != null ? danceScores[follower].score : 0,
-    }))
+    .map(({ follower }) => {
+      if ( typeof follower === "string" ) {
+        return {
+          name: `L${state.participants.byId[follower].attendanceId}`,
+          value: danceScores[follower] != null ? danceScores[follower][0].score : 0, // Same hack
+        };
+      } else {
+        return {
+          name: "",
+          value: 0
+        }
+      }
+    })
     .sort((a, b) => b.value - a.value)
   return [
     { title: 'Leaders', danceScores: leaderViewModels },

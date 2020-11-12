@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import ObjectId from 'bson-objectid'
 import moment from 'moment'
@@ -11,27 +11,22 @@ export const USER_ID = generateId()
 export const TOURNAMENT_ID = generateId()
 
 type Body = mixed
-type Query = {
-  [name: string]: string,
-}
-type Params = Query
+type Query = { [name: string]: (string | Array<string>) };
+type Params = express$RequestParams;
 
-export class Request implements ServerApiRequest {
+export class Request extends ServerApiRequest {
   body: Body = {}
 
   session: {
-    user: ?{
-      id: string,
-      role: PermissionRole,
-      tournamentId: string,
-    },
+    user: ?User,
   }
 
-  query: Query = {}
+  query = {}
 
-  params: Params = {}
+  params = {}
 
   constructor(admin: ?AdminModel) {
+    super();
     this.session = {
       user:
         admin == null
@@ -90,7 +85,7 @@ export class Request implements ServerApiRequest {
   }
 }
 
-export class Response implements ServerApiResponse {
+export class Response extends express$Response {
   _status: number
 
   _body: ?mixed
@@ -103,17 +98,17 @@ export class Response implements ServerApiResponse {
     return this._body
   }
 
-  status(statusCode: number): ServerApiResponse {
+  status(statusCode: number): this {
     this._status = statusCode
     return this
   }
 
-  sendStatus(statusCode: number): ServerApiResponse {
+  sendStatus(statusCode: number): this {
     this._status = statusCode
     return this
   }
 
-  json(body?: mixed): ServerApiResponse {
+  json(body?: mixed): this {
     if (this._status == null) {
       this._status = 200
     }
@@ -311,7 +306,6 @@ export function createRound(): Round {
         minValue: 1,
         maxValue: 10,
         description: 'style...',
-        type: 'one',
         forJudgeType: 'normal',
       },
     ],
@@ -392,7 +386,6 @@ export function createCriterion(): RoundCriterion {
     minValue: 0,
     maxValue: 1,
     description: 'this is a criterion',
-    type: 'both',
     forJudgeType: 'normal',
   }
 }
