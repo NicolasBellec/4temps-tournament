@@ -1,11 +1,12 @@
-// no-flow
+// @flow
 
 import { Router } from 'express';
+import type { Router as RouterTy } from 'express';
 import { allow } from '../auth-middleware';
 import { TournamentRepositoryImpl } from '../../data/tournament';
 import createLeaderboard from './create-leaderboard';
 
-const router = Router();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
 
 router.get('/:tournamentId', allow('public'), getLeaderboard);
 

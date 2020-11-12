@@ -1,11 +1,12 @@
-// no-flow
+// @flow
 
 import { Router } from 'express';
+import type { Router as RouterTy } from 'express';
 import { allow } from '../auth-middleware';
 import AccessKeyRepositoryImpl from '../../data/access-key';
 import loginRoute from './login';
 
-const router = Router();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
 
 router.get(
   '/:tournamentId',

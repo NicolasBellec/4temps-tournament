@@ -1,6 +1,7 @@
-// no-flow
+// @flow
 
 import { Router } from 'express';
+import type { Router as RouterTy } from 'express';
 
 import { allow } from '../auth-middleware';
 
@@ -16,7 +17,7 @@ import EndDanceRoute from './end-dance';
 import RegenerateGroupRoute from './regenerate-group';
 import SettleDrawRoute from './settle-draw';
 
-const router = Router();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
 
 const tournamentRepository = new TournamentRepositoryImpl();
 const noteRepository = new SubmittedNoteRepository();

@@ -1,0 +1,7 @@
+declare class ServerApiRequest extends express$Request {
+  session: {
+    user: ? User
+  },
+};
+
+declare type ServerApiResponse = express$Response;

@@ -1,6 +1,7 @@
-// no-flow
+// @flow
 
 import { Router } from 'express';
+import type { Router as RouterTy } from 'express';
 
 import AdminRoute from './admin';
 import AccessKeyRoute from './access-key';
@@ -12,7 +13,7 @@ import AssistantRoute from './assistant';
 import NoteRoute from './note';
 import LeaderboardRoute from './leaderboard';
 
-const router = Router();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
 
 router.use('/admin', AdminRoute);
 router.use('/access-key', AccessKeyRoute);

@@ -23,6 +23,7 @@ export class Request implements ServerApiRequest {
     user: ?{
       id: string,
       role: PermissionRole,
+      tournamentId: string,
     },
   };
 

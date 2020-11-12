@@ -1,6 +1,7 @@
-// no-flow
+// @flow
 
 import { Router } from 'express';
+import type { Router as RouterTy } from 'express';
 import { allow } from '../auth-middleware';
 import setNoteRoute from './set-note';
 import submitNotesRoute from './submit-notes';
@@ -11,7 +12,7 @@ import {
   SubmittedNoteRepository,
 } from '../../data/note';
 
-const router = Router();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
 const tournamentRepository = new TournamentRepositoryImpl();
 const temporaryNotesRepository = new TemporaryNoteRepository();
 

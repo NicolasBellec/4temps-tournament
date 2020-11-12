@@ -174,23 +174,3 @@ declare type LeaderboardScore = {
   position: number,
   score: number
 };
-
-// Express interface
-declare interface ServerApiRequest {
-  session: {
-    user: ? User
-  };
-  body: mixed;
-  query: {
-    [name: string]: string
-  };
-  params: {
-    [param: string]: string
-  };
-}
-
-declare interface ServerApiResponse {
-  status(statusCode: number): ServerApiResponse;
-  sendStatus(statusCode: number): ServerApiResponse;
-  json(body ? : mixed): ServerApiResponse;
-}

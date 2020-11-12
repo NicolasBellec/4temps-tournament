@@ -1,6 +1,7 @@
-// no-flow
+// @flow
 
 import { Router } from 'express';
+import type { Router as RouterTy } from 'express';
 
 import { allow } from '../auth-middleware';
 
@@ -13,7 +14,7 @@ import GetTournamentRoute from './get-tournament';
 import GetAllTournamentsRoute from './get-all-tournaments';
 import GetJudgeTournamentRoute from './get-judge-tournament';
 
-const router = Router();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
 const tournamentRepository = new TournamentRepositoryImpl();
 
 router.post(
