@@ -1,0 +1,27 @@
+// @flow
+
+type Collections = {
+  tournaments: {
+    [string]: {
+      ...Tournament,
+      judges: string[],
+      assistants: string[],
+      participants: string[],
+      rounds: string[]
+    }
+   },
+  judges: { [string]: Judge },
+  assistants:  { [string]: Assistant },
+  participants: { [string]: Participant },
+  rounds: { [string]: Round }
+};
+
+type Result = string;
+
+type NormalizeResult<Result, Collections> = {|
+  result: Result,
+  entities: Collections,
+|}
+
+declare type normalizedTournamentArray = NormalizeResult<Result[], Collections>;
+declare type normalizedTournament = NormalizeResult<Result, Collections>;

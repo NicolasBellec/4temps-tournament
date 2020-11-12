@@ -196,7 +196,8 @@ declare type UiSettleDrawReduxState = {
 
 declare type ReduxPackAction = {
   type: string,
-  payload: any
+  payload: any,
+  meta: mixed
 };
 
 declare type ReduxAction =
@@ -253,7 +254,10 @@ declare type GetAllTournamentsAction = {
 
 declare type GetAdminTournamentsAction = {
   type: 'GET_ADMIN_TOURNAMENTS',
-  promise: Promise < mixed >
+  promise: Promise < mixed >,
+  meta: {
+    onSuccess: (mixed, () => ReduxState) => void
+  }
 };
 
 declare type TournamentUpdatedAction = {
@@ -344,12 +348,18 @@ declare type ChangeAttendanceAction = {
 
 declare type GetJudgeTournamentAction = {
   type: 'GET_JUDGE_TOURNAMENT',
-  promise: mixed
+  promise: Promise<mixed>,
+  meta: {
+    onSuccess: (mixed, () => reduxState) => void
+  }
 };
 
 declare type GetSingleTournamentAction = {
   type: 'GET_SINGLE_TOURNAMENT',
-  promise: Promise<mixed>
+  promise: Promise<mixed>,
+  meta: {
+    onSuccess: () => void,
+  },
 };
 
 declare type GenerateGroupsAction = {

@@ -10,10 +10,6 @@ import {
   normalizeTournament,
 } from '../../reducers/normalize';
 
-
-type normalizedTourArray = $Call<typeof normalizeTournamentArray, Tournament[]>;
-type normalizedTour = $Call<typeof normalizeTournament, Tournament>;
-
 export const createTournamentApi = async (
   tournament: Tournament,
 ): Promise<Tournament> => {
@@ -29,30 +25,33 @@ export const createTournamentApi = async (
   );
 };
 
+type promisedArray = Promise<normalizedTournamentArray>;
+type promisedTournament = Promise<normalizedTournament>;
+
 export const deserializeTournament = (tour: Tournament): Tournament => {
   const { date, ...rest } = tour;
   return { date: moment(date), ...rest };
 };
 
-export async function getTournamentsForUser(): Promise<normalizedTourArray> {
+export async function getTournamentsForUser(): promisedArray {
   const tournaments: Tournament[] = await apiGetRequest(
     '/api/tournament/get',
     (tours) => tours.map(deserializeTournament));
   return normalizeTournamentArray(tournaments);
 }
 
-export async function getTournament(id: string): Promise<normalizedTour> {
+export async function getTournament(id: string): promisedTournament {
   const tournament: Tournament = await apiGetRequest(`/api/tournament/get/${id}`);
   return normalizeTournament(tournament);
 }
 
 
-export async function getTournamentForJudge(): Promise<normalizedTour> {
+export async function getTournamentForJudge(): promisedTournament {
   const tournament: Tournament = await apiGetRequest('/api/tournament/get/judge');
   return normalizeTournament(tournament);
 }
 
-export async function getAllTournaments(): Promise<normalizedTourArray>{
+export async function getAllTournaments(): promisedArray {
   const tournaments: Tournament[] = await apiGetRequest(
     '/api/tournament/get/all',
     (tours) => tours.map(deserializeTournament));

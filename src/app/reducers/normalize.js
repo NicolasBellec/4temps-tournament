@@ -13,35 +13,14 @@ const tournamentSchema = new schema.Entity('tournaments', {
   rounds: [roundSchema],
 });
 
-type Collections = {
-  tournaments: {
-    [string]: {
-      ...Tournament,
-      judges: string[],
-      assistants: string[],
-      participants: string[],
-      rounds: string[]
-    }
-   },
-  judges: { [string]: Judge },
-  assistants:  { [string]: Assistant },
-  participants: { [string]: Participant },
-  rounds: { [string]: Round }
-};
-
-type Result = string;
-
-type NormalizeResult<Result, Collections> = {|
-  result: Result,
-  entities: Collections,
-|}
-
-export function normalizeTournament(tournament: Tournament): NormalizeResult<Result, Collections> {
+export function normalizeTournament(
+  tournament: Tournament
+): normalizedTournament {
   return normalize(tournament, tournamentSchema);
 }
 
 export function normalizeTournamentArray(
   tournaments: Array<Tournament>,
-): NormalizeResult<Result[], Collections> {
+): normalizedTournamentArray {
   return normalize(tournaments, [tournamentSchema]);
 }
