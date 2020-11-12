@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React from 'react';
 import {
   Container, Header, Divider, Tab,
@@ -7,11 +7,11 @@ import './styles.css';
 import RoundTables from './RoundTables';
 import RemainingParticipants from './RemainingParticipants';
 
-type Props = {
-  leaderboard: ?Leaderboard,
-};
+import type {
+  Props
+} from "./types";
 
-export default function Leaderboard({ leaderboard }: Props) {
+export default function LeaderboardComponent({ leaderboard }: Props) {
   if (!leaderboard) {
     return <Error />;
   }

@@ -1,18 +1,22 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
-import type { Match, RouterHistory } from 'react-router-dom';
 import PreloadContainer from '../PreloadContainer';
 import { getLeaderboardForTournament } from '../../api/leaderboard';
 import Component from './component';
 import { subscribeToLeaderboardForTournament } from '../../api/realtime';
 
-type Props = {
-  match: Match,
-  history: RouterHistory,
-};
+import type {
+  OwnProps,
+  StateProps,
+  DispatchProps,
+  Props
+} from "./types";
 
-function mapStateToProps({ leaderboards }: ReduxState, { match }: Props) {
+function mapStateToProps(
+  { leaderboards }: ReduxState,
+  { match }: OwnProps
+): StateProps {
   const tournamentId = match.params.tournamentId || '';
   return {
     shouldLoad: leaderboards.byId[tournamentId] == null,
@@ -23,8 +27,8 @@ function mapStateToProps({ leaderboards }: ReduxState, { match }: Props) {
 
 function mapDispatchToProps(
   dispatch: ReduxDispatch,
-  { match, history }: Props,
-) {
+  { match, history }: OwnProps,
+): DispatchProps {
   const { tournamentId } = match.params;
 
   if (tournamentId == null) {
@@ -50,7 +54,7 @@ function mapDispatchToProps(
   };
 }
 
-const LeaderboardContainer = connect(
+const LeaderboardContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);
