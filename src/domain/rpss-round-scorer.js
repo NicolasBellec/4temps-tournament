@@ -1,6 +1,6 @@
-// no-flow
+// @flow
 
-export type JudgeWeightedNote = {
+type JudgeWeightedNote = {
   judgeId: string,
   participantId: string,
   score: number,
@@ -13,12 +13,12 @@ export type JudgeScore = {
   score: number,
 };
 
-export type JudgeRank = {
+type JudgeRank = {
   ...JudgeWeightedNote,
   rank: number,
 };
 
-export type RankMatrixRow = {
+type RankMatrixRow = {
   participantId: string,
   row: Array<number>,
   rankReachMajority: number, // this is the index the rank being + 1
@@ -26,7 +26,7 @@ export type RankMatrixRow = {
   ranks: Array<JudgeRank>,
 };
 
-export type RankMatrix = Array<RankMatrixRow>;
+type RankMatrix = Array<RankMatrixRow>;
 
 export default class RPSSRoundScorer {
   _judges: Array<Judge>;
@@ -392,12 +392,15 @@ export default class RPSSRoundScorer {
         current_score = note.score;
       }
 
-      ranks.push({
-        judgeId: note.judgeId,
-        participantId: note.participantId,
-        score: current_score,
-        rank: current_rank,
-      });
+      if ( typeof current_score === 'number') {
+        // Will always be the case, just for the type-system
+        ranks.push({
+          judgeId: note.judgeId,
+          participantId: note.participantId,
+          score: current_score,
+          rank: current_rank,
+        });
+      }
     } // score
 
     return ranks;

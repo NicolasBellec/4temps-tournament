@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import React from 'react';
 import { Container, Table } from 'semantic-ui-react';
 import '../styles.css';
