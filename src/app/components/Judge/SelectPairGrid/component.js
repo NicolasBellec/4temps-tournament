@@ -1,27 +1,16 @@
-// no-flow
+// @flow
 
 import React from 'react';
 import {
   Grid, GridRow, GridColumn, Header, Button,
 } from 'semantic-ui-react';
 
-type Props = StateProps & DispatchProps;
-
-export type StateProps = {
-  upperLayerPairs: Array<?PairViewModel>,
-  lowerLayerPairs: Array<?PairViewModel>,
-  activePairId: string,
-};
-
-export type DispatchProps = {
-  onClickPair: (id: string) => void,
-};
-
-export type PairViewModel = {
-  id: string,
-  name: string,
-  hasAllNotes: boolean,
-};
+import type {
+  Props,
+  StateProps,
+  DispatchProps,
+  PairViewModel
+} from "./types";
 
 function SelectPairGrid(props: Props) {
   return (

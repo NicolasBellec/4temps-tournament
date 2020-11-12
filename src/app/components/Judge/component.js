@@ -1,23 +1,18 @@
-// no-flow
+// @flow
 import { Header, Container, Divider } from 'semantic-ui-react';
 
 import React from 'react';
 import RoundInformation from './RoundInformation';
 import NoteTaker from './NoteTaker';
 import SelectPairGrid from './SelectPairGrid';
-// $FlowFixMe
 import SubmitNotesModal from './SubmitNotesModal';
 // $FlowFixMe
 import NoteTable from './NoteTable';
 import DrawSettler from './DrawSettler';
 
-export type Props = {
-  tournamentId: string,
-  judgeId: string,
-  activeRound: ?Round,
-  activeDanceId: ?string,
-  notesSubmitted: boolean,
-};
+import type {
+  JudgeProps
+} from "./types";
 
 export default function Judge({
   tournamentId,
@@ -25,7 +20,7 @@ export default function Judge({
   activeDanceId,
   notesSubmitted,
   judgeId,
-}: Props) {
+}: JudgeProps) {
   if (activeRound != null && activeRound.draw) {
     return (
       <Draw
@@ -78,6 +73,7 @@ type TakeNotesProps = {
   roundId: string,
   danceId: string,
   tournamentId: string,
+  notesSubmitted: boolean
 };
 
 function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {
@@ -92,9 +88,11 @@ function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {
   );
 }
 
-type ActiveDanceProps = TakeNotesProps & {
+type ActiveDanceProps = {
+  ...TakeNotesProps,
   notesSubmitted: boolean,
 };
+
 function ActiveDance(props: ActiveDanceProps) {
   return (
     <Container>

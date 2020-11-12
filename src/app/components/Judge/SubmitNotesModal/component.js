@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { PureComponent } from 'react';
 import {
@@ -15,20 +15,9 @@ import {
 // $FlowFixMe
 import NoteTable from '../NoteTable';
 
-export type StateProps = {
-  tournamentId: string,
-  notes: Array<JudgeNote>,
-  isLoading: boolean,
-  didSubmit: boolean,
-  successfulSubmit: boolean,
-  hasAllNotes: boolean,
-};
-
-export type DispatchProps = {
-  onSubmit: (tournamentId: string, notes: Array<JudgeNote>) => void,
-};
-
-type Props = StateProps & DispatchProps;
+import type {
+  Props
+} from "./types";
 
 class SubmitNotesModal extends PureComponent<Props> {
   _onSubmit = () => {

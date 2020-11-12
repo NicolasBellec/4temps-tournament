@@ -1,18 +1,20 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
-import type { PairViewModel, StateProps, DispatchProps } from './component';
+import type {
+  PairViewModel,
+  StateProps,
+  DispatchProps,
+  Props,
+  OwnProps
+} from './types';
 import Component from './component';
 import { getSelectPairAction } from '../../../action-creators/participant';
-
-type Props = {
-  roundId: string,
-};
 
 function mapStateToProps(
   {
     tournaments, ui, rounds, participants, notes,
   }: ReduxState,
-  { roundId }: Props,
+  { roundId }: OwnProps,
 ): StateProps {
   const round = rounds.byId[roundId];
   const pairs = getPairViewModels(
@@ -107,7 +109,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const SelectPairGridContainer = connect(
+const SelectPairGridContainer = connect<Props, OwnProps, StateProps,_,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

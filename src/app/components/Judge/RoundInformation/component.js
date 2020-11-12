@@ -1,12 +1,10 @@
-// no-flow
+// @flow
 import React, { PureComponent } from 'react';
 import { Header, HeaderSubheader, Container } from 'semantic-ui-react';
 
-type Props = {
-  roundName: string,
-  groupInformation: { groupNumber: number },
-  danceInformation: { danceNumber: number },
-};
+import type {
+  Props
+} from "./types";
 
 class RoundInformation extends PureComponent<Props> {
   render() {

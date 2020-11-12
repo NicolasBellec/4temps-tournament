@@ -1,9 +1,13 @@
-// TODO: set flow. Currently some weird error which takes all CPU during flow parsing
-/* eslint-disable flowtype/no-types-missing-file-annotation */
+// @flow
 
 import { connect } from 'react-redux';
-import type { StateProps, DispatchProps } from './component';
+import type {
+  StateProps,
+  DispatchProps,
+  Props
+} from './types';
 import Component from './component';
+// $FlowFixMe
 import NoteChecker from '../../../../domain/note-checker';
 import { getSubmitNotesAction } from '../../../action-creators/note';
 
@@ -64,11 +68,7 @@ function getActiveDanceId(round: Round): string {
 
 function getActiveRound(state: ReduxState): Round {
   const tournament = getTournament(state);
-  // $FlowFixMe
-  return tournament.rounds.reduce(
-    (res, round) => (round.active ? round : res),
-    null,
-  );
+  return tournament.rounds.filter((r) => r.active)[0];
 }
 
 function getTournament(state: ReduxState): Tournament {
@@ -77,6 +77,8 @@ function getTournament(state: ReduxState): Tournament {
     ...tournament,
     rounds: tournament.rounds.map((id) => state.rounds.byId[id]),
     judges: tournament.judges.map((id) => state.judges.byId[id]),
+    assistants: tournament.assistants.map((id) => state.assistants.byId[id]),
+    participants: tournament.participants.map((id) => state.participants.byId[id]),
   };
 }
 
@@ -88,7 +90,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   };
 }
 
-const SubmitNotesModalContainer = connect(
+const SubmitNotesModalContainer = connect<Props, {}, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(Component);

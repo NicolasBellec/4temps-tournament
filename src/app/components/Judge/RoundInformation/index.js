@@ -1,8 +1,13 @@
-// no-flow
+// @flow
 import { connect } from 'react-redux';
 import RoundInformation from './component';
 
-function mapStateToProps({ tournaments, rounds }: ReduxState) {
+import type {
+  Props,
+  StateProps,
+} from "./types"
+
+function mapStateToProps({ tournaments, rounds }: ReduxState): StateProps {
   const tournamentRounds: Array<Round> = tournaments.byId[
     tournaments.forJudge
   ].rounds.map((id) => rounds.byId[id]);
@@ -45,6 +50,7 @@ function getActiveDanceInformation(
   group: DanceGroup,
 ): {
   danceNumber: number,
+  numberOfDances: number
 } {
   const numberOfDances = group.dances.length;
   for (let i = 0; i < numberOfDances; i++) {
@@ -53,6 +59,7 @@ function getActiveDanceInformation(
   throw new Error('There is not active dance!');
 }
 
-// $FlowFixMe
-const RoundInformationContainer = connect(mapStateToProps)(RoundInformation);
+const RoundInformationContainer = connect<Props, {}, StateProps,_,_,_>(
+  mapStateToProps
+)(RoundInformation);
 export default RoundInformationContainer;

@@ -6,7 +6,8 @@ export type ScoreViewModel = {
 };
 
 export type OwnProps = {
-  tournamentId: string
+  tournamentId: string,
+  activeRound: ?Round
 };
 
 type ParticipantResults = {
