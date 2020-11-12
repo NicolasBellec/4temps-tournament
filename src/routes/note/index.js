@@ -1,35 +1,32 @@
 // @flow
 
-import { Router } from 'express';
-import type { Router as RouterTy } from 'express';
-import { allow } from '../auth-middleware';
-import setNoteRoute from './set-note';
-import submitNotesRoute from './submit-notes';
-import getNotesForDanceRoute from './get-notes-for-dance';
-import { TournamentRepositoryImpl } from '../../data/tournament';
-import {
-  TemporaryNoteRepository,
-  SubmittedNoteRepository,
-} from '../../data/note';
+import { Router } from 'express'
+import type { Router as RouterTy } from 'express'
+import { allow } from '../auth-middleware'
+import setNoteRoute from './set-note'
+import submitNotesRoute from './submit-notes'
+import getNotesForDanceRoute from './get-notes-for-dance'
+import { TournamentRepositoryImpl } from '../../data/tournament'
+import { TemporaryNoteRepository, SubmittedNoteRepository } from '../../data/note'
 
-const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router();
-const tournamentRepository = new TournamentRepositoryImpl();
-const temporaryNotesRepository = new TemporaryNoteRepository();
+const router: RouterTy<ServerApiRequest, ServerApiResponse> = Router()
+const tournamentRepository = new TournamentRepositoryImpl()
+const temporaryNotesRepository = new TemporaryNoteRepository()
 
 router.post(
   '/:tournamentId/temporary/set',
   allow('judge'),
-  setNoteRoute(tournamentRepository, temporaryNotesRepository),
-);
+  setNoteRoute(tournamentRepository, temporaryNotesRepository)
+)
 router.get(
   '/:tournamentId/temporary/dance/:danceId',
   allow('judge'),
-  getNotesForDanceRoute(temporaryNotesRepository),
-);
+  getNotesForDanceRoute(temporaryNotesRepository)
+)
 router.post(
   '/:tournamentId/final/submit',
   allow('judge'),
-  submitNotesRoute(tournamentRepository, new SubmittedNoteRepository()),
-);
+  submitNotesRoute(tournamentRepository, new SubmittedNoteRepository())
+)
 
-export default router;
+export default router

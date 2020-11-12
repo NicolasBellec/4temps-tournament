@@ -1,16 +1,14 @@
 // @flow
-import React from 'react';
-import {
-  Button, Grid, GridRow, Header,
-} from 'semantic-ui-react';
+import React from 'react'
+import { Button, Grid, GridRow, Header } from 'semantic-ui-react'
 
-import './styles.css';
+import './styles.css'
 
 type Props = {
   header: string,
   onClickSignUp: () => void,
   onClickLogin: () => void,
-};
+}
 
 const SignUpOrLogin = ({ header, onClickSignUp, onClickLogin }: Props) => (
   <Grid styleName="grid" columns={1} centered>
@@ -28,6 +26,6 @@ const SignUpOrLogin = ({ header, onClickSignUp, onClickLogin }: Props) => (
       </Button>
     </GridRow>
   </Grid>
-);
+)
 
-export default SignUpOrLogin;
+export default SignUpOrLogin

@@ -1,127 +1,121 @@
 // @flow
 
-import ObjectId from 'bson-objectid';
-import validateRound from '../../validators/validate-round';
-import type { TournamentRepository } from '../../data/tournament';
-import parseRound from './utils';
-import { createMalusCriterion } from '../util';
+import ObjectId from 'bson-objectid'
+import validateRound from '../../validators/validate-round'
+import type { TournamentRepository } from '../../data/tournament'
+import parseRound from './utils'
+import { createMalusCriterion } from '../util'
 
 class CreateRoundRoute {
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
   constructor(tournamentRepository: TournamentRepository) {
-    this._tournamentRepository = tournamentRepository;
+    this._tournamentRepository = tournamentRepository
   }
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
-    const handler = new CreateRoundRouteHandler(this._tournamentRepository);
+    const handler = new CreateRoundRouteHandler(this._tournamentRepository)
     try {
-      handler.parseBody(req.body);
-      await handler.executeForUser(this._userId(req));
+      handler.parseBody(req.body)
+      await handler.executeForUser(this._userId(req))
       res.json({
         tournamentId: handler.getTournamentId(),
         round: handler.getCreatedRound(),
-      });
+      })
     } catch (e) {
-      res.sendStatus(e.status);
+      res.sendStatus(e.status)
     }
-  };
+  }
 
-  _userId = (req: ServerApiRequest) => (req.session.user != null ? req.session.user.id : '');
+  _userId = (req: ServerApiRequest) => (req.session.user != null ? req.session.user.id : '')
 }
 
 class CreateRoundRouteHandler {
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
-  _tournamentId: string;
+  _tournamentId: string
 
-  _round: Round;
+  _round: Round
 
-  _userId: string;
+  _userId: string
 
   constructor(tournamentRepository: TournamentRepository) {
-    this._tournamentRepository = tournamentRepository;
+    this._tournamentRepository = tournamentRepository
   }
 
-  getTournamentId = () => this._tournamentId;
+  getTournamentId = () => this._tournamentId
 
-  getCreatedRound = () => this._round;
+  getCreatedRound = () => this._round
 
   async executeForUser(userId: string) {
-    this._userId = userId;
+    this._userId = userId
 
-    const tournament = await this.getTournament();
+    const tournament = await this.getTournament()
     if (!this._userOwnsTournament(tournament)) {
-      throw { status: 401 };
+      throw { status: 401 }
     }
 
     if (this._tournamentHasSanctioner(tournament)) {
-      this._addMalusCriterion();
+      this._addMalusCriterion()
     }
 
-    await this._create();
+    await this._create()
   }
 
   async getTournament(): Promise<Tournament> {
-    const tournament = await this._tournamentRepository.get(this._tournamentId);
+    const tournament = await this._tournamentRepository.get(this._tournamentId)
 
     if (tournament == null) {
-      throw { status: 404 };
+      throw { status: 404 }
     }
 
-    return tournament;
+    return tournament
   }
 
-  _userOwnsTournament = (tournament: Tournament): boolean => tournament.creatorId == this._userId;
+  _userOwnsTournament = (tournament: Tournament): boolean => tournament.creatorId == this._userId
 
-  _tournamentHasSanctioner = (tournament: Tournament): boolean => tournament.judges.some(({ judgeType }) => judgeType === 'sanctioner');
+  _tournamentHasSanctioner = (tournament: Tournament): boolean =>
+    tournament.judges.some(({ judgeType }) => judgeType === 'sanctioner')
 
   _addMalusCriterion = () => {
-    this._round.criteria.push(createMalusCriterion());
-  };
+    this._round.criteria.push(createMalusCriterion())
+  }
 
   parseBody = (body: mixed) => {
-    this._round = this._parseRound(body);
-    this._tournamentId = this._parseTournamentId(body);
+    this._round = this._parseRound(body)
+    this._tournamentId = this._parseTournamentId(body)
 
     if (!this._isValidRound()) {
-      throw { status: 400 };
+      throw { status: 400 }
     }
-  };
+  }
 
   _parseRound = (body: mixed) => {
     if (typeof body === 'object' && body != null) {
-      return parseRound(body.round);
+      return parseRound(body.round)
     }
-    throw { status: 400 };
-  };
+    throw { status: 400 }
+  }
 
   _parseTournamentId = (body: mixed) => {
-    if (
-      typeof body === 'object'
-      && body != null
-      && typeof body.tournamentId === 'string'
-    ) {
-      return body.tournamentId;
+    if (typeof body === 'object' && body != null && typeof body.tournamentId === 'string') {
+      return body.tournamentId
     }
-    throw { status: 400 };
-  };
+    throw { status: 400 }
+  }
 
-  _isValidRound = () => validateRound(this._round).isValidRound;
+  _isValidRound = () => validateRound(this._round).isValidRound
 
   _create = async () => {
-    this._round.id = this._generateId();
+    this._round.id = this._generateId()
     try {
-      await this._tournamentRepository.createRound(
-        this._tournamentId,
-        this._round,
-      );
+      await this._tournamentRepository.createRound(this._tournamentId, this._round)
     } catch (e) {
-      throw { status: 500 };
+      throw { status: 500 }
     }
-  };
+  }
 
-  _generateId = () => ObjectId.generate().toString();
+  _generateId = () => ObjectId.generate().toString()
 }
 
-export default CreateRoundRoute;
+export default CreateRoundRoute

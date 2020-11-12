@@ -1,7 +1,7 @@
 // @flow
 
-import mongoose from 'mongoose';
-import type { ObjectId } from 'mongoose';
+import mongoose from 'mongoose'
+import type { ObjectId } from 'mongoose'
 
 type NoteDbModel = {
   judgeId: ObjectId,
@@ -9,7 +9,7 @@ type NoteDbModel = {
   criterionId: ObjectId,
   participantId: ObjectId,
   value: number,
-};
+}
 
 const schema = new mongoose.Schema({
   judgeId: {
@@ -32,10 +32,10 @@ const schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-});
+})
 
-const TempModel = mongoose.model('tempNote', schema);
-const SubmittedModel = mongoose.model('submittedNote', schema);
+const TempModel = mongoose.model('tempNote', schema)
+const SubmittedModel = mongoose.model('submittedNote', schema)
 
 export interface NoteRepository {
   createOrUpdate(note: JudgeNote): Promise<void>;
@@ -45,33 +45,33 @@ export interface NoteRepository {
 
 export class TemporaryNoteRepository implements NoteRepository {
   async createOrUpdate(note: JudgeNote) {
-    const { value, ...ids } = note;
-    await TempModel.update({ ...ids }, { ...note }, { upsert: true });
+    const { value, ...ids } = note
+    await TempModel.update({ ...ids }, { ...note }, { upsert: true })
   }
 
   async getForDance(danceId: string): Promise<Array<JudgeNote>> {
-    return (await TempModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()));
+    return (await TempModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()))
   }
 
   async delete(note: JudgeNote): Promise<void> {
-    const { value, ...ids } = note;
-    return await TempModel.deleteOne(ids);
+    const { value, ...ids } = note
+    return await TempModel.deleteOne(ids)
   }
 }
 
 export class SubmittedNoteRepository implements NoteRepository {
   async createOrUpdate(note: JudgeNote) {
-    const { value, ...ids } = note;
-    await SubmittedModel.update({ ...ids }, note, { upsert: true });
+    const { value, ...ids } = note
+    await SubmittedModel.update({ ...ids }, note, { upsert: true })
   }
 
   async getForDance(danceId: string): Promise<Array<JudgeNote>> {
-    return (await SubmittedModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()));
+    return (await SubmittedModel.find({ danceId })).map((a) => mapToDomainModel(a.toObject()))
   }
 
   async delete(note: JudgeNote): Promise<void> {
-    const { value, ...ids } = note;
-    return await TempModel.deleteOne(ids);
+    const { value, ...ids } = note
+    return await TempModel.deleteOne(ids)
   }
 }
 
@@ -82,5 +82,5 @@ function mapToDomainModel(note: NoteDbModel): JudgeNote {
     criterionId: note.criterionId.toString(),
     participantId: note.participantId.toString(),
     value: note.value,
-  };
+  }
 }

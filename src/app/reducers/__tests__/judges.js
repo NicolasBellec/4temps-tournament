@@ -1,34 +1,34 @@
 // no-flow
-import { LIFECYCLE } from 'redux-pack';
+import { LIFECYCLE } from 'redux-pack'
 
-import reducer, { getInitialState } from '../judges';
-import makePackAction from '../test-utils';
-import { createTournament, createJudge, generateId } from '../../../test-utils';
-import { normalizeTournamentArray } from '../normalize';
+import reducer, { getInitialState } from '../judges'
+import makePackAction from '../test-utils'
+import { createTournament, createJudge, generateId } from '../../../test-utils'
+import { normalizeTournamentArray } from '../normalize'
 
 describe('Judges reducer', () => {
   test('Undefined results in initial', () => {
-    expect(
-      reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID'))
-    ).toEqual(getInitialState());
-  });
+    expect(reducer(undefined, makePackAction(LIFECYCLE.SUCCESS, 'INVALID'))).toEqual(
+      getInitialState()
+    )
+  })
 
   describe('Get tournaments', () => {
-    const judges1 = [createJudge(), createJudge()];
-    const judges2 = [createJudge(), createJudge()];
+    const judges1 = [createJudge(), createJudge()]
+    const judges2 = [createJudge(), createJudge()]
     const tournament1 = {
       ...createTournament(),
       id: 't1',
       judges: judges1,
-    };
+    }
     const tournament2 = {
       ...createTournament(),
       id: 't2',
       judges: judges2,
-    };
+    }
 
-    const tournaments = [tournament1, tournament2];
-    const nom = normalizeTournamentArray(tournaments);
+    const tournaments = [tournament1, tournament2]
+    const nom = normalizeTournamentArray(tournaments)
 
     const expected = {
       ...getInitialState(),
@@ -42,30 +42,24 @@ describe('Judges reducer', () => {
         [judges2[0].id]: judges2[0],
         [judges2[1].id]: judges2[1],
       },
-    };
+    }
 
     test('GET_ALL_TOURNAMENTS success sets judges', () => {
       expect(
-        reducer(
-          getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom)
-        )
-      ).toEqual(expected);
-    });
+        reducer(getInitialState(), makePackAction(LIFECYCLE.SUCCESS, 'GET_ALL_TOURNAMENTS', nom))
+      ).toEqual(expected)
+    })
     test('GET_ADMIN_TOURNAMENTS success sets judges', () => {
       expect(
-        reducer(
-          getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom)
-        )
-      ).toEqual(expected);
-    });
-  });
+        reducer(getInitialState(), makePackAction(LIFECYCLE.SUCCESS, 'GET_ADMIN_TOURNAMENTS', nom))
+      ).toEqual(expected)
+    })
+  })
 
   describe('CREATE_JUDGE', () => {
     test('success adds the judge', () => {
-      const judge = createJudge();
-      const tournamentId = generateId();
+      const judge = createJudge()
+      const tournamentId = generateId()
       const expected = {
         ...getInitialState(),
         byId: {
@@ -74,15 +68,12 @@ describe('Judges reducer', () => {
         forTournament: {
           [tournamentId]: [judge.id],
         },
-      };
+      }
 
-      const payload = { tournamentId, judge };
+      const payload = { tournamentId, judge }
       expect(
-        reducer(
-          getInitialState(),
-          makePackAction(LIFECYCLE.SUCCESS, 'CREATE_JUDGE', payload)
-        )
-      ).toEqual(expected);
-    });
-  });
-});
+        reducer(getInitialState(), makePackAction(LIFECYCLE.SUCCESS, 'CREATE_JUDGE', payload))
+      ).toEqual(expected)
+    })
+  })
+})

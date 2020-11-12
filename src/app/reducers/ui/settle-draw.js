@@ -1,31 +1,31 @@
 // @flow
-import { handle } from 'redux-pack';
+import { handle } from 'redux-pack'
 
 export default function uiSettleDrawReducer(
   state: UiSettleDrawReduxState = createInitialState(),
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): UiSettleDrawReduxState {
   switch (action.type) {
-  case 'SETTLE_DRAW':
-    return handle(state, action, {
-      start: () => ({ ...createInitialState(), isLoading: true }),
-      success: (prevState) => ({
-        ...prevState,
-        isLoading: false,
-        didSubmit: true,
-        successfulSubmit: true,
-      }),
-      failure: (prevState) => ({
-        ...prevState,
-        isLoading: false,
-        didSubmit: true,
-        successfulSubmit: false,
-        errorMessage: action.payload.error,
-      }),
-    });
+    case 'SETTLE_DRAW':
+      return handle(state, action, {
+        start: () => ({ ...createInitialState(), isLoading: true }),
+        success: (prevState) => ({
+          ...prevState,
+          isLoading: false,
+          didSubmit: true,
+          successfulSubmit: true,
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          isLoading: false,
+          didSubmit: true,
+          successfulSubmit: false,
+          errorMessage: action.payload.error,
+        }),
+      })
   }
 
-  return state;
+  return state
 }
 
 export function createInitialState(): UiSettleDrawReduxState {
@@ -34,5 +34,5 @@ export function createInitialState(): UiSettleDrawReduxState {
     didSubmit: false,
     successfulSubmit: false,
     errorMessage: '',
-  };
+  }
 }

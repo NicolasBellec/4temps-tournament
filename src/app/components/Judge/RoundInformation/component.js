@@ -1,13 +1,13 @@
 // @flow
-import React, { PureComponent } from 'react';
-import { Header, HeaderSubheader, Container } from 'semantic-ui-react';
+import React, { PureComponent } from 'react'
+import { Header, HeaderSubheader, Container } from 'semantic-ui-react'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
 class RoundInformation extends PureComponent<Props> {
   render() {
-    const { groupNumber } = this.props.groupInformation;
-    const { danceNumber } = this.props.danceInformation;
+    const { groupNumber } = this.props.groupInformation
+    const { danceNumber } = this.props.danceInformation
     return (
       <Container>
         <Header as="h2">
@@ -22,8 +22,8 @@ class RoundInformation extends PureComponent<Props> {
           </HeaderSubheader>
         </Header>
       </Container>
-    );
+    )
   }
 }
 
-export default RoundInformation;
+export default RoundInformation

@@ -1,53 +1,49 @@
 // @flow
 
-import ObjectId from 'bson-objectid';
-import type { TournamentRepository } from '../../data/tournament';
-import type { AccessKeyRepository } from '../../data/access-key';
-import validateAssistant from '../../validators/validate-assistant';
+import ObjectId from 'bson-objectid'
+import type { TournamentRepository } from '../../data/tournament'
+import type { AccessKeyRepository } from '../../data/access-key'
+import validateAssistant from '../../validators/validate-assistant'
 
 export default function route(
   tournamentRepository: TournamentRepository,
-  accessRepository: AccessKeyRepository,
+  accessRepository: AccessKeyRepository
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const { tournamentId } = req.params;
-      const assistantName = parseName(req.body);
-      const assistant = { name: assistantName, id: ObjectId.generate() };
+      const { tournamentId } = req.params
+      const assistantName = parseName(req.body)
+      const assistant = { name: assistantName, id: ObjectId.generate() }
 
       if (validateAssistant(assistant)) {
-        await tournamentRepository.addAssistant(tournamentId, assistant);
+        await tournamentRepository.addAssistant(tournamentId, assistant)
         await accessRepository.createForTournamentAndUserWithRole(
           tournamentId,
           assistant.id,
-          'assistant',
-        );
-        res.json({ tournamentId, assistant });
+          'assistant'
+        )
+        res.json({ tournamentId, assistant })
       } else {
-        res.sendStatus(400);
+        res.sendStatus(400)
       }
     } catch (e) {
-      res.sendStatus(statusFromError(e));
+      res.sendStatus(statusFromError(e))
     }
-  };
+  }
 }
 
 function parseName(body: mixed): string {
-  if (
-    typeof body === 'object'
-    && body != null
-    && typeof body.name === 'string'
-  ) {
-    return body.name;
+  if (typeof body === 'object' && body != null && typeof body.name === 'string') {
+    return body.name
   }
-  throw new ParseError();
+  throw new ParseError()
 }
 
 function statusFromError(e: mixed) {
   if (e instanceof ParseError) {
-    return 400;
+    return 400
   }
-  return 500;
+  return 500
 }
 
 function ParseError() {}

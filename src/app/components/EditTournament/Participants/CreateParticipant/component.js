@@ -1,45 +1,37 @@
 // @flow
-import React, { Component } from 'react';
-import {
-  Form,
-  FormButton,
-  FormRadio,
-  FormGroup,
-  FormInput,
-  Message,
-} from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Form, FormButton, FormRadio, FormGroup, FormInput, Message } from 'semantic-ui-react'
 
-import type { ComponentState, Props } from './types';
+import type { ComponentState, Props } from './types'
 
 class CreateParticipant extends Component<Props, ComponentState> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
       name: '',
       role: 'none',
-    };
+    }
   }
 
-  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => this.setState({ name: event.target.value });
+  onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) =>
+    this.setState({ name: event.target.value })
 
   onChangeRadio = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: ParticipantRole },
-  ) => this.setState({ role: value });
+    { value }: { value: ParticipantRole }
+  ) => this.setState({ role: value })
 
   onSubmit = async () => {
-    this.props.onSubmit(this.state);
-  };
+    this.props.onSubmit(this.state)
+  }
 
   render() {
-    const { isLoading, validation, isClassic } = this.props;
-    const { isValidParticipant, isValidName, isValidRole } = validation;
-    const { name, role } = this.state;
+    const { isLoading, validation, isClassic } = this.props
+    const { isValidParticipant, isValidName, isValidRole } = validation
+    const { name, role } = this.state
     return (
       <Form error={!isValidParticipant} loading={isLoading}>
-        {this.props.createdSuccessfully && (
-          <Message positive content="Success!" />
-        )}
+        {this.props.createdSuccessfully && <Message positive content="Success!" />}
         <FormInput label="Name" value={name} onChange={this.onChangeName} />
         {!isValidName && <Message error content="Invalid name" />}
         <FormGroup id="role-radio" inline>
@@ -70,8 +62,8 @@ class CreateParticipant extends Component<Props, ComponentState> {
           Add participant
         </FormButton>
       </Form>
-    );
+    )
   }
 }
 
-export default CreateParticipant;
+export default CreateParticipant

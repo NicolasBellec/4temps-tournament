@@ -1,46 +1,39 @@
 // @flow
 
-import React, { Component } from 'react';
-import {
-  Form,
-  FormInput,
-  FormGroup,
-  FormRadio,
-  Message,
-  Button,
-} from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Form, FormInput, FormGroup, FormRadio, Message, Button } from 'semantic-ui-react'
 
-import type { Props, OnSubmitParams } from './types';
+import type { Props, OnSubmitParams } from './types'
 
-type State = OnSubmitParams;
+type State = OnSubmitParams
 
 class CreateJudge extends Component<Props, State> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
       name: '',
       judgeType: 'normal',
-    };
+    }
   }
 
   onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ name: event.target.value });
-  };
+    this.setState({ name: event.target.value })
+  }
 
   onChangeJugeType = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: JudgeType },
+    { value }: { value: JudgeType }
   ) => {
-    this.setState({ judgeType: value });
-  };
+    this.setState({ judgeType: value })
+  }
 
   onSubmit = () => {
-    this.props.onSubmit(this.state);
-  };
+    this.props.onSubmit(this.state)
+  }
 
   render() {
-    const { isValid, isLoading, createdSuccessfully } = this.props;
-    const { name } = this.state;
+    const { isValid, isLoading, createdSuccessfully } = this.props
+    const { name } = this.state
     return (
       <Form loading={isLoading} error={!isValid} success={createdSuccessfully}>
         {createdSuccessfully && <Message success content="Success!" />}
@@ -68,8 +61,8 @@ class CreateJudge extends Component<Props, State> {
         </FormGroup>
         <Button onClick={this.onSubmit}>Add judge</Button>
       </Form>
-    );
+    )
   }
 }
 
-export default CreateJudge;
+export default CreateJudge

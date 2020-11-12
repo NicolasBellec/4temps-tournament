@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Accordion,
   Icon,
@@ -9,40 +9,36 @@ import {
   Header,
   Divider,
   SyntheticEvent,
-} from 'semantic-ui-react';
-import '../styles.css';
+} from 'semantic-ui-react'
+import '../styles.css'
 
 type Props = {
   rounds: Array<LeaderboardRound>,
-};
+}
 type State = {
   activeIndex: number,
-};
+}
 export default class RoundTables extends Component<Props, State> {
   state = {
     activeIndex: -1,
-  };
+  }
 
-  handleClick = (
-    e: SyntheticEvent<MouseEvent>,
-    titleProps: { index: number },
-  ) => {
-    const { index } = titleProps;
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
-  };
+  handleClick = (e: SyntheticEvent<MouseEvent>, titleProps: { index: number }) => {
+    const { index } = titleProps
+    const { activeIndex } = this.state
+    const newIndex = activeIndex === index ? -1 : index
+    this.setState({ activeIndex: newIndex })
+  }
 
   _renderRoundTable = (index: number) => {
-    const round = this.props.rounds[index];
-    const { roundId } = round;
+    const round = this.props.rounds[index]
+    const { roundId } = round
     return (
       <Container key={roundId}>
         <Accordion.Title
           active={this.state.activeIndex === index}
           index={index}
-          onClick={this.handleClick}
-        >
+          onClick={this.handleClick}>
           <Icon name="dropdown" />
           {round.name}
         </Accordion.Title>
@@ -55,17 +51,11 @@ export default class RoundTables extends Component<Props, State> {
               <Grid.Row columns="2">
                 <Grid.Column>
                   <Header as="h4">Leaders</Header>
-                  <ScoreTable
-                    roundId={roundId}
-                    scores={round.winningLeaderScores}
-                  />
+                  <ScoreTable roundId={roundId} scores={round.winningLeaderScores} />
                 </Grid.Column>
                 <Grid.Column>
                   <Header as="h4">Followers</Header>
-                  <ScoreTable
-                    roundId={roundId}
-                    scores={round.winningFollowerScores}
-                  />
+                  <ScoreTable roundId={roundId} scores={round.winningFollowerScores} />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -75,45 +65,31 @@ export default class RoundTables extends Component<Props, State> {
               <Grid.Row columns="2">
                 <Grid.Column>
                   <Header as="h4">Leaders</Header>
-                  <ScoreTable
-                    roundId={roundId}
-                    scores={round.losingLeaderScores}
-                  />
+                  <ScoreTable roundId={roundId} scores={round.losingLeaderScores} />
                 </Grid.Column>
                 <Grid.Column>
                   <Header as="h4">Followers</Header>
-                  <ScoreTable
-                    roundId={roundId}
-                    scores={round.losingFollowerScores}
-                  />
+                  <ScoreTable roundId={roundId} scores={round.losingFollowerScores} />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Container>
         </Accordion.Content>
       </Container>
-    );
-  };
+    )
+  }
 
   render() {
-    const { rounds } = this.props;
+    const { rounds } = this.props
     return (
       <Container styleName="pad">
-        <Accordion fluid>
-          {rounds.map((round, i) => this._renderRoundTable(i))}
-        </Accordion>
+        <Accordion fluid>{rounds.map((round, i) => this._renderRoundTable(i))}</Accordion>
       </Container>
-    );
+    )
   }
 }
 
-function ScoreTable({
-  roundId,
-  scores,
-}: {
-  roundId: string,
-  scores: Array<LeaderboardScore>,
-}) {
+function ScoreTable({ roundId, scores }: { roundId: string, scores: Array<LeaderboardScore> }) {
   return (
     <Table unstackable>
       <Table.Header>
@@ -129,7 +105,7 @@ function ScoreTable({
         ))}
       </Table.Body>
     </Table>
-  );
+  )
 }
 
 function ScoreTableRow({ score }: { score: LeaderboardScore }) {
@@ -139,5 +115,5 @@ function ScoreTableRow({ score }: { score: LeaderboardScore }) {
       <Table.Cell>{score.score}</Table.Cell>
       <Table.Cell>{score.attendanceId}</Table.Cell>
     </Table.Row>
-  );
+  )
 }

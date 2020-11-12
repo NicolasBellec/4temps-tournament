@@ -1,46 +1,44 @@
 // @flow
-import React, { Component } from 'react';
-import {
-  Header, Form, FormInput, Button, Message,
-} from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Header, Form, FormInput, Button, Message } from 'semantic-ui-react'
 
-import type { Props, InternalState } from './types';
+import type { Props, InternalState } from './types'
 
-import './styles.css';
+import './styles.css'
 
 class SignUp extends Component<Props, InternalState> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
       firstName: '',
       lastName: '',
       email: '',
       password: '',
-    };
+    }
   }
 
   onChangeFirstName = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ firstName: event.target.value });
-  };
+    this.setState({ firstName: event.target.value })
+  }
 
   onChangeLastName = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ lastName: event.target.value });
-  };
+    this.setState({ lastName: event.target.value })
+  }
 
   onChangeEmail = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ email: event.target.value });
-  };
+    this.setState({ email: event.target.value })
+  }
 
   onChangePassword = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ password: event.target.value });
-  };
+    this.setState({ password: event.target.value })
+  }
 
   onSubmit = () => {
-    this.props.onSubmit(this.state);
-  };
+    this.props.onSubmit(this.state)
+  }
 
   render() {
-    const { isLoading, validation } = this.props;
+    const { isLoading, validation } = this.props
     const {
       isValid,
       isValidFirstName,
@@ -48,10 +46,8 @@ class SignUp extends Component<Props, InternalState> {
       isValidEmail,
       isEmailNotUsed,
       isValidPassword,
-    } = validation;
-    const {
-      firstName, lastName, email, password,
-    } = this.state;
+    } = validation
+    const { firstName, lastName, email, password } = this.state
     return (
       <div styleName="center">
         <div styleName="width">
@@ -63,9 +59,7 @@ class SignUp extends Component<Props, InternalState> {
               value={firstName}
               onChange={this.onChangeFirstName}
             />
-            {!isValidFirstName && (
-              <Message error content="Invalid first name" />
-            )}
+            {!isValidFirstName && <Message error content="Invalid first name" />}
             <FormInput
               label="Last name"
               placeholder="Smith"
@@ -81,10 +75,7 @@ class SignUp extends Component<Props, InternalState> {
             />
             {!isValidEmail && <Message error content="Invalid email" />}
             {!isEmailNotUsed && (
-              <Message
-                error
-                content="An account already exists with this email"
-              />
+              <Message error content="An account already exists with this email" />
             )}
             <FormInput
               label="Password"
@@ -93,17 +84,15 @@ class SignUp extends Component<Props, InternalState> {
               placeholder="P4ssw0rd"
               onChange={this.onChangePassword}
             />
-            {!isValidPassword && (
-              <Message error content="A password is at least 8 characters" />
-            )}
+            {!isValidPassword && <Message error content="A password is at least 8 characters" />}
             <Button onClick={this.onSubmit} type="submit">
               Submit
             </Button>
           </Form>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default SignUp;
+export default SignUp

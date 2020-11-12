@@ -1,18 +1,11 @@
 // @flow
-import React from 'react';
-import { Grid, GridRow, Header } from 'semantic-ui-react';
-import NoteCriterion from '../NoteCriterion';
+import React from 'react'
+import { Grid, GridRow, Header } from 'semantic-ui-react'
+import NoteCriterion from '../NoteCriterion'
 
-import type { Props, CriterionViewModel } from './types';
+import type { Props, CriterionViewModel } from './types'
 
-function PairNoteTaker({
-  pairId,
-  criteria,
-  onClick,
-  tournamentId,
-  judgeId,
-  danceId,
-}: Props) {
+function PairNoteTaker({ pairId, criteria, onClick, tournamentId, judgeId, danceId }: Props) {
   return (
     <Grid centered>
       <GridRow>
@@ -22,20 +15,22 @@ function PairNoteTaker({
         <GridRow key={pairId + criterion.id}>
           <NoteCriterion
             notedEntity={pairId}
-            onClick={(value: ?number) => onClick(tournamentId, {
-              danceId,
-              judgeId,
-              participantId: pairId,
-              criterionId: criterion.id,
-              // $FlowFixMe
-              value,
-            })}
+            onClick={(value: ?number) =>
+              onClick(tournamentId, {
+                danceId,
+                judgeId,
+                participantId: pairId,
+                criterionId: criterion.id,
+                // $FlowFixMe
+                value,
+              })
+            }
             criterion={criterion}
           />
         </GridRow>
       ))}
     </Grid>
-  );
+  )
 }
 
-export default PairNoteTaker;
+export default PairNoteTaker

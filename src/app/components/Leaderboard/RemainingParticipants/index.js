@@ -1,7 +1,7 @@
 // @flow
-import React from 'react';
-import { Container, Table } from 'semantic-ui-react';
-import '../styles.css';
+import React from 'react'
+import { Container, Table } from 'semantic-ui-react'
+import '../styles.css'
 
 export default function RemainingParticipants({
   participants,
@@ -20,7 +20,7 @@ export default function RemainingParticipants({
         <Table.Body>{participants.map(RemainingEntry)}</Table.Body>
       </Table>
     </Container>
-  );
+  )
 }
 function RemainingEntry(participant: Participant) {
   return (
@@ -28,18 +28,18 @@ function RemainingEntry(participant: Participant) {
       <Table.Cell>{participant.attendanceId}</Table.Cell>
       <Table.Cell>{roleToString(participant.role)}</Table.Cell>
     </Table.Row>
-  );
+  )
 }
 
 function roleToString(role: string) {
   switch (role) {
-  case 'leader':
-    return 'Leader';
-  case 'follower':
-    return 'Follower';
-  case 'leaderAndFollower':
-    return 'Both';
-  default:
-    return '';
+    case 'leader':
+      return 'Leader'
+    case 'follower':
+      return 'Follower'
+    case 'leaderAndFollower':
+      return 'Both'
+    default:
+      return ''
   }
 }

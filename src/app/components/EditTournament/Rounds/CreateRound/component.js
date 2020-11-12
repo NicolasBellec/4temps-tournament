@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Header,
   Divider,
@@ -13,16 +13,16 @@ import {
   FormField,
   Checkbox,
   SyntheticEvent,
-} from 'semantic-ui-react';
+} from 'semantic-ui-react'
 
-import type { Element } from 'react';
-import type { Props, RoundViewModel, CriterionViewModel } from './types';
+import type { Element } from 'react'
+import type { Props, RoundViewModel, CriterionViewModel } from './types'
 
-type State = RoundViewModel;
+type State = RoundViewModel
 
 class EditTournamentRounds extends Component<Props, State> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
       name: '',
       danceCount: null,
@@ -42,67 +42,60 @@ class EditTournamentRounds extends Component<Props, State> {
       ],
       errorOnSameScore: false,
       notationSystem: 'none',
-    };
+    }
   }
 
   handleErrorOnSameScoreChange = (
     e: SyntheticEvent<HTMLInputElement>,
-    { checked }: { checked: boolean },
+    { checked }: { checked: boolean }
   ) => {
-    this.setState({ errorOnSameScore: checked });
-  };
+    this.setState({ errorOnSameScore: checked })
+  }
 
   onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ name: event.target.value });
-  };
+    this.setState({ name: event.target.value })
+  }
 
   onChangeDanceCount = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ danceCount: this.parseCount(event) });
-  };
+    this.setState({ danceCount: this.parseCount(event) })
+  }
 
-  onChangeMinPairCountPerGroup = (
-    event: SyntheticInputEvent<HTMLInputElement>,
-  ) => {
-    this.setState({ minPairCountPerGroup: this.parseCount(event) });
-  };
+  onChangeMinPairCountPerGroup = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ minPairCountPerGroup: this.parseCount(event) })
+  }
 
-  onChangeMaxPairCountPerGroup = (
-    event: SyntheticInputEvent<HTMLInputElement>,
-  ) => {
-    this.setState({ maxPairCountPerGroup: this.parseCount(event) });
-  };
+  onChangeMaxPairCountPerGroup = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ maxPairCountPerGroup: this.parseCount(event) })
+  }
 
-  onChangePassingCouplesCount = (
-    event: SyntheticInputEvent<HTMLInputElement>,
-  ) => this.setState({ passingCouplesCount: this.parseCount(event) });
+  onChangePassingCouplesCount = (event: SyntheticInputEvent<HTMLInputElement>) =>
+    this.setState({ passingCouplesCount: this.parseCount(event) })
 
   parseCount = (event: SyntheticInputEvent<HTMLInputElement>): ?number => {
-    const count = parseInt(event.target.value);
-    return isNaN(count) ? null : count;
-  };
+    const count = parseInt(event.target.value)
+    return isNaN(count) ? null : count
+  }
 
   onChangeMultipleDanceScoringRule = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: MultipleDanceScoringRule },
-  ) => this.setState({ multipleDanceScoringRule: value });
+    { value }: { value: MultipleDanceScoringRule }
+  ) => this.setState({ multipleDanceScoringRule: value })
 
   onChangeNotationSystem = (
     event: SyntheticInputEvent<HTMLInputElement>,
-    { value }: { value: NotationSystem },
-  ) => this.setState({ notationSystem: value });
+    { value }: { value: NotationSystem }
+  ) => this.setState({ notationSystem: value })
 
-  countOrEmptyString = (count: ?number): string | number => (count != null ? count : '');
+  countOrEmptyString = (count: ?number): string | number => (count != null ? count : '')
 
   renderDanceRule = () => {
-    const { danceCount, multipleDanceScoringRule } = this.state;
-    const { validation } = this.props;
+    const { danceCount, multipleDanceScoringRule } = this.state
+    const { validation } = this.props
     if (danceCount != null && danceCount > 1) {
       return (
         <span>
           <span className="field">
-            <label htmlFor="dance-rule">
-              How are the score of multiple dances handled?
-            </label>
+            <label htmlFor="dance-rule">How are the score of multiple dances handled?</label>
           </span>
           <FormGroup id="dance-rule" widths="equal">
             <FormRadio
@@ -122,42 +115,44 @@ class EditTournamentRounds extends Component<Props, State> {
             <Message error content="Must pick at least one rule" />
           )}
         </span>
-      );
+      )
     }
-  };
+  }
 
-  renderCriteria = (): Element<'div'>[] => this.state.criteria.map(this.renderCriterion);
+  renderCriteria = (): Element<'div'>[] => this.state.criteria.map(this.renderCriterion)
 
   renderCriterion = (criterion: CriterionViewModel, index: number) => {
-    const onChangeString = (key: string) => (event) => this.onChangeCriterion(
-      {
-        ...criterion,
-        [key]: event.target.value,
-      },
-      index,
-    );
+    const onChangeString = (key: string) => (event) =>
+      this.onChangeCriterion(
+        {
+          ...criterion,
+          [key]: event.target.value,
+        },
+        index
+      )
     const onChangeInt = (key: string) => (event) => {
       this.onChangeCriterion(
         {
           ...criterion,
           [key]: this.parseCount(event),
         },
-        index,
-      );
-    };
+        index
+      )
+    }
 
-    const { validation } = this.props;
+    const { validation } = this.props
 
-    const criterionValidation = index < validation.criteriaValidation.length
-      ? validation.criteriaValidation[index]
-      : {
-        isValidCriterion: true,
-        isValidName: true,
-        isValidMinValue: true,
-        isValidMaxValue: true,
-        isValidValueCombination: true,
-        isValidDescription: true,
-      };
+    const criterionValidation =
+      index < validation.criteriaValidation.length
+        ? validation.criteriaValidation[index]
+        : {
+            isValidCriterion: true,
+            isValidName: true,
+            isValidMinValue: true,
+            isValidMaxValue: true,
+            isValidValueCombination: true,
+            isValidDescription: true,
+          }
 
     return (
       <div key={index}>
@@ -185,8 +180,7 @@ class EditTournamentRounds extends Component<Props, State> {
             value={this.countOrEmptyString(criterion.minValue)}
             onChange={onChangeInt('minValue')}
             error={
-              !criterionValidation.isValidMinValue
-              || !criterionValidation.isValidValueCombination
+              !criterionValidation.isValidMinValue || !criterionValidation.isValidValueCombination
             }
           />
           <FormInput
@@ -196,48 +190,46 @@ class EditTournamentRounds extends Component<Props, State> {
             value={this.countOrEmptyString(criterion.maxValue)}
             onChange={onChangeInt('maxValue')}
             error={
-              !criterionValidation.isValidMaxValue
-              || !criterionValidation.isValidValueCombination
+              !criterionValidation.isValidMaxValue || !criterionValidation.isValidValueCombination
             }
           />
         </FormGroup>
         <Divider />
       </div>
-    );
-  };
+    )
+  }
 
   onChangeCriterion = (criterion: CriterionViewModel, index: number) => {
-    const criteria = [...this.state.criteria];
-    criteria[index] = criterion;
-    this.setState({ criteria });
-  };
+    const criteria = [...this.state.criteria]
+    criteria[index] = criterion
+    this.setState({ criteria })
+  }
 
-  addCriterion = () => this.setState({
-    criteria: [
-      ...this.state.criteria,
-      {
-        name: '',
-        description: '',
-        minValue: null,
-        maxValue: null,
-        forJudgeType: 'normal',
-        type: 'none',
-      },
-    ],
-  });
+  addCriterion = () =>
+    this.setState({
+      criteria: [
+        ...this.state.criteria,
+        {
+          name: '',
+          description: '',
+          minValue: null,
+          maxValue: null,
+          forJudgeType: 'normal',
+          type: 'none',
+        },
+      ],
+    })
 
   onSubmit = () => {
     // $FlowFixMe
-    this.props.onSubmit(this.state);
-  };
+    this.props.onSubmit(this.state)
+  }
 
   render() {
-    const { validation } = this.props;
+    const { validation } = this.props
     return (
       <Form error={!validation.isValidRound} loading={this.props.isLoading}>
-        {this.props.createdSuccessfully && (
-          <Message positive content="Success!" />
-        )}
+        {this.props.createdSuccessfully && <Message positive content="Success!" />}
         <FormGroup widths="equal">
           <FormInput
             label="Name"
@@ -248,11 +240,7 @@ class EditTournamentRounds extends Component<Props, State> {
           />
           <FormField error={!validation.isValidPassingCouplesCount}>
             <label htmlFor="couple-pass-count">
-              Amount of
-              {' '}
-              <i>couples</i>
-              {' '}
-              that will proceed to the next round
+              Amount of <i>couples</i> that will proceed to the next round
             </label>
             <input
               id="couple-pass-count"
@@ -277,10 +265,7 @@ class EditTournamentRounds extends Component<Props, State> {
             type="number"
             value={this.countOrEmptyString(this.state.minPairCountPerGroup)}
             onChange={this.onChangeMinPairCountPerGroup}
-            error={
-              !validation.isValidMinPairCount
-              || !validation.isMaxPairGreaterOrEqualToMinPair
-            }
+            error={!validation.isValidMinPairCount || !validation.isMaxPairGreaterOrEqualToMinPair}
           />
           <FormInput
             label="Maximum amount of couples per group"
@@ -288,17 +273,12 @@ class EditTournamentRounds extends Component<Props, State> {
             type="number"
             value={this.countOrEmptyString(this.state.maxPairCountPerGroup)}
             onChange={this.onChangeMaxPairCountPerGroup}
-            error={
-              !validation.isValidMaxPairCount
-              || !validation.isMaxPairGreaterOrEqualToMinPair
-            }
+            error={!validation.isValidMaxPairCount || !validation.isMaxPairGreaterOrEqualToMinPair}
           />
         </FormGroup>
         <span>
           <span className="field">
-            <label htmlFor="notation-system">
-              What is the notation system ?
-            </label>
+            <label htmlFor="notation-system">What is the notation system ?</label>
           </span>
           <FormGroup id="notation-system" widths="equal">
             <FormRadio
@@ -342,8 +322,8 @@ class EditTournamentRounds extends Component<Props, State> {
           Submit
         </Button>
       </Form>
-    );
+    )
   }
 }
 
-export default EditTournamentRounds;
+export default EditTournamentRounds

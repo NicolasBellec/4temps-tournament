@@ -1,16 +1,16 @@
 // @flow
 
-import { apiPostRequest } from '../util';
-import validateAssistant from '../../../validators/validate-assistant';
+import { apiPostRequest } from '../util'
+import validateAssistant from '../../../validators/validate-assistant'
 
 export async function createAssistantApi(
   tournamentId: string,
-  assistant: Assistant,
+  assistant: Assistant
 ): Promise<Response> {
   if (!validateAssistant(assistant)) {
-    throw false;
+    throw false
   }
-  return apiPostRequest(`/api/assistant/${tournamentId}/create`, assistant);
+  return apiPostRequest(`/api/assistant/${tournamentId}/create`, assistant)
 }
 
-export default createAssistantApi;
+export default createAssistantApi

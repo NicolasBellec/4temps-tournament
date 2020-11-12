@@ -1,11 +1,11 @@
 // @flow
 
-import ObjectId from 'bson-objectid';
+import ObjectId from 'bson-objectid'
 
 export type RouteResult<T> = Promise<{
   status: number,
   body: T,
-}>;
+}>
 
 // eslint-disable-next-line
 export function createMalusCriterion(): RoundCriterion {
@@ -16,5 +16,5 @@ export function createMalusCriterion(): RoundCriterion {
     minValue: 0,
     maxValue: 100,
     forJudgeType: 'sanctioner',
-  };
+  }
 }

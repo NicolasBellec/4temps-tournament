@@ -1,36 +1,36 @@
 // @flow
 
-import { apiPostRequest } from '../util';
+import { apiPostRequest } from '../util'
 
-import { validateParticipant } from '../../../validators/validate-participant';
+import { validateParticipant } from '../../../validators/validate-participant'
 
 export const createParticipant = async (
   tournamentId: string,
-  participant: Participant,
+  participant: Participant
 ): Promise<{
   tournamentId: string,
   participant: Participant,
 }> => {
-  const validation = validateParticipant(participant);
+  const validation = validateParticipant(participant)
   if (!validation.isValidParticipant) {
-    throw validation;
+    throw validation
   }
 
   return apiPostRequest(`/api/participant/${tournamentId}/create`, {
     tournamentId,
     participant,
-  });
-};
+  })
+}
 
 export async function changeAttendance(
   tournamentId: string,
   participantId: string,
-  isAttending: boolean,
+  isAttending: boolean
 ): Promise<Response> {
   return apiPostRequest(`/api/participant/${tournamentId}/attendance`, {
     participantId,
     isAttending,
-  });
+  })
 }
 
-export default createParticipant;
+export default createParticipant

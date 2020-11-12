@@ -1,16 +1,16 @@
 // @flow
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const OPTIONS = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   poolSize: 5,
-};
-mongoose.Promise = global.Promise;
-mongoose.connect(String(process.env.DB_URI), OPTIONS);
+}
+mongoose.Promise = global.Promise
+mongoose.connect(String(process.env.DB_URI), OPTIONS)
 
 export function disconnect() {
-  mongoose.disconnect();
+  mongoose.disconnect()
 }
 
-export default (): Mongoose$Connection => mongoose.connection;
+export default (): Mongoose$Connection => mongoose.connection

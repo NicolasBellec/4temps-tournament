@@ -1,15 +1,15 @@
-import { createRound, createJudge, createCriterion } from '../../test-utils';
-import WinnerPicker from '../winner-picker';
+import { createRound, createJudge, createCriterion } from '../../test-utils'
+import WinnerPicker from '../winner-picker'
 
 // no-flow
 
 describe('Winner picker', () => {
-  const leaders = ['l1', 'l2'];
-  const followers = ['f1', 'f2'];
+  const leaders = ['l1', 'l2']
+  const followers = ['f1', 'f2']
 
-  const judge = createJudge();
-  const criterionId = 'crit';
-  const danceId = 'dance';
+  const judge = createJudge()
+  const criterionId = 'crit'
+  const danceId = 'dance'
 
   const notes: Array<JudgeNote> = [
     {
@@ -40,7 +40,7 @@ describe('Winner picker', () => {
       danceId,
       value: 2,
     },
-  ];
+  ]
 
   const round: Round = {
     ...createRound(),
@@ -74,38 +74,38 @@ describe('Winner picker', () => {
       },
     ],
     multipleDanceScoringRule: 'best',
-  };
+  }
 
   test('Picks the top dancers', () => {
-    const picker = new WinnerPicker([judge], round);
+    const picker = new WinnerPicker([judge], round)
 
     expect(picker.pickWinners(notes)).toEqual({
       leaders: [leaders[0]],
       followers: [followers[0]],
-    });
-  });
+    })
+  })
 
   test('Winners are ordered', () => {
     const picker = new WinnerPicker([judge], {
       ...round,
       passingCouplesCount: 2,
-    });
+    })
 
     expect(picker.pickWinners(notes)).toEqual({
       leaders: [leaders[0], leaders[1]],
       followers: [followers[0], followers[1]],
-    });
-  });
+    })
+  })
 
   test('May return less couples if not enough', () => {
     const picker = new WinnerPicker([judge], {
       ...round,
       passingCouplesCount: 10,
-    });
+    })
 
     expect(picker.pickWinners(notes)).toEqual({
       leaders: [leaders[0], leaders[1]],
       followers: [followers[0], followers[1]],
-    });
-  });
-});
+    })
+  })
+})

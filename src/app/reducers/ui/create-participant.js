@@ -1,18 +1,18 @@
 // @flow
 
-import { handle } from 'redux-pack';
+import { handle } from 'redux-pack'
 
 function participants(
   state: UiCreateParticipantsReduxState = getInitialState(),
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): UiCreateParticipantsReduxState {
-  const { type } = action;
+  const { type } = action
 
   switch (type) {
-  case 'CREATE_PARTICIPANT':
-    return createParticipant(state, action);
-  default:
-    return state;
+    case 'CREATE_PARTICIPANT':
+      return createParticipant(state, action)
+    default:
+      return state
   }
 }
 
@@ -25,14 +25,14 @@ export function getInitialState(): UiCreateParticipantsReduxState {
       isValidName: true,
       isValidRole: true,
     },
-  };
+  }
 }
 
 function createParticipant(
   state: UiCreateParticipantsReduxState,
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): UiCreateParticipantsReduxState {
-  const { payload } = action;
+  const { payload } = action
 
   return handle(state, action, {
     start: (prevState) => ({ ...prevState, isLoading: true }),
@@ -45,7 +45,7 @@ function createParticipant(
       createdSuccessfully: false,
       validation: payload,
     }),
-  });
+  })
 }
 
-export default participants;
+export default participants

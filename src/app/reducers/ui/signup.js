@@ -1,26 +1,26 @@
 // @flow
 
-import { handle } from 'redux-pack';
+import { handle } from 'redux-pack'
 
 function uiSignUp(
   state: UiSignUpReduxState = getInitialState(),
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): UiSignUpReduxState {
-  const { type, payload } = action;
+  const { type, payload } = action
 
   switch (type) {
-  case 'SIGNUP':
-    return handle(state, action, {
-      start: (prevState) => ({ ...prevState, isLoading: true }),
-      success: getInitialState,
-      failure: (prevState) => ({
-        ...prevState,
-        isLoading: false,
-        validation: payload,
-      }),
-    });
-  default:
-    return state;
+    case 'SIGNUP':
+      return handle(state, action, {
+        start: (prevState) => ({ ...prevState, isLoading: true }),
+        success: getInitialState,
+        failure: (prevState) => ({
+          ...prevState,
+          isLoading: false,
+          validation: payload,
+        }),
+      })
+    default:
+      return state
   }
 }
 
@@ -35,7 +35,7 @@ export function getInitialState(): UiSignUpReduxState {
       isValidEmail: true,
       isValidPassword: true,
     },
-  };
+  }
 }
 
-export default uiSignUp;
+export default uiSignUp

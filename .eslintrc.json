@@ -10,7 +10,9 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:flowtype/recommended",
-        "plugin:jest/recommended"
+        "plugin:jest/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended"
     ],
     "env": {
         "browser": true,
@@ -18,61 +20,12 @@
         "jest/globals": true
     },
     "rules": {
-        // 2 spaces as indents
-        "indent": [
-            "error",
-            2
-        ],
-        "max-len": [
-            "error",
-            {
-                "code": 80,
-                "ignoreComments": true,
-                "ignoreStrings": true,
-                "ignoreTemplateLiterals": true,
-                "ignoreRegExpLiterals": true
-            }
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "no-trailing-spaces": [
-            "error"
-        ],
-        // allow jsx in .js files
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [
-                    ".js",
-                    ".jsx"
-                ]
-            }
-        ],
-        // don't error on react router4 Link component
-        "jsx-a11y/anchor-is-valid": [
-            "error",
-            {
-                "components": [
-                    "Link"
-                ],
-                "specialLink": [
-                    "to"
-                ],
-                "aspects": [
-                    "noHref"
-                ]
-            }
-        ],
-        "jsx-a11y/label-has-for": [ 2, {
-            "required": {
-                "some": [ "nesting", "id" ]
-            }
-        }]
+        "prettier/prettier": [
+          "error",
+          {},
+          {
+            "usePrettierc": true
+          }
+        ]
     }
 }

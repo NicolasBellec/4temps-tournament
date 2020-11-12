@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 import {
   Button,
   Header,
@@ -10,106 +10,98 @@ import {
   Checkbox,
   Loader,
   Message,
-} from 'semantic-ui-react';
-import type { Props, ScoreViewModel } from './types';
+} from 'semantic-ui-react'
+import type { Props, ScoreViewModel } from './types'
 
-import './styles.css';
+import './styles.css'
 
 type State = {
   checkedLeaders: Array<string>,
   checkedFollowers: Array<string>,
-};
+}
 
 type ScoreViewModelWithChecked = {
   ...ScoreViewModel,
   checked: boolean,
-};
+}
 
 class DrawSettler extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
       checkedLeaders: [],
       checkedFollowers: [],
-    };
+    }
   }
 
   addLeader = (participant: Participant) => {
     this.setState({
       checkedLeaders: [...this.state.checkedLeaders, participant.id],
-    });
-  };
+    })
+  }
 
   removeLeader = (participant: Participant) => {
     this.setState({
-      checkedLeaders: this.state.checkedLeaders.filter(
-        (winner) => winner !== participant.id,
-      ),
-    });
-  };
+      checkedLeaders: this.state.checkedLeaders.filter((winner) => winner !== participant.id),
+    })
+  }
 
   addFollower = (participant: Participant) => {
     this.setState({
       checkedFollowers: [...this.state.checkedFollowers, participant.id],
-    });
-  };
+    })
+  }
 
   removeFollower = (participant: Participant) => {
     this.setState({
-      checkedFollowers: this.state.checkedFollowers.filter(
-        (winner) => winner !== participant.id,
-      ),
-    });
-  };
+      checkedFollowers: this.state.checkedFollowers.filter((winner) => winner !== participant.id),
+    })
+  }
 
   drawWithCheck = (
     scores: Array<ScoreViewModel>,
-    checked: Array<string>,
-  ): Array<ScoreViewModelWithChecked> => scores.map((score) => ({
-    ...score,
-    checked: checked.includes(score.participant.id),
-  }));
+    checked: Array<string>
+  ): Array<ScoreViewModelWithChecked> =>
+    scores.map((score) => ({
+      ...score,
+      checked: checked.includes(score.participant.id),
+    }))
 
   submitRoundScores = () => {
-    const { leaders, followers } = this.props;
+    const { leaders, followers } = this.props
     const leaderScores = this.concatScores(
       leaders.winners,
       this.drawWithCheck(leaders.draw, this.state.checkedLeaders),
-      leaders.losers,
-    );
+      leaders.losers
+    )
     const followerScores = this.concatScores(
       followers.winners,
       this.drawWithCheck(followers.draw, this.state.checkedFollowers),
-      followers.losers,
-    );
+      followers.losers
+    )
 
-    this.props.submitRoundScores([...leaderScores, ...followerScores]);
-  };
+    this.props.submitRoundScores([...leaderScores, ...followerScores])
+  }
 
   concatScores = (
     winners: Array<ScoreViewModel>,
     draw: Array<ScoreViewModelWithChecked>,
-    losers: Array<ScoreViewModel>,
-  ): Array<Score> => winners
-    .concat(draw.filter((score) => score.checked))
-    .concat(draw.filter((score) => !score.checked))
-    .concat(losers)
-    .map((score) => ({
-      score: score.score,
-      participantId: score.participant.id,
-    }));
+    losers: Array<ScoreViewModel>
+  ): Array<Score> =>
+    winners
+      .concat(draw.filter((score) => score.checked))
+      .concat(draw.filter((score) => !score.checked))
+      .concat(losers)
+      .map((score) => ({
+        score: score.score,
+        participantId: score.participant.id,
+      }))
 
   render() {
-    const {
-      isPairRound,
-      roundName,
-      passingCouplesCount,
-      leaders,
-      followers,
-    } = this.props;
+    const { isPairRound, roundName, passingCouplesCount, leaders, followers } = this.props
 
-    const leaderCount = leaders.winners.length + this.state.checkedLeaders.length;
-    const followerCount = leaders.winners.length + this.state.checkedFollowers.length;
+    const leaderCount = leaders.winners.length + this.state.checkedLeaders.length
+    const followerCount = leaders.winners.length + this.state.checkedFollowers.length
 
     return (
       <Container>
@@ -119,25 +111,20 @@ class DrawSettler extends React.Component<Props, State> {
         </Header>
         <p>
           <strong>
-            The given score includes the notes from all judges, including the
-            president
+            The given score includes the notes from all judges, including the president
           </strong>
         </p>
         <Button
           primary
           onClick={this.submitRoundScores}
           disabled={
-            leaderCount !== passingCouplesCount
-            || (followerCount !== passingCouplesCount && !isPairRound)
-          }
-        >
+            leaderCount !== passingCouplesCount ||
+            (followerCount !== passingCouplesCount && !isPairRound)
+          }>
           Submit
         </Button>
         <Loader inline active={this.props.isLoading} />
-        <Message
-          error
-          hidden={!this.props.didSubmit || this.props.successfulSubmit}
-        >
+        <Message error hidden={!this.props.didSubmit || this.props.successfulSubmit}>
           <Message.Header>Error</Message.Header>
           {this.props.errorMessage}
         </Message>
@@ -167,10 +154,7 @@ class DrawSettler extends React.Component<Props, State> {
             <DrawSettlerTable
               header="Followers"
               winners={followers.winners}
-              draw={this.drawWithCheck(
-                followers.draw,
-                this.state.checkedFollowers,
-              )}
+              draw={this.drawWithCheck(followers.draw, this.state.checkedFollowers)}
               losers={followers.losers}
               addWinner={this.addFollower}
               removeWinner={this.removeFollower}
@@ -180,7 +164,7 @@ class DrawSettler extends React.Component<Props, State> {
           </>
         )}
       </Container>
-    );
+    )
   }
 }
 
@@ -213,7 +197,6 @@ function DrawSettlerTable({
             <Table.Cell>Score (includes score by president)</Table.Cell>
             <Table.Cell>
               Pass
-              {' '}
               {`${currentCouplesCount} / ${passingCouplesCount}`}
             </Table.Cell>
           </Table.Row>
@@ -235,13 +218,10 @@ function DrawSettlerTable({
               <Table.Cell>
                 <Checkbox
                   checked={score.checked}
-                  disabled={
-                    !score.checked
-                    && currentCouplesCount === passingCouplesCount
+                  disabled={!score.checked && currentCouplesCount === passingCouplesCount}
+                  onClick={() =>
+                    score.checked ? removeWinner(score.participant) : addWinner(score.participant)
                   }
-                  onClick={() => (score.checked
-                    ? removeWinner(score.participant)
-                    : addWinner(score.participant))}
                 />
               </Table.Cell>
             </Table.Row>
@@ -258,7 +238,7 @@ function DrawSettlerTable({
         </Table.Body>
       </Table>
     </div>
-  );
+  )
 }
 
-export default DrawSettler;
+export default DrawSettler

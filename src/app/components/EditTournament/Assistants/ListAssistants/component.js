@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React from 'react'
 import {
   Table,
   TableHeader,
@@ -8,9 +8,9 @@ import {
   TableBody,
   TableCell,
   TableRow,
-} from 'semantic-ui-react';
+} from 'semantic-ui-react'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
 function ListAssistants({ assistants }: Props) {
   return (
@@ -30,7 +30,7 @@ function ListAssistants({ assistants }: Props) {
         ))}
       </TableBody>
     </Table>
-  );
+  )
 }
 
-export default ListAssistants;
+export default ListAssistants

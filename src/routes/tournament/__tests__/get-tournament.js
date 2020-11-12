@@ -1,39 +1,33 @@
 // no-flow
-import { getTournamentRoute } from '../get-tournament';
+import { getTournamentRoute } from '../get-tournament'
 import {
   generateId,
   createTournament,
   TournamentRepositoryImpl as TournamentRepository,
-} from '../../../test-utils';
+} from '../../../test-utils'
 
 describe('/api/tournament/get', () => {
-  const tournament = createTournament();
-  let tournamentRepository: TournamentRepository;
+  const tournament = createTournament()
+  let tournamentRepository: TournamentRepository
 
   beforeEach(async () => {
-    tournamentRepository = new TournamentRepository();
-    await tournamentRepository.create(tournament);
-  });
+    tournamentRepository = new TournamentRepository()
+    await tournamentRepository.create(tournament)
+  })
 
   test('Existing tournament is returned with status 200 if user created it', async () => {
     expect(
-      await getTournamentRoute(
-        tournament.id,
-        tournament.creatorId,
-        tournamentRepository
-      )
+      await getTournamentRoute(tournament.id, tournament.creatorId, tournamentRepository)
     ).toEqual({
       status: 200,
       body: tournament,
-    });
-  });
+    })
+  })
 
   test('Returns 404 and null tournament if tournament does not exist', async () => {
-    expect(
-      await getTournamentRoute(generateId(), generateId(), tournamentRepository)
-    ).toEqual({
+    expect(await getTournamentRoute(generateId(), generateId(), tournamentRepository)).toEqual({
       status: 404,
       body: null,
-    });
-  });
-});
+    })
+  })
+})

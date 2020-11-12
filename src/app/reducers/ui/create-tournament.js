@@ -1,16 +1,16 @@
 // @flow
-import { handle } from 'redux-pack';
+import { handle } from 'redux-pack'
 
 function reducer(
   state: UiCreateTournamentsReduxState = getInitialState(),
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ) {
-  const { type } = action;
+  const { type } = action
   switch (type) {
-  case 'CREATE_TOURNAMENT':
-    return createTournament(state, action);
-  default:
-    return state;
+    case 'CREATE_TOURNAMENT':
+      return createTournament(state, action)
+    default:
+      return state
   }
 }
 
@@ -23,14 +23,14 @@ export function getInitialState(): UiCreateTournamentsReduxState {
       isValidDate: true,
       isValidType: true,
     },
-  };
+  }
 }
 
 function createTournament(
   state: UiCreateTournamentsReduxState,
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): TournamentsReduxState {
-  const { payload } = action;
+  const { payload } = action
 
   return handle(state, action, {
     start: (prevState) => ({
@@ -42,7 +42,7 @@ function createTournament(
       isLoading: false,
       validation: payload,
     }),
-  });
+  })
 }
 
-export default reducer;
+export default reducer

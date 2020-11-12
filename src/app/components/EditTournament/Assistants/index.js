@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react';
-import { Container, Divider, Header } from 'semantic-ui-react';
-import ListAssistants from './ListAssistants';
-import CreateAssistant from './CreateAssistant';
+import React from 'react'
+import { Container, Divider, Header } from 'semantic-ui-react'
+import ListAssistants from './ListAssistants'
+import CreateAssistant from './CreateAssistant'
 
 type Props = {
   tournamentId: string,
-};
+}
 
 function Assistants({ tournamentId }: Props) {
   return (
@@ -18,7 +18,7 @@ function Assistants({ tournamentId }: Props) {
       <Header as="h2">Add Assistant</Header>
       <CreateAssistant tournamentId={tournamentId} />
     </Container>
-  );
+  )
 }
 
-export default Assistants;
+export default Assistants

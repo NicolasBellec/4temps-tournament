@@ -1,7 +1,7 @@
 // @flow
 
-import mongoose from 'mongoose';
-import type { ObjectId } from 'mongoose';
+import mongoose from 'mongoose'
+import type { ObjectId } from 'mongoose'
 
 export type ParticipantDbModel = {
   _id: ObjectId,
@@ -9,7 +9,7 @@ export type ParticipantDbModel = {
   role: ParticipantRole,
   attendanceId: number,
   isAttending: boolean,
-};
+}
 
 export const schema: Mongoose$Schema<mixed> = new mongoose.Schema({
   name: {
@@ -28,17 +28,17 @@ export const schema: Mongoose$Schema<mixed> = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-});
+})
 
 export function mapToDomainModel(participant: ParticipantDbModel): Participant {
-  const { _id, ...rest } = participant;
-  return { ...rest, id: _id.toString() };
+  const { _id, ...rest } = participant
+  return { ...rest, id: _id.toString() }
 }
 
 export function mapToDbModel(participant: Participant): ParticipantDbModel {
-  const { id, ...rest } = participant;
+  const { id, ...rest } = participant
   return {
     ...rest,
     _id: new mongoose.Types.ObjectId(id),
-  };
+  }
 }

@@ -1,34 +1,30 @@
 // @flow
-import validateEmail from './validate-email';
-import type { AdminModel } from '../data/admin';
+import validateEmail from './validate-email'
+import type { AdminModel } from '../data/admin'
 
 const validateAdmin = async (
   admin: AdminWithPassword,
-  getAdmins: ?() => Promise<Array<AdminModel>>,
+  getAdmins: ?() => Promise<Array<AdminModel>>
 ): Promise<AdminCreateValidationSummary> => {
-  const isValidFirstName = admin.firstName.length > 0;
-  const isValidLastName = admin.lastName.length > 0;
-  const isValidPassword = admin.password.length >= 8;
-  const isValidEmail = validateEmail(admin.email);
+  const isValidFirstName = admin.firstName.length > 0
+  const isValidLastName = admin.lastName.length > 0
+  const isValidPassword = admin.password.length >= 8
+  const isValidEmail = validateEmail(admin.email)
 
-  let isEmailNotUsed = true;
+  let isEmailNotUsed = true
   if (getAdmins != null) {
-    isEmailNotUsed = (await getAdmins()).findIndex((u) => u.email === admin.email) === -1;
+    isEmailNotUsed = (await getAdmins()).findIndex((u) => u.email === admin.email) === -1
   }
 
   return {
     isValid:
-      isValidFirstName
-      && isValidLastName
-      && isValidEmail
-      && isValidPassword
-      && isEmailNotUsed,
+      isValidFirstName && isValidLastName && isValidEmail && isValidPassword && isEmailNotUsed,
     isValidFirstName,
     isValidLastName,
     isValidEmail,
     isValidPassword,
     isEmailNotUsed,
-  };
-};
+  }
+}
 
-export default validateAdmin;
+export default validateAdmin

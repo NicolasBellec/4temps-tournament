@@ -1,23 +1,23 @@
 // @flow
-import React from 'react';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { middleware as reduxPackMiddleware } from 'redux-pack';
-import type { Store } from 'redux';
+import React from 'react'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import { middleware as reduxPackMiddleware } from 'redux-pack'
+import type { Store } from 'redux'
 
 // $FlowFixMe
-import Router from '../Router';
+import Router from '../Router'
 // $FlowFixMe
-import NavigationBar from '../NavigationBar';
-import reducer, { getInitialState } from '../../reducers';
+import NavigationBar from '../NavigationBar'
+import reducer, { getInitialState } from '../../reducers'
 
-let store: Store<ReduxState, ReduxPackAction>;
+let store: Store<ReduxState, ReduxPackAction>
 
 export function getReduxState(): ReduxState {
   if (store) {
-    return store.getState();
+    return store.getState()
   }
-  return getInitialState();
+  return getInitialState()
 }
 
 export function appWithStore(store: mixed) {
@@ -25,25 +25,25 @@ export function appWithStore(store: mixed) {
     <Provider store={store}>
       <App />
     </Provider>
-  );
+  )
 }
 
 export function appWithPreloadedState(preloadedState: mixed) {
-  store = initializeStore(preloadedState);
+  store = initializeStore(preloadedState)
   return (
     <Provider store={store}>
       <App />
     </Provider>
-  );
+  )
 }
 
 export function initializeStore(preloadedState: mixed) {
-  const state: ReduxState = { ...getInitialState(), ...preloadedState };
+  const state: ReduxState = { ...getInitialState(), ...preloadedState }
   return createStore<ReduxState, ReduxPackAction, ReduxDispatch>(
     reducer,
     state,
-    applyMiddleware(reduxPackMiddleware),
-  );
+    applyMiddleware(reduxPackMiddleware)
+  )
 }
 
 function App() {
@@ -52,7 +52,7 @@ function App() {
       <NavigationBar />
       <Router />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

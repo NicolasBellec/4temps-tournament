@@ -1,21 +1,13 @@
 // @flow
-import React from 'react';
-import {
-  Input,
-  Segment,
-  Icon,
-  Grid,
-  GridRow,
-  GridColumn,
-  Popup,
-} from 'semantic-ui-react';
+import React from 'react'
+import { Input, Segment, Icon, Grid, GridRow, GridColumn, Popup } from 'semantic-ui-react'
 
-import './styles.css';
+import './styles.css'
 
 export type StateProps = {
   notedEntity: string,
   criterion: CriterionViewModel,
-};
+}
 
 export type CriterionViewModel = {
   id: string,
@@ -25,16 +17,16 @@ export type CriterionViewModel = {
   description: string,
   value: ?number,
   forJudgeType: JudgeType,
-};
+}
 
 export type DispatchProps = {
   onClick: (value: ?number) => void,
-};
+}
 
 type Props = {
   ...StateProps,
   ...DispatchProps,
-};
+}
 
 function NoteCriterion({ notedEntity, criterion, onClick }: Props) {
   return (
@@ -53,21 +45,13 @@ function NoteCriterion({ notedEntity, criterion, onClick }: Props) {
           </span>
         </GridRow>
         {criterion.forJudgeType === 'normal' ? (
-          <NormalInput
-            criterion={criterion}
-            notedEntity={notedEntity}
-            onClick={onClick}
-          />
+          <NormalInput criterion={criterion} notedEntity={notedEntity} onClick={onClick} />
         ) : (
-          <SanctionerInput
-            criterion={criterion}
-            notedEntity={notedEntity}
-            onClick={onClick}
-          />
+          <SanctionerInput criterion={criterion} notedEntity={notedEntity} onClick={onClick} />
         )}
       </Grid>
     </Segment>
-  );
+  )
 }
 
 function NormalInput({ notedEntity, criterion, onClick }: Props) {
@@ -91,7 +75,7 @@ function NormalInput({ notedEntity, criterion, onClick }: Props) {
         </GridColumn>
       ))}
     </GridRow>
-  );
+  )
 }
 
 function SanctionerInput({ criterion, onClick }: Props) {
@@ -102,30 +86,27 @@ function SanctionerInput({ criterion, onClick }: Props) {
         labelPosition="right"
         value={criterion.value == null ? '' : criterion.value}
         onChange={(_, { value }) => {
-          const asInt = parseInt(value, 10);
+          const asInt = parseInt(value, 10)
 
           if (isNaN(asInt)) {
-            onClick(null);
+            onClick(null)
           }
 
           if (isInRange(criterion.minValue, criterion.maxValue, asInt)) {
-            onClick(asInt);
+            onClick(asInt)
           }
         }}
       />
     </GridRow>
-  );
+  )
 }
 
 function isInRange(min: number, max: number, val: ?number) {
-  return val != null && min <= val && val <= max;
+  return val != null && min <= val && val <= max
 }
 
 function getRange(minValue: number, maxValue: number) {
-  return Array.from(
-    { length: maxValue - minValue + 1 },
-    (v, i) => minValue + i,
-  );
+  return Array.from({ length: maxValue - minValue + 1 }, (v, i) => minValue + i)
 }
 
-export default NoteCriterion;
+export default NoteCriterion

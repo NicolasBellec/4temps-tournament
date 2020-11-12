@@ -1,11 +1,9 @@
 // @flow
-import React from 'react';
-import {
-  Grid, GridColumn, GridRow, Header,
-} from 'semantic-ui-react';
-import NoteCriterion from '../NoteCriterion';
+import React from 'react'
+import { Grid, GridColumn, GridRow, Header } from 'semantic-ui-react'
+import NoteCriterion from '../NoteCriterion'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
 function PairNoteTaker({
   leaderId,
@@ -28,13 +26,15 @@ function PairNoteTaker({
             <NoteCriterion
               key={leaderId + criterion.id}
               notedEntity={leaderId}
-              onClick={(value: ?number) => onClick(tournamentId, {
-                danceId,
-                judgeId,
-                participantId: leaderId,
-                criterionId: criterion.id,
-                value,
-              })}
+              onClick={(value: ?number) =>
+                onClick(tournamentId, {
+                  danceId,
+                  judgeId,
+                  participantId: leaderId,
+                  criterionId: criterion.id,
+                  value,
+                })
+              }
               criterion={criterion}
             />
           ))}
@@ -49,20 +49,22 @@ function PairNoteTaker({
             <NoteCriterion
               key={followerId + criterion.id}
               notedEntity={followerId}
-              onClick={(value: ?number) => onClick(tournamentId, {
-                danceId,
-                judgeId,
-                participantId: followerId,
-                criterionId: criterion.id,
-                value,
-              })}
+              onClick={(value: ?number) =>
+                onClick(tournamentId, {
+                  danceId,
+                  judgeId,
+                  participantId: followerId,
+                  criterionId: criterion.id,
+                  value,
+                })
+              }
               criterion={criterion}
             />
           ))}
         </GridRow>
       </GridColumn>
     </Grid>
-  );
+  )
 }
 
-export default PairNoteTaker;
+export default PairNoteTaker

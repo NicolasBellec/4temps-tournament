@@ -1,6 +1,6 @@
 // @flow
-import type { TournamentRepository } from '../../data/tournament';
-import type { NoteRepository } from '../../data/note';
+import type { TournamentRepository } from '../../data/tournament'
+import type { NoteRepository } from '../../data/note'
 import validateNoteForTournamentAndUser, {
   DanceNotActiveError,
   CriterionNotFoundError,
@@ -9,108 +9,101 @@ import validateNoteForTournamentAndUser, {
   InvalidValueError,
   WrongJudgeError,
   WrongJudgeType,
-} from './validate-note';
-import { parseNote, InvalidBodyError } from './parse-note';
+} from './validate-note'
+import { parseNote, InvalidBodyError } from './parse-note'
 
 export default function CreateNoteRoute(
   tournamentRepository: TournamentRepository,
-  noteRepository: NoteRepository,
+  noteRepository: NoteRepository
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
-    await new CreateNoteRouteHandler(
-      tournamentRepository,
-      noteRepository,
-      req,
-      res,
-    ).route();
-  };
+    await new CreateNoteRouteHandler(tournamentRepository, noteRepository, req, res).route()
+  }
 }
 
 class CreateNoteRouteHandler {
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
-  _noteRepository: NoteRepository;
+  _noteRepository: NoteRepository
 
-  _req: ServerApiRequest;
+  _req: ServerApiRequest
 
-  _res: ServerApiResponse;
+  _res: ServerApiResponse
 
   constructor(
     tournamentRepository: TournamentRepository,
     noteRepository: NoteRepository,
     req: ServerApiRequest,
-    res: ServerApiResponse,
+    res: ServerApiResponse
   ) {
-    this._tournamentRepository = tournamentRepository;
-    this._noteRepository = noteRepository;
-    this._req = req;
-    this._res = res;
+    this._tournamentRepository = tournamentRepository
+    this._noteRepository = noteRepository
+    this._req = req
+    this._res = res
   }
 
   route = async () => {
     try {
-      const note = parseNote(this._req.body);
+      const note = parseNote(this._req.body)
 
       if (note.value == null) {
-        await this._noteRepository.delete(note);
+        await this._noteRepository.delete(note)
       } else {
-        await this._validateNote(note);
-        await this._noteRepository.createOrUpdate(note);
+        await this._validateNote(note)
+        await this._noteRepository.createOrUpdate(note)
       }
 
-      this._res.json(note);
+      this._res.json(note)
     } catch (e) {
-      this._handleError(e);
+      this._handleError(e)
     }
-  };
+  }
 
   _validateNote = async (note: JudgeNote) => {
-    const tournament: Tournament = await this._getTournament();
+    const tournament: Tournament = await this._getTournament()
     const judge: ?Judge = tournament.judges.find(
-      (judge) => judge.id === (this._req.session.user && this._req.session.user.id),
-    );
-    validateNoteForTournamentAndUser(note, tournament, judge);
-  };
+      (judge) => judge.id === (this._req.session.user && this._req.session.user.id)
+    )
+    validateNoteForTournamentAndUser(note, tournament, judge)
+  }
 
   _getTournament = async (): Promise<Tournament> => {
-    const tournament = await this._tournamentRepository.get(
-      this._req.params.tournamentId,
-    );
+    const tournament = await this._tournamentRepository.get(this._req.params.tournamentId)
 
     if (tournament == null) {
-      throw new TournamentNotFoundError();
+      throw new TournamentNotFoundError()
     }
 
-    return tournament;
-  };
+    return tournament
+  }
 
   _handleError = (e: mixed) => {
     if (e instanceof InvalidBodyError) {
-      this._res.sendStatus(400);
+      this._res.sendStatus(400)
     } else if (e instanceof TournamentNotFoundError) {
-      this._res.status(404);
-      this._res.json({ tournamentExists: false });
+      this._res.status(404)
+      this._res.json({ tournamentExists: false })
     } else if (e instanceof DanceNotActiveError) {
-      this._res.status(404);
-      this._res.json({ isDanceActive: false });
+      this._res.status(404)
+      this._res.json({ isDanceActive: false })
     } else if (e instanceof CriterionNotFoundError) {
-      this._res.status(404);
-      this._res.json({ criterionExists: false });
+      this._res.status(404)
+      this._res.json({ criterionExists: false })
     } else if (e instanceof ParticipantNotFoundError) {
-      this._res.status(404);
-      this._res.json({ participantExists: false });
+      this._res.status(404)
+      this._res.json({ participantExists: false })
     } else if (e instanceof InvalidCriterionForParticipant) {
-      this._res.status(400);
-      this._res.json({ isValidCriterionForParticipant: false });
+      this._res.status(400)
+      this._res.json({ isValidCriterionForParticipant: false })
     } else if (e instanceof InvalidValueError) {
-      this._res.status(400);
-      this._res.json({ isValueInRange: false });
+      this._res.status(400)
+      this._res.json({ isValueInRange: false })
     } else if (e instanceof WrongJudgeError || e instanceof WrongJudgeType) {
-      this._res.sendStatus(401);
+      this._res.sendStatus(401)
     } else {
-      this._res.status(500);
+      this._res.status(500)
     }
-  };
+  }
 }
 
 function TournamentNotFoundError() {}

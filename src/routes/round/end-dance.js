@@ -1,254 +1,240 @@
 // @flow
 
-import NoteChecker from '../../domain/note-checker';
-import RoundScorer from '../../domain/round-scorer';
-import RPSSRoundScorer from '../../domain/rpss-round-scorer';
-import NextGroupGenerator from '../../domain/next-group-generator';
-import type { TournamentRepository } from '../../data/tournament';
-import type { NoteRepository } from '../../data/note';
-import createLeaderboard from '../leaderboard/create-leaderboard';
-import isDrawInRound from '../../domain/is-draw-in-round';
+import NoteChecker from '../../domain/note-checker'
+import RoundScorer from '../../domain/round-scorer'
+import RPSSRoundScorer from '../../domain/rpss-round-scorer'
+import NextGroupGenerator from '../../domain/next-group-generator'
+import type { TournamentRepository } from '../../data/tournament'
+import type { NoteRepository } from '../../data/note'
+import createLeaderboard from '../leaderboard/create-leaderboard'
+import isDrawInRound from '../../domain/is-draw-in-round'
 
-type UpdateLeaderboardFunc = (leaderboard: Leaderboard) => void;
+type UpdateLeaderboardFunc = (leaderboard: Leaderboard) => void
 
 export default class StartDanceRoute {
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
-  _noteRepository: NoteRepository;
+  _noteRepository: NoteRepository
 
-  _updateLeaderboardFunc: UpdateLeaderboardFunc;
+  _updateLeaderboardFunc: UpdateLeaderboardFunc
 
   constructor(
     repository: TournamentRepository,
     noteRepository: NoteRepository,
-    updateLeaderboard: UpdateLeaderboardFunc,
+    updateLeaderboard: UpdateLeaderboardFunc
   ) {
-    this._tournamentRepository = repository;
-    this._noteRepository = noteRepository;
-    this._updateLeaderboardFunc = updateLeaderboard;
+    this._tournamentRepository = repository
+    this._noteRepository = noteRepository
+    this._updateLeaderboardFunc = updateLeaderboard
   }
 
   route = () => async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const { tournamentId } = req.params;
+      const { tournamentId } = req.params
       const handler = new EndDanceRouteHandler(
         this._tournamentRepository,
         this._noteRepository,
         this._updateLeaderboardFunc,
-        tournamentId,
-      );
+        tournamentId
+      )
 
-      await handler.endDance();
-      res.json(handler.getUpdatedRound());
+      await handler.endDance()
+      res.json(handler.getUpdatedRound())
     } catch (e) {
-      this._handleError(e, res);
+      this._handleError(e, res)
     }
-  };
+  }
 
   _handleError = (e: mixed, res: ServerApiResponse) => {
     if (e instanceof TournamentNotFoundError) {
-      res.sendStatus(404);
+      res.sendStatus(404)
     }
     if (e instanceof NoStartedDanceError) {
-      res.status(404);
+      res.status(404)
       res.json({
         hasActiveDance: false,
-      });
+      })
     } else if (e instanceof NotAllNotesError) {
-      res.status(400);
+      res.status(400)
       res.json({
         isAllSubmitted: false,
-      });
+      })
     } else if (e instanceof RoundHasDrawError) {
-      res.status(409);
+      res.status(409)
       res.json({
         isDraw: true,
-      });
+      })
     } else if (e instanceof DebuggingError) {
-      res.status(500);
+      res.status(500)
       res.json({
         mess: 'Debugging trap',
-      });
+      })
     } else {
-      res.status(500);
+      res.status(500)
 
       res.json({
         // $FlowFixMe
         error: e.toString(),
-      });
+      })
     }
-  };
+  }
 }
 
 class EndDanceRouteHandler {
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
-  _noteRepository: NoteRepository;
+  _noteRepository: NoteRepository
 
-  _updateLeaderboardFunc: UpdateLeaderboardFunc;
+  _updateLeaderboardFunc: UpdateLeaderboardFunc
 
-  _tournamentId: string;
+  _tournamentId: string
 
-  _tournament: Tournament;
+  _tournament: Tournament
 
-  _round: Round;
+  _round: Round
 
   constructor(
     repository: TournamentRepository,
     noteRepository: NoteRepository,
     updateLeaderboard: UpdateLeaderboardFunc,
-    tournamentId: string,
+    tournamentId: string
   ) {
-    this._tournamentRepository = repository;
-    this._noteRepository = noteRepository;
+    this._tournamentRepository = repository
+    this._noteRepository = noteRepository
 
-    this._updateLeaderboardFunc = updateLeaderboard;
-    this._tournamentId = tournamentId;
+    this._updateLeaderboardFunc = updateLeaderboard
+    this._tournamentId = tournamentId
   }
 
-  getUpdatedRound = () => this._round;
+  getUpdatedRound = () => this._round
 
   endDance = async () => {
-    const tournament = await this._tournamentRepository.get(this._tournamentId);
+    const tournament = await this._tournamentRepository.get(this._tournamentId)
 
     if (!tournament) {
-      throw new TournamentNotFoundError();
+      throw new TournamentNotFoundError()
     }
 
-    const round = this._getActiveRound(tournament);
+    const round = this._getActiveRound(tournament)
     if (round.draw) {
-      throw new RoundHasDrawError();
+      throw new RoundHasDrawError()
     }
 
-    const dance = this._getStartedDance(round);
+    const dance = this._getStartedDance(round)
 
     if (!(await this._hasAllNotesForDance(tournament, dance))) {
-      throw new NotAllNotesError();
+      throw new NotAllNotesError()
     }
 
-    if (
-      this._isLastDanceInGroup(round, dance)
-      && this._isLastGroup(round, dance)
-    ) {
-      await this._generateNextGroups(tournament, round);
+    if (this._isLastDanceInGroup(round, dance) && this._isLastGroup(round, dance)) {
+      await this._generateNextGroups(tournament, round)
       // if it's still the last after having generated a new one, it's the very last
       if (this._isLastGroup(round, dance)) {
-        await this._endRoundOfTournament(tournament, round);
+        await this._endRoundOfTournament(tournament, round)
       }
     }
 
-    dance.active = false;
-    dance.finished = true;
+    dance.active = false
+    dance.finished = true
 
-    await this._tournamentRepository.updateRound(this._tournamentId, round);
+    await this._tournamentRepository.updateRound(this._tournamentId, round)
 
-    this._round = round;
+    this._round = round
 
     if (this._round.finished) {
-      this._updateLeaderboardFunc(createLeaderboard(tournament));
+      this._updateLeaderboardFunc(createLeaderboard(tournament))
     }
-  };
+  }
 
   _getActiveRound = (tournament: Tournament): Round => {
     for (const round of tournament.rounds) {
       if (round.active) {
-        return round;
+        return round
       }
     }
 
-    throw new NoStartedDanceError();
-  };
+    throw new NoStartedDanceError()
+  }
 
   _getStartedDance = (round: Round): Dance => {
     for (let i = 0; i < round.groups.length; ++i) {
       for (let j = 0; j < round.groups[i].dances.length; ++j) {
         if (round.groups[i].dances[j].active) {
-          return round.groups[i].dances[j];
+          return round.groups[i].dances[j]
         }
       }
     }
 
-    throw new NoStartedDanceError();
-  };
+    throw new NoStartedDanceError()
+  }
 
-  _hasAllNotesForDance = async (
-    tournament: Tournament,
-    dance: Dance,
-  ): Promise<boolean> => {
-    const checker = new NoteChecker(tournament);
-    const notes = await this._noteRepository.getForDance(dance.id);
-    return checker.allSetForDance(dance.id, notes);
-  };
+  _hasAllNotesForDance = async (tournament: Tournament, dance: Dance): Promise<boolean> => {
+    const checker = new NoteChecker(tournament)
+    const notes = await this._noteRepository.getForDance(dance.id)
+    return checker.allSetForDance(dance.id, notes)
+  }
 
   _isLastDanceInGroup = (round: Round, activeDance: Dance): boolean => {
     for (let i = 0; i < round.groups.length; ++i) {
       for (let j = 0; j < round.groups[i].dances.length; ++j) {
         if (round.groups[i].dances[j].id === activeDance.id) {
-          return j === round.groups[i].dances.length - 1;
+          return j === round.groups[i].dances.length - 1
         }
       }
     }
-    throw new NoStartedDanceError();
-  };
+    throw new NoStartedDanceError()
+  }
 
   _isLastGroup = (round: Round, activeDance: Dance): boolean => {
     for (let i = 0; i < round.groups.length; ++i) {
       for (let j = 0; j < round.groups[i].dances.length; ++j) {
         if (round.groups[i].dances[j].id === activeDance.id) {
-          return i === round.groups.length - 1;
+          return i === round.groups.length - 1
         }
       }
     }
 
-    throw new NoStartedDanceError();
-  };
+    throw new NoStartedDanceError()
+  }
 
-  _generateNextGroups = async (
-    tournament: Tournament,
-    round: Round,
-  ): Promise<void> => {
-    const generator = new NextGroupGenerator(
-      tournament,
-      await this._getNotes(round),
-    );
+  _generateNextGroups = async (tournament: Tournament, round: Round): Promise<void> => {
+    const generator = new NextGroupGenerator(tournament, await this._getNotes(round))
 
-    let group = null;
+    let group = null
     do {
-      group = generator.generateForRound(round.id);
+      group = generator.generateForRound(round.id)
       if (group != null) {
-        round.groups.push(group);
+        round.groups.push(group)
       }
-    } while (group != null);
-  };
+    } while (group != null)
+  }
 
   _selectRandomJudge = (tournament: Tournament): string => {
-    const { judges } = tournament;
+    const { judges } = tournament
 
     // Get a random number in [ 0, judges.length [
-    const randomJudge = Math.floor(Math.random() * judges.length);
-    return judges[randomJudge].id;
-  };
+    const randomJudge = Math.floor(Math.random() * judges.length)
+    return judges[randomJudge].id
+  }
 
   _endRoundOfTournament = async (tournament: Tournament, round: Round) => {
-    const notes = await this._getNotes(round);
+    const notes = await this._getNotes(round)
 
     if (round.notationSystem == 'rpss') {
-      const scorer = new RPSSRoundScorer(tournament.judges, round);
-      round.roundScores = scorer.scoreRound(notes);
+      const scorer = new RPSSRoundScorer(tournament.judges, round)
+      round.roundScores = scorer.scoreRound(notes)
     } else if (round.notationSystem == 'sum') {
-      round.roundScores = new RoundScorer(tournament.judges, round).scoreRound(
-        notes,
-      );
+      round.roundScores = new RoundScorer(tournament.judges, round).scoreRound(notes)
     }
 
     if (this._hasDraw(round)) {
-      round.draw = true;
+      round.draw = true
 
       // Select a judge at random to handle the draw
-      const randomJudgeId = this._selectRandomJudge(tournament);
+      const randomJudgeId = this._selectRandomJudge(tournament)
 
       // We do not use the president anymore, we use a random judge instead
-      round.tieBreakerJudge = randomJudgeId;
+      round.tieBreakerJudge = randomJudgeId
 
       // if (round.notationSystem == 'rpss') {
       //   round.roundScores = new RPSSRoundScorer(tournament.judges, round, {
@@ -262,22 +248,22 @@ class EndDanceRouteHandler {
       //   }).scoreRound(notes);
       // }
     } else {
-      round.active = false;
-      round.finished = true;
+      round.active = false
+      round.finished = true
     }
-  };
+  }
 
-  _hasDraw = (round: Round): boolean => isDrawInRound(round);
+  _hasDraw = (round: Round): boolean => isDrawInRound(round)
 
   _getNotes = async (round: Round) => {
-    let notes: Array<JudgeNote> = [];
+    let notes: Array<JudgeNote> = []
     for (const group of round.groups) {
       for (const dance of group.dances) {
-        notes = notes.concat(await this._noteRepository.getForDance(dance.id));
+        notes = notes.concat(await this._noteRepository.getForDance(dance.id))
       }
     }
-    return notes;
-  };
+    return notes
+  }
 }
 
 function TournamentNotFoundError() {}

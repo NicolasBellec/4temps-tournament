@@ -1,54 +1,51 @@
 // @flow
-import type { NextFunction } from 'express';
-import type { TournamentRepository } from '../data/tournament';
-import { TournamentRepositoryImpl } from '../data/tournament';
+import type { NextFunction } from 'express'
+import type { TournamentRepository } from '../data/tournament'
+import { TournamentRepositoryImpl } from '../data/tournament'
 
 export function allow(...role: Array<PermissionRole>) {
-  return authorizationMiddleware(new TournamentRepositoryImpl())(...role);
+  return authorizationMiddleware(new TournamentRepositoryImpl())(...role)
 }
 
 export function authorizationMiddleware(repository: TournamentRepository) {
-  return (...roles: Array<PermissionRole>) => new AuthorizationChecker(roles, repository).middleware();
+  return (...roles: Array<PermissionRole>) =>
+    new AuthorizationChecker(roles, repository).middleware()
 }
 
 class AuthorizationChecker {
-  _roles: Array<PermissionRole>;
+  _roles: Array<PermissionRole>
 
-  _repository: TournamentRepository;
+  _repository: TournamentRepository
 
-  _res: ServerApiResponse;
+  _res: ServerApiResponse
 
-  _next: NextFunction;
+  _next: NextFunction
 
-  _user: ?{ id: string, role: PermissionRole, tournamentId?: string };
+  _user: ?{ id: string, role: PermissionRole, tournamentId?: string }
 
-  _tournamentId: string;
+  _tournamentId: string
 
   constructor(roles: Array<PermissionRole>, repository: TournamentRepository) {
-    this._roles = roles;
-    this._repository = repository;
+    this._roles = roles
+    this._repository = repository
   }
 
-  middleware = () => async (
-    req: ServerApiRequest,
-    res: ServerApiResponse,
-    next: NextFunction,
-  ) => {
-    this._res = res;
-    this._next = next;
-    this._user = req.session.user;
-    this._tournamentId = req.params.tournamentId || '';
+  middleware = () => async (req: ServerApiRequest, res: ServerApiResponse, next: NextFunction) => {
+    this._res = res
+    this._next = next
+    this._user = req.session.user
+    this._tournamentId = req.params.tournamentId || ''
 
     try {
       if (await this._isAllowed()) {
-        next();
+        next()
       } else {
-        res.sendStatus(401);
+        res.sendStatus(401)
       }
     } catch (e) {
-      this._handleError(e);
+      this._handleError(e)
     }
-  };
+  }
 
   _isAllowed = async () => {
     const funcs: { [role: PermissionRole]: () => Promise<boolean> } = {
@@ -57,69 +54,70 @@ class AuthorizationChecker {
       judge: this._isAllowedJudge,
       admin: this._isAllowedAdmin,
       assistant: this._isAllowedAssistant,
-    };
-
-    let accumulator: boolean = false;
-    for (const role of this._roles) {
-      accumulator = accumulator || (await funcs[role]());
     }
 
-    return accumulator;
-  };
+    let accumulator: boolean = false
+    for (const role of this._roles) {
+      accumulator = accumulator || (await funcs[role]())
+    }
 
-  _isAllowedPublic = async () => true;
+    return accumulator
+  }
 
-  _isAllowedAuthenticated = async () => this._user != null && this._user.role === 'admin';
+  _isAllowedPublic = async () => true
 
-  _isAllowedAdmin = async () => this._user != null
-    && this._user.role === 'admin'
-    && this._isAdminOfTournament(await this._getTournament());
+  _isAllowedAuthenticated = async () => this._user != null && this._user.role === 'admin'
+
+  _isAllowedAdmin = async () =>
+    this._user != null &&
+    this._user.role === 'admin' &&
+    this._isAdminOfTournament(await this._getTournament())
 
   _isAdminOfTournament = async (tournament: Tournament) => {
     if (tournament == null) {
-      throw new TournamentNotFoundError();
+      throw new TournamentNotFoundError()
     }
 
-    const userId = this._user == null ? '' : this._user.id;
-    return tournament.creatorId == userId;
-  };
+    const userId = this._user == null ? '' : this._user.id
+    return tournament.creatorId == userId
+  }
 
-  _isAllowedJudge = async () => this._user != null
-    && this._user.role === 'judge'
-    && this._isJudgeInTournament(await this._getTournament());
+  _isAllowedJudge = async () =>
+    this._user != null &&
+    this._user.role === 'judge' &&
+    this._isJudgeInTournament(await this._getTournament())
 
   _getTournament = async (): Promise<Tournament> => {
-    const tournament = await this._repository.get(this._tournamentId);
+    const tournament = await this._repository.get(this._tournamentId)
     if (tournament == null) {
-      throw new TournamentNotFoundError();
+      throw new TournamentNotFoundError()
     }
 
-    return tournament;
-  };
+    return tournament
+  }
 
   _isJudgeInTournament = (tournament: Tournament): boolean => {
-    const judgeId = this._user == null ? '' : this._user.id;
-    return tournament.judges.filter(({ id }) => id === judgeId).length === 1;
-  };
+    const judgeId = this._user == null ? '' : this._user.id
+    return tournament.judges.filter(({ id }) => id === judgeId).length === 1
+  }
 
-  _isAllowedAssistant = async () => this._user != null
-    && this._user.role === 'assistant'
-    && this._isAssistantInTournament(await this._getTournament());
+  _isAllowedAssistant = async () =>
+    this._user != null &&
+    this._user.role === 'assistant' &&
+    this._isAssistantInTournament(await this._getTournament())
 
   _isAssistantInTournament = (tournament: Tournament): boolean => {
-    const assistantId = this._user == null ? '' : this._user.id;
-    return (
-      tournament.assistants.filter(({ id }) => id === assistantId).length === 1
-    );
-  };
+    const assistantId = this._user == null ? '' : this._user.id
+    return tournament.assistants.filter(({ id }) => id === assistantId).length === 1
+  }
 
   _handleError = (error: mixed) => {
     if (error instanceof TournamentNotFoundError) {
-      this._res.sendStatus(404);
+      this._res.sendStatus(404)
     } else {
-      this._res.sendStatus(500);
+      this._res.sendStatus(500)
     }
-  };
+  }
 }
 
 function TournamentNotFoundError() {}

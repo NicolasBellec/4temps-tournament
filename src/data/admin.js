@@ -1,9 +1,9 @@
 // @flow
-import mongoose from 'mongoose';
-import type { ObjectId } from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from 'mongoose'
+import type { ObjectId } from 'mongoose'
+import bcrypt from 'bcrypt'
 
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = 12
 
 export type AdminModel = {|
   _id: ObjectId,
@@ -11,7 +11,7 @@ export type AdminModel = {|
   firstName: string,
   lastName: string,
   password: string,
-|};
+|}
 
 const schema = new mongoose.Schema({
   email: {
@@ -30,52 +30,45 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-});
+})
 
-const Model = mongoose.model('admin', schema);
+const Model = mongoose.model('admin', schema)
 
-export const createAdmin = async (
-  admin: AdminWithPassword,
-): Promise<boolean> => {
-  admin.password = (await bcrypt.hash(admin.password, SALT_ROUNDS): string);
-  const dbAdmin = new Model(admin);
+export const createAdmin = async (admin: AdminWithPassword): Promise<boolean> => {
+  admin.password = (await bcrypt.hash(admin.password, SALT_ROUNDS): string)
+  const dbAdmin = new Model(admin)
   try {
-    await dbAdmin.save();
-    return true;
+    await dbAdmin.save()
+    return true
   } catch (e) {
-    return false;
+    return false
   }
-};
+}
 
-export const getAdmins = async (): Promise<Array<AdminModel>> => await Model.find();
+export const getAdmins = async (): Promise<Array<AdminModel>> => await Model.find()
 
-export const getAdminFromId = async (
-  adminId: ObjectId,
-): Promise<?AdminModel> => {
+export const getAdminFromId = async (adminId: ObjectId): Promise<?AdminModel> => {
   try {
-    return await Model.findOne({ _id: adminId });
+    return await Model.findOne({ _id: adminId })
   } catch (e) {
-    return null;
+    return null
   }
-};
+}
 
 export const getAdminFromCredentials = async (
-  credentials: AdminCredentials,
+  credentials: AdminCredentials
 ): Promise<?AdminModel> => {
-  const admin = await Model.findOne({ email: credentials.email });
-  if (
-    admin != null
-    && (await bcrypt.compare(credentials.password, admin.password)) === true
-  ) {
-    return admin;
+  const admin = await Model.findOne({ email: credentials.email })
+  if (admin != null && (await bcrypt.compare(credentials.password, admin.password)) === true) {
+    return admin
   }
-  return null;
-};
+  return null
+}
 
 export function mapToDomainModel(admin: AdminModel): Admin {
-  const { _id, password, ...same } = admin;
+  const { _id, password, ...same } = admin
   return {
     id: _id.toString(),
     ...same,
-  };
+  }
 }

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Container,
   Table,
@@ -17,9 +17,9 @@ import {
   Icon,
   Search,
   SyntheticEvent,
-} from 'semantic-ui-react';
+} from 'semantic-ui-react'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
 type State = {
   isSearchLoading: boolean,
@@ -27,24 +27,22 @@ type State = {
   filterPresent: boolean,
   didClickUnAttend: boolean,
   unAttendParticipant: ?Participant,
-};
+}
 
 class ListParticipants extends Component<Props, State> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
       isSearchLoading: false,
       searchValue: '',
       filterPresent: false,
       didClickUnAttend: false,
       unAttendParticipant: null,
-    };
+    }
   }
 
   renderItem = (participant: Participant) => {
-    const {
-      id, name, role, isAttending, attendanceId,
-    } = participant;
+    const { id, name, role, isAttending, attendanceId } = participant
     return (
       <TableRow key={id}>
         <Table.Cell collapsing>
@@ -56,9 +54,9 @@ class ListParticipants extends Component<Props, State> {
                 this.setState({
                   didClickUnAttend: true,
                   unAttendParticipant: participant,
-                });
+                })
               } else {
-                this.props.onChangeAttending(id, true);
+                this.props.onChangeAttending(id, true)
               }
             }}
           />
@@ -67,56 +65,51 @@ class ListParticipants extends Component<Props, State> {
         <TableCell>{name}</TableCell>
         <TableCell>{this.roleToString(role)}</TableCell>
       </TableRow>
-    );
-  };
+    )
+  }
 
   roleToString(role: ParticipantRole) {
-    const { isClassic } = this.props;
+    const { isClassic } = this.props
     if (role === 'leader') {
       if (isClassic) {
-        return 'Pair';
+        return 'Pair'
       }
-      return 'Leader';
+      return 'Leader'
     }
     if (role === 'follower') {
       if (isClassic) {
-        return 'Dummy';
+        return 'Dummy'
       }
-      return 'Follower';
+      return 'Follower'
     }
     if (role === 'leaderAndFollower') {
-      return 'Both';
+      return 'Both'
     }
-    return 'Invalid role';
+    return 'Invalid role'
   }
 
   hideModal = () => {
     this.setState({
       didClickUnAttend: false,
       unAttendParticipant: null,
-    });
-  };
+    })
+  }
 
-  handleFilterChange = (
-    e: SyntheticEvent<HTMLInputElement>,
-    data: { checked: boolean },
-  ) => {
-    const { checked } = data;
-    this.setState({ filterPresent: checked });
-  };
+  handleFilterChange = (e: SyntheticEvent<HTMLInputElement>, data: { checked: boolean }) => {
+    const { checked } = data
+    this.setState({ filterPresent: checked })
+  }
 
   renderUnattendModal = () => (
     <Modal open={this.state.didClickUnAttend} onClose={this.hideModal}>
       <Header content="Un-attending participant" />
       <ModalContent>
         <p>
-          Marking
-          {' '}
+          Marking{' '}
           <b>
             {this.state.unAttendParticipant == null
               ? 'someone'
-              : `${this.state.unAttendParticipant.name} (${this.state.unAttendParticipant.attendanceId})`}
-            {' '}
+              : `${this.state.unAttendParticipant.name} (${this.state.unAttendParticipant.attendanceId})`}{' '}
           </b>
           as not-present
         </p>
@@ -127,48 +120,36 @@ class ListParticipants extends Component<Props, State> {
           inverted
           onClick={() => {
             if (this.state.unAttendParticipant) {
-              this.props.onChangeAttending(
-                this.state.unAttendParticipant.id,
-                false,
-              );
+              this.props.onChangeAttending(this.state.unAttendParticipant.id, false)
             }
-            this.hideModal();
-          }}
-        >
-          <Icon name="checkmark" />
-          {' '}
-          OK
+            this.hideModal()
+          }}>
+          <Icon name="checkmark" /> OK
         </Button>
         <Button color="red" onClick={this.hideModal}>
-          <Icon name="remove" />
-          {' '}
-          No
+          <Icon name="remove" /> No
         </Button>
       </ModalActions>
     </Modal>
-  );
+  )
 
-  handleSearchChange = (
-    e: SyntheticEvent<HTMLInputElement>,
-    { value }: { value: string },
-  ) => {
-    this.setState({ isSearchLoading: true, searchValue: value });
-    this.setState({ isSearchLoading: false });
-  };
+  handleSearchChange = (e: SyntheticEvent<HTMLInputElement>, { value }: { value: string }) => {
+    this.setState({ isSearchLoading: true, searchValue: value })
+    this.setState({ isSearchLoading: false })
+  }
 
-  getNotPresent = (): Participant[] => this.props.participants.filter((p) => !p.isAttending);
+  getNotPresent = (): Participant[] => this.props.participants.filter((p) => !p.isAttending)
 
-  searchParticipants = (participants: Array<Participant>): Participant[] => participants.filter((p) => {
-    const name = p.name.toLowerCase();
-    const search = this.state.searchValue.toLowerCase();
-    return name.indexOf(search) !== -1;
-  });
+  searchParticipants = (participants: Array<Participant>): Participant[] =>
+    participants.filter((p) => {
+      const name = p.name.toLowerCase()
+      const search = this.state.searchValue.toLowerCase()
+      return name.indexOf(search) !== -1
+    })
 
   render() {
-    let participants = this.state.filterPresent
-      ? this.getNotPresent()
-      : this.props.participants;
-    participants = this.searchParticipants(participants);
+    let participants = this.state.filterPresent ? this.getNotPresent() : this.props.participants
+    participants = this.searchParticipants(participants)
     return (
       <Container>
         {this.renderUnattendModal()}
@@ -208,8 +189,8 @@ class ListParticipants extends Component<Props, State> {
           <TableBody>{participants.map(this.renderItem)}</TableBody>
         </Table>
       </Container>
-    );
+    )
   }
 }
 
-export default ListParticipants;
+export default ListParticipants

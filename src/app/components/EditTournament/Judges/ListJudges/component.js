@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React from 'react'
 import {
   Table,
   TableHeader,
@@ -8,9 +8,9 @@ import {
   TableBody,
   TableCell,
   TableRow,
-} from 'semantic-ui-react';
+} from 'semantic-ui-react'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
 function ListJudges({ judges }: Props) {
   return (
@@ -31,25 +31,25 @@ function ListJudges({ judges }: Props) {
                 <TableCell>{typeToDisplayName(j.data.judgeType)}</TableCell>
                 <TableCell>{j.accessKey}</TableCell>
               </TableRow>
-            );
+            )
           }
         })}
       </TableBody>
     </Table>
-  );
+  )
 }
 
 function typeToDisplayName(judgeType: JudgeType): string {
   if (judgeType === 'normal') {
-    return 'Normal';
+    return 'Normal'
   }
   if (judgeType === 'sanctioner') {
-    return 'Sanctioner';
+    return 'Sanctioner'
   }
   if (judgeType === 'president') {
-    return 'President';
+    return 'President'
   }
-  return 'Unknown';
+  return 'Unknown'
 }
 
-export default ListJudges;
+export default ListJudges

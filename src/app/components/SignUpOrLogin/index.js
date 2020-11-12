@@ -1,14 +1,14 @@
 // @flow
-import React from 'react';
-import type { RouterHistory } from 'react-router-dom';
+import React from 'react'
+import type { RouterHistory } from 'react-router-dom'
 
-import SignUpOrLogin from './component';
+import SignUpOrLogin from './component'
 
 type Props = {
   history: RouterHistory,
   header: string,
   referer: string,
-};
+}
 
 const SignUpOrLoginWithRouter = ({ history, header, referer }: Props) => (
   <SignUpOrLogin
@@ -16,6 +16,6 @@ const SignUpOrLoginWithRouter = ({ history, header, referer }: Props) => (
     onClickLogin={() => history.push(`/login?referer=${referer}`)}
     onClickSignUp={() => history.push(`/signup?referer=${referer}`)}
   />
-);
+)
 
-export default SignUpOrLoginWithRouter;
+export default SignUpOrLoginWithRouter

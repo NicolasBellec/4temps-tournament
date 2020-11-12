@@ -1,16 +1,16 @@
 // @flow
-import { handle } from 'redux-pack';
+import { handle } from 'redux-pack'
 
 function reducer(
   state: UiEditTournamentsReduxState = getInitialState(),
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): UiEditTournamentsReduxState {
-  const { type } = action;
+  const { type } = action
   switch (type) {
-  case 'EDIT_TOURNAMENT':
-    return editTournament(state, action);
-  default:
-    return state;
+    case 'EDIT_TOURNAMENT':
+      return editTournament(state, action)
+    default:
+      return state
   }
 }
 
@@ -18,14 +18,14 @@ export function getInitialState(): UiEditTournamentsReduxState {
   return {
     isValidName: true,
     isValidDate: true,
-  };
+  }
 }
 
 function editTournament(
   state: UiEditTournamentsReduxState,
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): UiEditTournamentsReduxState {
-  const { payload } = action;
+  const { payload } = action
 
   return handle(state, action, {
     success: () => getInitialState(),
@@ -33,7 +33,7 @@ function editTournament(
       isValidName: payload.isValidName,
       isValidDate: payload.isValidDate,
     }),
-  });
+  })
 }
 
-export default reducer;
+export default reducer

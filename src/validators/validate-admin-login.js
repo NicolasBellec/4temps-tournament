@@ -1,17 +1,17 @@
 // @flow
-import validateEmail from './validate-email';
-import type { AdminModel } from '../data/admin';
+import validateEmail from './validate-email'
+import type { AdminModel } from '../data/admin'
 
 const validateAdminLogin = async (
   admin: AdminCredentials,
-  getAdmin: ?(AdminCredentials) => Promise<?AdminModel>,
+  getAdmin: ?(AdminCredentials) => Promise<?AdminModel>
 ): Promise<AdminLoginValidationSummary> => {
-  const isValidEmail = validateEmail(admin.email);
-  const isValidPassword = admin.password.length > 0;
+  const isValidEmail = validateEmail(admin.email)
+  const isValidPassword = admin.password.length > 0
 
-  let doesAdminExist = true;
+  let doesAdminExist = true
   if (getAdmin != null) {
-    doesAdminExist = (await getAdmin(admin)) != null;
+    doesAdminExist = (await getAdmin(admin)) != null
   }
 
   return {
@@ -19,7 +19,7 @@ const validateAdminLogin = async (
     isValidEmail,
     isValidPassword,
     doesAdminExist,
-  };
-};
+  }
+}
 
-export default validateAdminLogin;
+export default validateAdminLogin

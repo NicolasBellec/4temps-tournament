@@ -1,7 +1,7 @@
 // @flow
 
-import ObjectId from 'bson-objectid';
-import validateAdmin from '../validate-admin';
+import ObjectId from 'bson-objectid'
+import validateAdmin from '../validate-admin'
 
 test('Valid object is valid', async () => {
   const admin: AdminWithPassword = {
@@ -9,15 +9,15 @@ test('Valid object is valid', async () => {
     lastName: 'Smith',
     email: 'test@test.com',
     password: 'p4ssw0rdh4xxor',
-  };
-  const result = await validateAdmin(admin);
-  expect(result.isValid).toBe(true);
-  expect(result.isEmailNotUsed).toBe(true);
-  expect(result.isValidFirstName).toBe(true);
-  expect(result.isValidLastName).toBe(true);
-  expect(result.isValidEmail).toBe(true);
-  expect(result.isValidPassword).toBe(true);
-});
+  }
+  const result = await validateAdmin(admin)
+  expect(result.isValid).toBe(true)
+  expect(result.isEmailNotUsed).toBe(true)
+  expect(result.isValidFirstName).toBe(true)
+  expect(result.isValidLastName).toBe(true)
+  expect(result.isValidEmail).toBe(true)
+  expect(result.isValidPassword).toBe(true)
+})
 
 test('Empty first name is invalid', async () => {
   const admin: AdminWithPassword = {
@@ -25,17 +25,17 @@ test('Empty first name is invalid', async () => {
     lastName: 'Smith',
     email: 'test@test.com',
     password: 'p4ssw0rdh4xxor',
-  };
-  const result = await validateAdmin(admin);
+  }
+  const result = await validateAdmin(admin)
 
-  expect(result.isValid).toBe(false);
-  expect(result.isValidFirstName).toBe(false);
+  expect(result.isValid).toBe(false)
+  expect(result.isValidFirstName).toBe(false)
 
-  expect(result.isEmailNotUsed).toBe(true);
-  expect(result.isValidLastName).toBe(true);
-  expect(result.isValidEmail).toBe(true);
-  expect(result.isValidPassword).toBe(true);
-});
+  expect(result.isEmailNotUsed).toBe(true)
+  expect(result.isValidLastName).toBe(true)
+  expect(result.isValidEmail).toBe(true)
+  expect(result.isValidPassword).toBe(true)
+})
 
 test('Empty last name is invalid', async () => {
   const admin: AdminWithPassword = {
@@ -43,18 +43,18 @@ test('Empty last name is invalid', async () => {
     lastName: '',
     email: 'test@test.com',
     password: 'p4ssw0rdh4xxor',
-  };
+  }
 
-  const result = await validateAdmin(admin);
+  const result = await validateAdmin(admin)
 
-  expect(result.isValid).toBe(false);
-  expect(result.isValidLastName).toBe(false);
+  expect(result.isValid).toBe(false)
+  expect(result.isValidLastName).toBe(false)
 
-  expect(result.isEmailNotUsed).toBe(true);
-  expect(result.isValidFirstName).toBe(true);
-  expect(result.isValidEmail).toBe(true);
-  expect(result.isValidPassword).toBe(true);
-});
+  expect(result.isEmailNotUsed).toBe(true)
+  expect(result.isValidFirstName).toBe(true)
+  expect(result.isValidEmail).toBe(true)
+  expect(result.isValidPassword).toBe(true)
+})
 
 test('Password requires at least 8 characters', async () => {
   const admin: AdminWithPassword = {
@@ -62,40 +62,40 @@ test('Password requires at least 8 characters', async () => {
     lastName: 'Smith',
     email: 'test@test.com',
     password: 'abc4567',
-  };
+  }
 
-  const result = await validateAdmin(admin);
+  const result = await validateAdmin(admin)
 
-  expect(result.isValid).toBe(false);
-  expect(result.isValidPassword).toBe(false);
+  expect(result.isValid).toBe(false)
+  expect(result.isValidPassword).toBe(false)
 
-  expect(result.isEmailNotUsed).toBe(true);
-  expect(result.isValidFirstName).toBe(true);
-  expect(result.isValidLastName).toBe(true);
-  expect(result.isValidEmail).toBe(true);
-});
+  expect(result.isEmailNotUsed).toBe(true)
+  expect(result.isValidFirstName).toBe(true)
+  expect(result.isValidLastName).toBe(true)
+  expect(result.isValidEmail).toBe(true)
+})
 
 test('Email requires valid format', async () => {
-  const emails = ['@test.com', 't@t', 't@.com'];
+  const emails = ['@test.com', 't@t', 't@.com']
   const admins: Array<AdminWithPassword> = emails.map((email) => ({
     firstName: 'Simon',
     lastName: 'Smith',
     email,
     password: 'Password123',
-  }));
+  }))
 
   for (let i = 0; i < admins.length; ++i) {
-    const result = await validateAdmin(admins[i]);
+    const result = await validateAdmin(admins[i])
 
-    expect(result.isValid).toBe(false);
-    expect(result.isValidEmail).toBe(false);
+    expect(result.isValid).toBe(false)
+    expect(result.isValidEmail).toBe(false)
 
-    expect(result.isEmailNotUsed).toBe(true);
-    expect(result.isValidFirstName).toBe(true);
-    expect(result.isValidLastName).toBe(true);
-    expect(result.isValidPassword).toBe(true);
+    expect(result.isEmailNotUsed).toBe(true)
+    expect(result.isValidFirstName).toBe(true)
+    expect(result.isValidLastName).toBe(true)
+    expect(result.isValidPassword).toBe(true)
   }
-});
+})
 
 test('Email in use is invalid', async () => {
   const getAdmins = () =>
@@ -109,19 +109,19 @@ test('Email in use is invalid', async () => {
           password: 'asasdasdasd',
         },
       ])
-    );
+    )
 
   const admin: AdminWithPassword = {
     firstName: 'Simon',
     lastName: 'Smith',
     email: 'test@test.com',
     password: 'Password123',
-  };
-  const result = await validateAdmin(admin, getAdmins);
-  expect(result.isValid).toBe(false);
-  expect(result.isEmailNotUsed).toBe(false);
+  }
+  const result = await validateAdmin(admin, getAdmins)
+  expect(result.isValid).toBe(false)
+  expect(result.isEmailNotUsed).toBe(false)
 
-  expect(result.isValidFirstName).toBe(true);
-  expect(result.isValidLastName).toBe(true);
-  expect(result.isValidPassword).toBe(true);
-});
+  expect(result.isValidFirstName).toBe(true)
+  expect(result.isValidLastName).toBe(true)
+  expect(result.isValidPassword).toBe(true)
+})

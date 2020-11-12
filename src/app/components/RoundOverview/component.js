@@ -1,37 +1,35 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Container, Menu, MenuItem } from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Container, Menu, MenuItem } from 'semantic-ui-react'
 
 // $FlowFixMe
-import GroupView from './GroupView';
-import ScoreView from './ScoreView';
+import GroupView from './GroupView'
+import ScoreView from './ScoreView'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
-export type TabName = 'groups' | 'scores';
+export type TabName = 'groups' | 'scores'
 
 type State = {
   activeTab: TabName,
-};
+}
 
 class RoundOverview extends Component<Props, State> {
   state = {
     activeTab: 'groups',
-  };
+  }
 
   onClickTab = (tab: TabName) => {
-    this.setState({ activeTab: tab });
-  };
+    this.setState({ activeTab: tab })
+  }
 
-  renderTab = () => (this.state.activeTab === 'groups' ? (
-    <GroupView
-      tournamentId={this.props.tournamentId}
-      roundId={this.props.roundId}
-    />
-  ) : (
-    <ScoreView roundId={this.props.roundId} />
-  ));
+  renderTab = () =>
+    this.state.activeTab === 'groups' ? (
+      <GroupView tournamentId={this.props.tournamentId} roundId={this.props.roundId} />
+    ) : (
+      <ScoreView roundId={this.props.roundId} />
+    )
 
   render() {
     return (
@@ -52,8 +50,8 @@ class RoundOverview extends Component<Props, State> {
         </Menu>
         {this.renderTab()}
       </Container>
-    );
+    )
   }
 }
 
-export default RoundOverview;
+export default RoundOverview

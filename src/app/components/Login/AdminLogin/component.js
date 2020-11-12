@@ -1,41 +1,39 @@
 // @flow
 
-import React, { PureComponent } from 'react';
-import {
-  Button, Form, FormInput, Header, Message,
-} from 'semantic-ui-react';
+import React, { PureComponent } from 'react'
+import { Button, Form, FormInput, Header, Message } from 'semantic-ui-react'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
-import './styles.css';
+import './styles.css'
 
-type State = AdminCredentials;
+type State = AdminCredentials
 
 class Login extends PureComponent<Props, State> {
   static defaultProps = {
     headerTitle: 'Log in',
-  };
+  }
 
   constructor(props: Props) {
-    super(props);
+    super(props)
 
     this.state = {
       email: '',
       password: '',
-    };
+    }
   }
 
   onEmailChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ email: event.target.value });
-  };
+    this.setState({ email: event.target.value })
+  }
 
   onPasswordChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ password: event.target.value });
-  };
+    this.setState({ password: event.target.value })
+  }
 
   onSubmit = () => {
-    this.props.onSubmit(this.state);
-  };
+    this.props.onSubmit(this.state)
+  }
 
   render() {
     const {
@@ -45,9 +43,9 @@ class Login extends PureComponent<Props, State> {
       isValidEmail,
       isValidPassword,
       doesAdminExist,
-    } = this.props;
+    } = this.props
 
-    const { email, password } = this.state;
+    const { email, password } = this.state
 
     return (
       <div styleName="center">
@@ -72,14 +70,12 @@ class Login extends PureComponent<Props, State> {
             <Button type="submit" onClick={this.onSubmit}>
               Submit
             </Button>
-            {!doesAdminExist && (
-              <Message error content="Invalid email or password" />
-            )}
+            {!doesAdminExist && <Message error content="Invalid email or password" />}
           </Form>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

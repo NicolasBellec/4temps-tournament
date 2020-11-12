@@ -1,6 +1,6 @@
 // no-flow
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Header,
   Button,
@@ -12,8 +12,8 @@ import {
   TableHeaderCell,
   Container,
   Grid,
-} from 'semantic-ui-react';
-import type { Props, GroupViewModel } from './types';
+} from 'semantic-ui-react'
+import type { Props, GroupViewModel } from './types'
 
 function DanceActions({
   activeDance,
@@ -27,7 +27,7 @@ function DanceActions({
   endDance: () => void,
 }) {
   if (draw) {
-    return <strong>Waiting to settle draw...</strong>;
+    return <strong>Waiting to settle draw...</strong>
   }
 
   if (activeDance != null) {
@@ -35,18 +35,18 @@ function DanceActions({
       <Button color="red" onClick={endDance}>
         Stop dance
       </Button>
-    );
+    )
   }
   return (
     <Button color="green" onClick={startDance}>
       Start next dance
     </Button>
-  );
+  )
 }
 
 class RoundOverview extends Component<Props> {
   _renderState = () => {
-    const { round } = this.props;
+    const { round } = this.props
     if (round.active) {
       return (
         <Table basic="very" collapsing>
@@ -65,45 +65,43 @@ class RoundOverview extends Component<Props> {
             </TableRow>
           </TableBody>
         </Table>
-      );
+      )
     }
     if (round.finished) {
-      return 'Finished';
+      return 'Finished'
     }
-    return 'Not started';
-  };
+    return 'Not started'
+  }
 
   _groupInformation() {
-    const { round } = this.props;
-    let groupInformation = 'Current Group: None';
+    const { round } = this.props
+    let groupInformation = 'Current Group: None'
     if (round.activeGroup != null) {
-      groupInformation = `Current Group: ${round.activeGroup.toString()}`;
+      groupInformation = `Current Group: ${round.activeGroup.toString()}`
     } else if (round.nextGroup != null) {
-      groupInformation = `Next Group: ${round.nextGroup.toString()}`;
+      groupInformation = `Next Group: ${round.nextGroup.toString()}`
     }
-    return <TableCell>{groupInformation}</TableCell>;
+    return <TableCell>{groupInformation}</TableCell>
   }
 
   _danceInformation() {
-    const { round } = this.props;
-    let danceInformation = 'Current Dance: None';
+    const { round } = this.props
+    let danceInformation = 'Current Dance: None'
     if (round.activeDance != null) {
-      danceInformation = `Current Dance: ${round.activeDance.toString()}`;
+      danceInformation = `Current Dance: ${round.activeDance.toString()}`
     } else if (round.nextDance != null) {
-      danceInformation = `Next Dance: ${round.nextDance.toString()}`;
+      danceInformation = `Next Dance: ${round.nextDance.toString()}`
     }
-    return <TableCell>{danceInformation}</TableCell>;
+    return <TableCell>{danceInformation}</TableCell>
   }
 
   _renderGroups = () => {
-    const { active, groups } = this.props.round;
+    const { active, groups } = this.props.round
     if (active && groups.length === 0) {
-      return <div>No groups generated / no participants in tournament</div>;
+      return <div>No groups generated / no participants in tournament</div>
     }
     if (groups.length === 0) {
-      return (
-        <div>You have to start the round before you can create groups</div>
-      );
+      return <div>You have to start the round before you can create groups</div>
     }
 
     return (
@@ -125,8 +123,8 @@ class RoundOverview extends Component<Props> {
           </div>
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   _renderGroup = (group: GroupViewModel) => (
     <Table unstackable>
@@ -157,12 +155,12 @@ class RoundOverview extends Component<Props> {
         ))}
       </TableBody>
     </Table>
-  );
+  )
 
   _renderScoreTable = () => {
-    const { judgesNoted } = this.props.round.notes;
-    const { judgesNotNoted } = this.props.round.notes;
-    const judgeCount = judgesNoted.length + judgesNotNoted.length;
+    const { judgesNoted } = this.props.round.notes
+    const { judgesNotNoted } = this.props.round.notes
+    const judgeCount = judgesNoted.length + judgesNotNoted.length
     return (
       <Grid columns={2} divided>
         <Grid.Row>
@@ -171,11 +169,7 @@ class RoundOverview extends Component<Props> {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>
-                    Has Voted (
-                    {judgesNoted.length}
-                    /
-                    {judgeCount}
-                    )
+                    Has Voted ({judgesNoted.length}/{judgeCount})
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -193,11 +187,7 @@ class RoundOverview extends Component<Props> {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>
-                    Waiting For (
-                    {judgesNotNoted.length}
-                    /
-                    {judgeCount}
-                    )
+                    Waiting For ({judgesNotNoted.length}/{judgeCount})
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -212,15 +202,15 @@ class RoundOverview extends Component<Props> {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    );
-  };
+    )
+  }
 
   _canGenerateGroups = () => {
-    const { active, activeDance, activeGroup } = this.props.round;
-    return active && activeDance == null && activeGroup == null;
-  };
+    const { active, activeDance, activeGroup } = this.props.round
+    return active && activeDance == null && activeGroup == null
+  }
 
-  _hasActiveDance = () => this.props.round.activeDance != null;
+  _hasActiveDance = () => this.props.round.activeDance != null
 
   render() {
     return (
@@ -234,20 +224,16 @@ class RoundOverview extends Component<Props> {
           </Container>
         )}
         {this._canGenerateGroups() && (
-          <Button onClick={this.props.generateGroups}>
-            Re-generate groups
-          </Button>
+          <Button onClick={this.props.generateGroups}>Re-generate groups</Button>
         )}
         <Header as="h2">Groups</Header>
         {this._renderGroups()}
         {!this.props.areAllGroupsGenerated && (
-          <strong>
-            The remaining groups will be generated once the others are done
-          </strong>
+          <strong>The remaining groups will be generated once the others are done</strong>
         )}
       </div>
-    );
+    )
   }
 }
 
-export default RoundOverview;
+export default RoundOverview

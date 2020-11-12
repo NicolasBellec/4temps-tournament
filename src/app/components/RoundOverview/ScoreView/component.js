@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React from 'react'
 import {
   Divider,
   Segment,
@@ -14,18 +14,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from 'semantic-ui-react';
-import type {
-  StateProps,
-  Props,
-  OwnProps,
-  ScoreViewTableProps,
-  ScoreViewModel,
-} from './types';
+} from 'semantic-ui-react'
+import type { StateProps, Props, OwnProps, ScoreViewTableProps, ScoreViewModel } from './types'
 
 export default function ScoreView({ isFinished, ...rest }: Props) {
   if (!isFinished) {
-    return <NotFinished />;
+    return <NotFinished />
   }
 
   return (
@@ -35,7 +29,7 @@ export default function ScoreView({ isFinished, ...rest }: Props) {
       losingLeaderScores={rest.losingLeaderScores}
       losingFollowerScores={rest.losingFollowerScores}
     />
-  );
+  )
 }
 
 function ScoreTables({
@@ -74,7 +68,7 @@ function ScoreTables({
         </GridColumn>
       </GridRow>
     </Grid>
-  );
+  )
 }
 
 function ScoreTableRow(score: ScoreViewModel) {
@@ -85,7 +79,7 @@ function ScoreTableRow(score: ScoreViewModel) {
       <TableCell>{score.participant.attendanceId}</TableCell>
       <TableCell>{score.participant.name}</TableCell>
     </TableRow>
-  );
+  )
 }
 
 function ScoreTable({ scores }: { scores: Array<ScoreViewModel> }) {
@@ -101,7 +95,7 @@ function ScoreTable({ scores }: { scores: Array<ScoreViewModel> }) {
       </TableHeader>
       <TableBody>{scores.map(ScoreTableRow)}</TableBody>
     </Table>
-  );
+  )
 }
 
 function NotFinished() {
@@ -109,5 +103,5 @@ function NotFinished() {
     <Segment basic textAlign="center" vertical>
       <Header as="h2">Scores will be shown once the round is done</Header>
     </Segment>
-  );
+  )
 }

@@ -1,32 +1,32 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'
 
-import LoginContainer from '../Login';
+import LoginContainer from '../Login'
 // $FlowFixMe
-import Judge from '../Judge';
-import EditTournamentList from '../EditTournamentList';
-import Assistant from '../Assistant';
+import Judge from '../Judge'
+import EditTournamentList from '../EditTournamentList'
+import Assistant from '../Assistant'
 
-import type { Props } from './types';
+import type { Props } from './types'
 
 class Home extends PureComponent<Props> {
   renderForRole() {
-    const { role, history, location } = this.props;
+    const { role, history, location } = this.props
     if (role == 'admin') {
-      return <EditTournamentList history={history} />;
+      return <EditTournamentList history={history} />
     }
     if (role == 'judge') {
-      return <Judge />;
+      return <Judge />
     }
     if (role == 'assistant') {
-      return <Assistant />;
+      return <Assistant />
     }
-    return <LoginContainer location={location} history={history} />;
+    return <LoginContainer location={location} history={history} />
   }
 
   render() {
-    return this.renderForRole();
+    return this.renderForRole()
   }
 }
 
-export default Home;
+export default Home

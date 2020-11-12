@@ -1,32 +1,29 @@
 // @flow
 
 async function parseResponse<T>(response: Response): Promise<T> {
-  const { status } = response;
-  const contentType = response.headers.get('content-type');
-  const isCorrectContentType = contentType != null && contentType.indexOf('application/json') !== -1;
+  const { status } = response
+  const contentType = response.headers.get('content-type')
+  const isCorrectContentType = contentType != null && contentType.indexOf('application/json') !== -1
 
   if (status !== 200) {
     if (isCorrectContentType) {
-      throw await response.json();
+      throw await response.json()
     }
-    throw 'Failure from API';
+    throw 'Failure from API'
   }
   if (status === 200 && isCorrectContentType) {
-    return await response.json();
+    return await response.json()
   }
   if (status !== 200 && isCorrectContentType) {
-    throw await response.json();
+    throw await response.json()
   } else if (status !== 200) {
-    throw 'API Failure';
+    throw 'API Failure'
   } else {
-    throw 'contentType Failure';
+    throw 'contentType Failure'
   }
 }
 
-export async function apiGetRequest<T>(
-  url: string,
-  deserialize: ?(T) => T,
-): Promise<T> {
+export async function apiGetRequest<T>(url: string, deserialize: ?(T) => T): Promise<T> {
   const response = await parseResponse(
     await fetch(url, {
       headers: {
@@ -34,19 +31,19 @@ export async function apiGetRequest<T>(
       },
       method: 'GET',
       credentials: 'include',
-    }),
-  );
+    })
+  )
 
   if (response != null && deserialize != null) {
-    return deserialize(response);
+    return deserialize(response)
   }
-  return response;
+  return response
 }
 
 export async function apiPostRequest<Body, T>(
   url: string,
   body: ?Body,
-  deserialize: ?(T) => T,
+  deserialize: ?(T) => T
 ): Promise<T> {
   const response = await parseResponse(
     await fetch(url, {
@@ -57,19 +54,16 @@ export async function apiPostRequest<Body, T>(
       method: 'POST',
       body: JSON.stringify(body),
       credentials: 'include',
-    }),
-  );
+    })
+  )
 
   if (response != null && deserialize != null) {
-    return deserialize(response);
+    return deserialize(response)
   }
-  return response;
+  return response
 }
 
-export async function apiDeleteRequest<T>(
-  url: string,
-  deserialize: ?(T) => T,
-): Promise<T> {
+export async function apiDeleteRequest<T>(url: string, deserialize: ?(T) => T): Promise<T> {
   const response = await parseResponse(
     await fetch(url, {
       headers: {
@@ -77,11 +71,11 @@ export async function apiDeleteRequest<T>(
       },
       method: 'DELETE',
       credentials: 'include',
-    }),
-  );
+    })
+  )
 
   if (response != null && deserialize != null) {
-    return deserialize(response);
+    return deserialize(response)
   }
-  return response;
+  return response
 }

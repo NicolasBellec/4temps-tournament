@@ -1,9 +1,9 @@
 // @flow
-import moment from 'moment';
+import moment from 'moment'
 
 export default function parseTournament(
   // $FlowFixMe
-  body: any,
+  body: any
 ): Tournament {
   return {
     id: body.id || '',
@@ -16,5 +16,5 @@ export default function parseTournament(
     rounds: body.rounds || [],
     creatorId: body.creatorId,
     dancesNoted: body.dancesNoted || {},
-  };
+  }
 }

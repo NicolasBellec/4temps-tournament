@@ -1,108 +1,111 @@
 // @flow
 
-type Role = 'leader' | 'follower';
+type Role = 'leader' | 'follower'
 
 export default class NoteChecker {
-  _tournament: Tournament;
+  _tournament: Tournament
 
   constructor(tournament: Tournament) {
-    this._tournament = tournament;
+    this._tournament = tournament
   }
 
-  allSetForDance = (danceId: string, notes: Array<JudgeNote>) => this._tournament.judges.reduce(
-    (accumulator, judge) => accumulator
-        && this._isAllLeadersNotedInDanceByJudge(notes, danceId, judge.id)
-        && this._isAllFollowersNotedInDanceByJudge(notes, danceId, judge.id),
-    true,
-  );
+  allSetForDance = (danceId: string, notes: Array<JudgeNote>) =>
+    this._tournament.judges.reduce(
+      (accumulator, judge) =>
+        accumulator &&
+        this._isAllLeadersNotedInDanceByJudge(notes, danceId, judge.id) &&
+        this._isAllFollowersNotedInDanceByJudge(notes, danceId, judge.id),
+      true
+    )
 
-  allSetForDanceByJudge = (
-    danceId: string,
-    notes: Array<JudgeNote>,
-    judgeId: string,
-  ) => this._isAllLeadersNotedInDanceByJudge(notes, danceId, judgeId)
-    && this._isAllFollowersNotedInDanceByJudge(notes, danceId, judgeId);
+  allSetForDanceByJudge = (danceId: string, notes: Array<JudgeNote>, judgeId: string) =>
+    this._isAllLeadersNotedInDanceByJudge(notes, danceId, judgeId) &&
+    this._isAllFollowersNotedInDanceByJudge(notes, danceId, judgeId)
 
-  _getLeadersInDance = (danceId: string): Array<string> => this._getRoleInDance(danceId, 'leader');
+  _getLeadersInDance = (danceId: string): Array<string> => this._getRoleInDance(danceId, 'leader')
 
-  _getFollowersInDance = (danceId: string): Array<string> => this._getRoleInDance(danceId, 'follower');
+  _getFollowersInDance = (danceId: string): Array<string> =>
+    this._getRoleInDance(danceId, 'follower')
 
   _getRoleInDance = (danceId: string, role: Role): Array<string> => {
     for (const round of this._tournament.rounds) {
       for (const group of round.groups) {
         if (group.dances.findIndex(({ id }) => id == danceId) != -1) {
           return group.pairs.reduce((acc: string[], pair) => {
-            const val: ?string = pair[role];
-            return typeof val === 'string' ? [...acc, val] : [...acc];
-          }, []);
+            const val: ?string = pair[role]
+            return typeof val === 'string' ? [...acc, val] : [...acc]
+          }, [])
         }
       }
     }
-    throw new DanceNotFoundError();
-  };
+    throw new DanceNotFoundError()
+  }
 
   _getJudgeTypeForJudgeId = (id: string): JudgeType => {
-    const judge = this._tournament.judges.find((judge) => judge.id === id);
+    const judge = this._tournament.judges.find((judge) => judge.id === id)
     if (!judge) {
-      throw new JudgeNotFoundError();
+      throw new JudgeNotFoundError()
     }
 
-    return judge.judgeType;
-  };
+    return judge.judgeType
+  }
 
-  _getCriteriaForJudgeType = (judgeType: JudgeType): Array<string> => this._getActiveRound()
-    .criteria.filter((criterion) => (criterion.forJudgeType === 'normal'
-      ? judgeType === 'normal' || judgeType === 'president'
-      : criterion.forJudgeType === judgeType))
-    .map(({ id }) => id);
+  _getCriteriaForJudgeType = (judgeType: JudgeType): Array<string> =>
+    this._getActiveRound()
+      .criteria.filter((criterion) =>
+        criterion.forJudgeType === 'normal'
+          ? judgeType === 'normal' || judgeType === 'president'
+          : criterion.forJudgeType === judgeType
+      )
+      .map(({ id }) => id)
 
   _getActiveRound = (): Round => {
     for (const round of this._tournament.rounds) {
       if (round.active) {
-        return round;
+        return round
       }
     }
-    throw new NoActiveRoundError();
-  };
+    throw new NoActiveRoundError()
+  }
 
   _isAllLeadersNotedInDanceByJudge = (
     notes: Array<JudgeNote>,
     danceId: string,
-    judgeId: string,
+    judgeId: string
   ) => {
-    const leaders = this._getLeadersInDance(danceId);
+    const leaders = this._getLeadersInDance(danceId)
     return this._isAllParticipantsNotedInDanceByJudge(
       leaders,
       this._getCriteriaForJudgeType(this._getJudgeTypeForJudgeId(judgeId)),
       notes,
       danceId,
-      judgeId,
-    );
-  };
+      judgeId
+    )
+  }
 
   _isAllFollowersNotedInDanceByJudge = (
     notes: Array<JudgeNote>,
     danceId: string,
-    judgeId: string,
+    judgeId: string
   ) => {
-    const followers = this._getFollowersInDance(danceId);
+    const followers = this._getFollowersInDance(danceId)
     return this._isAllParticipantsNotedInDanceByJudge(
       followers,
       this._getCriteriaForJudgeType(this._getJudgeTypeForJudgeId(judgeId)),
       notes,
       danceId,
-      judgeId,
-    );
-  };
+      judgeId
+    )
+  }
 
   _isAllParticipantsNotedInDanceByJudge = (
     participants: Array<string>,
     criteria: Array<string>,
     notes: Array<JudgeNote>,
     danceId: string,
-    judgeId: string,
+    judgeId: string
   ) => {
-    const noteSet = new Set(notes.map((note) => hashNote(note)));
+    const noteSet = new Set(notes.map((note) => hashNote(note)))
     for (const participantId of participants) {
       for (const criterionId of criteria) {
         const supposedNote = {
@@ -110,14 +113,14 @@ export default class NoteChecker {
           danceId,
           participantId,
           criterionId,
-        };
+        }
         if (!noteSet.has(hashNote(supposedNote))) {
-          return false;
+          return false
         }
       }
     }
-    return true;
-  };
+    return true
+  }
 }
 
 function hashNote({
@@ -132,7 +135,7 @@ function hashNote({
   criterionId: string,
   ...
 }) {
-  return `${judgeId}:${danceId}:${participantId}:${criterionId}`;
+  return `${judgeId}:${danceId}:${participantId}:${criterionId}`
 }
 
 function DanceNotFoundError() {}

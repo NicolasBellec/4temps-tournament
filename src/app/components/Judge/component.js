@@ -1,16 +1,16 @@
 // @flow
-import { Header, Container, Divider } from 'semantic-ui-react';
+import { Header, Container, Divider } from 'semantic-ui-react'
 
-import React from 'react';
-import RoundInformation from './RoundInformation';
-import NoteTaker from './NoteTaker';
-import SelectPairGrid from './SelectPairGrid';
-import SubmitNotesModal from './SubmitNotesModal';
+import React from 'react'
+import RoundInformation from './RoundInformation'
+import NoteTaker from './NoteTaker'
+import SelectPairGrid from './SelectPairGrid'
+import SubmitNotesModal from './SubmitNotesModal'
 // $FlowFixMe
-import NoteTable from './NoteTable';
-import DrawSettler from './DrawSettler';
+import NoteTable from './NoteTable'
+import DrawSettler from './DrawSettler'
 
-import type { JudgeProps } from './types';
+import type { JudgeProps } from './types'
 
 export default function Judge({
   tournamentId,
@@ -20,13 +20,7 @@ export default function Judge({
   judgeId,
 }: JudgeProps) {
   if (activeRound != null && activeRound.draw) {
-    return (
-      <Draw
-        tournamentId={tournamentId}
-        activeRound={activeRound}
-        judgeId={judgeId}
-      />
-    );
+    return <Draw tournamentId={tournamentId} activeRound={activeRound} judgeId={judgeId} />
   }
   if (activeRound != null && activeDanceId != null) {
     return (
@@ -36,9 +30,9 @@ export default function Judge({
         danceId={activeDanceId}
         notesSubmitted={notesSubmitted}
       />
-    );
+    )
   }
-  return <NoActiveDance />;
+  return <NoActiveDance />
 }
 
 function Draw({
@@ -51,12 +45,10 @@ function Draw({
   activeRound: Round,
 }) {
   if (judgeId === activeRound.tieBreakerJudge) {
-    return (
-      <DrawSettler tournamentId={tournamentId} activeRound={activeRound} />
-    );
+    return <DrawSettler tournamentId={tournamentId} activeRound={activeRound} />
   }
 
-  return <strong>Waiting to settle draw...</strong>;
+  return <strong>Waiting to settle draw...</strong>
 }
 
 function NoActiveDance() {
@@ -64,7 +56,7 @@ function NoActiveDance() {
     <Header as="h1" textAlign="center">
       No active dance
     </Header>
-  );
+  )
 }
 
 type TakeNotesProps = {
@@ -72,7 +64,7 @@ type TakeNotesProps = {
   danceId: string,
   tournamentId: string,
   notesSubmitted: boolean,
-};
+}
 
 function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {
   return (
@@ -83,13 +75,13 @@ function TakeNotes({ danceId, tournamentId, roundId }: TakeNotesProps) {
       <Divider />
       <SubmitNotesModal />
     </Container>
-  );
+  )
 }
 
 type ActiveDanceProps = {
   ...TakeNotesProps,
   notesSubmitted: boolean,
-};
+}
 
 function ActiveDance(props: ActiveDanceProps) {
   return (
@@ -98,7 +90,7 @@ function ActiveDance(props: ActiveDanceProps) {
       <Divider />
       {props.notesSubmitted ? <ShowNotes /> : <TakeNotes {...props} />}
     </Container>
-  );
+  )
 }
 
 function ShowNotes() {
@@ -106,5 +98,5 @@ function ShowNotes() {
     <Container>
       <NoteTable />
     </Container>
-  );
+  )
 }

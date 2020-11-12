@@ -1,28 +1,28 @@
 // @flow
-import { apiPostRequest } from '../util';
+import { apiPostRequest } from '../util'
 
-import validateAdmin from '../../../validators/validate-admin';
-import validateAdminLogin from '../../../validators/validate-admin-login';
+import validateAdmin from '../../../validators/validate-admin'
+import validateAdminLogin from '../../../validators/validate-admin-login'
 
 export const createAdmin = async (
-  admin: AdminWithPassword,
+  admin: AdminWithPassword
 ): Promise<AdminCreateValidationSummary> => {
-  const result = await validateAdmin(admin);
+  const result = await validateAdmin(admin)
   if (!result.isValid) {
-    throw result;
+    throw result
   }
-  return apiPostRequest('/api/admin/create', admin);
-};
+  return apiPostRequest('/api/admin/create', admin)
+}
 
 export const loginAdmin = async (
-  credentials: AdminCredentials,
+  credentials: AdminCredentials
 ): Promise<AdminLoginValidationSummary> => {
-  const result = await validateAdminLogin(credentials);
+  const result = await validateAdminLogin(credentials)
   if (!result.isValid) {
-    throw result;
+    throw result
   }
 
-  return apiPostRequest('/api/admin/login', credentials);
-};
+  return apiPostRequest('/api/admin/login', credentials)
+}
 
-export const logoutAdmin = async (): Promise<boolean> => apiPostRequest('/api/admin/logout');
+export const logoutAdmin = async (): Promise<boolean> => apiPostRequest('/api/admin/logout')

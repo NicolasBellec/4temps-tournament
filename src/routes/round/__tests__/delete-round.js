@@ -7,38 +7,38 @@ import {
   TournamentRepositoryImpl as TournamentRepository,
   createTournament,
   createRound,
-} from '../../../test-utils';
-import DeleteRoundRoute from '../delete-round';
+} from '../../../test-utils'
+import DeleteRoundRoute from '../delete-round'
 
 describe('/api/round/delete', () => {
-  const tournament = createTournament();
-  const round = { ...createRound(), id: generateId() };
-  const tournamentId = tournament.id;
-  const roundId = round.id;
+  const tournament = createTournament()
+  const round = { ...createRound(), id: generateId() }
+  const tournamentId = tournament.id
+  const roundId = round.id
 
-  let response: Response;
-  let tournamentRepository: TournamentRepository;
-  let route: DeleteRoundRoute;
+  let response: Response
+  let tournamentRepository: TournamentRepository
+  let route: DeleteRoundRoute
 
   beforeEach(async () => {
-    response = new Response();
-    tournamentRepository = new TournamentRepository();
+    response = new Response()
+    tournamentRepository = new TournamentRepository()
 
-    tournamentRepository.create({ ...tournament, rounds: [round] });
+    tournamentRepository.create({ ...tournament, rounds: [round] })
 
-    route = new DeleteRoundRoute(tournamentRepository);
-  });
+    route = new DeleteRoundRoute(tournamentRepository)
+  })
 
   test('Invalid params returns status 400', async () => {
-    await route.route(Request.withParams({}), response);
-    expect(response.getStatus()).toBe(400);
+    await route.route(Request.withParams({}), response)
+    expect(response.getStatus()).toBe(400)
 
-    await route.route(Request.withParams({ tournamentId: '123' }), response);
-    expect(response.getStatus()).toBe(400);
+    await route.route(Request.withParams({ tournamentId: '123' }), response)
+    expect(response.getStatus()).toBe(400)
 
-    await route.route(Request.withParams({ roundId: '123' }), response);
-    expect(response.getStatus()).toBe(400);
-  });
+    await route.route(Request.withParams({ roundId: '123' }), response)
+    expect(response.getStatus()).toBe(400)
+  })
 
   test('If round does not exist, status 404 is returned', async () => {
     await route.route(
@@ -47,16 +47,16 @@ describe('/api/round/delete', () => {
         tournamentId: generateId(),
       }),
       response
-    );
+    )
 
-    expect(response.getStatus()).toBe(404);
-  });
+    expect(response.getStatus()).toBe(404)
+  })
 
   test('If user does not own the tournament, status 401 is returned', async () => {
     await tournamentRepository.create({
       ...createTournament(),
       creatorId: generateId(),
-    });
+    })
 
     await route.route(
       Request.withParams({
@@ -64,16 +64,16 @@ describe('/api/round/delete', () => {
         tournamentId,
       }),
       response
-    );
+    )
 
-    expect(response.getStatus()).toBe(401);
-  });
+    expect(response.getStatus()).toBe(401)
+  })
 
   test('If a round is started, status 401 is returned', async () => {
     await tournamentRepository.create({
       ...createTournament(),
       rounds: [{ ...round, active: true }],
-    });
+    })
 
     await route.route(
       Request.withParams({
@@ -81,18 +81,18 @@ describe('/api/round/delete', () => {
         tournamentId,
       }),
       response
-    );
+    )
 
-    expect(response.getStatus()).toBe(401);
-  });
+    expect(response.getStatus()).toBe(401)
+  })
 
   test('If tournament could not get fetched, status 500 is returned', async () => {
     await tournamentRepository.create({
       ...createTournament(),
-    });
+    })
     tournamentRepository.get = () => {
-      throw {};
-    };
+      throw {}
+    }
 
     await route.route(
       Request.withParams({
@@ -100,30 +100,30 @@ describe('/api/round/delete', () => {
         tournamentId,
       }),
       response
-    );
+    )
 
-    expect(response.getStatus()).toBe(500);
-  });
+    expect(response.getStatus()).toBe(500)
+  })
 
   test('If a round could not get deleted, status 500 is returned', async () => {
     tournamentRepository.deleteRound = () => {
-      throw 'Fake error!';
-    };
+      throw 'Fake error!'
+    }
     await route.route(
       Request.withParams({
         roundId,
         tournamentId,
       }),
       response
-    );
+    )
 
-    expect(response.getStatus()).toBe(500);
-  });
+    expect(response.getStatus()).toBe(500)
+  })
 
   test('Successful delete returns status 200 and the deleted id', async () => {
-    await route.route(Request.withParams({ roundId, tournamentId }), response);
+    await route.route(Request.withParams({ roundId, tournamentId }), response)
 
-    expect(response.getStatus()).toBe(200);
-    expect(response.getBody()).toEqual({ tournamentId, roundId });
-  });
-});
+    expect(response.getStatus()).toBe(200)
+    expect(response.getBody()).toEqual({ tournamentId, roundId })
+  })
+})

@@ -1,149 +1,131 @@
 // @flow
 
 class DanceScorer {
-  _judges: Array<Judge>;
+  _judges: Array<Judge>
 
-  _criteria: { [id: string]: RoundCriterion };
+  _criteria: { [id: string]: RoundCriterion }
 
-  _notes: Array<JudgeNote>;
+  _notes: Array<JudgeNote>
 
-  _allowNegative: boolean;
+  _allowNegative: boolean
 
-  _countPresident: boolean;
+  _countPresident: boolean
 
   constructor(
     judges: Array<Judge>,
     criteria: Array<RoundCriterion>,
     notes: Array<JudgeNote>,
-    {
-      allowNegative,
-      countPresident,
-    }: { allowNegative: boolean, countPresident: boolean } = {
+    { allowNegative, countPresident }: { allowNegative: boolean, countPresident: boolean } = {
       allowNegative: false,
       countPresident: false,
-    },
+    }
   ) {
-    this._judges = judges;
-    this._criteria = criteria.reduce(
-      (acc, crit) => ({ ...acc, [crit.id]: crit }),
-      {},
-    );
-    this._notes = notes;
-    this._allowNegative = allowNegative;
-    this._countPresident = countPresident;
+    this._judges = judges
+    this._criteria = criteria.reduce((acc, crit) => ({ ...acc, [crit.id]: crit }), {})
+    this._notes = notes
+    this._allowNegative = allowNegative
+    this._countPresident = countPresident
   }
 
   scoreDance = (
-    danceId: string,
+    danceId: string
   ): Array<{
     participantId: string,
     score: number,
   }> => {
-    const notesForDance = this._notes.filter(
-      (note) => note.danceId === danceId,
-    );
-    const positives = this._getPositiveTotal(notesForDance);
-    const negatives = this._getNegativeTotal(notesForDance);
+    const notesForDance = this._notes.filter((note) => note.danceId === danceId)
+    const positives = this._getPositiveTotal(notesForDance)
+    const negatives = this._getNegativeTotal(notesForDance)
 
-    const sum = this._sum(positives, negatives);
+    const sum = this._sum(positives, negatives)
 
     return Object.keys(sum)
       .map((participantId) => ({
         participantId,
         score: sum[participantId],
       }))
-      .sort(this._sort);
-  };
+      .sort(this._sort)
+  }
 
-  _getPositiveTotal = (
-    notesForDance: Array<JudgeNote>,
-  ): { [id: string]: number } => {
-    const totals = {};
+  _getPositiveTotal = (notesForDance: Array<JudgeNote>): { [id: string]: number } => {
+    const totals = {}
     notesForDance
       .filter((note) => {
-        const judge: ?Judge = this._judges.find(
-          (judge) => judge.id === note.judgeId,
-        );
-        return judge != null && this._isPositiveJudgeType(judge.judgeType);
+        const judge: ?Judge = this._judges.find((judge) => judge.id === note.judgeId)
+        return judge != null && this._isPositiveJudgeType(judge.judgeType)
       })
-      .forEach((note) => this._addNoteToTotal(note, totals));
+      .forEach((note) => this._addNoteToTotal(note, totals))
 
-    return totals;
-  };
+    return totals
+  }
 
   _addNoteToTotal = (note: JudgeNote, total: { [id: string]: number }) => {
-    const { participantId } = note;
+    const { participantId } = note
     if (total[participantId]) {
-      total[participantId] += note.value;
+      total[participantId] += note.value
     } else {
-      total[participantId] = note.value;
+      total[participantId] = note.value
     }
-  };
+  }
 
-  _getNegativeTotal = (
-    notesForDance: Array<JudgeNote>,
-  ): { [id: string]: number } => {
-    const maxScoreForParticipants = this._maxScoreForParticipants();
+  _getNegativeTotal = (notesForDance: Array<JudgeNote>): { [id: string]: number } => {
+    const maxScoreForParticipants = this._maxScoreForParticipants()
 
     return notesForDance
-      .filter(
-        ({ criterionId }) => this._criteria[criterionId].forJudgeType === 'sanctioner',
-      )
+      .filter(({ criterionId }) => this._criteria[criterionId].forJudgeType === 'sanctioner')
       .reduce(
         (acc, { participantId, value }) => ({
           ...acc,
           [participantId]:
-            (acc[participantId] || 0)
-            + this._malusFromValueAndMaxScore(value, maxScoreForParticipants),
+            (acc[participantId] || 0) +
+            this._malusFromValueAndMaxScore(value, maxScoreForParticipants),
         }),
-        {},
-      );
-  };
+        {}
+      )
+  }
 
   _maxScoreForParticipants = () => {
     const criteriaForPositiveJudges = Object.keys(this._criteria)
       .map((key) => this._criteria[key])
-      .filter(({ forJudgeType }) => this._isPositiveJudgeType(forJudgeType));
+      .filter(({ forJudgeType }) => this._isPositiveJudgeType(forJudgeType))
 
-    const positiveJudges = this._judges.filter(({ judgeType }) => this._isPositiveJudgeType(judgeType));
+    const positiveJudges = this._judges.filter(({ judgeType }) =>
+      this._isPositiveJudgeType(judgeType)
+    )
 
     return (
-      criteriaForPositiveJudges.reduce(
-        (acc, { maxValue }) => acc + maxValue,
-        0,
-      ) * positiveJudges.length
-    );
-  };
+      criteriaForPositiveJudges.reduce((acc, { maxValue }) => acc + maxValue, 0) *
+      positiveJudges.length
+    )
+  }
 
-  _isPositiveJudgeType = (judgeType: JudgeType): boolean => judgeType === 'normal'
-    || (this._countPresident === true && judgeType === 'president');
+  _isPositiveJudgeType = (judgeType: JudgeType): boolean =>
+    judgeType === 'normal' || (this._countPresident === true && judgeType === 'president')
 
   _malusFromValueAndMaxScore = (value: number, maxScore: number) => {
-    const score = maxScore * (1 - (100 - value) / 100);
-    const rounded = parseFloat(score.toFixed(2));
-    return rounded;
-  };
+    const score = maxScore * (1 - (100 - value) / 100)
+    const rounded = parseFloat(score.toFixed(2))
+    return rounded
+  }
 
-  _sum = (
-    positives: { [id: string]: number },
-    negatives: { [id: string]: number },
-  ) => [...Object.keys(positives), ...Object.keys(negatives)].reduce(
-    (acc, key) => ({
-      ...acc,
-      [key]:
+  _sum = (positives: { [id: string]: number }, negatives: { [id: string]: number }) =>
+    [...Object.keys(positives), ...Object.keys(negatives)].reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]:
           this._allowNegative === true
             ? (positives[key] || 0) - (negatives[key] || 0)
             : Math.max((positives[key] || 0) - (negatives[key] || 0), 0),
-    }),
-    {},
-  );
+      }),
+      {}
+    )
 
   _sort = (a: Score, b: Score) => {
     if (a.score == b.score) {
-      return Math.random() - 0.5;
+      return Math.random() - 0.5
     }
-    return b.score - a.score;
-  };
+    return b.score - a.score
+  }
 }
 
-export default DanceScorer;
+export default DanceScorer

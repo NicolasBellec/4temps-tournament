@@ -22,16 +22,16 @@ function parseRound(bodyRound: mixed): Round {
       followers: [],
     },
     tieBreakerJudge: null,
-  };
+  }
 
   if (typeof bodyRound === 'object' && bodyRound != null) {
     for (const key in bodyRound) {
       if (key in round && bodyRound[key] != undefined) {
-        round[key] = bodyRound[key];
+        round[key] = bodyRound[key]
       }
     }
   }
-  return round;
+  return round
 }
 
-export default parseRound;
+export default parseRound

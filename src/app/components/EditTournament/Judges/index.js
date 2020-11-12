@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react';
-import { Container, Divider, Header } from 'semantic-ui-react';
-import ListJudges from './ListJudges';
-import CreateJudge from './CreateJudge';
+import React from 'react'
+import { Container, Divider, Header } from 'semantic-ui-react'
+import ListJudges from './ListJudges'
+import CreateJudge from './CreateJudge'
 
 type Props = {
   tournamentId: string,
-};
+}
 
 function Judges(props: Props) {
   return (
@@ -18,7 +18,7 @@ function Judges(props: Props) {
       <Header as="h2">Add judge</Header>
       <CreateJudge {...props} />
     </Container>
-  );
+  )
 }
 
-export default Judges;
+export default Judges

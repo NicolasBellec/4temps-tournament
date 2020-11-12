@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'
 import {
   Header,
   Table,
@@ -11,9 +11,9 @@ import {
   TableCell,
   Grid,
   Container,
-} from 'semantic-ui-react';
+} from 'semantic-ui-react'
 
-import type { Props, ColumnViewModel, ScoreViewModel } from './types';
+import type { Props, ColumnViewModel, ScoreViewModel } from './types'
 
 class NoteTable extends PureComponent<Props> {
   createTable = (column: ColumnViewModel) => (
@@ -38,7 +38,7 @@ class NoteTable extends PureComponent<Props> {
         </TableBody>
       </Table>
     </Container>
-  );
+  )
 
   render() {
     return (
@@ -47,8 +47,8 @@ class NoteTable extends PureComponent<Props> {
           <Grid.Column key={col.title}>{this.createTable(col)}</Grid.Column>
         ))}
       </Grid>
-    );
+    )
   }
 }
 
-export default NoteTable;
+export default NoteTable

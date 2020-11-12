@@ -1,68 +1,64 @@
 // @flow
-import validateTournament from '../../validators/validate-tournament';
-import type { TournamentRepository } from '../../data/tournament';
-import type { RouteResult } from '../util';
-import parseTournament from './parse-tournament';
+import validateTournament from '../../validators/validate-tournament'
+import type { TournamentRepository } from '../../data/tournament'
+import type { RouteResult } from '../util'
+import parseTournament from './parse-tournament'
 
 export default class UpdateTournamentRoute {
-  _repository: TournamentRepository;
+  _repository: TournamentRepository
 
   constructor(repository: TournamentRepository) {
-    this._repository = repository;
+    this._repository = repository
   }
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     if (!req.session.user) {
-      res.sendStatus(401);
-      return;
+      res.sendStatus(401)
+      return
     }
-    const userId = req.session.user.id;
+    const userId = req.session.user.id
 
     // $FlowFixMe
-    const requestBody: any = req.body;
-    const tournament = parseTournament(requestBody.tournament);
+    const requestBody: any = req.body
+    const tournament = parseTournament(requestBody.tournament)
 
-    const { status, body } = await updateTournamentRoute(
-      userId,
-      tournament,
-      this._repository,
-    );
+    const { status, body } = await updateTournamentRoute(userId, tournament, this._repository)
 
-    res.status(status);
-    res.json(body);
-  };
+    res.status(status)
+    res.json(body)
+  }
 }
 
 export async function updateTournamentRoute(
   userId: string,
   tournament: Tournament,
-  repository: TournamentRepository,
+  repository: TournamentRepository
 ): RouteResult<?Tournament> {
-  const { isValidTournament } = validateTournament(tournament);
-  let status: number = 200;
+  const { isValidTournament } = validateTournament(tournament)
+  let status: number = 200
   if (isValidTournament) {
-    const dbTournament = await repository.get(tournament.id);
+    const dbTournament = await repository.get(tournament.id)
 
     if (dbTournament == null) {
-      status = 404;
+      status = 404
     } else if (dbTournament.creatorId != userId) {
-      status = 401;
+      status = 401
     } else {
       const newTournament = {
         ...tournament,
         creatorId: dbTournament.creatorId,
-      };
+      }
       try {
-        await repository.update(newTournament);
+        await repository.update(newTournament)
       } catch (e) {
-        status = 500;
+        status = 500
       }
     }
   } else {
-    status = 400;
+    status = 400
   }
 
-  const body = status === 200 ? tournament : null;
+  const body = status === 200 ? tournament : null
 
-  return { status, body };
+  return { status, body }
 }

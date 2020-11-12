@@ -1,123 +1,117 @@
 // @flow
 
-import { ObjectID } from 'mongodb';
-import type { TournamentRepository } from '../../data/tournament';
-import { validateParticipant } from '../../validators/validate-participant';
+import { ObjectID } from 'mongodb'
+import type { TournamentRepository } from '../../data/tournament'
+import { validateParticipant } from '../../validators/validate-participant'
 
 export class CreateParticipantRoute {
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
   constructor(tournamentRepository: TournamentRepository) {
-    this._tournamentRepository = tournamentRepository;
+    this._tournamentRepository = tournamentRepository
   }
 
   route = async (req: ServerApiRequest, res: ServerApiResponse) => {
     if (!req.session.user) {
-      res.sendStatus(401);
-      return;
+      res.sendStatus(401)
+      return
     }
 
-    const userId: string = req.session.user.id;
+    const userId: string = req.session.user.id
 
-    const handler = new CreateParticipantRouteHandler(
-      userId,
-      this._tournamentRepository,
-    );
+    const handler = new CreateParticipantRouteHandler(userId, this._tournamentRepository)
 
-    handler.parseBody(req.body);
-    await handler.createParticipant();
+    handler.parseBody(req.body)
+    await handler.createParticipant()
 
-    res.status(handler.status);
+    res.status(handler.status)
     res.json({
       tournamentId: handler._tournamentId,
       participant: handler._participant,
-    });
-  };
+    })
+  }
 }
 
 export class CreateParticipantRouteHandler {
-  status: number = 200;
+  status: number = 200
 
-  _userId: string;
+  _userId: string
 
-  _tournamentRepository: TournamentRepository;
+  _tournamentRepository: TournamentRepository
 
-  _tournamentId: string;
+  _tournamentId: string
 
-  _participant: Participant;
+  _participant: Participant
 
   constructor(userId: string, tournamentRepository: TournamentRepository) {
-    this._userId = userId;
-    this._tournamentRepository = tournamentRepository;
+    this._userId = userId
+    this._tournamentRepository = tournamentRepository
   }
 
   // $FlowFixMe
   parseBody(body: any) {
-    this._tournamentId = body.tournamentId || '';
+    this._tournamentId = body.tournamentId || ''
 
-    const participant = body.participant || {};
+    const participant = body.participant || {}
     // $FlowFixMe
     this._participant = {
       id: new ObjectID().toString(),
       name: participant.name || '',
       role: participant.role || 'none',
       isAttending: participant.isAttending || false,
-    };
+    }
   }
 
   async createParticipant() {
     if (await this._isValidInput()) {
-      await this._createForValidInput();
+      await this._createForValidInput()
     } else {
-      this.status = await this._reasonForInvalidInput();
+      this.status = await this._reasonForInvalidInput()
     }
   }
 
   async _isValidInput() {
-    return (await this._isValidTournament()) && this._isValidParticipant();
+    return (await this._isValidTournament()) && this._isValidParticipant()
   }
 
   _isValidParticipant() {
-    return validateParticipant(this._participant).isValidParticipant;
+    return validateParticipant(this._participant).isValidParticipant
   }
 
   async _isValidTournament() {
-    const tournament = await this._tournamentRepository.get(this._tournamentId);
-    return tournament != null;
+    const tournament = await this._tournamentRepository.get(this._tournamentId)
+    return tournament != null
   }
 
   async _createForValidInput() {
     try {
-      await this._tournamentRepository.createParticipant(
-        this._tournamentId,
-        this._participant,
-      );
+      await this._tournamentRepository.createParticipant(this._tournamentId, this._participant)
     } catch (e) {
-      this.status = 500;
+      this.status = 500
     }
   }
 
   async _reasonForInvalidInput() {
-    let status = 500;
+    let status = 500
 
     if (!this._isValidParticipant()) {
-      status = 400;
+      status = 400
     } else {
-      status = this._reasonForInvalidTournament();
+      status = this._reasonForInvalidTournament()
     }
 
-    return status;
+    return status
   }
 
   async _reasonForInvalidTournament() {
-    let status = 500;
-    const tournament = await this._tournamentRepository.get(this._tournamentId);
+    let status = 500
+    const tournament = await this._tournamentRepository.get(this._tournamentId)
     if (tournament == null) {
-      status = 404; // tournament does not exist
+      status = 404 // tournament does not exist
     }
 
-    return status;
+    return status
   }
 }
 
-export default CreateParticipantRoute;
+export default CreateParticipantRoute

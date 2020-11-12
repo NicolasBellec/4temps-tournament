@@ -1,9 +1,9 @@
 // @flow
 
-import { LIFECYCLE } from 'redux-pack';
+import { LIFECYCLE } from 'redux-pack'
 
-import reducer, { getInitialState } from '../signup';
-import makePackAction from '../../test-utils';
+import reducer, { getInitialState } from '../signup'
+import makePackAction from '../../test-utils'
 
 test('Default state is that everything is valid and not loading', () => {
   const state: UiSignUpReduxState = {
@@ -16,35 +16,33 @@ test('Default state is that everything is valid and not loading', () => {
       isValidEmail: true,
       isValidPassword: true,
     },
-  };
+  }
 
-  expect(getInitialState()).toEqual(state);
-  expect(reducer(undefined, makePackAction(LIFECYCLE.START, ''))).toEqual(
-    state
-  );
-});
+  expect(getInitialState()).toEqual(state)
+  expect(reducer(undefined, makePackAction(LIFECYCLE.START, ''))).toEqual(state)
+})
 
 test('SIGNUP action start results in isLoading to be true', () => {
-  expect(
-    reducer(undefined, makePackAction(LIFECYCLE.START, 'SIGNUP'))
-  ).toMatchObject({ isLoading: true });
-});
+  expect(reducer(undefined, makePackAction(LIFECYCLE.START, 'SIGNUP'))).toMatchObject({
+    isLoading: true,
+  })
+})
 
 test('SIGNUP action success results in isLoading to be false', () => {
-  const state = { ...getInitialState(), isLoading: true };
+  const state = { ...getInitialState(), isLoading: true }
 
-  expect(
-    reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'SIGNUP'))
-  ).toMatchObject({ isLoading: false });
-});
+  expect(reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'SIGNUP'))).toMatchObject({
+    isLoading: false,
+  })
+})
 
 test('SIGNUP action failure results in isLoading to be false', () => {
-  const state = { ...getInitialState(), isLoading: true };
+  const state = { ...getInitialState(), isLoading: true }
 
-  expect(
-    reducer(state, makePackAction(LIFECYCLE.FAILURE, 'SIGNUP'))
-  ).toMatchObject({ isLoading: false });
-});
+  expect(reducer(state, makePackAction(LIFECYCLE.FAILURE, 'SIGNUP'))).toMatchObject({
+    isLoading: false,
+  })
+})
 
 test('SIGNUP action success results in initial state', () => {
   const state = {
@@ -57,12 +55,10 @@ test('SIGNUP action success results in initial state', () => {
       isValidEmail: true,
       isValidPassword: true,
     },
-  };
+  }
 
-  expect(reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'SIGNUP'))).toEqual(
-    getInitialState()
-  );
-});
+  expect(reducer(state, makePackAction(LIFECYCLE.SUCCESS, 'SIGNUP'))).toEqual(getInitialState())
+})
 
 test('SIGNUP action failure results sets validation', () => {
   const payload = {
@@ -72,12 +68,9 @@ test('SIGNUP action failure results sets validation', () => {
     isValidLastName: false,
     isValidEmail: true,
     isValidPassword: true,
-  };
+  }
 
   expect(
-    reducer(
-      getInitialState(),
-      makePackAction(LIFECYCLE.FAILURE, 'SIGNUP', payload)
-    )
-  ).toMatchObject({ validation: payload });
-});
+    reducer(getInitialState(), makePackAction(LIFECYCLE.FAILURE, 'SIGNUP', payload))
+  ).toMatchObject({ validation: payload })
+})

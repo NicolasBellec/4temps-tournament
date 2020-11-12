@@ -1,8 +1,8 @@
 // @flow
 
-import mongoose from 'mongoose';
-import type { ObjectId } from 'mongoose';
-import crypto from 'crypto';
+import mongoose from 'mongoose'
+import type { ObjectId } from 'mongoose'
+import crypto from 'crypto'
 
 type AccessKeyDbModel = {
   _id: ObjectId,
@@ -10,7 +10,7 @@ type AccessKeyDbModel = {
   userId: ObjectId,
   key: string,
   role: 'assistant' | 'judge',
-};
+}
 
 const schema = new mongoose.Schema({
   tournamentId: {
@@ -29,9 +29,9 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-});
+})
 
-const Model = mongoose.model('accessKey', schema);
+const Model = mongoose.model('accessKey', schema)
 
 export interface AccessKeyRepository {
   createForTournamentAndUserWithRole(
@@ -47,9 +47,9 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
   async createForTournamentAndUserWithRole(
     tournamentId: string,
     userId: string,
-    role: 'judge' | 'assistant',
+    role: 'judge' | 'assistant'
   ) {
-    const key = await this._generateUniqueKey();
+    const key = await this._generateUniqueKey()
     /*
      * There's a race condition between the generation of the key
      * and the insert. However, there will not be a lot of concurrent
@@ -60,48 +60,46 @@ class AccessKeyRepositoryImpl implements AccessKeyRepository {
       userId,
       key,
       role,
-    });
+    })
   }
 
   async _generateUniqueKey(): Promise<string> {
-    let key = this._generateKey();
+    let key = this._generateKey()
     while ((await this.getForKey(key)) != null) {
-      key = this._generateKey();
+      key = this._generateKey()
     }
-    return key;
+    return key
   }
 
   _generateKey(): string {
-    return crypto.randomBytes(5).toString('hex');
+    return crypto.randomBytes(5).toString('hex')
   }
 
   async getForKey(key: string): Promise<?AccessKey> {
-    return this.mapToDomainModel(await Model.findOne({ key }));
+    return this.mapToDomainModel(await Model.findOne({ key }))
   }
 
   mapToDomainModel(dbModel: ?AccessKeyDbModel): ?AccessKey {
     if (!dbModel) {
-      return null;
+      return null
     }
 
-    const {
-      key, userId, tournamentId, role,
-    } = dbModel;
+    const { key, userId, tournamentId, role } = dbModel
     return {
       key,
       userId: userId.toString(),
       tournamentId: tournamentId.toString(),
       role,
-    };
+    }
   }
 
   async getForTournament(tournamentId: string): Promise<Array<AccessKey>> {
-    const found = await Model.find({ tournamentId });
+    const found = await Model.find({ tournamentId })
     if (found) {
-      return found.map((o) => this.mapToDomainModel(o.toObject()));
+      return found.map((o) => this.mapToDomainModel(o.toObject()))
     }
-    return [];
+    return []
   }
 }
 
-export default AccessKeyRepositoryImpl;
+export default AccessKeyRepositoryImpl

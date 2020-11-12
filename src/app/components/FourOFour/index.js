@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
-import { Container, Header, HeaderSubheader } from 'semantic-ui-react';
+import React from 'react'
+import { Container, Header, HeaderSubheader } from 'semantic-ui-react'
 
 const FourOFour = () => (
   <Container textAlign="center">
@@ -9,6 +9,6 @@ const FourOFour = () => (
       <HeaderSubheader>Page not found</HeaderSubheader>
     </Header>
   </Container>
-);
+)
 
-export default FourOFour;
+export default FourOFour

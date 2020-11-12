@@ -1,24 +1,24 @@
 // @flow
 
-import { handle } from 'redux-pack';
+import { handle } from 'redux-pack'
 
 export default function reducer(
   state: JudgesReduxState = getInitialState(),
-  action: ReduxPackAction,
+  action: ReduxPackAction
 ): JudgesReduxState {
   switch (action.type) {
-  case 'GET_ALL_TOURNAMENTS':
-  case 'GET_ADMIN_TOURNAMENTS':
-    return getTournaments(state, action);
-  case 'CREATE_JUDGE':
-    return createJudge(state, action);
-  case 'GET_JUDGE_TOURNAMENT':
-  case 'GET_SINGLE_TOURNAMENT':
-    return getSingleTournament(state, action);
-  case 'TOURNAMENT_UPDATED':
-    return tournamentUpdated(state, action);
-  default:
-    return state;
+    case 'GET_ALL_TOURNAMENTS':
+    case 'GET_ADMIN_TOURNAMENTS':
+      return getTournaments(state, action)
+    case 'CREATE_JUDGE':
+      return createJudge(state, action)
+    case 'GET_JUDGE_TOURNAMENT':
+    case 'GET_SINGLE_TOURNAMENT':
+      return getSingleTournament(state, action)
+    case 'TOURNAMENT_UPDATED':
+      return tournamentUpdated(state, action)
+    default:
+      return state
   }
 }
 
@@ -26,22 +26,19 @@ export function getInitialState(): JudgesReduxState {
   return {
     byId: {},
     forTournament: {},
-  };
+  }
 }
 
-function getTournaments(
-  state: JudgesReduxState,
-  action: ReduxPackAction,
-): JudgesReduxState {
-  const { payload } = action;
+function getTournaments(state: JudgesReduxState, action: ReduxPackAction): JudgesReduxState {
+  const { payload } = action
   return handle(state, action, {
     success: (prevState) => ({
       ...prevState,
       forTournament: {
         ...prevState.forTournament,
         ...payload.result.reduce((acc, id) => {
-          acc[id] = payload.entities.tournaments[id].judges;
-          return acc;
+          acc[id] = payload.entities.tournaments[id].judges
+          return acc
         }, {}),
       },
       byId: {
@@ -49,14 +46,11 @@ function getTournaments(
         ...payload.entities.judges,
       },
     }),
-  });
+  })
 }
 
-function createJudge(
-  state: JudgesReduxState,
-  action: ReduxPackAction,
-): JudgesReduxState {
-  const { payload } = action;
+function createJudge(state: JudgesReduxState, action: ReduxPackAction): JudgesReduxState {
+  const { payload } = action
   return handle(state, action, {
     success: (prevState) => ({
       ...prevState,
@@ -66,7 +60,7 @@ function createJudge(
           new Set([
             ...(prevState.forTournament[payload.tournamentId] || []),
             payload.judge.id,
-          ]).values(),
+          ]).values()
         ),
       },
       byId: {
@@ -74,14 +68,11 @@ function createJudge(
         [payload.judge.id]: payload.judge,
       },
     }),
-  });
+  })
 }
 
-function getSingleTournament(
-  state: JudgesReduxState,
-  action: ReduxPackAction,
-): JudgesReduxState {
-  const { payload } = action;
+function getSingleTournament(state: JudgesReduxState, action: ReduxPackAction): JudgesReduxState {
+  const { payload } = action
   return handle(state, action, {
     success: (prevState) => ({
       ...prevState,
@@ -94,14 +85,11 @@ function getSingleTournament(
         ...payload.entities.judges,
       },
     }),
-  });
+  })
 }
 
-function tournamentUpdated(
-  state: JudgesReduxState,
-  action: ReduxPackAction,
-): JudgesReduxState {
-  const { payload } = action;
+function tournamentUpdated(state: JudgesReduxState, action: ReduxPackAction): JudgesReduxState {
+  const { payload } = action
   return {
     ...state,
     forTournament: {
@@ -112,5 +100,5 @@ function tournamentUpdated(
       ...state.byId,
       ...payload.entities.judges,
     },
-  };
+  }
 }

@@ -1,23 +1,23 @@
 // no-flow
 
-import ObjectId from 'bson-objectid';
-import moment from 'moment';
-import type { AdminModel } from './data/admin';
-import type { TournamentRepository } from './data/tournament';
-import type { AccessKeyRepository } from './data/access-key';
-import type { NoteRepository } from './data/note';
+import ObjectId from 'bson-objectid'
+import moment from 'moment'
+import type { AdminModel } from './data/admin'
+import type { TournamentRepository } from './data/tournament'
+import type { AccessKeyRepository } from './data/access-key'
+import type { NoteRepository } from './data/note'
 
-export const USER_ID = generateId();
-export const TOURNAMENT_ID = generateId();
+export const USER_ID = generateId()
+export const TOURNAMENT_ID = generateId()
 
-type Body = mixed;
+type Body = mixed
 type Query = {
   [name: string]: string,
-};
-type Params = Query;
+}
+type Params = Query
 
 export class Request implements ServerApiRequest {
-  body: Body = {};
+  body: Body = {}
 
   session: {
     user: ?{
@@ -25,11 +25,11 @@ export class Request implements ServerApiRequest {
       role: PermissionRole,
       tournamentId: string,
     },
-  };
+  }
 
-  query: Query = {};
+  query: Query = {}
 
-  params: Params = {};
+  params: Params = {}
 
   constructor(admin: ?AdminModel) {
     this.session = {
@@ -37,257 +37,247 @@ export class Request implements ServerApiRequest {
         admin == null
           ? null
           : {
-            id: admin._id.toString(),
-            role: 'admin',
-          },
-    };
+              id: admin._id.toString(),
+              role: 'admin',
+            },
+    }
   }
 
   static empty() {
-    return new Request(null);
+    return new Request(null)
   }
 
   static withBody(body: Body) {
-    return Request.withUserAndBody(createAdmin(), body);
+    return Request.withUserAndBody(createAdmin(), body)
   }
 
   static withUserAndBody(user: AdminModel, body: Body) {
-    const req = new Request(user);
-    req.body = body;
-    return req;
+    const req = new Request(user)
+    req.body = body
+    return req
   }
 
   static withQuery(query: Query) {
-    return Request.withUserAndQuery(createAdmin(), query);
+    return Request.withUserAndQuery(createAdmin(), query)
   }
 
   static withUserAndQuery(user: AdminModel, query: Query) {
-    const req = new Request(user);
-    req.query = query;
-    return req;
+    const req = new Request(user)
+    req.query = query
+    return req
   }
 
   static withParams(params: Params) {
-    return Request.withUserAndParams(createAdmin(), params);
+    return Request.withUserAndParams(createAdmin(), params)
   }
 
   static withUserAndParams(user: AdminModel, params: Params) {
-    const req = new Request(user);
-    req.params = params;
-    return req;
+    const req = new Request(user)
+    req.params = params
+    return req
   }
 
   static withJudgeAndParams(judge: Judge, params: Params) {
-    const req = new Request(null);
+    const req = new Request(null)
     req.session = {
       user: {
         id: judge.id,
         role: 'judge',
       },
-    };
-    req.params = params;
-    return req;
+    }
+    req.params = params
+    return req
   }
 }
 
 export class Response implements ServerApiResponse {
-  _status: number;
+  _status: number
 
-  _body: ?mixed;
+  _body: ?mixed
 
   getStatus() {
-    return this._status;
+    return this._status
   }
 
   getBody() {
-    return this._body;
+    return this._body
   }
 
   status(statusCode: number): ServerApiResponse {
-    this._status = statusCode;
-    return this;
+    this._status = statusCode
+    return this
   }
 
   sendStatus(statusCode: number): ServerApiResponse {
-    this._status = statusCode;
-    return this;
+    this._status = statusCode
+    return this
   }
 
   json(body?: mixed): ServerApiResponse {
     if (this._status == null) {
-      this._status = 200;
+      this._status = 200
     }
-    this._body = body;
-    return this;
+    this._body = body
+    return this
   }
 }
 
 export class TournamentRepositoryImpl implements TournamentRepository {
   _tournaments: {
     [string]: Tournament,
-  } = {};
+  } = {}
 
-  get = async (id: string) => this._tournaments[id] || null;
+  get = async (id: string) => this._tournaments[id] || null
 
-  getAll = async (): Promise<Array<Tournament>> => Object.keys(this._tournaments).map((key) => this._tournaments[key]);
+  getAll = async (): Promise<Array<Tournament>> =>
+    Object.keys(this._tournaments).map((key) => this._tournaments[key])
 
-  getForUser = async (userId: string): Promise<Array<Tournament>> => (await this.getAll()).filter(({ creatorId }) => creatorId === userId);
+  getForUser = async (userId: string): Promise<Array<Tournament>> =>
+    (await this.getAll()).filter(({ creatorId }) => creatorId === userId)
 
   getForJudge = async (userId: string) => {
-    const tournaments = await this.getAll();
+    const tournaments = await this.getAll()
     for (const tournament of tournaments) {
-      if (tournament.judges.filter((judge) => judge.id === userId).length > 0) return tournament;
+      if (tournament.judges.filter((judge) => judge.id === userId).length > 0) return tournament
     }
-  };
+  }
 
   getForAssistant = async (userId: string) => {
-    const tournaments = await this.getAll();
+    const tournaments = await this.getAll()
     for (const tournament of tournaments) {
-      if (
-        tournament.assistants.filter((assistant) => assistant.id === userId)
-          .length > 0
-      ) {
-        return tournament;
+      if (tournament.assistants.filter((assistant) => assistant.id === userId).length > 0) {
+        return tournament
       }
     }
-  };
+  }
 
   create = async (tournament: Tournament) => {
-    this._tournaments[tournament.id] = tournament;
-  };
+    this._tournaments[tournament.id] = tournament
+  }
 
   update = async (tournament: Tournament) => {
-    this._tournaments[tournament.id] = tournament;
-  };
+    this._tournaments[tournament.id] = tournament
+  }
 
-  createParticipant = async (
-    tournamentId: string,
-    participant: Participant,
-  ) => {
-    this._tournaments[tournamentId].participants.push(participant);
-  };
+  createParticipant = async (tournamentId: string, participant: Participant) => {
+    this._tournaments[tournamentId].participants.push(participant)
+  }
 
-  updateParticipantAttendance = async (
-    participantId: string,
-    isAttending: boolean,
-  ) => {
+  updateParticipantAttendance = async (participantId: string, isAttending: boolean) => {
     for (const key in this._tournaments) {
       for (const participant of this._tournaments[key].participants) {
         if (participant.id === participantId) {
-          participant.isAttending = isAttending;
-          return participant;
+          participant.isAttending = isAttending
+          return participant
         }
       }
     }
-    return null;
-  };
+    return null
+  }
 
   createRound = async (tournamentId: string, round: Round) => {
-    this._tournaments[tournamentId].rounds.push(round);
-  };
+    this._tournaments[tournamentId].rounds.push(round)
+  }
 
   deleteRound = async (tournamentId: string, roundId: string) => {
-    this._tournaments[tournamentId].rounds = this._tournaments[
-      tournamentId
-    ].rounds.filter(({ id }) => id !== roundId);
-  };
+    this._tournaments[tournamentId].rounds = this._tournaments[tournamentId].rounds.filter(
+      ({ id }) => id !== roundId
+    )
+  }
 
   updateRound = async (tournamentId: string, round: Round) => {
     for (let i = 0; i < this._tournaments[tournamentId].rounds.length; ++i) {
       if (this._tournaments[tournamentId].rounds[i].id === round.id) {
-        this._tournaments[tournamentId].rounds[i] = round;
+        this._tournaments[tournamentId].rounds[i] = round
       }
     }
-  };
+  }
 
   addJudge = async (tournamentId: string, judge: Judge) => {
-    this._tournaments[tournamentId].judges.push(judge);
-  };
+    this._tournaments[tournamentId].judges.push(judge)
+  }
 
-  markDanceAsNoted = async (
-    tournamentId: string,
-    judgeId: string,
-    danceId: string,
-  ) => {
+  markDanceAsNoted = async (tournamentId: string, judgeId: string, danceId: string) => {
     this._tournaments[tournamentId].dancesNoted[judgeId] = [
       ...(this._tournaments[tournamentId].dancesNoted[judgeId] || []),
       danceId,
-    ];
-  };
+    ]
+  }
 
   addAssistant = async (tournamentId: string, assistant: Assistant) => {
-    this._tournaments[tournamentId].assistants.push(assistant);
-  };
+    this._tournaments[tournamentId].assistants.push(assistant)
+  }
 }
 
 export class AccessKeyRepositoryImpl implements AccessKeyRepository {
-  _keys: Array<AccessKey> = [];
+  _keys: Array<AccessKey> = []
 
   getAll() {
-    return this._keys;
+    return this._keys
   }
 
   async createForTournamentAndUserWithRole(
     tournamentId: string,
     userId: string,
-    role: 'judge' | 'assistant',
+    role: 'judge' | 'assistant'
   ) {
     this._keys.push({
       userId,
       tournamentId,
-      key: String(
-        Math.max(0, ...this._keys.map(({ key }) => parseInt(key))) + 1,
-      ),
+      key: String(Math.max(0, ...this._keys.map(({ key }) => parseInt(key))) + 1),
       role,
-    });
+    })
   }
 
   async getForKey(key: string) {
     for (const k of this._keys) {
       if (k.key === key) {
-        return k;
+        return k
       }
     }
-    return null;
+    return null
   }
 
   async getForTournament(tournamentId: string): Promise<Array<AccessKey>> {
-    return this._keys.filter((k) => k.tournamentId === tournamentId);
+    return this._keys.filter((k) => k.tournamentId === tournamentId)
   }
 }
 
 export class NoteRepositoryImpl implements NoteRepository {
-  _notes: Array<JudgeNote> = [];
+  _notes: Array<JudgeNote> = []
 
-  getAll = () => this._notes;
+  getAll = () => this._notes
 
   createOrUpdate = async (note: JudgeNote) => {
     const index = this._notes.findIndex(
-      (arrNote) => arrNote.judgeId === note.judgeId
-        && arrNote.participantId === note.judgeId
-        && arrNote.criterionId === note.criterionId
-        && arrNote.danceId === note.danceId,
-    );
+      (arrNote) =>
+        arrNote.judgeId === note.judgeId &&
+        arrNote.participantId === note.judgeId &&
+        arrNote.criterionId === note.criterionId &&
+        arrNote.danceId === note.danceId
+    )
 
     if (index != -1) {
-      this._notes[index] = note;
+      this._notes[index] = note
     } else {
-      this._notes.push(note);
+      this._notes.push(note)
     }
-  };
+  }
 
-  getForDance = async (danceId: string): Promise<Array<JudgeNote>> => this._notes.filter((note) => note.danceId === danceId);
+  getForDance = async (danceId: string): Promise<Array<JudgeNote>> =>
+    this._notes.filter((note) => note.danceId === danceId)
 
   delete = async (note: JudgeNote) => {
     this._notes = this._notes.filter(
-      (arrNote) => !(
-        arrNote.judgeId === note.judgeId
-          && arrNote.participantId === note.judgeId
-          && arrNote.criterionId === note.criterionId
-          && arrNote.danceId === note.danceId
-      ),
-    );
-  };
+      (arrNote) =>
+        !(
+          arrNote.judgeId === note.judgeId &&
+          arrNote.participantId === note.judgeId &&
+          arrNote.criterionId === note.criterionId &&
+          arrNote.danceId === note.danceId
+        )
+    )
+  }
 }
 
 export function createAdmin(): AdminModel {
@@ -297,11 +287,11 @@ export function createAdmin(): AdminModel {
     firstName: 'john',
     lastName: 'smith',
     password: 'password',
-  };
+  }
 }
 
 export function generateId() {
-  return ObjectId.generate().toString();
+  return ObjectId.generate().toString()
 }
 
 export function createRound(): Round {
@@ -336,7 +326,7 @@ export function createRound(): Round {
       followers: [],
     },
     tieBreakerJudge: null,
-  };
+  }
 }
 
 export function createTournament(): Tournament {
@@ -351,7 +341,7 @@ export function createTournament(): Tournament {
     participants: [],
     rounds: [],
     dancesNoted: {},
-  };
+  }
 }
 
 export function createParticipant(): Participant {
@@ -361,7 +351,7 @@ export function createParticipant(): Participant {
     role: 'leaderAndFollower',
     isAttending: true,
     attendanceId: 1,
-  };
+  }
 }
 
 export function createLeader(): Participant {
@@ -369,7 +359,7 @@ export function createLeader(): Participant {
     ...createParticipant(),
     name: 'John Smith L',
     role: 'leader',
-  };
+  }
 }
 
 export function createFollower(): Participant {
@@ -377,7 +367,7 @@ export function createFollower(): Participant {
     ...createParticipant(),
     name: 'John Smith F',
     role: 'follower',
-  };
+  }
 }
 
 export function createJudge(): Judge {
@@ -385,14 +375,14 @@ export function createJudge(): Judge {
     id: generateId(),
     name: 'Jane Smith',
     judgeType: 'normal',
-  };
+  }
 }
 
 export function createAssistant(): Assistant {
   return {
     id: generateId(),
     name: 'Assistant Name',
-  };
+  }
 }
 
 export function createCriterion(): RoundCriterion {
@@ -404,7 +394,7 @@ export function createCriterion(): RoundCriterion {
     description: 'this is a criterion',
     type: 'both',
     forJudgeType: 'normal',
-  };
+  }
 }
 
 export function createDance(): Dance {
@@ -412,5 +402,5 @@ export function createDance(): Dance {
     id: generateId(),
     active: false,
     finished: false,
-  };
+  }
 }

@@ -1,32 +1,25 @@
 // no-flow
-import React, { PureComponent } from 'react';
-import {
-  Button,
-  Menu,
-  MenuItem,
-  MenuMenu,
-  Icon,
-  Sidebar,
-} from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import React, { PureComponent } from 'react'
+import { Button, Menu, MenuItem, MenuMenu, Icon, Sidebar } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
-import './styles.css';
+import './styles.css'
 
 type Props = {
   activeItem: string,
   isAuthenticated: boolean,
   role: string,
   onClickLogout: () => Promise<void>,
-};
+}
 
 type State = {
   visible: boolean,
-};
+}
 
 class NavigationBar extends PureComponent<Props, State> {
-  state = { visible: false };
+  state = { visible: false }
 
-  toggleSideBar = () => this.setState({ visible: !this.state.visible });
+  toggleSideBar = () => this.setState({ visible: !this.state.visible })
 
   _renderSignUpLogIn = () => (
     <MenuMenu position="right">
@@ -41,42 +34,37 @@ class NavigationBar extends PureComponent<Props, State> {
         </Button>
       </MenuItem>
     </MenuMenu>
-  );
+  )
 
   _renderLogOut = () => (
-    <MenuItem
-      position="right"
-      name="logout"
-      onClick={() => this.props.onClickLogout()}
-    >
+    <MenuItem position="right" name="logout" onClick={() => this.props.onClickLogout()}>
       <Button secondary>Log out </Button>
     </MenuItem>
-  );
+  )
 
   _renderForRole = () => {
     if (this.props.isAuthenticated) {
       if (this.props.role == 'admin') {
-        return this._renderAuthenticatedAdmin();
+        return this._renderAuthenticatedAdmin()
       }
       if (this.props.role == 'judge') {
-        return this._renderAuthenticatedJudge();
+        return this._renderAuthenticatedJudge()
       }
       // Undefined role, for now do nothing
     } else {
       // Not authed, for now do nothing
     }
-  };
+  }
 
   _renderAuthenticatedAdmin = () => {
-    const { activeItem } = this.props;
+    const { activeItem } = this.props
     return [
       <Menu.Item
         key="create"
         as={Link}
         to="/tournament/create"
         active={activeItem === 'tournament/create'}
-        onClick={this.toggleSideBar}
-      >
+        onClick={this.toggleSideBar}>
         <Icon name="plus" />
         Create Tournament
       </Menu.Item>,
@@ -85,20 +73,19 @@ class NavigationBar extends PureComponent<Props, State> {
         key="edit"
         to="/tournament/edit"
         active={activeItem === 'tournament/edit'}
-        onClick={this.toggleSideBar}
-      >
+        onClick={this.toggleSideBar}>
         <Icon name="edit" />
         Edit Tournament
       </Menu.Item>,
-    ];
-  };
+    ]
+  }
 
   _renderAuthenticatedJudge = () => (
     // Judge specific navigation goes here
     // For now we dont want the judge to be able to navigate anywhere
     // Therefore, return empty menu item
     <Menu.Item />
-  );
+  )
 
   _renderDesktopView = () => (
     <Menu secondary styleName="nav">
@@ -106,11 +93,9 @@ class NavigationBar extends PureComponent<Props, State> {
         4 Temps Tournaments
       </MenuItem>
       {this._renderForRole()}
-      {this.props.isAuthenticated
-        ? this._renderLogOut()
-        : this._renderSignUpLogIn()}
+      {this.props.isAuthenticated ? this._renderLogOut() : this._renderSignUpLogIn()}
     </Menu>
-  );
+  )
 
   _renderTabletView = () => (
     // Collapse navbar into a dropdown
@@ -123,12 +108,12 @@ class NavigationBar extends PureComponent<Props, State> {
         {this._renderSideBar()}
       </Menu.Item>
     </Menu>
-  );
+  )
 
   _renderSideBar = () => {
-    const { visible } = this.state;
+    const { visible } = this.state
 
-    const { activeItem } = this.props;
+    const { activeItem } = this.props
     return (
       <Menu secondary>
         <Sidebar
@@ -139,14 +124,8 @@ class NavigationBar extends PureComponent<Props, State> {
           visible={visible}
           icon="labeled"
           vertical
-          inverted
-        >
-          <Menu.Item
-            as={Link}
-            to="/"
-            active={activeItem === '/'}
-            onClick={this.toggleSideBar}
-          >
+          inverted>
+          <Menu.Item as={Link} to="/" active={activeItem === '/'} onClick={this.toggleSideBar}>
             <Icon name="home" />
             Home
           </Menu.Item>
@@ -158,10 +137,9 @@ class NavigationBar extends PureComponent<Props, State> {
           {this.props.isAuthenticated ? (
             <Menu.Item
               onClick={() => {
-                this.toggleSideBar();
-                this.props.onClickLogout();
-              }}
-            >
+                this.toggleSideBar()
+                this.props.onClickLogout()
+              }}>
               <h3>Log out</h3>
             </Menu.Item>
           ) : (
@@ -177,8 +155,8 @@ class NavigationBar extends PureComponent<Props, State> {
           <div styleName="bottom-filler" />
         </Sidebar>
       </Menu>
-    );
-  };
+    )
+  }
 
   render() {
     /* Perform conditional rendering with CSS to not mess up the re-hydration */
@@ -187,8 +165,8 @@ class NavigationBar extends PureComponent<Props, State> {
         <span styleName="navbar">{this._renderDesktopView()}</span>
         <span styleName="sidebar">{this._renderTabletView()}</span>
       </span>
-    );
+    )
   }
 }
 
-export default NavigationBar;
+export default NavigationBar

@@ -1,104 +1,92 @@
 // @flow
 
-import ObjectId from 'bson-objectid';
-import type { TournamentRepository } from '../../data/tournament';
-import type { AccessKeyRepository } from '../../data/access-key';
-import validateJudge from '../../validators/validate-judge';
-import { createMalusCriterion } from '../util';
+import ObjectId from 'bson-objectid'
+import type { TournamentRepository } from '../../data/tournament'
+import type { AccessKeyRepository } from '../../data/access-key'
+import validateJudge from '../../validators/validate-judge'
+import { createMalusCriterion } from '../util'
 
 export default function route(
   tournamentRepository: TournamentRepository,
-  accessRepository: AccessKeyRepository,
+  accessRepository: AccessKeyRepository
 ) {
   return async (req: ServerApiRequest, res: ServerApiResponse) => {
     try {
-      const { tournamentId } = req.params;
-      const { name, judgeType } = parseJudge(req.body);
-      const judge = { name, judgeType, id: ObjectId.generate() };
+      const { tournamentId } = req.params
+      const { name, judgeType } = parseJudge(req.body)
+      const judge = { name, judgeType, id: ObjectId.generate() }
 
       // $FlowFixMe
       if (validateJudge(judge)) {
         if (
-          hasPresidentJudge(await tournamentRepository.get(tournamentId))
-          && judgeType === 'president'
+          hasPresidentJudge(await tournamentRepository.get(tournamentId)) &&
+          judgeType === 'president'
         ) {
-          throw new HasPresidentError();
+          throw new HasPresidentError()
         }
 
-        await tournamentRepository.addJudge(tournamentId, judge);
-        await accessRepository.createForTournamentAndUserWithRole(
-          tournamentId,
-          judge.id,
-          'judge',
-        );
+        await tournamentRepository.addJudge(tournamentId, judge)
+        await accessRepository.createForTournamentAndUserWithRole(tournamentId, judge.id, 'judge')
 
         if (judge.judgeType === 'sanctioner') {
-          await addMalusCriterionToRoundsIfNotExists(
-            tournamentId,
-            tournamentRepository,
-          );
+          await addMalusCriterionToRoundsIfNotExists(tournamentId, tournamentRepository)
         }
 
-        res.json({ tournamentId, judge });
+        res.json({ tournamentId, judge })
       } else {
-        res.sendStatus(400);
+        res.sendStatus(400)
       }
     } catch (e) {
-      res.sendStatus(statusFromError(e));
+      res.sendStatus(statusFromError(e))
     }
-  };
+  }
 }
 
 function parseJudge(body: mixed): { name: string, judgeType: string } {
   if (
-    typeof body === 'object'
-    && body != null
-    && typeof body.name === 'string'
-    && typeof body.judgeType === 'string'
+    typeof body === 'object' &&
+    body != null &&
+    typeof body.name === 'string' &&
+    typeof body.judgeType === 'string'
   ) {
-    return { name: body.name, judgeType: body.judgeType };
+    return { name: body.name, judgeType: body.judgeType }
   }
-  throw new ParseError();
+  throw new ParseError()
 }
 
 function statusFromError(e: mixed) {
   if (e instanceof ParseError) {
-    return 400;
+    return 400
   }
   if (e instanceof HasPresidentError) {
-    return 409;
+    return 409
   }
-  return 500;
+  return 500
 }
 
 async function addMalusCriterionToRoundsIfNotExists(
   tournamentId: string,
-  tournamentRepository: TournamentRepository,
+  tournamentRepository: TournamentRepository
 ) {
-  const tournament = await tournamentRepository.get(tournamentId);
+  const tournament = await tournamentRepository.get(tournamentId)
   if (!tournament) {
-    throw 'Tournament not found';
+    throw 'Tournament not found'
   }
 
   for (const round of tournament.rounds) {
     if (!hasMalusCriterion(round)) {
-      round.criteria.push(createMalusCriterion());
-      await tournamentRepository.updateRound(tournamentId, round);
+      round.criteria.push(createMalusCriterion())
+      await tournamentRepository.updateRound(tournamentId, round)
     }
   }
 }
 
 function hasMalusCriterion(round: Round): boolean {
-  return round.criteria.some(
-    ({ forJudgeType }) => forJudgeType === 'sanctioner',
-  );
+  return round.criteria.some(({ forJudgeType }) => forJudgeType === 'sanctioner')
 }
 
 function hasPresidentJudge(tournament: ?Tournament): boolean {
-  return (
-    tournament != null
-    && tournament.judges.some((judge) => judge.judgeType === 'president')
-  );
+  return tournament != null && tournament.judges.some((judge) => judge.judgeType === 'president')
 }
 
 function ParseError() {}
