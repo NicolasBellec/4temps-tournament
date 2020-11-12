@@ -1,7 +1,7 @@
 // no-flow
 import {
   generateId,
-  Request,
+  RequestTest as Request,
   Response,
   TournamentRepositoryImpl,
   createRound,

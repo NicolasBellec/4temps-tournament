@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import type {
   JudgeWeightedNote,
   JudgeScore,

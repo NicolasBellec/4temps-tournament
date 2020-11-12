@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import RoundScorer from '../round-scorer'
 import { createParticipant, createJudge, generateId, createRound } from '../../test-utils'
 

@@ -4,7 +4,7 @@ import CreateRoundRoute from '../create-round'
 import {
   generateId,
   TOURNAMENT_ID,
-  Request,
+  RequestTest as Request,
   Response,
   createRound,
   createTournament,

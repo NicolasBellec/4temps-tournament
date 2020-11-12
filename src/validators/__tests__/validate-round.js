@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import validateRound from '../validate-round'
 import { createRound as createRoundTestUtils } from '../../test-utils'
@@ -17,7 +17,6 @@ function createCriterion(vals: mixed): RoundCriterion {
     description: 'How beautiful their style is...',
     minValue: 0,
     maxValue: 100,
-    type: 'both',
     forJudgeType: 'normal',
     ...vals,
   }

@@ -2,7 +2,7 @@
 import submitNotesRoute from '../submit-notes'
 import {
   TournamentRepositoryImpl,
-  Request,
+  RequestTest as Request,
   Response,
   generateId,
   createTournament,

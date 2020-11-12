@@ -2,7 +2,7 @@
 
 import {
   generateId,
-  Request,
+  RequestTest as Request,
   Response,
   TournamentRepositoryImpl as TournamentRepository,
   createTournament,

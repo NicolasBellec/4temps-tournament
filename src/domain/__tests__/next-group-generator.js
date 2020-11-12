@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import NextGroupGenerator from '../next-group-generator'
 import { createTournament, createRound, createParticipant, createJudge } from '../../test-utils'
 

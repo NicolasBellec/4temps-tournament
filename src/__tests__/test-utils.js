@@ -4,7 +4,7 @@ import ObjectId from 'bson-objectid'
 import moment from 'moment'
 
 import {
-  Request,
+  RequestTest as Request,
   Response,
   createAdmin,
   generateId,

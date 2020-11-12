@@ -2,7 +2,7 @@
 
 import route from '../login'
 import {
-  Request,
+  RequestTest as Request,
   Response,
   createTournament,
   createJudge,

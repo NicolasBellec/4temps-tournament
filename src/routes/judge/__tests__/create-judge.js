@@ -2,7 +2,7 @@
 
 import route from '../create-judge'
 import {
-  Request,
+  RequestTest as Request,
   Response,
   createTournament,
   createAdmin,

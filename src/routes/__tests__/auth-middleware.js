@@ -2,7 +2,7 @@
 // @jest-environment node
 
 import {
-  Request,
+  RequestTest as Request,
   Response,
   generateId,
   createTournament,

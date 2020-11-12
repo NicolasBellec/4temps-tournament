@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import GroupGeneratorImpl from '../group-pairing-generator'
 import { createRound, createParticipant } from '../../test-utils'
 

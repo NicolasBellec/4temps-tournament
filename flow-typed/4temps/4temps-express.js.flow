@@ -4,4 +4,4 @@ declare class ServerApiRequest extends express$Request {
   },
 };
 
-declare type ServerApiResponse = express$Response;
+declare class ServerApiResponse extends express$Response {};

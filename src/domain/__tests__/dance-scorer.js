@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 import DanceScorer from '../dance-scorer'
 import { createParticipant, createJudge, generateId, createCriterion } from '../../test-utils'
 

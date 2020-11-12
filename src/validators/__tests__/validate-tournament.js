@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import moment from 'moment'
 
@@ -55,9 +55,10 @@ describe('Tournament validator', () => {
     test('Tournament type must adhere to union type', () => {
       const tournament = {
         ...createTournament(),
-        // $FlowFixMe (ignored on purpose)
         type: 'some other type',
       }
+
+      // $FlowFixMe (ignored on purpose)
       const validation = validateTournament(tournament)
 
       expect(validation.isValidTournament).toBe(false)

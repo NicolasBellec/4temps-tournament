@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { LIFECYCLE } from 'redux-pack'
 
@@ -39,7 +39,7 @@ describe('Participant reducer', () => {
 
       const tournamentId = 'tournamentid'
       const forTournament = { [tournamentId]: ['1'] }
-      const byId = { 1: participant }
+      const byId = { '1': participant }
 
       const payload = { tournamentId, participant }
 

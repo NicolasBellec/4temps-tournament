@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { LIFECYCLE } from 'redux-pack'
 
@@ -109,7 +109,7 @@ describe('Tournament reducer', () => {
       ...getInitialState(),
       allIds: ['3'],
       byId: {
-        3: { ...createTournament(), id: '3' },
+        '3': { ...createTournament(), id: '3' },
       },
     }
 
@@ -121,6 +121,7 @@ describe('Tournament reducer', () => {
     const nom = normalizeTournamentArray(tournaments)
 
     const allIds = [...prevState.allIds, ...nom.result]
+    // $FlowFixMe
     const byId = { ...prevState.byId, ...nom.entities.tournaments }
     const forAdmin = nom.result
 
@@ -144,7 +145,7 @@ describe('Tournament reducer', () => {
       ...getInitialState(),
       allIds: ['1'],
       byId: {
-        1: {
+        '1': {
           ...createTournament(),
           id: '1',
         },

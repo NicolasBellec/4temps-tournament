@@ -2,7 +2,7 @@
 
 import route from '../create-assistant'
 import {
-  Request,
+  RequestTest as Request,
   Response,
   createTournament,
   createAdmin,

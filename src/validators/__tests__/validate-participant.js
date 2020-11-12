@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import { validateParticipant } from '../validate-participant'
 import { createParticipant } from '../../test-utils'

@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import validateRound from '../../../validators/validate-round'
 import parseRound from '../utils'

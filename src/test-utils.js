@@ -14,7 +14,20 @@ type Body = mixed
 type Query = { [name: string]: (string | Array<string>) };
 type Params = express$RequestParams;
 
-export class Request extends ServerApiRequest {
+declare interface ServerApiRequestTest {
+  session: { user: ?User };
+  body: mixed;
+  query: Query;
+  params: { [param: string]: string };
+}
+
+declare interface ServerApiResponseTest {
+  status(statusCode: number): ServerApiResponseTest;
+  sendStatus(statusCode: number): ServerApiResponseTest;
+  json(body?: mixed): ServerApiResponseTest;
+}
+
+export class RequestTest implements ServerApiRequestTest {
   body: Body = {}
 
   session: {
@@ -26,7 +39,6 @@ export class Request extends ServerApiRequest {
   params = {}
 
   constructor(admin: ?AdminModel) {
-    super();
     this.session = {
       user:
         admin == null
@@ -39,41 +51,41 @@ export class Request extends ServerApiRequest {
   }
 
   static empty() {
-    return new Request(null)
+    return new RequestTest(null)
   }
 
   static withBody(body: Body) {
-    return Request.withUserAndBody(createAdmin(), body)
+    return RequestTest.withUserAndBody(createAdmin(), body)
   }
 
   static withUserAndBody(user: AdminModel, body: Body) {
-    const req = new Request(user)
+    const req = new RequestTest(user)
     req.body = body
     return req
   }
 
   static withQuery(query: Query) {
-    return Request.withUserAndQuery(createAdmin(), query)
+    return RequestTest.withUserAndQuery(createAdmin(), query)
   }
 
   static withUserAndQuery(user: AdminModel, query: Query) {
-    const req = new Request(user)
+    const req = new RequestTest(user)
     req.query = query
     return req
   }
 
   static withParams(params: Params) {
-    return Request.withUserAndParams(createAdmin(), params)
+    return RequestTest.withUserAndParams(createAdmin(), params)
   }
 
   static withUserAndParams(user: AdminModel, params: Params) {
-    const req = new Request(user)
+    const req = new RequestTest(user)
     req.params = params
     return req
   }
 
   static withJudgeAndParams(judge: Judge, params: Params) {
-    const req = new Request(null)
+    const req = new RequestTest(null)
     req.session = {
       user: {
         id: judge.id,
@@ -85,7 +97,7 @@ export class Request extends ServerApiRequest {
   }
 }
 
-export class Response extends express$Response {
+export class Response implements ServerApiResponseTest {
   _status: number
 
   _body: ?mixed

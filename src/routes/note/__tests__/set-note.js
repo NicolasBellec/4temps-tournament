@@ -2,7 +2,7 @@
 import setNoteRoute from '../set-note'
 import {
   TournamentRepositoryImpl,
-  Request,
+  RequestTest as Request,
   Response,
   generateId,
   createTournament,

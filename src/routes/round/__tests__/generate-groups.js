@@ -1,6 +1,6 @@
 // no-flow
 import {
-  Request,
+  RequestTest as Request,
   Response,
   createTournament,
   createRound,

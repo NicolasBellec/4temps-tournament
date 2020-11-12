@@ -1,6 +1,6 @@
 // @flow
 
-type JudgeWeightedNote = {
+export type JudgeWeightedNote = {
   judgeId: string,
   participantId: string,
   score: number,
@@ -13,12 +13,12 @@ export type JudgeScore = {
   score: number,
 }
 
-type JudgeRank = {
+export type JudgeRank = {
   ...JudgeWeightedNote,
   rank: number,
 }
 
-type RankMatrixRow = {
+export type RankMatrixRow = {
   participantId: string,
   row: Array<number>,
   rankReachMajority: number, // this is the index the rank being + 1
@@ -26,7 +26,7 @@ type RankMatrixRow = {
   ranks: Array<JudgeRank>,
 }
 
-type RankMatrix = Array<RankMatrixRow>
+export type RankMatrix = Array<RankMatrixRow>
 
 export default class RPSSRoundScorer {
   _judges: Array<Judge>
