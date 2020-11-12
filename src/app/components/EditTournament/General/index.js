@@ -8,7 +8,7 @@ import {
 } from '../../../action-creators/tournament';
 
 import EditTournamentGeneral from './component';
-import PreloadContainer from '../../PreloadContainer';
+import PreloadContainer from '../../../containers/PreloadContainer';
 
 import type {
   Props,

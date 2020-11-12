@@ -8,7 +8,7 @@ import type {
   DispatchProps,
   Props
 } from './types';
-import PreloadContainer from '../../PreloadContainer';
+import PreloadContainer from '../../../containers/PreloadContainer';
 import TabContent from './component';
 
 function mapStateToProps(

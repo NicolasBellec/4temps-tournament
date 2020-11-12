@@ -1,18 +1,19 @@
-// no-flow
+// @flow
 
 import { connect } from 'react-redux';
-import type { Match, RouterHistory } from 'react-router-dom';
 
-import PreloadContainer from '../PreloadContainer';
+import PreloadContainer from '../../containers/PreloadContainer';
 import Component from './component';
 import { getAdminTournamentsAction } from '../../action-creators/tournament';
 
-type Props = {
-  match: Match,
-  history: RouterHistory,
-};
+import type {
+  Props,
+  OwnProps,
+  StateProps,
+  DispatchProps
+} from "./types";
 
-function mapStateToProps(state: ReduxState, { match }: Props) {
+function mapStateToProps(state: ReduxState, { match }: OwnProps): StateProps {
   const roundId = match.params.roundId || '';
   const tournamentId = match.params.tournamentId || '';
   return {
@@ -23,13 +24,13 @@ function mapStateToProps(state: ReduxState, { match }: Props) {
   };
 }
 
-function mapDispatchToProps(dispatch: ReduxDispatch) {
+function mapDispatchToProps(dispatch: ReduxDispatch): DispatchProps {
   return {
     load: () => dispatch(getAdminTournamentsAction()),
   };
 }
 
-const RoundOverviewContainer = connect(
+const RoundOverviewContainer = connect<Props, OwnProps, StateProps, _,_,_>(
   mapStateToProps,
   mapDispatchToProps,
 )(PreloadContainer);

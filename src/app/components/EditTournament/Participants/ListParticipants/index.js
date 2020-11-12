@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 
 import ListParticipants from './component';
-import PreloadContainer from '../../../PreloadContainer';
+import PreloadContainer from '../../../../containers/PreloadContainer';
 import {
   getAdminTournamentsAction,
   getSingleTournamentAction,

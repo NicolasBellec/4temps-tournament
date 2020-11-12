@@ -1,4 +1,4 @@
-// no-flow
+// @flow
 
 import React, { Component } from 'react';
 import { Container, Menu, MenuItem } from 'semantic-ui-react';
@@ -7,12 +7,11 @@ import { Container, Menu, MenuItem } from 'semantic-ui-react';
 import GroupView from './GroupView';
 import ScoreView from './ScoreView';
 
-export type TabName = 'groups' | 'scores';
+import type {
+  Props
+} from "./types";
 
-export type Props = {
-  tournamentId: string,
-  roundId: string,
-};
+export type TabName = 'groups' | 'scores';
 
 type State = {
   activeTab: TabName,

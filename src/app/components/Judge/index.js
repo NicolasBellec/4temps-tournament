@@ -6,7 +6,7 @@ import type {
   StateProps,
   DispatchProps
  } from './types';
-import PreloadContainer from '../PreloadContainer';
+import PreloadContainer from '../../containers/PreloadContainer';
 import { getJudgeTournamentAction } from '../../action-creators/tournament';
 
 function isNotesSubmittedForDance(

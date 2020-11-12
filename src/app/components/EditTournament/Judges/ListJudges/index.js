@@ -1,7 +1,7 @@
 // @flow
 
 import { connect } from 'react-redux';
-import PreloadContainer from '../../../PreloadContainer';
+import PreloadContainer from '../../../../containers/PreloadContainer';
 import Component from './component';
 
 import { getAccessKeysForTournament } from '../../../../api/access-key';
