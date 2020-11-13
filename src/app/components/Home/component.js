@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react'
 
 import LoginContainer from '../Login'
-// $FlowFixMe
 import Judge from '../Judge'
 import EditTournamentList from '../EditTournamentList'
 import Assistant from '../Assistant'

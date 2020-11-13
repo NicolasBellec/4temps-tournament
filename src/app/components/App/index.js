@@ -5,9 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { middleware as reduxPackMiddleware } from 'redux-pack'
 import type { Store } from 'redux'
 
-// $FlowFixMe
 import Router from '../Router'
-// $FlowFixMe
 import NavigationBar from '../NavigationBar'
 import reducer, { getInitialState } from '../../reducers'
 

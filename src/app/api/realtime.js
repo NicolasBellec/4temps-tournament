@@ -12,7 +12,6 @@ let socket: Socket
 export function setup(dispatch: ReduxDispatch): void {
   socket = io()
   socket.on('tournament update', (tournament) => {
-    // $FlowFixMe
     const normalized = normalizeTournament(deserializeTournament(tournament))
     dispatch(getTournamentUpdatedAction(normalized))
   })

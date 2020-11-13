@@ -1,6 +1,5 @@
 // @flow
 
-// $FlowFixMe
 import Judge from './component'
 
 export type JudgeProps = {

@@ -19,8 +19,7 @@ export function parseNote(body: mixed): JudgeNote {
       danceId: body.danceId,
       criterionId: body.criterionId,
       participantId: body.participantId,
-      // $FlowFixMe
-      value: body.value,
+      value: body.value || 0,
     }
     return note
   }

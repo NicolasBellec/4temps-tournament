@@ -19,7 +19,6 @@ import ApiRoute from './routes'
 import getDbConnection from './data/setup'
 
 import renderHtmlTemplate from './ssr-template'
-// $FlowFixMe
 import { appWithPreloadedState, getReduxState } from './app/components/App'
 import { setup as setupRealTime } from './realtime'
 

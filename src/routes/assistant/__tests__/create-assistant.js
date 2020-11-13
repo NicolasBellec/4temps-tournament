@@ -62,7 +62,7 @@ describe('/api/assistant/create', () => {
     await route(tournamentRepo, accessRepo)(req, res)
 
     expect(res.getStatus()).toBe(200)
-    // $FlowFixMe
+
     const { assistant } = res.getBody()
     expect(accessRepo.getAll()).toMatchObject([
       {

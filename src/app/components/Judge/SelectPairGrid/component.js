@@ -34,7 +34,6 @@ function renderColumns(
       <PairGridColumn
         key={pair.id}
         pair={pair}
-        // $FlowFixMe
         onClick={() => onClick(pair.id)}
         isActive={pair.id === activeId}
       />

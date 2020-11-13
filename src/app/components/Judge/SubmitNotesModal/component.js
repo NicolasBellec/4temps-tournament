@@ -12,7 +12,6 @@ import {
   Message,
   Popup,
 } from 'semantic-ui-react'
-// $FlowFixMe
 import NoteTable from '../NoteTable'
 
 import type { Props } from './types'

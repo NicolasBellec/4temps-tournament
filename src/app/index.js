@@ -5,7 +5,6 @@ import { hydrate } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import { setup as setupRealTimeUpdates } from './api/realtime'
-// $FlowFixMe
 import { appWithStore, initializeStore } from './components/App'
 
 const preloadedState: ReduxState = window.__PRELOADED_STATE__

@@ -104,7 +104,6 @@ export default class NextGroupGenerator {
       .filter((id) => isAttending[id] && followerSet.has(id))
       .slice(0, count)
 
-    // $FlowFixMe
     return passingLeaders.concat(passingFollowers)
   }
 

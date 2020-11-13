@@ -68,7 +68,7 @@ describe('/api/judge/create', () => {
     await route(tournamentRepo, accessRepo)(req, res)
 
     expect(res.getStatus()).toBe(200)
-    // $FlowFixMe
+    
     const { judge } = res.getBody()
     expect(accessRepo.getAll()).toMatchObject([
       {

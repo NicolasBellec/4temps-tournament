@@ -6,7 +6,6 @@ import RoundInformation from './RoundInformation'
 import NoteTaker from './NoteTaker'
 import SelectPairGrid from './SelectPairGrid'
 import SubmitNotesModal from './SubmitNotesModal'
-// $FlowFixMe
 import NoteTable from './NoteTable'
 import DrawSettler from './DrawSettler'
 

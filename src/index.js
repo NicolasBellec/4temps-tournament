@@ -1,7 +1,6 @@
 // @flow
 
 import './config'
-// $FlowFixMe[untyped-import]
 import Server from './server'
 import { disconnect as disconnectDb } from './data/setup'
 
