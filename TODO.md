@@ -13,7 +13,12 @@
 * Tests the action creators now that they are all in one place (kind of)
 
 
-* Turn on flow for all files (long run)
+* Turn on flow for all files (remaining : only tests)
 
 
 * Remove linting errors for all files (long run)
+
+# Tests
+
+* src/components/NavigationBar
+  - Check logic when rendering tablet

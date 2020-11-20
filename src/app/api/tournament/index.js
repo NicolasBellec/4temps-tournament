@@ -1,5 +1,8 @@
 // @flow
 
+// To allow async functions with babel
+import "regenerator-runtime/runtime";
+
 import moment from 'moment'
 
 import { apiGetRequest, apiPostRequest } from '../util'
@@ -7,7 +10,7 @@ import { apiGetRequest, apiPostRequest } from '../util'
 import validateTournament from '../../../validators/validate-tournament'
 import { normalizeTournamentArray, normalizeTournament } from '../../reducers/normalize'
 
-export const createTournamentApi = async (tournament: Tournament): Promise<Tournament> => {
+export async function createTournamentApi(tournament: Tournament): Promise<Tournament> {
   const validation = validateTournament(tournament)
   if (!validation.isValidTournament) {
     throw validation

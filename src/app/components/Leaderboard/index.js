@@ -2,9 +2,8 @@
 
 import { connect } from 'react-redux'
 import PreloadContainer from '../../containers/PreloadContainer'
-import { getLeaderboardForTournament } from '../../api/leaderboard'
 import Component from './component'
-import { subscribeToLeaderboardForTournament } from '../../api/realtime'
+import { getLeaderboardAction } from '../../action-creators/leaderboard';
 
 import type { OwnProps, StateProps, DispatchProps, Props } from './types'
 
@@ -26,21 +25,7 @@ function mapDispatchToProps(dispatch: ReduxDispatch, { match, history }: OwnProp
 
   return {
     load: () =>
-      dispatch(
-        // TODO: Move: Conflict
-        {
-          type: 'GET_LEADERBOARD',
-          promise: getLeaderboardForTournament(tournamentId || ''),
-          meta: {
-            onSuccess: () => subscribeToLeaderboardForTournament(tournamentId || ''),
-            onFailure: (res) => {
-              if (!res.didFindTournament) {
-                history.push('/404')
-              }
-            },
-          },
-        }
-      ),
+      dispatch(getLeaderboardAction(tournamentId, history)),
   }
 }
 

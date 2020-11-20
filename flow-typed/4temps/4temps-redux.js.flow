@@ -241,6 +241,7 @@ declare type ReduxAction =
   | SetNoteAction
   | SelectPairAction
   | GetLeaderboardAction
+  | GetLeaderboardUpdateAction
   | CreateAssistantAction
   | SettleDrawAction
   | SubmitNotesAction;
@@ -250,7 +251,7 @@ declare type LogoutAction = {
   type: 'LOGOUT_USER',
   promise: Promise < boolean > ,
   meta: {
-    onSuccess: () => mixed
+    onSuccess: () => void
   }
 };
 
@@ -277,7 +278,7 @@ declare type GetAdminTournamentsAction = {
 
 declare type TournamentUpdatedAction = {
   type: 'TOURNAMENT_UPDATED',
-  payload: mixed
+  payload: normalizedTournament
 };
 
 declare type CreateTournamentAction = {
@@ -384,12 +385,12 @@ declare type GenerateGroupsAction = {
 
 declare type EndDanceAction = {
   type: 'END_DANCE',
-  promise: mixed
+  promise: Promise<mixed>
 };
 
 declare type GetNotesAction = {
   type: 'GET_NOTES',
-  promise: mixed
+  promise: Promise<mixed>
 };
 
 declare type SetNoteAction = {
@@ -403,10 +404,19 @@ declare type SelectPairAction = {
   payload: string
 };
 
+declare type GetLeaderboardUpdateAction = {
+  type: 'GET_LEADERBOARD',
+  promise: Promise<Leaderboard>
+};
+
 declare type GetLeaderboardAction = {
   type: 'GET_LEADERBOARD',
-  promise: mixed
-};
+  promise: Promise<Leaderboard>,
+  meta: {
+    onSuccess: () => void,
+    onFailure: (mixed) => void
+  }
+}
 
 declare type SettleDrawAction = {
   type: 'SETTLE_DRAW',

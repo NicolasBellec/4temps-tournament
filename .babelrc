@@ -38,6 +38,9 @@
             // Don't import during SSR
             "removeImport": true
           }
+        ],
+        [
+          "@babel/plugin-transform-arrow-functions"
         ]
       ]
     },
@@ -48,7 +51,11 @@
       "plugins": [
         // async
         [
-          "transform-regenerator"
+          "@babel/plugin-transform-regenerator"
+        ],
+        // Code splitting
+        [
+          "@babel/plugin-syntax-dynamic-import"
         ],
         // for some unknown reason I also have to specifically define it for the client... ?
         // enable class properties

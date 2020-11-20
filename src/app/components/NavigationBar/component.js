@@ -1,6 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react'
-import { Button, Menu, MenuItem, MenuMenu, Icon, Sidebar } from 'semantic-ui-react'
+import {
+  Button,
+  Menu,
+  MenuItem,
+  MenuMenu,
+  Icon,
+  Sidebar
+} from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 import type {

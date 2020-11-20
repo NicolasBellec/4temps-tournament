@@ -24,6 +24,7 @@ export const LOGIN_WITH_ACCESS_KEY = 'LOGIN_WITH_ACCESS_KEY'
 export const CREATE_ASSISTANT = 'CREATE_ASSISTANT'
 
 // Leaderboard related action type
+export const GET_LEADERBOARD_UPDATE = 'GET_LEADERBOARD'
 export const GET_LEADERBOARD = 'GET_LEADERBOARD'
 
 // Judge related action type

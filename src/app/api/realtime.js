@@ -5,7 +5,7 @@ import type { Socket } from 'socket.io-client'
 import { normalizeTournament } from '../reducers/normalize'
 import { deserializeTournament } from './tournament'
 import { getTournamentUpdatedAction } from '../action-creators/realtime'
-import getLeaderboardAction from '../action-creators/leaderboard'
+import { getLeaderboardUpdateAction } from '../action-creators/leaderboard'
 
 let socket: Socket
 
@@ -16,7 +16,7 @@ export function setup(dispatch: ReduxDispatch): void {
     dispatch(getTournamentUpdatedAction(normalized))
   })
   socket.on('leaderboard update', (leaderboard) => {
-    dispatch(getLeaderboardAction(leaderboard))
+    dispatch(getLeaderboardUpdateAction(leaderboard))
   })
 }
 
