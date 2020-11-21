@@ -17,7 +17,7 @@ function mapStateToProps(
 ): StateProps {
   const shouldLoad = !participants.forTournament[tournamentId]
   return {
-    child: ListParticipants,
+    Child: ListParticipants,
     shouldLoad,
     participants: (participants.forTournament[tournamentId] || []).map(
       (id) => participants.byId[id]

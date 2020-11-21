@@ -11,7 +11,7 @@ export type JudgeProps = {
 }
 
 export type StateProps = {
-  child: typeof Judge,
+  Child: typeof Judge,
   shouldLoad: boolean,
   ...JudgeProps,
 }

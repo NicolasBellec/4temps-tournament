@@ -20,10 +20,10 @@ const Router = () => (
     <Route path="/signup" component={SignUp} />
     <Route path="/login" component={Login} />
     <Route path="/leaderboard/:tournamentId" component={Leaderboard} />
-    <PrivateRoute path="/tournament/create" exact component={CreateTournament} />
-    <PrivateRoute path="/tournament/edit" exact component={EditTournamentList} />
-    <PrivateRoute path="/tournament/edit/:tournamentId" component={EditTournament} />
-    <PrivateRoute path="/tournament/:tournamentId/round/:roundId" component={RoundOverview} />
+    <PrivateRoute path="/tournament/create" exact Component={CreateTournament} />
+    <PrivateRoute path="/tournament/edit" exact Component={EditTournamentList} />
+    <PrivateRoute path="/tournament/edit/:tournamentId" Component={EditTournament} />
+    <PrivateRoute path="/tournament/:tournamentId/round/:roundId" Component={RoundOverview} />
     <Route component={FourOFour} />
   </Switch>
 )

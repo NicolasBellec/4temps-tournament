@@ -1,14 +1,16 @@
 // @flow
 
 import type { ElementType } from 'react'
-import type { Location, RouterHistory } from 'react-router-dom'
+import type { Location, RouterHistory, Match, ContextRouter } from 'react-router-dom'
 
 export type OwnProps = {
   location: Location,
   path: string,
-  component: ElementType,
+  Component: ElementType,
   history: RouterHistory,
-  exact?: boolean
+  match: Match,
+  exact?: boolean,
+  ...ContextRouter
 }
 
 export type StateProps = {

@@ -13,8 +13,10 @@ import {
 import moment from 'moment'
 import type Moment from 'moment'
 import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+// import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import type { Props, ComponentState } from './types'
+
+// Datepicker to big on tablette
 
 class CreateTournament extends Component<Props, ComponentState> {
   constructor(props: Props) {
@@ -30,10 +32,13 @@ class CreateTournament extends Component<Props, ComponentState> {
     this.setState({ name: event.target.value })
   }
 
-  _onChangeDate = (date: ?Moment): void => {
-    if (date != null) {
-      this.setState({ date })
-    }
+  _onChangeDate = (date: Date): void => {
+      let m = moment(date);
+      m.hours(0);
+      m.minutes(0);
+      m.second(0);
+      m.millisecond(0);
+      this.setState({ date: m })
   }
 
   _onChangeRadio = (
@@ -62,7 +67,7 @@ class CreateTournament extends Component<Props, ComponentState> {
             label="Date"
             control={DatePicker}
             allowSameDay
-            selected={this.state.date}
+            value={this.state.date.format("Do MMMM YYYY")}
             onChange={this._onChangeDate}
           />
           {!this.props.validation.isValidDate && <Message error content="Invalid date" />}

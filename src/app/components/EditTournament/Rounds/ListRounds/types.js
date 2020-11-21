@@ -1,7 +1,7 @@
 // @flow
 
 import type { RouterHistory } from 'react-router-dom'
-import type { ElementType } from 'react'
+import Component from './component'
 
 export type OwnProps = {
   tournamentId: string,
@@ -10,7 +10,7 @@ export type OwnProps = {
 
 export type StateProps = {
   tournamentId: string,
-  child: ElementType,
+  Child: typeof Component,
   shouldLoad: boolean,
   rounds: Round[],
   nextRound: ?string,

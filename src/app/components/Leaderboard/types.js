@@ -1,7 +1,7 @@
 // @flow
 
 import type { Match, RouterHistory } from 'react-router-dom'
-import Component from './component'
+import LeaderboardComponent from './component'
 
 export type OwnProps = {
   match: Match,
@@ -14,7 +14,7 @@ export type DispatchProps = {
 
 export type StateProps = {
   shouldLoad: boolean,
-  child: typeof Component,
+  Child: typeof LeaderboardComponent,
   leaderboard: ?Leaderboard,
 }
 

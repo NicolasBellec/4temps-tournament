@@ -8,7 +8,7 @@ import TabContent from './component'
 
 function mapStateToProps({ tournaments }: ReduxState, { tournamentId }: OwnProps): StateProps {
   return {
-    child: TabContent,
+    Child: TabContent,
     shouldLoad: tournaments.byId[tournamentId] === undefined,
   }
 }

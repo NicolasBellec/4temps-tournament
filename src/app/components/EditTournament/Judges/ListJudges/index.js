@@ -19,7 +19,7 @@ function mapStateToProps(
     hasTournament &&
     judges.forTournament[tournamentId].reduce((acc, curr) => acc && accessKeys[curr] != null, true)
   return {
-    child: Component,
+    Child: Component,
     shouldLoad: !hasKeys,
     judges: (judges.forTournament[tournamentId] || []).map((id) => ({
       data: judges.byId[id],

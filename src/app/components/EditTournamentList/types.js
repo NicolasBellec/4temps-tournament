@@ -1,7 +1,7 @@
 // @flow
 
 import type { RouterHistory } from 'react-router-dom'
-import type { ElementType } from 'react'
+import TournamentList from '../TournamentList'
 
 export type OwnProps = {
   history: RouterHistory,
@@ -10,7 +10,7 @@ export type OwnProps = {
 export type StateProps = {
   shouldLoad: boolean,
   isLoading: boolean,
-  child: ElementType,
+  Child: typeof TournamentList,
   tournaments: TournamentViewModel[],
 }
 

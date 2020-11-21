@@ -7,7 +7,7 @@ import { Loader } from 'semantic-ui-react'
 type Props<T> = {
   load: (args?: T) => void,
   shouldLoad: boolean,
-  child: ElementType,
+  Child: ElementType,
   loadArgs?: T,
   ...
 }
@@ -29,11 +29,11 @@ class PreloadContainer<T> extends Component<Props<T>> {
   }
 
   render() {
-    const { shouldLoad, child, ...rest } = this.props
+    const { shouldLoad, Child, ...rest } = this.props
     if (shouldLoad) {
       return <Loader active />
     }
-    return <child {...rest} />
+    return <Child {...rest} />
   }
 }
 

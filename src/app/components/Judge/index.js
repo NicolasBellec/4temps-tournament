@@ -41,7 +41,7 @@ function mapStateToProps(state: ReduxState): StateProps {
 
   const activeDanceId = activeRound != null ? getActiveDanceId(activeRound) : null
   return {
-    child: Judge,
+    Child: Judge,
     shouldLoad: tournaments.forJudge === '',
     tournamentId: tournaments.forJudge,
     activeDanceId,

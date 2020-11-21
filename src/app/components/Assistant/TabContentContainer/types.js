@@ -1,6 +1,6 @@
 // @flow
 
-import type { ElementType } from 'react'
+import TabContent from './component'
 import type { Tabs } from '../types'
 
 export type OwnProps = {
@@ -13,7 +13,7 @@ export type DispatchProps = {
 }
 
 export type StateProps = {
-  child: ElementType,
+  Child: typeof TabContent,
   shouldLoad: boolean,
 }
 

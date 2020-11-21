@@ -20,6 +20,11 @@ type State = {
   visible: boolean,
 }
 
+/*
+ Look how to adpat that to have a sidebar that can be removed
+ https://react.semantic-ui.com/modules/sidebar/#usage-target
+*/
+
 class NavigationBar extends PureComponent<Props, State> {
   state = { visible: false }
 

@@ -8,26 +8,32 @@ import SignUpOrLoginWithRouter from '../SignUpOrLogin'
 import type { Props, OwnProps, StateProps } from './types'
 
 const PrivateRoute = ({
-  component,
+  Component,
   isAuthenticated,
   referer,
   history,
   location,
-}: Props) => (
-  <Route
-    render={(props) =>
-      isAuthenticated === true ? (
-        <component {...props} />
-      ) : (
-        <SignUpOrLoginWithRouter
-          history={history}
-          header="Please log in or sign up"
-          referer={referer}
-        />
-      )
-    }
-  />
-)
+  ...rest
+}: Props) => {
+  return (
+    <Route
+      history={history}
+      location={location}
+      {...rest}
+      render={props =>
+        isAuthenticated === true ? (
+          <Component {...props} />
+        ) : (
+          <SignUpOrLoginWithRouter
+            history={history}
+            header="Please log in or sign up"
+            referer={referer}
+          />
+        )
+      }
+    />
+  )
+}
 
 function mapStateToProps({ user }: ReduxState, { location }: OwnProps): StateProps {
   return {

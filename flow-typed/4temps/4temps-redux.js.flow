@@ -414,7 +414,7 @@ declare type GetLeaderboardAction = {
   promise: Promise<Leaderboard>,
   meta: {
     onSuccess: () => void,
-    onFailure: (mixed) => void
+    onFailure: ({ didFindTournament: boolean }) => void
   }
 }
 

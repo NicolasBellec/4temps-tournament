@@ -10,7 +10,7 @@ export type OwnProps = {
 export type StateProps = {
   isClassic: boolean,
   isLastRound: boolean,
-  child: typeof NoteTaker,
+  Child: typeof NoteTaker,
   shouldLoad: boolean,
 }
 

@@ -1,7 +1,7 @@
 // @flow
 
 import type { RouterHistory } from 'react-router-dom'
-import type { ElementType } from 'react'
+import Component from './component'
 import type Moment from 'moment'
 
 export type OwnProps = {
@@ -13,7 +13,7 @@ export type StateProps = {
   ...UiEditTournamentsReduxState,
   tournament: ?Tournament,
   shouldLoad: boolean,
-  child: ElementType,
+  Child: typeof Component,
 }
 
 export type DispatchProps = {

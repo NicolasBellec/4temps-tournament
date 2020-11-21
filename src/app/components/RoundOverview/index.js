@@ -13,7 +13,7 @@ function mapStateToProps(state: ReduxState, { match }: OwnProps): StateProps {
   const tournamentId = match.params.tournamentId || ''
   return {
     shouldLoad: !state.rounds.byId[roundId],
-    child: Component,
+    Child: Component,
     roundId,
     tournamentId,
   }

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ElementType } from 'react'
+import Component from './component'
 
 export type OwnProps = {
   tournamentId: string,
@@ -12,7 +12,7 @@ type AssistantViewModel = {
 }
 
 export type StateProps = {
-  child: ElementType,
+  Child: typeof Component,
   shouldLoad: boolean,
   assistants: Array<AssistantViewModel>,
 }

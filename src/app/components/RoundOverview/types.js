@@ -10,7 +10,7 @@ export type OwnProps = {
 
 export type StateProps = {
   shouldLoad: boolean,
-  child: typeof Component,
+  Child: typeof Component,
   roundId: string,
   tournamentId: string,
 }

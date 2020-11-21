@@ -22,7 +22,7 @@ function mapStateToProps(
       true
     )
   return {
-    child: Component,
+    Child: Component,
     shouldLoad: !hasKeys,
     assistants: (assistants.forTournament[tournamentId] || []).map((id) => ({
       ...assistants.byId[id],

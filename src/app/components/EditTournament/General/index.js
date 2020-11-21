@@ -27,9 +27,8 @@ function mapStateToProps(
       ),
       assistants: (assistants.forTournament[tournamentId] || []).map((id) => assistants.byId[id]),
     },
-
     shouldLoad: !tournaments.byId[tournamentId],
-    child: EditTournamentGeneral,
+    Child: EditTournamentGeneral,
   }
 }
 

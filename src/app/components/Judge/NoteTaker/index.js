@@ -11,7 +11,7 @@ function mapStateToProps({ tournaments, rounds, notes }: ReduxState): StateProps
   const tournament = tournaments.byId[tournaments.forJudge]
   return {
     shouldLoad: !(notes.isLoading || notes.didLoad),
-    child: Component,
+    Child: Component,
     isLastRound: rounds.byId[tournament.rounds[tournament.rounds.length - 1]].active,
     isClassic: tournament.type === 'classic',
   }

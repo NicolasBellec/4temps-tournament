@@ -16,7 +16,7 @@ function mapStateToProps({ tournaments }: ReduxState, { history }: OwnProps): St
   return {
     shouldLoad: !tournaments.didLoadAdminTournaments,
     isLoading: tournaments.isLoading,
-    child: TournamentList,
+    Child: TournamentList,
     tournaments: tournaments.forAdmin.map((id) => tournaments.byId[id]),
   }
 }
