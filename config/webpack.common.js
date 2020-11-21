@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+const LoadablePlugin = require('@loadable/webpack-plugin')
 
 module.exports = {
     entry: ['./src/app/index.js'],
@@ -26,5 +27,6 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin(),
         new MomentLocalesPlugin(),
+        new LoadablePlugin()
     ]
 };
