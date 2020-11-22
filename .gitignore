@@ -1,6 +1,7 @@
 node_modules
 lib
 public-build
+*.css.json
 
 # don't commit environment variables
 .env
