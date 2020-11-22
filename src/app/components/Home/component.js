@@ -1,26 +1,26 @@
 // @flow
 import React, { PureComponent } from 'react'
 
-import LoginContainer from '../Login'
+import { Redirect } from 'react-router-dom'
+
 import Judge from '../Judge'
-import EditTournamentList from '../EditTournamentList'
 import Assistant from '../Assistant'
 
 import type { Props } from './types'
 
 class Home extends PureComponent<Props> {
   renderForRole() {
-    const { role, history, location } = this.props
-    if (role == 'admin') {
-      return <EditTournamentList history={history} />
+    const { role, history, location, isAuthenticated } = this.props
+    if (isAuthenticated && role == 'admin') {
+      return <Redirect to="/tournament/edit" />
     }
-    if (role == 'judge') {
+    if (isAuthenticated && role == 'judge') {
       return <Judge />
     }
-    if (role == 'assistant') {
+    if (isAuthenticated && role == 'assistant') {
       return <Assistant />
     }
-    return <LoginContainer location={location} history={history} />
+    return <Redirect to="/login" />
   }
 
   render() {
