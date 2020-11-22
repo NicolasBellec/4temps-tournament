@@ -6,20 +6,24 @@
     "@babel/preset-react"
   ],
   "plugins": [
+    // enable styleName="" in react components
+    [
+      "babel-plugin-react-css-modules",
+      {
+        "context": "config",
+        "generateScopedName": "[path]___[name]__[local]__[hash:base64:5]"
+      }
+    ],
     // enable class properties
     [
       "transform-class-properties"
-    ],
-    // enable styleName="" in react components
-    [
-      "react-css-modules"
     ],
     // spread operator
     [
       "@babel/plugin-proposal-object-rest-spread"
     ],
     // SSR code-splitting
-    "@loadable/babel-plugin"
+    // "@loadable/babel-plugin"
   ],
   "env": {
     "server": {
@@ -35,10 +39,11 @@
       ],
       "plugins": [
         [
-          "react-css-modules",
+          "babel-plugin-react-css-modules",
           {
             // Don't import during SSR
-            "removeImport": true
+            "removeImport": true,
+            "generateScopedName": "[path]___[name]__[local]__[hash:base64:5]"
           }
         ],
         [
