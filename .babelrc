@@ -22,7 +22,9 @@
       "@babel/plugin-proposal-object-rest-spread"
     ],
     // SSR code-splitting
-    // "@loadable/babel-plugin"
+    [
+      "@loadable/babel-plugin"
+    ]
   ],
   "env": {
     "server": {

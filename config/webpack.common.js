@@ -70,6 +70,6 @@ module.exports = {
           filename: 'app.css'
         }),
         new MomentLocalesPlugin(),
-        // new LoadablePlugin()
+        new LoadablePlugin()
     ]
 };

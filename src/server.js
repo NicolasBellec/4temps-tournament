@@ -12,6 +12,7 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import bodyParser from 'body-parser'
 import { v4 as uuid } from 'uuid'
+import { ChunkExtractor } from '@loadable/server'
 
 import type { Server as ServerTy } from 'http'
 import type {
@@ -203,11 +204,23 @@ class Server {
       tournamentId: (req.session.user && req.session.user.tournamentId) || '',
     }
 
+    const statsFile = path.resolve(__dirname, '../public-build/loadable-stats.json')
+    const extractor = new ChunkExtractor( {
+      statsFile,
+      publicPath: '/',
+    } )
+
     const html = renderToString(
-      <StaticRouter location={req.url} context={context}>
-        {appWithPreloadedState({ user })}
-      </StaticRouter>
+      // extractor.collectChunks(
+        <StaticRouter location={req.url} context={context}>
+          {appWithPreloadedState({ user })}
+        </StaticRouter>
+      // )
     )
+
+    // const scriptTags = extractor.getScriptTags()
+    // const linkTags = extractor.getLinkTags()
+    // const styleTags = extractor.getStyleTags()
 
     // redirects
     if (context.url) {
