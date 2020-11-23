@@ -3,6 +3,7 @@
 import React from 'react'
 import { hydrate } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+// $FlowFixMe
 import { loadableReady } from '@loadable/component'
 
 import { setup as setupRealTimeUpdates } from './api/realtime'

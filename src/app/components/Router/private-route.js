@@ -16,12 +16,15 @@ const PrivateRoute = ({
   ...rest
 }: Props) => {
   return (
+    // $FlowFixMe
     <Route
       history={history}
+      // $FlowFixMe
       location={location}
       {...rest}
       render={props =>
         isAuthenticated === true ? (
+          // $FlowFixMe
           <Component {...props} />
         ) : (
           <SignUpOrLoginWithRouter

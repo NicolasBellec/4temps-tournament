@@ -5,6 +5,8 @@ import DatePicker from 'react-datepicker'
 import type Moment from 'moment'
 import moment from 'moment'
 
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+
 import type { Props } from './types'
 
 type State = {

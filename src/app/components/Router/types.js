@@ -4,7 +4,7 @@ import type { ElementType } from 'react'
 import type { Location, RouterHistory, Match, ContextRouter } from 'react-router-dom'
 
 export type OwnProps = {
-  location: Location,
+  // location: Location,
   path: string,
   Component: ElementType,
   history: RouterHistory,

@@ -12,6 +12,7 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import bodyParser from 'body-parser'
 import { v4 as uuid } from 'uuid'
+// $FlowFixMe
 import { ChunkExtractor } from '@loadable/server'
 
 import type { Server as ServerTy } from 'http'
@@ -234,7 +235,7 @@ class Server {
           html,
           getReduxState(),
           // $FlowFixMe: It's set a bit higher up
-          res.locals.cspNonce
+          res.locals.cspNonce,
         )
       )
     }

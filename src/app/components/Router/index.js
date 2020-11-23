@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
+// $FlowFixMe
 import baseLoadable from '@loadable/component'
 
 function loadable(func, config) {
@@ -22,15 +23,15 @@ import RoundOverview from '../RoundOverview'
 import Leaderboard from '../Leaderboard'
 import PrivateRoute from './private-route'
 
-// const CreateTournament loadable(() => import('../CreateTournament'))
-// const EditTournamentList loadable(() => import('../EditTournamentList'))
-// const EditTournament loadable(() => import('../EditTournament'))
-// const SignUp loadable(() => import('../SignUp'))
-// const Home loadable(() => import('../Home'))
-// const Login loadable(() => import('../Login'))
-// const FourOFour loadable(() => import('../FourOFour'))
-// const RoundOverview loadable(() => import('../RoundOverview'))
-// const Leaderboard loadable(() => import('../Leaderboard'))
+// const CreateTournament = loadable(() => import('../CreateTournament'))
+// const EditTournamentList = loadable(() => import('../EditTournamentList'))
+// const EditTournament = loadable(() => import('../EditTournament'))
+// const SignUp = loadable(() => import('../SignUp'))
+// const Home = loadable(() => import('../Home'))
+// const Login = loadable(() => import('../Login'))
+// const FourOFour = loadable(() => import('../FourOFour'))
+// const RoundOverview = loadable(() => import('../RoundOverview'))
+// const Leaderboard = loadable(() => import('../Leaderboard'))
 
 
 const Router = () => (
