@@ -122,7 +122,7 @@ class NavigationBar extends PureComponent<Props, State> {
   _renderSideBar = () => {
     const { visible } = this.state
 
-    const { activePath } = this.props
+    const { activePath, target } = this.props
     return (
       <Menu secondary>
         <Sidebar
@@ -131,7 +131,9 @@ class NavigationBar extends PureComponent<Props, State> {
           width="thin"
           direction="right"
           visible={visible}
+          onHide={() => this.setState({ visible: false })}
           icon="labeled"
+          target={target}
           vertical
           inverted>
           <Menu.Item as={Link} to="/" active={activePath === '/'} onClick={this.toggleSideBar}>

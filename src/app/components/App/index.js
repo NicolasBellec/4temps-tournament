@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import { Ref } from 'semantic-ui-react'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { middleware as reduxPackMiddleware } from 'redux-pack'
@@ -45,10 +46,14 @@ export function initializeStore(preloadedState: mixed) {
 }
 
 function App() {
+  const segmentRef = React.useRef()
+
   return (
     <div>
-      <NavigationBar />
-      <Router />
+      <NavigationBar target={segmentRef} />
+      <Ref innerRef={segmentRef}>
+        <Router />
+      </Ref>
     </div>
   )
 }
