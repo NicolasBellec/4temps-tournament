@@ -2,18 +2,23 @@
 
 import Express from 'express'
 import HTTP from 'http'
-import type { Server as ServerTy } from 'http'
 import Session from 'express-session'
 import ConnectMongo from 'connect-mongo'
 import Helmet from 'helmet'
 import compression from 'compression'
-import type { $Application as ExpressApplication, $Request, $Response } from 'express'
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import bodyParser from 'body-parser'
 import { v4 as uuid } from 'uuid'
+
+import type { Server as ServerTy } from 'http'
+import type {
+  $Application as ExpressApplication,
+  $Request, $Response
+} from 'express'
+
 
 import ApiRoute from './routes'
 import getDbConnection from './data/setup'

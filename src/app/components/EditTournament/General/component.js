@@ -40,10 +40,13 @@ class EditTournamentGeneral extends Component<Props, State> {
     this.setState({ name: event.target.value })
   }
 
-  onChangeDate = (date: ?Moment) => {
-    if (date != null) {
-      this.setState({ date })
-    }
+  onChangeDate = (date: Date): void => {
+      let m = moment(date);
+      m.hours(0);
+      m.minutes(0);
+      m.second(0);
+      m.millisecond(0);
+      this.setState({ date: m })
   }
 
   onSubmit = () => {
@@ -73,7 +76,7 @@ class EditTournamentGeneral extends Component<Props, State> {
             label="Date"
             control={DatePicker}
             allowSameDay
-            selected={date}
+            value={date.format("Do MMMM YYYY")}
             onChange={this.onChangeDate}
           />
           {!isValidDate && <Message error content="Invalid date" />}

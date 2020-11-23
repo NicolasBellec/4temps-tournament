@@ -10,7 +10,6 @@
     [
       "babel-plugin-react-css-modules",
       {
-        "context": "config",
         "generateScopedName": "[path]___[name]__[local]__[hash:base64:5]"
       }
     ],

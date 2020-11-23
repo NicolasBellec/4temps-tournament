@@ -13,7 +13,8 @@ import {
 import moment from 'moment'
 import type Moment from 'moment'
 import DatePicker from 'react-datepicker'
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+
 import type { Props, ComponentState } from './types'
 
 // Datepicker to big on tablette

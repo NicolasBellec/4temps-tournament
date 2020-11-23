@@ -50,9 +50,6 @@ module.exports = {
                               generateScopedName: '[path]___[name]__[local]__[hash:base64:5]',
                             }
                           ]
-                        // require('postcss-cssnext')(),
-                        // require('autoprefixer')(),
-                        // require('cssnano')({ safe: true }),
                       ]
                       },
                     }
