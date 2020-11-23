@@ -16,15 +16,24 @@ class PreloadContainer<T> extends Component<Props<T>> {
   componentDidMount() {
     const { load, shouldLoad, loadArgs } = this.props
     if (shouldLoad) {
-      load(loadArgs)
+      if ( loadArgs !== undefined ) {
+        load( loadArgs );
+      }
+      else {
+        load();
+      }
     }
   }
 
-  // TODO: Change the pattern
-  componentWillReceiveProps<T>(nextProps: Props<T>) {
-    const { load, shouldLoad } = nextProps
-    if (shouldLoad && shouldLoad !== this.props.shouldLoad) {
-      load()
+  componentDidUpdate(prevProps: Props<T>) {
+    const { load, shouldLoad, loadArgs } = this.props;
+    if ( shouldLoad && shouldLoad !== prevProps.shouldLoad ) {
+      if ( loadArgs !== undefined ) {
+        load( loadArgs );
+      }
+      else {
+        load();
+      }
     }
   }
 
@@ -33,6 +42,7 @@ class PreloadContainer<T> extends Component<Props<T>> {
     if (shouldLoad) {
       return <Loader active />
     }
+    // $FlowFixMe
     return <Child {...rest} />
   }
 }

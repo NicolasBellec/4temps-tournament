@@ -22,19 +22,34 @@ class EditTournamentGeneral extends Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps({ tournament }: Props) {
-    if (tournament) {
+  static getDerivedStateFromProps({ tournament }: Props, state: State) {
+    if ( tournament ) {
       const { name, date } = tournament
 
       if (
-        !this.props.tournament ||
-        this.props.tournament.name !== name ||
-        this.props.tournament.date !== date
+        name !== state.name ||
+        date !== state.date
       ) {
-        this.setState({ name, date })
+        return { name, date }
       }
     }
+
+    return null;
   }
+
+  // componentWillReceiveProps({ tournament }: Props) {
+  //   if (tournament) {
+  //     const { name, date } = tournament
+  //
+  //     if (
+  //       !this.props.tournament ||
+  //       this.props.tournament.name !== name ||
+  //       this.props.tournament.date !== date
+  //     ) {
+  //       this.setState({ name, date })
+  //     }
+  //   }
+  // }
 
   onChangeName = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ name: event.target.value })

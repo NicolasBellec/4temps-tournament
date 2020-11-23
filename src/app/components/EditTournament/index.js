@@ -39,13 +39,23 @@ class EditTournament extends Component<Props, State> {
     activeTab: getActiveTab(this.props.location.pathname),
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.setState({ activeTab: getActiveTab(nextProps.location.pathname) })
-  }
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const nextActiveTab = getActiveTab( props.location.pathname );
 
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return this.state.activeTab !== nextState.activeTab
+    if ( nextActiveTab !== state.activeTab ) {
+      return {
+        activeTab: nextActiveTab
+      };
+    }
+    return null;
   }
+  // componentWillReceiveProps(nextProps: Props) {
+  //   this.setState({ activeTab: getActiveTab(nextProps.location.pathname) })
+  // }
+  //
+  // shouldComponentUpdate(nextProps: Props, nextState: State) {
+  //   return this.state.activeTab !== nextState.activeTab
+  // }
 
   _onClickTab = (tab: TabName) => {
     this.props.history.push(

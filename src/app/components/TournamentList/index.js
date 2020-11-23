@@ -16,12 +16,12 @@ function sortTournaments(tournaments: Array<Tournament>) {
   )
 }
 
-function getPreviousTournaments(tournaments: Array<Tournament>) {
+function getPreviousTournaments(tournaments: Array<Tournament>): Tournament[] {
   const now = moment()
   return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrBefore(now))
 }
 
-function getFutureTournaments(tournaments: Array<Tournament>) {
+function getFutureTournaments(tournaments: Array<Tournament>): Tournament[] {
   const now = moment()
   return sortTournaments(tournaments).filter((tour) => tour.date.isSameOrAfter(now))
 }
@@ -36,13 +36,22 @@ class TournamentList extends Component<Props, State> {
     }
   }
 
-  // TODO: Change this partern as this is deprecated
-  componentWillReceiveProps(nextProps: Props) {
-    const previousTournaments = getPreviousTournaments(nextProps.tournaments)
-    const futureTournaments = getFutureTournaments(nextProps.tournaments)
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const previousTournaments = getPreviousTournaments(props.tournaments)
+    const futureTournaments = getFutureTournaments(props.tournaments)
 
-    this.setState({ previousTournaments, futureTournaments })
+    return {
+      previousTournaments,
+      futureTournaments
+    }
   }
+
+  // componentWillReceiveProps(nextProps: Props) {
+  //   const previousTournaments = getPreviousTournaments(nextProps.tournaments)
+  //   const futureTournaments = getFutureTournaments(nextProps.tournaments)
+  //
+  //   this.setState({ previousTournaments, futureTournaments })
+  // }
 
   renderHeaderAndTournaments = (header: string, tournaments: Tournament[]) => {
     if (this.shouldRenderTable(tournaments)) {
@@ -88,6 +97,9 @@ class TournamentList extends Component<Props, State> {
 
   formatDate = (singleMoment: Moment) => singleMoment.format('LL')
 
+  /*
+    TODO: Should be placed in a PreloadContainer
+  */
   render() {
     const { isLoading } = this.props
     const { futureTournaments, previousTournaments } = this.state
