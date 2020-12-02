@@ -11,6 +11,8 @@ function participants(
   switch (type) {
     case 'CREATE_PARTICIPANT':
       return createParticipant(state, action)
+    case 'BATCH_CREATE_PARTICIPANT':
+      return batchCreateParticipant(state, action)
     case 'GET_ALL_TOURNAMENTS':
     case 'GET_ADMIN_TOURNAMENTS':
       return getTournaments(state, action)
@@ -59,6 +61,40 @@ function createParticipant(
         [payload.participant.id]: payload.participant,
       },
     }),
+  })
+}
+
+function batchCreateParticipant(
+  state: ParticipantsReduxState,
+  action: ReduxPackAction
+): ParticipantsReduxState {
+  const { payload } = action
+
+  if ( payload === undefined || payload === null ) {
+    return state;
+  }
+
+  return handle(state, action, {
+      success: (prevState) => ({
+        ...prevState,
+        forTournament: {
+          ...prevState.forTournament,
+          [payload.tournamentId]: Array.from(
+            new Set([
+              ...(prevState.forTournament[payload.tournamentId] || []),
+              ...(payload.participants.map((p) => p.id)),
+            ]).values()
+          ),
+        },
+        byId: {
+          ...prevState.byId,
+          ...(payload.participants.reduce((acc, p) => ({
+              ...acc,
+              [p.id]: p
+            }))
+          )
+        },
+      })
   })
 }
 

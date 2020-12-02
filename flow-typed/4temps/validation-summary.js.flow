@@ -52,3 +52,7 @@ declare type AdminLoginValidationSummary = {
   isValidPassword: boolean,
   doesAdminExist: boolean,
 };
+
+declare type BatchParticipantValidationSummary = {
+  isValid: boolean
+}

@@ -174,3 +174,8 @@ declare type LeaderboardScore = {
   position: number,
   score: number
 };
+
+declare type ParticipantCsvEntry = {
+  name: string,
+  role: ParticipantRole
+};

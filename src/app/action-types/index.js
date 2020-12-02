@@ -8,7 +8,7 @@ export const GET_JUDGE_TOURNAMENT = 'GET_JUDGE_TOURNAMENT'
 export const GET_SINGLE_TOURNAMENT = 'GET_SINGLE_TOURNAMENT'
 export const GET_ALL_TOURNAMENTS = 'GET_ALL_TOURNAMENTS'
 
-// Real-time rlatedaction types
+// Real-time related action types
 export const TOURNAMENT_UPDATED = 'TOURNAMENT_UPDATED'
 
 // Login related action type
@@ -32,6 +32,7 @@ export const CREATE_JUDGE = 'CREATE_JUDGE'
 
 // Participant related action type
 export const CREATE_PARTICIPANT = 'CREATE_PARTICIPANT'
+export const BATCH_CREATE_PARTICIPANT = 'BATCH_CREATE_PARTICIPANT'
 export const CHANGE_ATTENDANCE = 'CHANGE_ATTENDANCE'
 export const SELECT_PAIR = 'SELECT_PAIR'
 

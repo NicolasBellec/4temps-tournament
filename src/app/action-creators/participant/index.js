@@ -1,7 +1,16 @@
 // @flow
 
-import { createParticipant, changeAttendance } from '../../api/participant'
-import { CREATE_PARTICIPANT, CHANGE_ATTENDANCE, SELECT_PAIR } from '../../action-types'
+import {
+  batchCreateParticipant,
+  createParticipant,
+  changeAttendance
+} from '../../api/participant'
+import {
+  CREATE_PARTICIPANT,
+  BATCH_CREATE_PARTICIPANT,
+  CHANGE_ATTENDANCE,
+  SELECT_PAIR
+} from '../../action-types'
 
 export function getCreateParticipantAction(
   tournamentId: string,
@@ -17,6 +26,19 @@ export function getCreateParticipantAction(
       attendanceId: 0, // generate on server side
       isAttending: false,
     }),
+  }
+}
+
+export function getBatchCreateParticipantAction(
+  tournamentId: string,
+  csv: string
+): BatchCreateParticipantAction {
+  return {
+    type: BATCH_CREATE_PARTICIPANT,
+    promise: batchCreateParticipant(
+      tournamentId,
+      csv
+    ),
   }
 }
 

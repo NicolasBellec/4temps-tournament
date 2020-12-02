@@ -22,6 +22,20 @@ export const createParticipant = async (
   })
 }
 
+export const batchCreateParticipant = async (
+  tournamentId: string,
+  participants: string
+): Promise<{
+  tournamentId: string,
+  participants: Participant[]
+}> => {
+  return apiPostRequest(`/api/participant/${tournamentId}/batch-create`, {
+    tournamentId,
+    participants,
+  })
+}
+
+
 export async function changeAttendance(
   tournamentId: string,
   participantId: string,

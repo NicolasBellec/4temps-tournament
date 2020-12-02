@@ -25,6 +25,7 @@ declare type ReduxState = {
     createRound: UiCreateRoundReduxState,
     createJudge: UiCreateJudgeReduxState,
     createAssistant: UiCreateAssistantReduxState,
+    batchCreateParticipant: UiBatchCreateParticipantsReduxState,
 
     notes: UiNotesReduxState,
 
@@ -194,6 +195,13 @@ declare type UiSettleDrawReduxState = {
   errorMessage: string
 };
 
+declare type UiBatchCreateParticipantsReduxState = {
+  isLoading: boolean,
+  createdSuccessfully: boolean,
+  error: string,
+  validation: BatchParticipantValidationSummary
+}
+
 // type ExtractPromiseType = <T>(Promise<T>) => T;
 //
 // declare type BetterReduxPackAction<action> = {
@@ -244,7 +252,9 @@ declare type ReduxAction =
   | GetLeaderboardUpdateAction
   | CreateAssistantAction
   | SettleDrawAction
-  | SubmitNotesAction;
+  | SubmitNotesAction
+  | CSVBatchCreateParticipantErrorAction
+  | BatchCreateParticipantAction;
 
 // Redux Actions
 declare type LogoutAction = {
@@ -420,10 +430,23 @@ declare type GetLeaderboardAction = {
 
 declare type SettleDrawAction = {
   type: 'SETTLE_DRAW',
-  promise: mixed
+  promise: Promise<mixed>
 };
 
 declare type SubmitNotesAction = {
   type: 'SUBMIT_NOTES',
   promise: Promise<mixed>
 };
+
+declare type BatchCreateParticipantAction = {
+  type: 'BATCH_CREATE_PARTICIPANT',
+  promise: Promise< {
+    tournamentId: string,
+    participants: Participant[]
+  } >
+};
+
+declare type CSVBatchCreateParticipantErrorAction = {
+  type: 'CSV_BATCH_CREATE_PARTICIPANT_ERROR',
+  payload: string
+}
